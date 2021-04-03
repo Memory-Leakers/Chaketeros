@@ -20,7 +20,6 @@ public:
 
 	SDL_Window* myWindow;
 	SDL_Surface* mySurface;
-
 };
 
 #endif // __MODULEWINDOW_H__
