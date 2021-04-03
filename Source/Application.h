@@ -7,7 +7,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
-#include "SDL/include/SDL.h"
+#include "External/SDL/include/SDL.h"
 
 // L2: TODO 0: Change the 'NUM_MODULES' value
 #define NUM_MODULES 3

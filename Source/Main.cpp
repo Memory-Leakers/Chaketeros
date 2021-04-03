@@ -3,7 +3,7 @@
 #include "MemLeaks.h"
 
 // Include SDL libraries
-#include "SDL/include/SDL.h"	// Required for SDL base systems functionality
+#include "External/SDL/include/SDL.h"	// Required for SDL base systems functionality
 
 // Define libraries required by linker
 // WARNING: Not all compilers support this option and it couples 
