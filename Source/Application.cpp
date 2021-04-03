@@ -3,7 +3,6 @@
 Application::Application()
 {
 	modules[0] = dummy = new ModuleDummy();
-
 	// L2: TODO 1: Create the window module in application
 	modules[1] = window = new ModuleWindow();
 
