@@ -1,26 +1,36 @@
-#ifndef __MODULEWINDOW_H__
-#define __MODULEWINDOW_H__
+#ifndef __MODULE_WINDOW_H__
+#define __MODULE_WINDOW_H__
 
-#include "Application.h"
+#include "Module.h"
 
+//Try to figure out what this is used for
 struct SDL_Window;
 struct SDL_Surface;
 
-// L2: TODO 1: Create the declaration of ModuleWindow class
-// It should inherit from module and override all necessary functions
-
-class ModuleWindow :public Module {
-
-private:
-
+class ModuleWindow : public Module
+{
 public:
+	//Constructor
+	ModuleWindow();
 
+	// Destructor
+	~ModuleWindow();
+
+	// Called on application start.
+	// Initializes the SDL Library and creates a window.
 	bool Init() override;
+
+	// Called on application exit.
+	// Destroys the window and uninitializes the SDL library
 	bool CleanUp() override;
 
-	SDL_Window* myWindow;
-	SDL_Surface* mySurface;
+public:
+	//The window we'll be rendering to
+	SDL_Window* window = nullptr;
+
+	//The window's surface
+	SDL_Surface* screenSurface = nullptr;
 };
 
-#endif // __MODULEWINDOW_H__
+#endif // !__MODULE_WINDOW_H__
 

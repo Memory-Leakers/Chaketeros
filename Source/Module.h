@@ -10,17 +10,16 @@ public:
 	virtual bool Init();
 
 	//Called at the beginning of each application loop
-	virtual UpdateResult PreUpdate();
+	virtual update_status PreUpdate();
 
 	//Called at the middle of each application loop
-	virtual UpdateResult Update();
+	virtual update_status Update();
 
 	//Called at the end of each application loop
-	virtual UpdateResult PostUpdate();
+	virtual update_status PostUpdate();
 
 	//Called at the end of the application
 	virtual bool CleanUp();
-
 };
 
 #endif // __MODULE_H__

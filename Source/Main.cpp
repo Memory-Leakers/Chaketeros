@@ -2,18 +2,12 @@
 #include "Globals.h"
 #include "MemLeaks.h"
 
-// Include SDL libraries
-#include "External/SDL/include/SDL.h"	// Required for SDL base systems functionality
 
-// Define libraries required by linker
-// WARNING: Not all compilers support this option and it couples 
-// source code with build system, it's recommended to keep both 
-// separated, in case of multiple build configurations
-//#pragma comment(lib, "SDL/lib/x86/SDL2.lib")
-//#pragma comment(lib, "SDL/lib/x86/SDL2main.lib")
+//#pragma comment( lib, "SDL/libx86/SDL2.lib")
+//#pragma comment( lib, "SDL/libx86/SDL2main.lib")
 
-// Main application states
-enum class MainState
+
+enum class main_states
 {
 	MAIN_CREATION,
 	MAIN_START,
@@ -28,63 +22,62 @@ int main(int argc, char* argv[])
 {
 	ReportMemoryLeaks();
 
-	int main_result = EXIT_FAILURE;
-	MainState state = MainState::MAIN_CREATION;
+	int main_return = EXIT_FAILURE;
+	main_states state = main_states::MAIN_CREATION;
 
-	while (state != MainState::MAIN_EXIT)
+	while (state != main_states::MAIN_EXIT)
 	{
 		switch (state)
 		{
-			case MainState::MAIN_CREATION:
+			case main_states::MAIN_CREATION:
 			{
 				LOG("Application Creation --------------\n");
 				App = new Application();
-				state = MainState::MAIN_START;
+				state = main_states::MAIN_START;
 			}	break;
 
-			case MainState::MAIN_START:
+			case main_states::MAIN_START:
 			{
 				LOG("Application Start --------------\n");
 				if(App->Init() == false)
 				{
 					LOG("Application Init exits with error -----\n");
-					state = MainState::MAIN_EXIT;
+					state = main_states::MAIN_EXIT;
 				}
 				else
 				{
-					state = MainState::MAIN_UPDATE;
+					state = main_states::MAIN_UPDATE;
 				}
 			}	break;
 
-			case MainState::MAIN_UPDATE:
+			case main_states::MAIN_UPDATE:
 			{
-				UpdateResult status = App->Update();
+				update_status status = App->Update();
 
-				if (status == UpdateResult::UPDATE_ERROR)
+				if (status == update_status::UPDATE_ERROR)
 				{
 					LOG("Application Update exits with error -----\n");
-					state = MainState::MAIN_EXIT;
+					state = main_states::MAIN_EXIT;
 				}
-				else if (status == UpdateResult::UPDATE_STOP)
+				else if (status == update_status::UPDATE_STOP)
 				{
-					state = MainState::MAIN_FINISH;
+					state = main_states::MAIN_FINISH;
 				}
 			}	break;
 
-			case MainState::MAIN_FINISH:
+			case main_states::MAIN_FINISH:
 			{
 				LOG("Application Finish --------------\n");
 				if (App->CleanUp() == true)
 				{
-					main_result = EXIT_SUCCESS;
+					main_return = EXIT_SUCCESS;
 				}
 				else
 				{
 					LOG("Application CleanUp exits with error -----\n");
 				}
-				state = MainState::MAIN_EXIT;
+				state = main_states::MAIN_EXIT;
 			}
-			default: break;
 		}
 	}
 
@@ -92,5 +85,5 @@ int main(int argc, char* argv[])
 
 	delete App;
 
-	return main_result;
+	return main_return;
 }

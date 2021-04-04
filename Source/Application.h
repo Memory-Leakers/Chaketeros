@@ -1,47 +1,43 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "Module.h"
+#include "Globals.h"
 
-#include "ModuleDummy.h"
-#include "ModuleWindow.h"
-#include "ModuleRender.h"
+#define NUM_MODULES 4
 
-#include "External/SDL/include/SDL.h"
-
-// L2: TODO 0: Change the 'NUM_MODULES' value
-#define NUM_MODULES 3
-
-class ModuleDummy;
+class Module;
 class ModuleWindow;
+class ModuleInput;
+class ModuleTextures;
 class ModuleRender;
 
 class Application
 {
+
 public:
 
-	// Constructor. Creates all necessary modules for the application
+	//Constructor. Creates all necessary modules for the application
 	Application();
 
-	// Destructor. Removes all module objects
+	//Destructor. Removes all module objects
 	~Application();
 
-	// Initializes all modules
+	//Initializes all modules
 	bool Init();
 
-	// Updates all modules (PreUpdate, Update and PostUpdate)
-	UpdateResult Update();
+	//Updates all modules (PreUpdate, Update and PostUpdate)
+	update_status Update();
 
-	// Releases all the application data
+	//Releases all the application data
 	bool CleanUp();
 
 public:
 
-	// Array to store the pointers for the different modules
 	Module* modules[NUM_MODULES];
 
-	ModuleDummy* dummy = nullptr;
 	ModuleWindow* window = nullptr;
+	ModuleInput* input = nullptr;
+	ModuleTextures* textures = nullptr;
 	ModuleRender* render = nullptr;
 };
 

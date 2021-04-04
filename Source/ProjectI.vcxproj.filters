@@ -28,10 +28,13 @@
     <ClInclude Include="ModuleWindow.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleDummy.h">
+    <ClInclude Include="ModuleRender.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleRender.h">
+    <ClInclude Include="ModuleInput.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTextures.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,10 +51,16 @@
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleDummy.cpp">
+    <ClCompile Include="ModuleRender.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRender.cpp">
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInput.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTextures.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>

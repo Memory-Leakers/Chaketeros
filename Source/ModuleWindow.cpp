@@ -1,49 +1,74 @@
 #include "ModuleWindow.h"
 
-// L2: TODO 2: Init the library and check for possible errors using SDL_GetError()
+#include "Application.h"
+#include "Globals.h"
+
+#include "SDL/include/SDL.h"
+
+
+ModuleWindow::ModuleWindow() : Module()
+{}
+
+ModuleWindow::~ModuleWindow()
+{}
+
 bool ModuleWindow::Init()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	LOG("Init SDL window & surface");
+	bool ret = true;
+
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
-		return false;
+		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
+		ret = false;
+	}
+	else
+	{
+		//Create window
+		Uint32 flags = SDL_WINDOW_SHOWN;
+
+		if (WIN_FULLSCREEN == true)
+			flags |= SDL_WINDOW_FULLSCREEN;
+
+		if (WIN_BORDERLESS == true)
+			flags |= SDL_WINDOW_BORDERLESS;
+
+		if (WIN_RESIZABLE == true)
+			flags |= SDL_WINDOW_RESIZABLE;
+
+		if (WIN_FULLSCREEN_DESKTOP == true)
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+		window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
+
+		if (window == nullptr)
+		{
+			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			ret = false;
+		}
+		else
+		{
+			screenSurface = SDL_GetWindowSurface(window);
+		}
 	}
 
-	// L2: TODO 3: Pick the width and height and experiment with different window flags.
-	// Create the window and check for errors
-	// Expose the SDL_window as a public variable to access it through the different application modules
-
-	Uint32 flags = SDL_WINDOW_OPENGL;
-
-	myWindow = SDL_CreateWindow(
-		"My windows",					   // window title
-		SDL_WINDOWPOS_CENTERED,            // initial x position
-		SDL_WINDOWPOS_CENTERED,            // initial y position
-		SCREEN_WIDTH,                      // width, in pixels
-		SCREEN_HEIGHT,                     // height, in pixels
-		flags					           // flags - see below
-	);
-
-	if (myWindow == NULL) 
-	{
-		SDL_Log("Could not create window: %s\n", SDL_GetError());
-		return false;
-	}
-
-	// L2: TODO 4: Create a screen surface and keep it as a public variable
-	mySurface = SDL_GetWindowSurface(myWindow);
-
-	return true;
+	return ret;
 }
 
 bool ModuleWindow::CleanUp()
 {
+	LOG("Destroying SDL window and quitting all SDL systems");
+
+	//Destroy window
+	if (window != nullptr)
+		SDL_DestroyWindow(window);
+
+	//Quit SDL subsystems
 	SDL_Quit();
 
 	return true;
 }
 
-		
-// L2: TODO 5: Fill with code the CleanUp() method
-// Remove all the data and uninitialize SDL
+
+
 

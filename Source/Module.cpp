@@ -5,19 +5,19 @@ bool Module::Init()
 	return true;
 }
 
-UpdateResult Module::PreUpdate()
+update_status Module::PreUpdate()
 {
-	return UpdateResult::UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
-UpdateResult Module::Update()
+update_status Module::Update()
 {
-	return UpdateResult::UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
-UpdateResult Module::PostUpdate()
+update_status Module::PostUpdate()
 {
-	return UpdateResult::UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool Module::CleanUp()
