@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Application.h"
 
 #define MAX_KEYS 256
 

@@ -3,6 +3,9 @@
 
 #include "Module.h"
 
+#include "Application.h"
+#include "Globals.h"
+
 //Try to figure out what this is used for
 struct SDL_Window;
 struct SDL_Surface;

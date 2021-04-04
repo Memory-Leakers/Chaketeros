@@ -3,6 +3,10 @@
 
 #include "Module.h"
 
+#include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleTextures.h"
+
 struct SDL_Rect;
 struct SDL_Texture;
 struct SDL_Renderer;

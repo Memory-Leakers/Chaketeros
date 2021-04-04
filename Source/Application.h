@@ -3,6 +3,11 @@
 
 #include "Globals.h"
 
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleTextures.h"
+#include "ModuleRender.h"
+
 #define NUM_MODULES 4
 
 class Module;

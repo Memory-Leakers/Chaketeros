@@ -1,10 +1,5 @@
 #include "ModuleTextures.h"
 
-#include "Application.h"
-#include "ModuleRender.h"
-
-#include "External/SDL/include/SDL.h"
-#include "External/SDL_image/include/SDL_image.h"
 //#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 ModuleTextures::ModuleTextures() : Module()

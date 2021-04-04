@@ -1,11 +1,5 @@
 #include "ModuleWindow.h"
 
-#include "Application.h"
-#include "Globals.h"
-
-#include "SDL/include/SDL.h"
-
-
 ModuleWindow::ModuleWindow() : Module()
 {}
 

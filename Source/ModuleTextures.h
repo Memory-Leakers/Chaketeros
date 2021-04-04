@@ -3,6 +3,12 @@
 
 #include "Module.h"
 
+#include "Application.h"
+#include "ModuleRender.h"
+
+#include "External/SDL/include/SDL.h"
+#include "External/SDL_image/include/SDL_image.h"
+
 
 #define MAX_TEXTURES 50
 

@@ -1,10 +1,5 @@
 #include "ModuleRender.h"
 
-#include "Application.h"
-#include "ModuleWindow.h"
-#include "ModuleTextures.h"
-
-
 SDL_Texture* texture;
 
 ModuleRender::ModuleRender() : Module()
