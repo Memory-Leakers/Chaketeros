@@ -27,9 +27,6 @@ public:
 	// Initializes the SDL system for input detection
 	bool Init() override;
 
-	
-
-
 	// Called at the beginning of the application loop
 	// Updates all input data received from SDL
 	UpdateResult PreUpdate() override;
