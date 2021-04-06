@@ -1,19 +1,16 @@
-#ifndef __MODULE_WINDOW_H__
-#define __MODULE_WINDOW_H__
+#ifndef __MODULEWINDOW_H__
+#define __MODULEWINDOW_H__
 
 #include "Module.h"
 
-#include "Application.h"
-#include "Globals.h"
-
-//Try to figure out what this is used for
+// Try to figure out what this is used for
 struct SDL_Window;
 struct SDL_Surface;
 
 class ModuleWindow : public Module
 {
 public:
-	//Constructor
+
 	ModuleWindow();
 
 	// Destructor
@@ -35,5 +32,5 @@ public:
 	SDL_Surface* screenSurface = nullptr;
 };
 
-#endif // !__MODULE_WINDOW_H__
+#endif // __MODULEWINDOW_H__
 

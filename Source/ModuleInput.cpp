@@ -1,5 +1,10 @@
 #include "ModuleInput.h"
 
+#include "Globals.h"
+#include "Application.h"
+
+#include "External/SDL/include/SDL.h"
+
 ModuleInput::ModuleInput() : Module()
 {}
 
@@ -21,36 +26,31 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-update_status ModuleInput::PreUpdate()
+UpdateResult ModuleInput::PreUpdate()
 {
-	//	TODO 1: Port all input code from SDL Intro into this new code structure
-	//			You should update all keyboard data
-	//			And detect if ESC (or X button) was pressed and quit the game
-	
+	// Read new SDL events, mostly from the window
 	SDL_Event event;
 	if (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT)	return update_status::UPDATE_STOP;
+		if (event.type == SDL_QUIT)	return UpdateResult::UPDATE_STOP;
 	}
 
+	// Read all keyboard data and update our custom array
 	SDL_PumpEvents();
 	const Uint8* keyboard = SDL_GetKeyboardState(NULL);
 	for (int i = 0; i < MAX_KEYS; ++i)
 	{
-		if (keyboard[i])
-			keys[i] = (keys[i] == KEY_IDLE) ? KEY_DOWN : KEY_REPEAT;
-		else
-			keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
+		if (keyboard[i]) keys[i] = (keys[i] == KEY_IDLE) ? KEY_DOWN : KEY_REPEAT;
+		else keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
 	}
 
-	if (keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN) { return update_status::UPDATE_STOP; }
-
-	return update_status::UPDATE_CONTINUE;
+	return UpdateResult::UPDATE_CONTINUE;
 }
 
 bool ModuleInput::CleanUp()
 {
 	LOG("Quitting SDL input event subsystem");
+
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

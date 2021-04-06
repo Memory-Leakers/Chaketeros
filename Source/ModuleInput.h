@@ -1,9 +1,8 @@
-#ifndef __MODULE_INPUT_H__
-#define __MODULE_INPUT_H__
+#ifndef __MODULEINPUT_H__
+#define __MODULEINPUT_H__
 
 #include "Module.h"
 #include "Globals.h"
-#include "Application.h"
 
 #define MAX_KEYS 256
 
@@ -28,9 +27,12 @@ public:
 	// Initializes the SDL system for input detection
 	bool Init() override;
 
+	
+
+
 	// Called at the beginning of the application loop
 	// Updates all input data received from SDL
-	update_status PreUpdate() override;
+	UpdateResult PreUpdate() override;
 
 	// Called on application exit.
 	// Uninitializes the SDL system for input detection
@@ -38,7 +40,7 @@ public:
 
 public:
 	// An array to fill in the state of all the keyboard keys
-	KEY_STATE keys[MAX_KEYS];
+	KEY_STATE keys[MAX_KEYS] = { KEY_IDLE };
 };
 
-#endif // __MODULE_INPUT_H__
+#endif // __ModuleInput_H__

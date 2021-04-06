@@ -1,13 +1,17 @@
 #include "ModuleTextures.h"
 
+#include "Application.h"
+#include "ModuleRender.h"
+
+#include "External/SDL/include/SDL.h"
+#include "External/SDL_image/include/SDL_image.h"
+
 //#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 ModuleTextures::ModuleTextures() : Module()
 {
-	// TODO 5: Initialize all texture pointers to nullptr
-	for (int i = 0; i < MAX_TEXTURES; i++) {
+	for (uint i = 0; i < MAX_TEXTURES; ++i)
 		textures[i] = nullptr;
-	}
 }
 
 ModuleTextures::~ModuleTextures()
@@ -36,12 +40,17 @@ bool ModuleTextures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
 
-	// TODO 6: Free all textures
-
-	for (int i = 0; i < MAX_TEXTURES; i++) {
-		SDL_DestroyTexture(textures[i]);
+	// Free all textures sill existing in the textures array
+	for (uint i = 0; i < MAX_TEXTURES; ++i)
+	{
+		if (textures[i] != nullptr)
+		{
+			SDL_DestroyTexture(textures[i]);
+			textures[i] = nullptr;
+		}
 	}
 
+	// Quit SDL_Image subsystems
 	IMG_Quit();
 	return true;
 }
@@ -49,29 +58,34 @@ bool ModuleTextures::CleanUp()
 SDL_Texture* const ModuleTextures::Load(const char* path)
 {
 	SDL_Texture* texture = nullptr;
+	SDL_Surface* surface = IMG_Load(path);
 
-	// TODO 2:	Load an SDL_Surface from a path (must be a png)
-	//			and check for errors
-	SDL_Surface* test;
+	if (surface == NULL)
+	{
+		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+	}
+	else
+	{
+		texture = SDL_CreateTextureFromSurface(App->render->renderer, surface);
 
-	test = IMG_Load(path);
+		if (texture == NULL)
+		{
+			LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			for (uint i = 0; i < MAX_TEXTURES; ++i)
+			{
+				if (textures[i] == nullptr)
+				{
+					textures[i] = texture;
+					break;
+				}
+			}
+		}
 
-	if (test == NULL){ LOG("Error loading image: %s", SDL_GetError()) }
-
-
-	// TODO 3:	Once your have the surface, create a texture from it (check for errors again)
-	texture = SDL_CreateTextureFromSurface(App->render->renderer, test);
-
-	if (texture == NULL){ LOG("Error loading texture: %s", SDL_GetError()) }
-
-
-	// TODO 4:	Remember to free the surface at the end
-	//			Add the texture to our own array so we can properly free all textures on application exit
-
-	SDL_FreeSurface(test);
-
-	for (int i = 0; i < MAX_TEXTURES; i++) { if (textures[i] == nullptr) { textures[i] = texture; break; } }
-
+		SDL_FreeSurface(surface);
+	}
 
 	return texture;
 }

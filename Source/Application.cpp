@@ -1,6 +1,12 @@
 #include "Application.h"
 
-
+#include "Module.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleTextures.h"
+#include "ModulePlayer.h"
+#include "ModuleScene.h"
+#include "ModuleRender.h"
 
 Application::Application()
 {
@@ -10,15 +16,19 @@ Application::Application()
 	modules[0] = window = new ModuleWindow();
 	modules[1] = input = new ModuleInput();
 	modules[2] = textures = new ModuleTextures();
-	modules[3] = render = new ModuleRender();
+
+	modules[3] = scene = new ModuleScene();
+	modules[4] = player = new ModulePlayer();
+
+	modules[5] = render = new ModuleRender();
 }
 
 Application::~Application()
 {
 	for (int i = 0; i < NUM_MODULES; ++i)
 	{
-		//Important: when deleting a pointer, set it to nullptr afterwards
-		//It allows us for null check in other parts of the code
+		// WARNING: When deleting a pointer, set it to nullptr afterwards
+		// It allows us for null check in other parts of the code
 		delete modules[i];
 		modules[i] = nullptr;
 	}
@@ -26,25 +36,25 @@ Application::~Application()
 
 bool Application::Init()
 {
-	for (int i = 0; i < NUM_MODULES; ++i)
-	{
-		modules[i]->Init();
-	}
+	bool ret = true;
+	for (int i = 0; (i < NUM_MODULES) && ret; ++i) ret = modules[i]->Init();
 
-	return true;
+	// We will consider that all modules are always active
+	for (int i = 0; (i < NUM_MODULES) && ret; ++i) ret = modules[i]->Start();
+	return ret;
 }
 
-update_status Application::Update()
+UpdateResult Application::Update()
 {
-	update_status ret = update_status::UPDATE_CONTINUE;
+	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
 
-	for (int i = 0; i < NUM_MODULES && ret == update_status::UPDATE_CONTINUE; ++i)
+	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		ret = modules[i]->PreUpdate();
 
-	for (int i = 0; i < NUM_MODULES && ret == update_status::UPDATE_CONTINUE; ++i)
+	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		ret = modules[i]->Update();
 
-	for (int i = 0; i < NUM_MODULES && ret == update_status::UPDATE_CONTINUE; ++i)
+	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		ret = modules[i]->PostUpdate();
 
 	return ret;
@@ -54,10 +64,7 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (int i = NUM_MODULES - 1; i >= 0 && ret; --i)
-	{
-		ret = modules[i]->CleanUp();
-	}
+	for (int i = NUM_MODULES - 1; (i >= 0) && ret; --i) ret = modules[i]->CleanUp();
 
 	return ret;
 }

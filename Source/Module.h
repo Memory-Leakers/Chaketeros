@@ -6,19 +6,25 @@
 class Module
 {
 public:
-	//Called at the beginning of the application execution
+	virtual ~Module() {}
+
+	// Called at the beginning of the application execution
 	virtual bool Init();
 
-	//Called at the beginning of each application loop
-	virtual update_status PreUpdate();
+	// Called when the module is activated
+	// By now we will consider all modules to be permanently active
+	 virtual bool Start();
 
-	//Called at the middle of each application loop
-	virtual update_status Update();
+	// Called at the beginning of each application loop
+	 virtual UpdateResult PreUpdate();
 
-	//Called at the end of each application loop
-	virtual update_status PostUpdate();
+	// Called at the middle of each application loop
+	 virtual UpdateResult Update();
 
-	//Called at the end of the application
+	// Called at the end of each application loop
+	 virtual UpdateResult PostUpdate();
+
+	// Called at the end of the application
 	virtual bool CleanUp();
 };
 

@@ -1,14 +1,7 @@
-#ifndef __MODULE_TEXTURES_H__
-#define __MODULE_TEXTURES_H__
+#ifndef __MODULETEXTURES_H__
+#define __MODULETEXTURES_H__
 
 #include "Module.h"
-
-#include "Application.h"
-#include "ModuleRender.h"
-
-#include "External/SDL/include/SDL.h"
-#include "External/SDL_image/include/SDL_image.h"
-
 
 #define MAX_TEXTURES 50
 
@@ -17,9 +10,10 @@ struct SDL_Texture;
 class ModuleTextures : public Module
 {
 public:
-	//Constructor
+	// Constructor
 	ModuleTextures();
-	//Destructor
+
+	// Destructor
 	~ModuleTextures();
 
 	// Called on application start.
@@ -37,9 +31,9 @@ public:
 	SDL_Texture* const Load(const char* path);
 
 public:
-	//Store all loaded textures so they can be freed on application exit
-	SDL_Texture* textures[MAX_TEXTURES];
-
+	// An array of all the loaded textures
+	// Allows us to keep track of all textures and free them on application exit
+	SDL_Texture* textures[MAX_TEXTURES] = { nullptr };
 };
 
-#endif // __ModuleTextures_H__
+#endif // __MODULETEXTURES_H__

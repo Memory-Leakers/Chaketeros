@@ -3,46 +3,48 @@
 
 #include "Globals.h"
 
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleTextures.h"
-#include "ModuleRender.h"
-
-#define NUM_MODULES 4
+// L2: DONE 0: Change the 'NUM_MODULES' value
+#define NUM_MODULES 6
 
 class Module;
 class ModuleWindow;
 class ModuleInput;
 class ModuleTextures;
+class ModulePlayer;
+class ModuleScene;
 class ModuleRender;
 
 class Application
 {
-
 public:
 
-	//Constructor. Creates all necessary modules for the application
+	// Constructor. Creates all necessary modules for the application
 	Application();
 
-	//Destructor. Removes all module objects
+	// Destructor. Removes all module objects
 	~Application();
 
-	//Initializes all modules
+	// Initializes all modules
 	bool Init();
 
-	//Updates all modules (PreUpdate, Update and PostUpdate)
-	update_status Update();
+	// Updates all modules (PreUpdate, Update and PostUpdate)
+	UpdateResult Update();
 
-	//Releases all the application data
+	// Releases all the application data
 	bool CleanUp();
 
 public:
 
+	// Array to store the pointers for the different modules
 	Module* modules[NUM_MODULES];
 
+	// All the modules stored individually
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
 	ModuleTextures* textures = nullptr;
+
+	ModulePlayer* player = nullptr;
+	ModuleScene* scene = nullptr;
 	ModuleRender* render = nullptr;
 };
 

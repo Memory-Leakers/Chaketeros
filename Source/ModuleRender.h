@@ -1,23 +1,19 @@
-#ifndef __MODULE_RENDER_H__
-#define __MODULE_RENDER_H__
+#ifndef __MODULERENDER_H__
+#define __MODULERENDER_H__
 
 #include "Module.h"
+#include "External/SDL/include/SDL_Rect.h"
 
-#include "Application.h"
-#include "ModuleWindow.h"
-#include "ModuleTextures.h"
-
-struct SDL_Rect;
 struct SDL_Texture;
 struct SDL_Renderer;
 
 class ModuleRender : public Module
 {
 public:
-	// Constructor
+	//Constructor
 	ModuleRender();
 
-	// Destructor
+	//Destructor
 	~ModuleRender();
 
 	// Called on application start.
@@ -26,27 +22,39 @@ public:
 
 	// Called at the beginning of the application loop
 	// Clears the rendering context to a background color
-	update_status PreUpdate() override;
+	UpdateResult PreUpdate() override;
+
+	// Called at the middle of the application loop
+	// Handles camera movement
+	UpdateResult Update() override;
 
 	// Called at the end of the application loop.
 	// Displays a rectangle in the rendering context
 	// Updates the screen with the rendered content
-	update_status PostUpdate() override;
+	UpdateResult PostUpdate() override;
 
 	// Called on application exit.
 	// Destroys the rendering context
 	bool CleanUp() override;
 
-	// Prints a texture to the rendering context.
+	// Draws a texture to the screen
 	// Param texture	- A valid SDL Texture, validation checks are not performed
-	// Param x,y		- Position x,y in the screen (upper left axis)
+	// Param x, y		- Position x,y in the screen (upper left axis)
 	// Param section	- The portion of the texture we want to copy. nullptr for the entire texture
-	bool Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section = nullptr);
+	// Param speed		- The amount of effect that is applied to the sprite depending on the camera
+	bool DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section = nullptr, float speed = 1.0f);
 
 public:
 	// Rendering context used for any rendering action
 	SDL_Renderer* renderer = nullptr;
 
+	// A rectangle that represents the camera section
+	// Sprites will be rendered to the screen depending on the camera position
+	SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+	// The speed at which the camera will be moving
+	int cameraSpeed = 3;
+
 };
 
-#endif //__MODULE_RENDER_H__
+#endif //__MODULERENDER_H__
