@@ -44,7 +44,7 @@ bool ModuleScene::Start()
 
 	bool ret = true;
 
-	stageTexture = App->textures->Load("Assets/ken_stage.png");
+	//stageTexture = App->textures->Load("Assets/ken_stage.png");
 
 	return ret;
 }
@@ -53,12 +53,6 @@ UpdateResult ModuleScene::Update()
 {
 	flag.Update();
 
-	// L4: TODO 2: Update ship position (use provided variables)
-
-
-	// L4: TODO 3: Update girl animation
-
-
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -66,14 +60,14 @@ UpdateResult ModuleScene::Update()
 UpdateResult ModuleScene::PostUpdate()
 {
 	// Draw everything --------------------------------------
-	App->render->DrawTexture(stageTexture, 0, 0, &background, 0.75f); // sea and sky
-	App->render->DrawTexture(stageTexture, 560, 8, &(flag.GetCurrentFrame()), 0.75f); // flag animation
+	//App->render->DrawTexture(stageTexture, 0, 0, &background, 0.75f); // sea and sky
+	//App->render->DrawTexture(stageTexture, 560, 8, &(flag.GetCurrentFrame()), 0.75f); // flag animation
 
 	// L4: TODO 2: Draw the ship from the sprite sheet with some parallax effect
 
 	// L4: TODO 3: Animate the girl on the ship (see sprite sheet)
 	
-	App->render->DrawTexture(stageTexture, 0, 170, &ground);
+	//App->render->DrawTexture(stageTexture, 0, 170, &ground);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
