@@ -29,32 +29,6 @@ public:
 
 public:
 	
-	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* stageTexture = nullptr;
-	
-	// The sprite rectangle for the ground
-	SDL_Rect ground;
-
-	// The sprite section for the background
-	SDL_Rect background;
-
-	// The different sprite sections for the flag
-	Animation flag;
-
-	// The different sprite sections for the girl
-	Animation girl;
-
-	// The sprite section for the ship
-	SDL_Rect ship;
-
-	// The timer used to move the ship
-	float shipMovementTimer = 0.0f;
-
-	// The position at which we render the ship
-	int shipPosition = -5;
-
-	// The movement direction the ship is taking
-	int shipMovement = 1;
 };
 
 #endif // __MODULESCENE_H__

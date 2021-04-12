@@ -7,8 +7,6 @@
 
 #include "External/SDL/include/SDL_scancode.h"
 
-// Street Fighter reference at https://www.youtube.com/watch?v=OEhmUuehGOA
-
 ModulePlayer::ModulePlayer()
 {
 	position.x = 100;
@@ -53,7 +51,7 @@ bool ModulePlayer::Start()
 UpdateResult ModulePlayer::Update()
 {
 	// Reset the currentAnimation back to idle before updating the logic
-	currentAnimation = &idleAnim;
+	//currentAnimation = &idleAnim;
 
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
 	{
@@ -63,15 +61,15 @@ UpdateResult ModulePlayer::Update()
 
 	// L4: TODO 4: Make Ryu walk backwards with the correct animations
 
-	currentAnimation->Update();
+	//currentAnimation->Update();
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 UpdateResult ModulePlayer::PostUpdate()
 {
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
-	App->render->DrawTexture(texture, position.x, position.y - rect.h, &rect);
+	//SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	//App->render->DrawTexture(texture, position.x, position.y - rect.h, &rect);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
