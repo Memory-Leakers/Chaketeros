@@ -51,7 +51,7 @@ bool ModuleScene::Start()
 
 UpdateResult ModuleScene::Update()
 {
-	flag.Update();
+	//flag.Update();
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
