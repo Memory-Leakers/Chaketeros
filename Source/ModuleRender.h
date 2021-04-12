@@ -54,7 +54,6 @@ public:
 
 	// The speed at which the camera will be moving
 	int cameraSpeed = 3;
-
 };
 
 #endif //__MODULERENDER_H__

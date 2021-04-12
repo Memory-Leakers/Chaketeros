@@ -52,6 +52,9 @@
     <ClInclude Include="Point.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

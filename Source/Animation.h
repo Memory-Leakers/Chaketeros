@@ -8,12 +8,12 @@
 class Animation
 {
 public:
-
+	bool loop = true;
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
 
 private:
-
+	int loopCount = 0;
 	float current_frame = 0.0f;
 	int last_frame = 0;
 
@@ -38,6 +38,11 @@ public:
 	SDL_Rect& GetCurrentFrame()
 	{
 		return frames[(int)current_frame];
+	}
+
+	bool HasFinished()
+	{
+		return !loop && loopCount > 0;
 	}
 };
 
