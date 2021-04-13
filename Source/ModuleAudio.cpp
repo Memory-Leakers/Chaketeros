@@ -41,7 +41,7 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 
 	LOG("Cleaning up Audio libraries");
 
-	// Free all textures sill existing in the textures array
+	// Free all music existing in the musics array
 	for (uint i = 0; i < MAX_MUSICS; ++i)
 	{
 		if (musics[i] != nullptr)
@@ -51,6 +51,18 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 		}
 	}
 
+
+	//Free all sounds existing on the sounds array
+	for (uint i = 0; i < MAX_SOUNDS; ++i)
+	{
+		if (sounds[i] != nullptr)
+		{
+			Mix_FreeChunk(sounds[i]);
+			sounds[i] = nullptr;
+		}
+	}
+
+	//Quit MIX
 	Mix_Quit();
 	return true;
 }
@@ -73,4 +85,24 @@ Mix_Music* ModuleAudio::LoadMusic(const char* path) {	//Loads and returns a Mix_
 	
 
 	return music;	//Returns the music 
+}
+
+Mix_Chunk* ModuleAudio::LoadSound(const char* path) {	//Loads and returns a Mix_Chunk* from the given path
+
+	Mix_Chunk* sound = Mix_LoadWAV(path);
+
+	if (sound == NULL) { LOG("Could not load sound with path %s. Mix_LoadWAV: %s", path, Mix_GetError()) }
+	else
+	{
+		for (uint i = 0; i < MAX_SOUNDS; ++i) {	//Puts the sound pointer into the sounds array
+			if (sounds[i] == nullptr)
+			{
+				sounds[i] = sound;
+				break;
+			}
+		}
+	}
+
+	return sound;	//Returns the sound
+
 }

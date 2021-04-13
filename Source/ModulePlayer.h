@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Animation.h"
 #include "Point.h"
+#include "ModuleAudio.h"
 
 struct SDL_Texture;
 
@@ -46,6 +47,9 @@ public:
 	Animation idleAnim;
 	Animation forwardAnim;
 	Animation backwardAnim;
+
+	//Test Sound 
+	Mix_Chunk* testSound;
 };
 
 #endif // __MODULEPLAYER_H__

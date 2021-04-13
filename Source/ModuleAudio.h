@@ -6,6 +6,7 @@
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
 #define MAX_MUSICS 8
+#define MAX_SOUNDS 32
 
 class ModuleAudio : public Module {
 
@@ -23,10 +24,12 @@ public:
 	//and locates it into de musics[MAX_MUSICS] array
 	Mix_Music* LoadMusic(const char* path); 
 
-	//Mix_Chunk LoadSound(const char* path);
+	Mix_Chunk* LoadSound(const char* path);
 
 	//Array of total musics
+
 	Mix_Music* musics[MAX_MUSICS] = { nullptr };
+	Mix_Chunk* sounds[MAX_SOUNDS] = { nullptr };
 
 };
 
