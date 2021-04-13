@@ -44,8 +44,6 @@ bool ModulePlayer::Start()
 
 	bool ret = true;
 
-	
-
 	//texture = App->textures->Load("Assets/ryu.png"); // arcade version
 
 	return ret;
@@ -81,4 +79,10 @@ UpdateResult ModulePlayer::PostUpdate()
 	//App->render->DrawTexture(texture, position.x, position.y - rect.h, &rect);
 
 	return UpdateResult::UPDATE_CONTINUE;
+}
+
+void ModulePlayer::OnCollision(Collider* c1, Collider* c2)
+{
+	// L6: TODO 5: Detect collision with a wall. If so, destroy the player.
+
 }

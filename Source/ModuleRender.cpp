@@ -113,3 +113,24 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 
 	return ret;
 }
+
+bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed)
+{
+	bool ret = true;
+
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+	SDL_Rect dstRect{
+		(int)(-camera.x * speed) + rect.x * SCREEN_SIZE,
+		(int)(-camera.y * speed) + rect.y * SCREEN_SIZE,
+		rect.w * SCREEN_SIZE, rect.h * SCREEN_SIZE };
+
+	if (SDL_RenderFillRect(renderer, &dstRect) != 0)
+	{
+		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}

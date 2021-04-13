@@ -25,6 +25,11 @@ UpdateResult Module::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
+void Module::OnCollision(Collider* c1, Collider* c2)
+{
+
+}
+
 bool Module::CleanUp()
 {
 	return true;

@@ -1,13 +1,6 @@
 #include "Application.h"
 
-#include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleTextures.h"
-#include "ModulePlayer.h"
-#include "ModuleScene.h"
-#include "ModuleRender.h"
-#include "ModuleAudio.h"
+
 
 Application::Application()
 {
@@ -21,6 +14,8 @@ Application::Application()
 	modules[4] = player = new ModulePlayer();
 	modules[5] = render = new ModuleRender();
 	modules[6] = audio = new ModuleAudio();
+	modules[7] = collisions = new ModuleCollisions();
+	modules[8] = particle = new ModuleParticles();
 }
 
 Application::~Application()

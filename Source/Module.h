@@ -2,6 +2,7 @@
 #define __MODULE_H__
 
 #include "Globals.h"
+#include "Collider.h"
 
 class Module
 {
@@ -23,6 +24,10 @@ public:
 
 	// Called at the end of each application loop
 	 virtual UpdateResult PostUpdate();
+
+	 // Called when two colliders are intersecting
+	// and the module is registered as the listener
+	 virtual void OnCollision(Collider* c1, Collider* c2);
 
 	// Called at the end of the application
 	virtual bool CleanUp();

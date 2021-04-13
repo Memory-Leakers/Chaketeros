@@ -3,8 +3,18 @@
 
 #include "Globals.h"
 
-// L2: DONE 0: Change the 'NUM_MODULES' value
-#define NUM_MODULES 7
+#include "Module.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleTextures.h"
+#include "ModulePlayer.h"
+#include "ModuleScene.h"
+#include "ModuleRender.h"
+#include "ModuleAudio.h"
+#include "ModuleCollisions.h"
+#include "ModuleParticles.h"
+
+#define NUM_MODULES 9
 
 class Module;
 class ModuleWindow;
@@ -14,6 +24,8 @@ class ModulePlayer;
 class ModuleScene;
 class ModuleRender;
 class ModuleAudio;
+class ModuleParticles;
+class ModuleCollisions;
 
 class Application
 {
@@ -49,6 +61,8 @@ public:
 	ModuleRender* render = nullptr;
 
 	ModuleAudio* audio = nullptr;
+	ModuleCollisions* collisions = nullptr;
+	ModuleParticles* particle = nullptr;
 };
 
 // Global var made extern for Application ---

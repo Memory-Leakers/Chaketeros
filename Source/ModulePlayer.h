@@ -29,6 +29,9 @@ public:
 	// Performs the render call of the player sprite
 	UpdateResult PostUpdate() override;
 
+	// Collision callback, called when the player intersects with another collider
+	void OnCollision(Collider* c1, Collider* c2) override;
+
 public:
 	// Position of the player in the map
 	iPoint position;
@@ -49,7 +52,6 @@ public:
 	Animation backwardAnim;
 
 	//Test Sound 
-	
 };
 
 #endif // __MODULEPLAYER_H__
