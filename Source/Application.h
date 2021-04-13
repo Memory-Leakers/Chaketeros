@@ -4,7 +4,7 @@
 #include "Globals.h"
 
 // L2: DONE 0: Change the 'NUM_MODULES' value
-#define NUM_MODULES 6
+#define NUM_MODULES 7
 
 class Module;
 class ModuleWindow;
@@ -13,6 +13,7 @@ class ModuleTextures;
 class ModulePlayer;
 class ModuleScene;
 class ModuleRender;
+class ModuleAudio;
 
 class Application
 {
@@ -46,6 +47,8 @@ public:
 	ModulePlayer* player = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleRender* render = nullptr;
+
+	ModuleAudio* audio = nullptr;
 };
 
 // Global var made extern for Application ---
