@@ -63,7 +63,7 @@ UpdateResult ModulePlayer::Update()
 
 	//------------------SFX TEST--------------------------
 	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
-		App->audio->PlaySound(App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/G_ExitPause.wav"), 0);
+		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 	}
 
 	// L4: TODO 4: Make Ryu walk backwards with the correct animations

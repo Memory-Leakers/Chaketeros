@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-#include "SDL/include/SDL_timer.h"
+#include "External/SDL/include/SDL_timer.h"
 
 Particle::Particle()
 {

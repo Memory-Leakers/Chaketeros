@@ -6,7 +6,7 @@
 
 #include "Application.h"
 
-#include "SDL/include/SDL_timer.h"
+#include "External/SDL/include/SDL_timer.h"
 
 #define MAX_ACTIVE_PARTICLES 100
 

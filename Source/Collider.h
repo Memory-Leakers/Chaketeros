@@ -1,7 +1,7 @@
 #ifndef __COLLIDER_H__
 #define __COLLIDER_H__
 
-#include "SDL/include/SDL_Rect.h"
+#include "External/SDL/include/SDL_Rect.h"
 
 class Module;
 
