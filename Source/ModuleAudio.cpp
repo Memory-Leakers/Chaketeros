@@ -42,14 +42,8 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 	LOG("Cleaning up Audio libraries");
 
 	// Free all music existing in the musics array
-	for (uint i = 0; i < MAX_MUSICS; ++i)
-	{
-		if (musics[i] != nullptr)
-		{
-			Mix_FreeMusic(musics[i]);
-			musics[i] = nullptr;
-		}
-	}
+	Mix_FreeMusic(music);
+
 
 
 	//Free all sounds existing on the sounds array
@@ -63,46 +57,95 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 	}
 
 	//Quit MIX
+	Mix_CloseAudio();
 	Mix_Quit();
+
 	return true;
 }
 
-Mix_Music* ModuleAudio::LoadMusic(const char* path) {	//Loads and returns a Mix_Music* from the given path
+bool ModuleAudio::PlayMusic(const char* path, float fade_time) {	//Loads and returns a Mix_Music* from the given path
 
-	Mix_Music *music = Mix_LoadMUS(path);
+	bool ret = true;
 
-	if (music == NULL) { LOG("Could not load music with path %s. Mix_LoadMUS: %s", path, Mix_GetError()) }
+	if (music != NULL)
+	{
+		if (fade_time > 0.0f)
+		{
+			// WARNING: This call blocks the execution until fade out is done
+			Mix_FadeOutMusic((int)(fade_time * 1000.0f));
+		}
+		else
+		{
+			Mix_HaltMusic();
+		}
+
+		Mix_FreeMusic(music);
+	}
+
+	music = Mix_LoadMUS(path);
+
+	if (music == NULL)
+	{
+		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
+		ret = false;
+	}
 	else
 	{
-		for (uint i = 0; i < MAX_MUSICS; ++i) {	//Puts the music pointer into the musics array
-			if (musics[i] == nullptr)
+		if (fade_time > 0.0f)
+		{
+			if (Mix_FadeInMusic(music, -1, (int)(fade_time * 1000.0f)) < 0)
 			{
-				musics[i] = music;
-				break;
+				LOG("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
+				ret = false;
+			}
+		}
+		else
+		{
+			if (Mix_PlayMusic(music, -1) < 0)
+			{
+				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
+				ret = false;
 			}
 		}
 	}
-	
 
-	return music;	//Returns the music 
+	LOG("Successfully playing %s", path);
+	return ret;
 }
 
-Mix_Chunk* ModuleAudio::LoadSound(const char* path) {	//Loads and returns a Mix_Chunk* from the given path
+uint ModuleAudio::LoadSound(const char* path)
+{
+	uint ret = 0;
+	Mix_Chunk* chunk = Mix_LoadWAV(path);
 
-	Mix_Chunk* sound = Mix_LoadWAV(path);
-
-	if (sound == NULL) { LOG("Could not load sound with path %s. Mix_LoadWAV: %s", path, Mix_GetError()) }
+	if (chunk == nullptr)
+	{
+		LOG("Cannot load wav %s. Mix_GetError(): %s", path, Mix_GetError());
+	}
 	else
 	{
-		for (uint i = 0; i < MAX_SOUNDS; ++i) {	//Puts the sound pointer into the sounds array
-			if (sounds[i] == nullptr)
+		for (ret = 0; ret < MAX_SOUNDS; ++ret)
+		{
+			if (sounds[ret] == nullptr)
 			{
-				sounds[i] = sound;
+				sounds[ret] = chunk;
 				break;
 			}
 		}
 	}
 
-	return sound;	//Returns the sound
+	return ret;
+}
 
+bool ModuleAudio::PlaySound(uint index, int repeat)
+{
+	bool ret = false;
+
+	if (sounds[index] != nullptr)
+	{
+		Mix_PlayChannel(-1, sounds[index], repeat);
+		ret = true;
+	}
+
+	return ret;
 }

@@ -4,8 +4,7 @@
 #include "Module.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
-
-#define MAX_MUSICS 8
+#define DEFAULT_MUSIC_FADE_TIME 2.0f
 #define MAX_SOUNDS 32
 
 class ModuleAudio : public Module {
@@ -22,13 +21,15 @@ public:
 
 	//Loads the introduced path into a Mix_Music pointer
 	//and locates it into de musics[MAX_MUSICS] array
-	Mix_Music* LoadMusic(const char* path); 
+	bool PlayMusic(const char* path, float fade_time); 
 
-	Mix_Chunk* LoadSound(const char* path);
+	uint LoadSound(const char* path);
+
+	bool PlaySound(uint index, int repeat);
 
 	//Array of total musics
 
-	Mix_Music* musics[MAX_MUSICS] = { nullptr };
+	Mix_Music* music;
 	Mix_Chunk* sounds[MAX_SOUNDS] = { nullptr };
 
 };

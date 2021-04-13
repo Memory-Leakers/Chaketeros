@@ -49,7 +49,7 @@ public:
 	Animation backwardAnim;
 
 	//Test Sound 
-	Mix_Chunk* testSound;
+	
 };
 
 #endif // __MODULEPLAYER_H__

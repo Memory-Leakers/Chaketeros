@@ -26,8 +26,7 @@ bool ModuleScene::Start()
 
 	//-----------------MUSIC TEST------------------------------------------------------------
 
-	Mix_Music *music = App->audio->LoadMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg");
-	Mix_PlayMusic(music, -1);
+	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
 
 	//---------------------------------------------------------------------------------------
