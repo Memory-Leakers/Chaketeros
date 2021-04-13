@@ -44,8 +44,6 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 	// Free all music existing in the musics array
 	Mix_FreeMusic(music);
 
-
-
 	//Free all sounds existing on the sounds array
 	for (uint i = 0; i < MAX_SOUNDS; ++i)
 	{
