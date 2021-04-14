@@ -1,12 +1,6 @@
 #include "ModulePlayer.h"
 
-#include "Application.h"
-#include "ModuleTextures.h"
-#include "ModuleInput.h"
-#include "ModuleRender.h"
-#include "ModuleAudio.h"
 
-#include "External/SDL/include/SDL_scancode.h"
 
 ModulePlayer::ModulePlayer()
 {

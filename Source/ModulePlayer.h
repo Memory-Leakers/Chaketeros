@@ -1,57 +1,60 @@
 #ifndef __MODULEPLAYER_H__
 #define __MODULEPLAYER_H__
 
-#include "Module.h"
-#include "Animation.h"
-#include "Point.h"
-#include "ModuleAudio.h"
+#include "ModuleEntity.h"
 
-struct SDL_Texture;
+#include "External/SDL/include/SDL_scancode.h"
 
-class ModulePlayer : public Module
-{
-public:
-	// Constructor
-	ModulePlayer();
+class ModulePlayer : public ModuleEntity {
 
-	// Destructor
-	~ModulePlayer();
+	private:
 
-	// Called when the module is activated
-	// Loads the necessary textures for the player
-	bool Start() override;
+	protected:
+		// Constructor
+		ModulePlayer();
 
-	// Called at the middle of the application loop
-	// Processes new input and handles player movement
-	UpdateResult Update() override;
+		// Destructor
+		~ModulePlayer();
 
-	// Called at the end of the application loop
-	// Performs the render call of the player sprite
-	UpdateResult PostUpdate() override;
+		// Called when the module is activated
+		// Loads the necessary textures for the player
+		bool Start() override;
 
-	// Collision callback, called when the player intersects with another collider
-	void OnCollision(Collider* c1, Collider* c2) override;
+		// Called at the middle of the application loop
+		// Processes new input and handles player movement
+		UpdateResult Update() override;
 
-public:
-	// Position of the player in the map
-	iPoint position;
+		// Called at the end of the application loop
+		// Performs the render call of the player sprite
+		UpdateResult PostUpdate() override;
 
-	// The speed in which we move the player (pixels per frame)
-	int speed = 1;
+		// Collision callback, called when the player intersects with another collider
+		void OnCollision(Collider* c1, Collider* c2) override;
 
-	// The player spritesheet loaded into an SDL_Texture
-	SDL_Texture* texture = nullptr;
+		// Position of the player in the map
+		iPoint position;
+
+		//Collider
+		c.type = PLAYER;
+
+		// The speed in which we move the player (pixels per frame)
+		int speed = 1;
+
+		// The player spritesheet loaded into an SDL_Texture
+		SDL_Texture* texture = nullptr;
 	
-	// The pointer to the current player animation
-	// It will be switched depending on the player's movement direction
-	Animation* currentAnimation = nullptr;
+		// The pointer to the current player animation
+		// It will be switched depending on the player's movement direction
+		Animation* currentAnimation = nullptr;
 
-	// A set of animations
-	Animation idleAnim;
-	Animation forwardAnim;
-	Animation backwardAnim;
+		// A set of animations
+		Animation idleAnim;
+		Animation forwardAnim;
+		Animation backwardAnim;
 
-	//Test Sound 
+		//Test Sound 
+
+	public:
 };
 
 #endif // __MODULEPLAYER_H__
