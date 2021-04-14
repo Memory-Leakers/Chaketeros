@@ -23,7 +23,6 @@ bool Collider::Intersects(const SDL_Rect& r) const
 		if (rect.y < r.y && r.y < (rect.y + rect.h) || 
 			(rect.y < (r.y + r.h) && (r.y + r.h) < (rect.y + rect.h)))
 		{
-			cout << 1 << endl;
 			return true;
 		}
 	}

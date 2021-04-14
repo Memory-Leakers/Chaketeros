@@ -15,7 +15,7 @@ struct Collider
 		ENEMY,
 		PLAYER_SHOT,
 		ENEMY_SHOT,
-
+		
 		MAX
 	};
 
@@ -32,7 +32,6 @@ struct Collider
 	Type type;
 	Module* listener = nullptr;
 };
-
 
 #endif // !__COLLIDER_H__
 
