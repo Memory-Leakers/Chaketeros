@@ -100,6 +100,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MemLeaks.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Point.h" />
   </ItemGroup>
@@ -118,6 +119,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
