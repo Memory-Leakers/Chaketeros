@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Obstacle::Obstacle(SDL_Rect r,int flag, bool destructible, Collider* collider) {
+Obstacle::Obstacle(SDL_Rect r,int flag, bool destructible, Collider* collider, SDL_Texture* texture) {
 	this->r = r;
 	this->flag = flag;
 	this->destructible = destructible;
@@ -26,6 +26,10 @@ void Obstacle::SetPos(int x, int y) {
 
 void Obstacle::SetFlag(int flag) {
 	this->flag = flag;
+}
+
+void Obstacle::SetTexture(const char* path) {
+	this->texture = App->textures->Load(path);
 }
 
 int Obstacle::getFlag() {

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Collider.h"
 #include "ModuleTextures.h"
+#include "Application.h"
 
 class Obstacle{
 
@@ -19,7 +20,7 @@ public:
 public:
 //methods
 	//Constructor
-	Obstacle(SDL_Rect r,int flag, bool destructible, Collider* collider);
+	Obstacle(SDL_Rect r,int flag, bool destructible, Collider* collider,SDL_Texture* texture);
 	//Copy constructor
 	Obstacle(const Obstacle& Obs);
 	//Destructor
@@ -27,6 +28,7 @@ public:
 
 	void SetPos(int x, int y);
 	void SetFlag(int flag);
+	void SetTexture(const char* path);
 	bool getDestructible();
 	bool getTrigger();
 	int getFlag();
