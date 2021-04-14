@@ -1,7 +1,6 @@
 #ifndef __OBSTACLE_H__
 #define __OBSTACLE_H__
 
-#include "Module.h"
 #include "Collider.h"
 #include "ModuleTextures.h"
 #include "Application.h"
@@ -15,7 +14,7 @@ private:
 	Collider* collider = nullptr;
 	SDL_Rect r;
 public:
-	SDL_Texture* texture;
+	SDL_Texture* texture = nullptr;
 	
 public:
 //methods
