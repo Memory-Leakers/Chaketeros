@@ -7,8 +7,6 @@ ModulePlayer::ModulePlayer()
 	position.x = 100;
 	position.y = 220;
 
-
-
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({0, 2, 16, 22});
@@ -40,22 +38,6 @@ ModulePlayer::ModulePlayer()
 	currentAnimation = &downAnim;
 
 
-	// idle animation (arcade sprite sheet)
-	//idleAnim.PushBack({7, 14, 60, 90});
-	//idleAnim.PushBack({95, 15, 60, 89});
-	//idleAnim.PushBack({184, 14, 60, 90});
-	//idleAnim.PushBack({276, 11, 60, 93});
-	//idleAnim.PushBack({366, 12, 60, 92});
-	//idleAnim.speed = 0.2f;
-
-	// walk forward animation (arcade sprite sheet)
-	//forwardAnim.PushBack({9, 136, 53, 83});
-	//forwardAnim.PushBack({78, 131, 60, 88});
-	//forwardAnim.PushBack({162, 128, 64, 92});
-	//forwardAnim.PushBack({259, 128, 63, 90});
-	//forwardAnim.PushBack({352, 128, 54, 91});
-	//forwardAnim.PushBack({432, 131, 50, 89});
-	//forwardAnim.speed = 0.1f;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -113,9 +95,6 @@ UpdateResult ModulePlayer::Update()
 	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
 		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 	}
-
-
-
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
