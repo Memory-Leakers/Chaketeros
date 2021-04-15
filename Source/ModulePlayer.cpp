@@ -52,7 +52,6 @@ UpdateResult ModulePlayer::Update()
 		position.x += speed;
 	}
 
-
 	//------------------SFX TEST--------------------------
 	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
 		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
