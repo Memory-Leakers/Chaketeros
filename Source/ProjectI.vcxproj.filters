@@ -40,9 +40,6 @@
     <ClInclude Include="ModuleTextures.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModulePlayer.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
@@ -67,8 +64,11 @@
     <ClInclude Include="ModuleParticles.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Source Files\Util</Filter>
+    <ClInclude Include="ModuleEnemy.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePlayer.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +96,6 @@
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePlayer.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
@@ -117,8 +114,11 @@
     <ClCompile Include="ModuleParticles.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>Source Files\Util</Filter>
+    <ClCompile Include="ModuleEnemy.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePlayer.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
