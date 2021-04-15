@@ -15,7 +15,7 @@ ModulePlayer::ModulePlayer()
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({ 33, 2, 16, 22 });
 	downAnim.speed = defaultSpeed;
-	
+
 	//Animation UP
 	upAnim.PushBack({ 65,2,16,22 });//IDLE
 	upAnim.PushBack({ 49,2,16,22 });
@@ -56,8 +56,6 @@ ModulePlayer::ModulePlayer()
 	//forwardAnim.PushBack({352, 128, 54, 91});
 	//forwardAnim.PushBack({432, 131, 50, 89});
 	//forwardAnim.speed = 0.1f;
-
-	// L4: TODO 4: Make Ryu walk backwards with the correct animations
 }
 
 ModulePlayer::~ModulePlayer()
@@ -115,9 +113,9 @@ UpdateResult ModulePlayer::Update()
 	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
 		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 	}
-	
 
-	
+
+
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -132,6 +130,5 @@ UpdateResult ModulePlayer::PostUpdate()
 
 void ModulePlayer::OnCollision(Collider* c1, Collider* c2)
 {
-	// L6: TODO 5: Detect collision with a wall. If so, destroy the player.
 
 }
