@@ -13,13 +13,15 @@
 #include "ModuleAudio.h"
 #include "ModuleCollisions.h"
 #include "ModuleParticles.h"
+#include "ModuleEnemy.h"
 
-#define NUM_MODULES 9
+#define NUM_MODULES 10
 
 class Module;
 class ModuleWindow;
 class ModuleInput;
 class ModuleTextures;
+class ModuleEnemy;
 class ModulePlayer;
 class ModuleScene;
 class ModuleRender;
@@ -55,6 +57,8 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
 	ModuleTextures* textures = nullptr;
+
+	ModuleEnemy* enemy = nullptr;
 
 	ModulePlayer* player = nullptr;
 	ModuleScene* scene = nullptr;

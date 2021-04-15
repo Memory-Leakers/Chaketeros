@@ -1,21 +1,33 @@
 #pragma once
 
-#include "ModuleEntity.h"
+#include "Animation.h"
+#include "Collider.h"
+#include "Point.h"
+#include "ModuleAudio.h"
+#include "Application.h"
 
 
-class ModuleEnemy : public ModuleEntity{
+#define defaultSpeed 0.1f
+
+struct SDL_Texture;
+
+class ModuleEnemy : public Module{
 
 	private:
 
 	protected:
+		
+
+
+	public:
 		ModuleEnemy();
 		~ModuleEnemy();
-		
-		bool Start() override;
-		UpdateResult Update() override;
-		UpdateResult PostUpdate() override;
 
-		void OnCollision(Collider* c1, Collider* c2) override;
+		bool Start() ;
+		UpdateResult Update() ;
+		UpdateResult PostUpdate() ;
+
+		void OnCollision(Collider* c1, Collider* c2) ;
 
 		iPoint position;
 		int speed = 1;
@@ -27,10 +39,6 @@ class ModuleEnemy : public ModuleEntity{
 		Animation idleAnim;
 		Animation forwardAnim;
 		Animation backwardAnim;
-
-
-	public:
-
 
 };
 

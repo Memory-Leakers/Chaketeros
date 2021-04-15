@@ -3,7 +3,7 @@
 
 #include "External/SDL/include/SDL_rect.h"
 
-#define MAX_FRAMES 25
+#define MAX_FRAMES 12
 
 class Animation
 {
@@ -11,6 +11,7 @@ public:
 	bool loop = true;
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
+	bool hasIdle = false;
 
 private:
 	int loopCount = 0;
@@ -31,8 +32,13 @@ public:
 
 	void Update()
 	{
-		current_frame += speed;
-		if (current_frame >= last_frame) current_frame = 0;
+		if (hasIdle) {
+			current_frame = 0;
+		}
+		else {
+			current_frame += speed;
+			if (current_frame >= last_frame) current_frame = 0;
+		}
 	}
 
 	SDL_Rect& GetCurrentFrame()

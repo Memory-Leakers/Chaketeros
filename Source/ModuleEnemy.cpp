@@ -4,9 +4,14 @@
 ModuleEnemy::ModuleEnemy() {};
 ModuleEnemy::~ModuleEnemy() {};
 
-bool ModuleEnemy::Start() { };
+bool ModuleEnemy::Start() {
+	return true;
+};
 
-UpdateResult ModuleEnemy::Update() {};
-UpdateResult ModuleEnemy::PostUpdate() {};
-
+UpdateResult ModuleEnemy::Update() {
+	return UpdateResult::UPDATE_CONTINUE;
+};
+UpdateResult ModuleEnemy::PostUpdate() {
+	return UpdateResult::UPDATE_CONTINUE;
+};
 void ModuleEnemy::OnCollision(Collider* c1, Collider* c2) {};
