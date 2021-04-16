@@ -36,7 +36,7 @@ public:
 	// Called when a particle collider hits another collider
 	void OnCollision(Collider* c1, Collider* c2) override;
 
-	void AddObstacle(const Obstacle& obstacle, iPoint position, Type type = Type::NONE);
+	void AddObstacle(Obstacle& obstacle, iPoint position, Type type = Type::NONE);
 
 private:
 

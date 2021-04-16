@@ -13,6 +13,7 @@ private:
 	Animation* currentAnim;
 
 public: 
+
 	YellowFlower();
 
 	void PostUpdate() override;

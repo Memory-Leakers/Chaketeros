@@ -2,11 +2,11 @@
 
 YellowFlower::YellowFlower() 
 {
-	this->SetRect({ 0,0,7,8 });
+	this->SetRect({ 0,0,32,32 });
 	this->SetCollider(new Collider(this->getRect(), Type::DESTRUCTABLE_WALL, App->obstacles));
 	this->SetType(Type::DESTRUCTABLE_WALL);
 	this->SetDestructible(true);
-	this->SetTexture("Game/Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
+	this->SetTexture("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
 
 	dieTexture = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 
@@ -26,6 +26,7 @@ YellowFlower::YellowFlower()
 
 void YellowFlower::PostUpdate()
 {
+	//LOG("FlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\n");
 	App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &(currentAnim->GetCurrentFrame()));
 }
 
