@@ -82,6 +82,9 @@
     <ClInclude Include="Obstacle.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="GlassCapsule.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -142,6 +145,9 @@
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassCapsule.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>

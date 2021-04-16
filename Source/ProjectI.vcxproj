@@ -88,6 +88,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="GlassCapsule.h" />
     <ClInclude Include="ModuleObstacle.h" />
     <ClInclude Include="YellowFlower.h" />
     <ClInclude Include="ModuleAudio.h" />
@@ -110,6 +111,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="GlassCapsule.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCollisions.cpp" />
