@@ -12,48 +12,48 @@ ModuleCollisions::ModuleCollisions()
 	for(uint i = 0; i < MAX_COLLIDERS; ++i)
 		colliders[i] = nullptr;
 
-	matrix[Collider::Type::WALL][Collider::Type::WALL] = false;
-	matrix[Collider::Type::WALL][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::WALL][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::WALL][Collider::Type::BOMB] = true;
-	matrix[Collider::Type::WALL][Collider::Type::EXPLOSION] = true;
-	matrix[Collider::Type::WALL][Collider::Type::DESTRUCTABLE_WALL] = true;
+	matrix[uint(Type::WALL)][uint(Type::WALL)] = false;
+	matrix[uint(Type::WALL)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::WALL)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::WALL)][uint(Type::BOMB)] = true;
+	matrix[uint(Type::WALL)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::WALL)][uint(Type::DESTRUCTABLE_WALL)] = true;
 
-	matrix[Collider::Type::PLAYER][Collider::Type::WALL] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::BOMB] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::EXPLOSION] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::DESTRUCTABLE_WALL] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::WALL)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::PLAYER)] = false;
+	matrix[uint(Type::PLAYER)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::BOMB)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::DESTRUCTABLE_WALL)] = true;
 
-	matrix[Collider::Type::ENEMY][Collider::Type::WALL] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::BOMB] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::EXPLOSION] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::DESTRUCTABLE_WALL] = true;
+	matrix[uint(Type::ENEMY)][uint(Type::WALL)] = true;
+	matrix[uint(Type::ENEMY)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::ENEMY)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::ENEMY)][uint(Type::BOMB)] = true;
+	matrix[uint(Type::ENEMY)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::ENEMY)][uint(Type::DESTRUCTABLE_WALL)] = true;
 
-	matrix[Collider::Type::BOMB][Collider::Type::WALL] = true;
-	matrix[Collider::Type::BOMB][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::BOMB][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::BOMB][Collider::Type::BOMB] = false;
-	matrix[Collider::Type::BOMB][Collider::Type::EXPLOSION] = false;
-	matrix[Collider::Type::BOMB][Collider::Type::DESTRUCTABLE_WALL] = true;
+	matrix[uint(Type::BOMB)][uint(Type::WALL)] = true;
+	matrix[uint(Type::BOMB)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::BOMB)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::BOMB)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::DESTRUCTABLE_WALL)] = true;
 
 
-	matrix[Collider::Type::EXPLOSION][Collider::Type::WALL] = true;
-	matrix[Collider::Type::EXPLOSION][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::EXPLOSION][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::EXPLOSION][Collider::Type::BOMB] = false;
-	matrix[Collider::Type::EXPLOSION][Collider::Type::EXPLOSION] = false;
-	matrix[Collider::Type::EXPLOSION][Collider::Type::DESTRUCTABLE_WALL] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::WALL)] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::DESTRUCTABLE_WALL)] = true;
 
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::WALL] = true;
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::BOMB] = true;
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::EXPLOSION] = true;
-	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::DESTRUCTABLE_WALL] = false;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::WALL)] = true;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::BOMB)] = true;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::DESTRUCTABLE_WALL)] = false;
 
 }
 
@@ -61,6 +61,11 @@ ModuleCollisions::ModuleCollisions()
 ModuleCollisions::~ModuleCollisions()
 {
 
+}
+
+bool ModuleCollisions::Start()
+{
+	return true;
 }
 
 UpdateResult ModuleCollisions::PreUpdate()
@@ -97,10 +102,10 @@ UpdateResult ModuleCollisions::PreUpdate()
 
 			if(c1->Intersects(c2->rect))
 			{
-				if(matrix[c1->type][c2->type] && c1->listener) 
+				if(matrix[uint(c1->type)][uint(c2->type)] && c1->listener)
 					c1->listener->OnCollision(c1, c2);
 				
-				if(matrix[c2->type][c1->type] && c2->listener) 
+				if(matrix[uint(c2->type)][uint(c1->type)] && c2->listener)
 					c2->listener->OnCollision(c2, c1);
 			}
 		}
@@ -135,25 +140,25 @@ void ModuleCollisions::DebugDraw()
 		
 		switch(colliders[i]->type)
 		{
-			case Collider::Type::NONE: // white
+			case Type::NONE: // white
 				App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
 			break;
-			case Collider::Type::WALL: // blue
+			case Type::WALL: // blue
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 255, alpha });
 			break;
-			case Collider::Type::PLAYER: // green
+			case Type::PLAYER: // green
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 0, alpha });
 			break;
-			case Collider::Type::ENEMY: // red
+			case Type::ENEMY: // red
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 0, alpha });
 			break;
-			case Collider::Type::BOMB: // yellow
+			case Type::BOMB: // yellow
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 0, alpha });
 			break;
-			case Collider::Type::EXPLOSION: // cyan
+			case Type::EXPLOSION: // cyan
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
 			break;
-			case Collider::Type::DESTRUCTABLE_WALL: // magenta
+			case Type::DESTRUCTABLE_WALL: // magenta
 				App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
 				break;
 		}
@@ -177,7 +182,7 @@ bool ModuleCollisions::CleanUp()
 	return true;
 }
 
-Collider* ModuleCollisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* listener)
+Collider* ModuleCollisions::AddCollider(SDL_Rect rect, Type type, Module* listener)
 {
 	Collider* ret = nullptr;
 

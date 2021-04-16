@@ -31,6 +31,10 @@ bool ModuleScene::Start()
 
 	//---------------------------------------------------------------------------------------
 
+	//Obstacle* test[10];
+	//test[0] = new YellowFlower();
+	//App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+
 	return ret;
 }
 

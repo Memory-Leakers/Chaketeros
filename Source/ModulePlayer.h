@@ -8,6 +8,7 @@
 #include "Application.h"
 
 #include "External/SDL/include/SDL_scancode.h"
+#include "External/SDL/include/SDL_render.h"
 
 //class ModuleEntity;
 
@@ -16,6 +17,7 @@ struct SDL_Texture;
 class ModulePlayer : public Module{
 
 	private:
+		bool isFlip = false;
 		
 	protected:
 		
@@ -39,13 +41,13 @@ class ModulePlayer : public Module{
 		// Performs the render call of the player sprite
 		UpdateResult PostUpdate() ;
 
-		// Collision callback, called when the player intersects with another collider
+		// Collision callback, called when the player intersects with another 
 		void OnCollision(Collider* c1, Collider* c2) ;
 
 		// Position of the player in the map
 		iPoint position;
 
-		//Collider
+		//
 		Collider* col = nullptr;
 
 		// The speed in which we move the player (pixels per frame)

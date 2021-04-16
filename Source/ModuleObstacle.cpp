@@ -1,21 +1,18 @@
 #include "ModuleObstacle.h"
-
-
 #include "Application.h"
 
 ModuleObstacle::ModuleObstacle() 
 {
-
 	for (int i = 0; i < MAX_OBSTACLES; i++) 
 	{
 		obstacles[i] = nullptr;
 	}
-
-
 }
 
 ModuleObstacle::~ModuleObstacle() 
-{}
+{
+	
+}
 
 bool ModuleObstacle::Start()
 {
@@ -24,14 +21,41 @@ bool ModuleObstacle::Start()
 	return true;
 }
 
+UpdateResult ModuleObstacle::Update()
+{
+	for (int i = 0; i < MAX_OBSTACLES; i++)
+	{
+		if(obstacles[i]!=nullptr)
+		{
+			obstacles[i]->Update();
+		}	
+	}
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
+UpdateResult ModuleObstacle::PostUpdate()
+{
+	for (int i = 0; i < MAX_OBSTACLES; i++)
+	{
+		if (obstacles[i] != nullptr)
+		{
+			obstacles[i]->PostUpdate();
+		}
+	}
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
 
 bool ModuleObstacle::CleanUp()
 {
 
 	for (int i = 0; i < MAX_OBSTACLES; i++) 
 	{
-		delete obstacles[i];
-		obstacles[i] = nullptr;
+		if(obstacles[i] != nullptr)
+		{
+			delete obstacles[i];
+			obstacles[i] = nullptr;
+		}		
 	}
 
 	return true;
@@ -45,7 +69,7 @@ void ModuleObstacle::OnCollision(Collider* c1, Collider* c2)
 		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
 		{
 			
-			if (obstacles[i]->getType() == Collider::Type::DESTRUCTABLE_WALL && c2->type == Collider::Type::EXPLOSION) 
+			if (obstacles[i]->getType() == Type::DESTRUCTABLE_WALL && c2->type == Type::EXPLOSION) 
 			{
 				obstacles[i]->Die();
 				delete obstacles[i];
@@ -58,26 +82,27 @@ void ModuleObstacle::OnCollision(Collider* c1, Collider* c2)
 
 }
 
-void ModuleObstacle::AddObstacle(const Obstacle& obstacle, iPoint position, Collider::Type type)
+
+void ModuleObstacle::AddObstacle(const Obstacle& obstacle, iPoint position, Type type)
 {
 	for (uint i = 0; i < MAX_OBSTACLES; ++i)
 	{
 		// Finding an empty slot for a new particle
 		if (obstacles[i] == nullptr)
 		{
-			Obstacle* p = new Obstacle(obstacle);
+			Obstacle* o = new Obstacle(obstacle);
 
-			p->SetPos(position); 						
-
+			o->SetPos(position); 						
 
 			// Adding the particle's collider
-			if (type != Collider::Type::NONE)
-				p->SetCollider(App->collisions->AddCollider(p->getRect(), type, this));
+			if (type != Type::NONE)
+			{
+				o->SetCollider(App->collisions->AddCollider(o->getRect(), type, this));
+			}	
 
-			obstacles[i] = p;
+			obstacles[i] = o;
 			break;
 		}
 	}
-
 }
 

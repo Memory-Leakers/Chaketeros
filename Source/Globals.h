@@ -26,8 +26,8 @@ enum class UpdateResult
 typedef unsigned int uint;
 
 // Window Configuration
-#define SCREEN_WIDTH 384
-#define SCREEN_HEIGHT 224
+#define SCREEN_WIDTH 256 //384
+#define SCREEN_HEIGHT 224 //224
 
 #define SCREEN_SIZE 3
 #define WIN_FULLSCREEN 0

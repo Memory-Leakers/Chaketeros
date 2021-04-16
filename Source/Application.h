@@ -14,8 +14,9 @@
 #include "ModuleCollisions.h"
 #include "ModuleParticles.h"
 #include "ModuleEnemy.h"
+#include "ModuleObstacle.h"
 
-#define NUM_MODULES 10
+#define NUM_MODULES 11
 
 class Module;
 class ModuleWindow;
@@ -28,6 +29,7 @@ class ModuleRender;
 class ModuleAudio;
 class ModuleParticles;
 class ModuleCollisions;
+class ModuleObstacle;
 
 class Application
 {
@@ -68,6 +70,7 @@ public:
 	ModuleCollisions* collisions = nullptr;
 	ModuleParticles* particle = nullptr;
 
+	ModuleObstacle* obstacles = nullptr;
 };
 
 // Global var made extern for Application ---

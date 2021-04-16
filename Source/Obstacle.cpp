@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Obstacle::Obstacle(SDL_Rect r, Collider::Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
+Obstacle::Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
 	this->r = r;
 	this->type = type;
 	this->destructible = destructible;
@@ -31,7 +31,7 @@ void Obstacle::SetPos(iPoint position) {
 };
 
 
-void Obstacle::SetType(Collider::Type type)
+void Obstacle::SetType(Type type)
 {
 	this->type = type;
 }
@@ -66,12 +66,22 @@ SDL_Rect Obstacle::getRect()
 	return this->r;
 }
 
-Collider::Type Obstacle::getType() {
+Type Obstacle::getType() {
 	return type;
 }
 
 bool Obstacle::getTrigger() {
 	return trigger;
+}
+
+void Obstacle::Update()
+{
+	cout << "Update Obs" << endl;
+}
+
+void Obstacle::PostUpdate()
+{
+	cout << "PostUpdate Obs" << endl;
 }
 
 void Obstacle::Die()

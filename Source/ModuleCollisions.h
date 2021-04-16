@@ -16,6 +16,7 @@ public:
 	// Destructor
 	~ModuleCollisions();
 
+	bool Start() override;
 	// Called at the beginning of the application loop
 	// Removes all colliders pending to delete
 	// Checks for new collisions and calls its listeners
@@ -33,7 +34,7 @@ public:
 	bool CleanUp();
 
 	// Adds a new collider to the list
-	Collider* AddCollider(SDL_Rect rect, Collider::Type type, Module* listener = nullptr);
+	Collider* AddCollider(SDL_Rect rect, Type type, Module* listener = nullptr);
 
 	// Draws all existing colliders with some transparency
 	void DebugDraw();
@@ -44,7 +45,7 @@ private:
 
 	// The collision matrix. Defines the interaction for two collider types
 	// If set two false, collider 1 will ignore collider 2
-	bool matrix[Collider::Type::MAX][Collider::Type::MAX];
+	bool matrix[uint(Type::MAX)][uint(Type::MAX)];
 
 	// Simple debugging flag to draw all colliders
 	bool debug = true;

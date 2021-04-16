@@ -5,20 +5,20 @@
 
 class Module;
 
+enum class Type
+{
+	NONE = -1,
+	WALL,
+	PLAYER,
+	ENEMY,
+	BOMB,
+	EXPLOSION,
+	DESTRUCTABLE_WALL,
+	MAX
+};
+
 struct Collider
 {
-	enum Type
-	{
-		NONE = -1,
-		WALL,
-		PLAYER,
-		ENEMY,
-		BOMB,
-		EXPLOSION,
-		DESTRUCTABLE_WALL,
-		MAX
-	};
-
 	// Methods
 	Collider(SDL_Rect rectangle, Type type, Module* listener = nullptr);
 

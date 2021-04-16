@@ -57,7 +57,7 @@ void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
 		// Always destroy particles that collide
-		if (particles[i] != nullptr && particles[i]->collider == c1)
+		if (particles[i] != nullptr && particles[i]->col == c1)
 		{
 			// L6: TODO 6: Every time a particle hits a wall it triggers an explosion particle
 
@@ -103,7 +103,7 @@ UpdateResult ModuleParticles::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void ModuleParticles::AddParticle(const Particle& particle, int x, int y, Collider::Type colliderType, uint delay)
+void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type Type, uint delay)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -116,10 +116,12 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, Collid
 			p->position.x = x;						// so when frameCount reaches 0 the particle will be activated
 			p->position.y = y;
 
-			// Adding the particle's collider
-			if (colliderType != Collider::Type::NONE)
-				p->collider = App->collisions->AddCollider(p->anim.GetCurrentFrame(), colliderType, this);
-
+			// Adding the particle's 
+			if (Type != Type::NONE)
+			{
+				p->col = App->collisions->AddCollider(p->anim.GetCurrentFrame(), Type, this);
+			}
+				
 			particles[i] = p;
 			break;
 		}

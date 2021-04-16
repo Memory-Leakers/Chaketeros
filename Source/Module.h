@@ -25,7 +25,7 @@ public:
 	// Called at the end of each application loop
 	 virtual UpdateResult PostUpdate();
 
-	 // Called when two colliders are intersecting
+	 // Called when two s are intersecting
 	// and the module is registered as the listener
 	 virtual void OnCollision(Collider* c1, Collider* c2);
 

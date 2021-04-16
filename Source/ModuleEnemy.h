@@ -16,8 +16,6 @@ class ModuleEnemy : public Module{
 	private:
 
 	protected:
-		
-
 
 	public:
 		ModuleEnemy();

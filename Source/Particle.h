@@ -5,7 +5,7 @@
 #include "Point.h"
 #include "Collider.h"
 
-struct Particle
+class Particle
 {
 public:
 	// Constructor
@@ -42,8 +42,8 @@ public:
 	// Defines the total amount of time during which the particle will be active (in miliseconds)
 	Uint32 lifetime = 0;
 
-	// The particle's collider
-	Collider* collider = nullptr;
+	// The particle's 
+	Collider* col  = nullptr;
 };
 
 #endif //__PARTICLE_H__

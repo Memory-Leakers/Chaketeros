@@ -1,7 +1,5 @@
 #include "Application.h"
 
-
-
 Application::Application()
 {
 	// The order in which the modules are added is very important.
@@ -16,7 +14,8 @@ Application::Application()
 	modules[6] = collisions = new ModuleCollisions();
 	modules[7] = particle = new ModuleParticles();
 	modules[8] = enemy = new ModuleEnemy();
-	modules[9] = render = new ModuleRender();
+	modules[9] = obstacles = new ModuleObstacle();
+	modules[10] = render = new ModuleRender();
 }
 
 Application::~Application()
