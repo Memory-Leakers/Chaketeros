@@ -69,6 +69,7 @@ public:
 	ModuleAudio* audio = nullptr;
 	ModuleCollisions* collisions = nullptr;
 	ModuleParticles* particle = nullptr;
+	ModuleObstacle* obstacles = nullptr;
 
 	ModuleObstacle* obstacles = nullptr;
 };

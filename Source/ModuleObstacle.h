@@ -5,7 +5,8 @@
 #include "Obstacle.h"
 #include "Collider.h"
 
-#define MAX_OBSTACLES 200
+
+#define MAX_OBSTACLES 2
 
 class Obstacle;
 
