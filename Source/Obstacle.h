@@ -30,6 +30,8 @@ public:
 	void SetType(Type type);
 	void SetTexture(const char* path);
 	void SetCollider(Collider* collider);
+	void SetRect(SDL_Rect r);
+	void SetDestructible(bool destructible);
 	bool getDestructible();
 	Collider* getCollider();
 	iPoint getPosition();

@@ -2,6 +2,11 @@
 #include <iostream>
 using namespace std;
 
+Obstacle::Obstacle()
+{
+
+
+}
 Obstacle::Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
 	this->r = r;
 	this->type = type;
@@ -25,6 +30,10 @@ Obstacle::~Obstacle() {
 
 }
 
+void Obstacle::SetDestructible(bool destructible)
+{
+	this->destructible = destructible;
+};
 void Obstacle::SetPos(iPoint position) {
 	r.x = position.x;
 	r.y = position.y;
@@ -44,6 +53,10 @@ void Obstacle::SetTexture(const char* path) {
 void Obstacle::SetCollider(Collider* collider)
 {
 	this->collider = collider;
+}
+
+void Obstacle::SetRect(SDL_Rect r) {
+	this->r = r;
 }
 
 
