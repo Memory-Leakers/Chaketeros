@@ -33,11 +33,11 @@ bool ModuleScene::Start()
 
 	//---------------------------------------------------------------------------------------
 
-	/*Obstacle* test[10];
-	test[0] = new YellowFlower();
-	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::DESTRUCTABLE_WALL);
-	*/
 	Obstacle* test[10];
+	test[1] = new YellowFlower();
+	App->obstacles->AddObstacle(*test[1], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+	
+
 	test[0] = new GlassCapsule();
 	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::WALL);
 	

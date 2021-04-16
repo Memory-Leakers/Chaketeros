@@ -10,7 +10,9 @@ private:
 	SDL_Texture *dieTexture;
 
 	Animation idle, die;
-	Animation *currentAnim;
+	Animation *currentAnim = nullptr;
+
+	bool isDead = false;
 
 public: 
 
