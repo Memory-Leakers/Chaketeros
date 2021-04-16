@@ -4,16 +4,10 @@ using namespace std;
 
 Obstacle::Obstacle()
 {
-<<<<<<< Updated upstream
 
 
 }
 Obstacle::Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
-=======
-}
-
-Obstacle::Obstacle(SDL_Rect r, Collider::Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
->>>>>>> Stashed changes
 	this->r = r;
 	this->type = type;
 	this->destructible = destructible;
@@ -61,19 +55,8 @@ void Obstacle::SetCollider(Collider* collider)
 	this->collider = collider;
 }
 
-<<<<<<< Updated upstream
 void Obstacle::SetRect(SDL_Rect r) {
 	this->r = r;
-=======
-void Obstacle::SetRect(SDL_Rect r)
-{
-	this->r = r;;
-}
-
-void Obstacle::SetDestructable(bool destructible)
-{
-	this->destructible = destructible;
->>>>>>> Stashed changes
 }
 
 
@@ -106,20 +89,12 @@ bool Obstacle::getTrigger() {
 
 void Obstacle::Update()
 {
-<<<<<<< Updated upstream
 	cout << "Update Obs" << endl;
-=======
-	return;
->>>>>>> Stashed changes
 }
 
 void Obstacle::PostUpdate()
 {
-<<<<<<< Updated upstream
 	cout << "PostUpdate Obs" << endl;
-=======
-	return;
->>>>>>> Stashed changes
 }
 
 void Obstacle::Die()

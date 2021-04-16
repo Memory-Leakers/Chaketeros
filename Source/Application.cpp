@@ -14,13 +14,8 @@ Application::Application()
 	modules[6] = collisions = new ModuleCollisions();
 	modules[7] = particle = new ModuleParticles();
 	modules[8] = enemy = new ModuleEnemy();
-<<<<<<< Updated upstream
 	modules[9] = obstacles = new ModuleObstacle();
 	modules[10] = render = new ModuleRender();
-=======
-	modules[9] = render = new ModuleRender();
-	modules[10] = obstacles = new ModuleObstacle();
->>>>>>> Stashed changes
 }
 
 Application::~Application()
