@@ -19,6 +19,10 @@ public:
 public:
 //methods
 	Obstacle();
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 	//Constructor
 	Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider,SDL_Texture* texture, bool trigger = false);
 	//Copy constructor
@@ -31,7 +35,11 @@ public:
 	void SetTexture(const char* path);
 	void SetCollider(Collider* collider);
 	void SetRect(SDL_Rect r);
+<<<<<<< Updated upstream
 	void SetDestructible(bool destructible);
+=======
+	void SetDestructable(bool destructible);
+>>>>>>> Stashed changes
 	bool getDestructible();
 	Collider* getCollider();
 	iPoint getPosition();
@@ -39,9 +47,15 @@ public:
 	Type getType();
 	bool getTrigger();
 
+<<<<<<< Updated upstream
 
 	virtual void Update();
 	virtual void PostUpdate();
+=======
+	virtual void Update();
+	virtual void PostUpdate();
+
+>>>>>>> Stashed changes
 	virtual void Die();
 
 };

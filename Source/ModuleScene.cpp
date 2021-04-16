@@ -4,6 +4,9 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
+#include "ModuleObstacle.h"
+#include "YellowFlower.h"
+#include "Obstacle.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
@@ -31,9 +34,17 @@ bool ModuleScene::Start()
 
 	//---------------------------------------------------------------------------------------
 
+<<<<<<< Updated upstream
 	//Obstacle* test[10];
 	//test[0] = new YellowFlower();
 	//App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+=======
+	//--------------------OBSTACLE TEST-----------------------------
+	
+	Obstacle* test[10];
+	test[0] = new YellowFlower();
+	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Collider::Type::DESTRUCTABLE_WALL);
+>>>>>>> Stashed changes
 
 	return ret;
 }
