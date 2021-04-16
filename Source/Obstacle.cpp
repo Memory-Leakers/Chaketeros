@@ -7,9 +7,8 @@ Obstacle::Obstacle()
 
 
 }
-Obstacle::Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
+Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture,bool trigger) {
 	this->r = r;
-	this->type = type;
 	this->destructible = destructible;
 	this->collider = collider;
 	this->texture = texture;
@@ -18,7 +17,6 @@ Obstacle::Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider,
 
 Obstacle::Obstacle(const Obstacle& Obs) {
 	this->r = Obs.r; 
-	this->type = Obs.type;
 	this->collider = Obs.collider; 
 	this->trigger = Obs.trigger;
 	this->texture = Obs.texture;
@@ -42,7 +40,7 @@ void Obstacle::SetPos(iPoint position) {
 
 void Obstacle::SetType(Type type)
 {
-	this->type = type;
+	this->collider->type = type;
 }
 
 
@@ -80,7 +78,7 @@ SDL_Rect Obstacle::getRect()
 }
 
 Type Obstacle::getType() {
-	return type;
+	return collider->type;
 }
 
 bool Obstacle::getTrigger() {

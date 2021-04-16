@@ -11,12 +11,13 @@ Application::Application()
 	modules[3] = scene = new ModuleScene();
 	modules[4] = player = new ModulePlayer();
 
-	modules[5] = render = new ModuleRender();
+	modules[5] = obstacles = new ModuleObstacle();
 	modules[6] = audio = new ModuleAudio();
 	modules[7] = collisions = new ModuleCollisions();
 	modules[8] = particle = new ModuleParticles();
 	modules[9] = enemy = new ModuleEnemyPool();
-	modules[10] = obstacles = new ModuleObstacle();
+
+	modules[10] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 Application::~Application()
