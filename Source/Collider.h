@@ -13,9 +13,9 @@ struct Collider
 		WALL,
 		PLAYER,
 		ENEMY,
-		PLAYER_SHOT,
-		ENEMY_SHOT,
-		
+		BOMB,
+		EXPLOSION,
+		DESTRUCTABLE_WALL,
 		MAX
 	};
 
