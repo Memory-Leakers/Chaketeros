@@ -9,13 +9,14 @@ Application::Application()
 	modules[1] = input = new ModuleInput();
 	modules[2] = textures = new ModuleTextures();
 	modules[3] = scene = new ModuleScene();
-	modules[4] = player = new ModulePlayer();
-	modules[5] = audio = new ModuleAudio();
-	modules[6] = collisions = new ModuleCollisions();
-	modules[7] = particle = new ModuleParticles();
-	modules[8] = enemy = new ModuleEnemy();
-	modules[9] = obstacles = new ModuleObstacle();
-	modules[10] = render = new ModuleRender();
+	modules[4] = obstacles = new ModuleObstacle();
+	modules[5] = player = new ModulePlayer();
+	modules[6] = audio = new ModuleAudio();
+	modules[7] = collisions = new ModuleCollisions();
+	modules[8] = particle = new ModuleParticles();
+	modules[9] = enemy = new ModuleEnemyPool();
+
+	modules[10] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 Application::~Application()
@@ -54,7 +55,7 @@ UpdateResult Application::Update()
 
 	return ret;
 }
- 
+
 bool Application::CleanUp()
 {
 	bool ret = true;

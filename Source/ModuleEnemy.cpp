@@ -1,8 +1,17 @@
 #include "ModuleEnemy.h"
 
 
-ModuleEnemy::ModuleEnemy() {};
-ModuleEnemy::~ModuleEnemy() {};
+/*
+ModuleEnemy::ModuleEnemy(int x, int y) {
+	position.x = x;
+	position.y = y;
+
+};
+*/
+ModuleEnemy::~ModuleEnemy() {
+	//Power-Up drop
+	powerUpDrop();
+};
 
 bool ModuleEnemy::Start() {
 	return true;
@@ -14,4 +23,4 @@ UpdateResult ModuleEnemy::Update() {
 UpdateResult ModuleEnemy::PostUpdate() {
 	return UpdateResult::UPDATE_CONTINUE;
 };
-void ModuleEnemy::OnCollision(Collider* c1, Collider* c2) {};
+void ModuleEnemy::OnCollision(Collider* otherCol) {};

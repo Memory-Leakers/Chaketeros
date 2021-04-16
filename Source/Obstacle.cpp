@@ -7,7 +7,9 @@ Obstacle::Obstacle()
 
 
 }
-Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger) {
+
+Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture,bool trigger) {
+
 	this->r = r;
 	this->destructible = destructible;
 	this->collider = collider;

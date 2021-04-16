@@ -83,24 +83,17 @@ void ModuleObstacle::OnCollision(Collider* c1, Collider* c2)
 }
 
 
-void ModuleObstacle::AddObstacle(const Obstacle& obstacle, iPoint position, Type type)
+void ModuleObstacle::AddObstacle(Obstacle& obstacle, iPoint position, Type type)
 {
 	for (uint i = 0; i < MAX_OBSTACLES; ++i)
 	{
 		// Finding an empty slot for a new particle
 		if (obstacles[i] == nullptr)
 		{
-			Obstacle* o = new Obstacle(obstacle);
 
-			o->SetPos(position); 						
+			obstacle.SetPos(position); 						
 
-			// Adding the particle's collider
-			if (type != Type::NONE)
-			{
-				o->SetCollider(App->collisions->AddCollider(o->getRect(), type, this));
-			}	
-
-			obstacles[i] = o;
+			obstacles[i] = &obstacle;
 			break;
 		}
 	}

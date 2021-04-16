@@ -85,6 +85,9 @@
     <ClInclude Include="GlassCapsule.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEnemyPool.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -149,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="GlassCapsule.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEnemyPool.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

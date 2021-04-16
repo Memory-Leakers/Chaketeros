@@ -3,17 +3,24 @@
 
 #include "Obstacle.h"
 
-class YellowFlower : Obstacle 
+class YellowFlower : public Obstacle 
 {
 private:
 
-	Animation idle, die;
+	SDL_Texture *dieTexture;
 
+	Animation idle, die;
+	Animation *currentAnim = nullptr;
+
+	bool isDead = false;
 
 public: 
-	YellowFlower(SDL_Rect r, int flag, bool destructible, Collider* collider, SDL_Texture* texture);
+
+	YellowFlower();
 
 	void Die() override;
+
+	void PostUpdate() override;
 
 };
 
