@@ -73,7 +73,15 @@
     <ClInclude Include="ModuleEnemy.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="YellowFlower.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleObstacle.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -125,6 +133,12 @@
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEnemy.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="YellowFlower.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleObstacle.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">

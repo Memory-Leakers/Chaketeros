@@ -8,7 +8,7 @@
 class Obstacle{
 
 private:
-	int flag;
+	Collider::Type type = Collider::Type::NONE;
 	bool trigger;
 	bool destructible;
 	Collider* collider = nullptr;
@@ -19,18 +19,25 @@ public:
 public:
 //methods
 	//Constructor
-	Obstacle(SDL_Rect r,int flag, bool destructible, Collider* collider,SDL_Texture* texture);
+	Obstacle(SDL_Rect r, Collider::Type type, bool destructible, Collider* collider,SDL_Texture* texture, bool trigger = false);
 	//Copy constructor
 	Obstacle(const Obstacle& Obs);
 	//Destructor
 	~Obstacle();
 
-	void SetPos(int x, int y);
-	void SetFlag(int flag);
+	void SetPos(iPoint position);
+	void SetType(Collider::Type type);
 	void SetTexture(const char* path);
+	void SetCollider(Collider* collider);
 	bool getDestructible();
+	Collider* getCollider();
+	iPoint getPosition();
+	SDL_Rect getRect();
+	Collider::Type getType();
 	bool getTrigger();
-	int getFlag();
+
+	virtual void Die();
+
 };
 #endif // !__OBSTACLE_H__
 

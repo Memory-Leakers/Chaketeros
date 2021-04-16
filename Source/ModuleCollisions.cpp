@@ -15,32 +15,46 @@ ModuleCollisions::ModuleCollisions()
 	matrix[Collider::Type::WALL][Collider::Type::WALL] = false;
 	matrix[Collider::Type::WALL][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::WALL][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::WALL][Collider::Type::PLAYER_SHOT] = true;
-	matrix[Collider::Type::WALL][Collider::Type::ENEMY_SHOT] = true;
+	matrix[Collider::Type::WALL][Collider::Type::BOMB] = true;
+	matrix[Collider::Type::WALL][Collider::Type::EXPLOSION] = true;
+	matrix[Collider::Type::WALL][Collider::Type::DESTRUCTABLE_WALL] = true;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::WALL] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY_SHOT] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::BOMB] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::EXPLOSION] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::DESTRUCTABLE_WALL] = true;
 
 	matrix[Collider::Type::ENEMY][Collider::Type::WALL] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER_SHOT] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY_SHOT] = false;
+	matrix[Collider::Type::ENEMY][Collider::Type::BOMB] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::EXPLOSION] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::DESTRUCTABLE_WALL] = true;
 
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::WALL] = true;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::PLAYER_SHOT][Collider::Type::ENEMY_SHOT] = false;
+	matrix[Collider::Type::BOMB][Collider::Type::WALL] = true;
+	matrix[Collider::Type::BOMB][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::BOMB][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::BOMB][Collider::Type::BOMB] = false;
+	matrix[Collider::Type::BOMB][Collider::Type::EXPLOSION] = false;
+	matrix[Collider::Type::BOMB][Collider::Type::DESTRUCTABLE_WALL] = true;
 
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::WALL] = true;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::PLAYER_SHOT] = false;
-	matrix[Collider::Type::ENEMY_SHOT][Collider::Type::ENEMY_SHOT] = false;
+
+	matrix[Collider::Type::EXPLOSION][Collider::Type::WALL] = true;
+	matrix[Collider::Type::EXPLOSION][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::EXPLOSION][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::EXPLOSION][Collider::Type::BOMB] = false;
+	matrix[Collider::Type::EXPLOSION][Collider::Type::EXPLOSION] = false;
+	matrix[Collider::Type::EXPLOSION][Collider::Type::DESTRUCTABLE_WALL] = true;
+
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::WALL] = true;
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::BOMB] = true;
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::EXPLOSION] = true;
+	matrix[Collider::Type::DESTRUCTABLE_WALL][Collider::Type::DESTRUCTABLE_WALL] = false;
+
 }
 
 // Destructor
@@ -133,12 +147,15 @@ void ModuleCollisions::DebugDraw()
 			case Collider::Type::ENEMY: // red
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 0, alpha });
 			break;
-			case Collider::Type::PLAYER_SHOT: // yellow
+			case Collider::Type::BOMB: // yellow
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 0, alpha });
 			break;
-			case Collider::Type::ENEMY_SHOT: // magenta
+			case Collider::Type::EXPLOSION: // cyan
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
 			break;
+			case Collider::Type::DESTRUCTABLE_WALL: // magenta
+				App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
+				break;
 		}
 	}
 }
