@@ -13,7 +13,7 @@
 #include "ModuleAudio.h"
 #include "ModuleCollisions.h"
 #include "ModuleParticles.h"
-#include "ModuleEnemy.h"
+#include "ModuleEnemyPool.h"
 #include "ModuleObstacle.h"
 
 #define NUM_MODULES 11
@@ -22,7 +22,7 @@ class Module;
 class ModuleWindow;
 class ModuleInput;
 class ModuleTextures;
-class ModuleEnemy;
+class ModuleEnemyPool;
 class ModulePlayer;
 class ModuleScene;
 class ModuleRender;
@@ -60,7 +60,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleTextures* textures = nullptr;
 
-	ModuleEnemy* enemy = nullptr;
+	ModuleEnemyPool* enemy = nullptr;
 
 	ModulePlayer* player = nullptr;
 	ModuleScene* scene = nullptr;

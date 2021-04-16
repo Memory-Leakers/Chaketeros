@@ -12,15 +12,28 @@
 
 //class ModuleEntity;
 
+#define defaultPlayerSpeed 0.1f //Animation only
 struct SDL_Texture;
 
 class ModulePlayer : public Module{
 
 	private:
+		int lives = 2;
+		int score = 0;
+		int maxBombs = 1;
+		bool pUpBomb = false;
+		bool pUpFlame = false;
+		bool pUpKick = false;
+		bool pUpVest = false;
+
+		SDL_Rect bounds;
+
 		bool isFlip = false;
-		
+
+		void dropBomb() {
+
+		};
 	protected:
-		
 
 	public:
 		// Constructor
@@ -41,7 +54,7 @@ class ModulePlayer : public Module{
 		// Performs the render call of the player sprite
 		UpdateResult PostUpdate() ;
 
-		// Collision callback, called when the player intersects with another 
+		// Collision callback, called when the player intersects with another
 		void OnCollision(Collider* c1, Collider* c2) ;
 
 		// Position of the player in the map
@@ -51,7 +64,7 @@ class ModulePlayer : public Module{
 		Collider* col = nullptr;
 
 		// The speed in which we move the player (pixels per frame)
-		int speed = 1;
+		int speed = 1; //Movement only
 
 		// The player spritesheet loaded into an SDL_Texture
 		SDL_Texture* texture = nullptr;
@@ -67,7 +80,6 @@ class ModulePlayer : public Module{
 		Animation leftAnim;
 		Animation rightAnim;
 
-		//Test Sound 
+		//Test Sound
 };
-
 #endif // __MODULEPLAYER_H__
