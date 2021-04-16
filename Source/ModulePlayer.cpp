@@ -139,7 +139,7 @@ UpdateResult ModulePlayer::PostUpdate()
 	*/
 
 	App->render->DrawTexture(texture, position.x, position.y - rect.h, &rect);
-		
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
