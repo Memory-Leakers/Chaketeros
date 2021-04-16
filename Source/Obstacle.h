@@ -8,7 +8,6 @@
 struct Obstacle{
 
 private:
-	Type type = Type::NONE;
 	bool trigger;
 	bool destructible;
 	Collider* collider = nullptr;
@@ -20,7 +19,7 @@ public:
 //methods
 	Obstacle();
 	//Constructor
-	Obstacle(SDL_Rect r, Type type, bool destructible, Collider* collider,SDL_Texture* texture, bool trigger = false);
+	Obstacle(SDL_Rect r, bool destructible, Collider* collider,SDL_Texture* texture, bool trigger = false);
 	//Copy constructor
 	Obstacle(const Obstacle& Obs);
 	//Destructor
