@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
+#include "YellowFlower.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
@@ -31,9 +32,9 @@ bool ModuleScene::Start()
 
 	//---------------------------------------------------------------------------------------
 
-	//Obstacle* test[10];
-	//test[0] = new YellowFlower();
-	//App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+	Obstacle* test[10];
+	test[0] = new YellowFlower();
+	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::DESTRUCTABLE_WALL);
 
 	return ret;
 }
