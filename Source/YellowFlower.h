@@ -7,18 +7,18 @@ class YellowFlower : public Obstacle
 {
 private:
 
-	SDL_Texture* dieTexture;
+	SDL_Texture *dieTexture;
 
 	Animation idle, die;
-	Animation* currentAnim;
+	Animation *currentAnim;
 
 public: 
 
 	YellowFlower();
 
-	void PostUpdate() override;
-
 	void Die() override;
+
+	void PostUpdate() override;
 
 };
 

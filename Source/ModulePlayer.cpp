@@ -7,38 +7,42 @@ ModulePlayer::ModulePlayer()
 {
 	position.x = 100;
 	position.y = 220;
+	//Rect for col
+	bounds.x = 0;
+	bounds.y = 0;
+	bounds.w = 32;
+	bounds.h = 32;
+
 
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({0, 2, 16, 22});
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({ 33, 2, 16, 22 });
-	downAnim.speed = defaultSpeed;
+	downAnim.speed = defaultPlayerSpeed;
 
 	//Animation UP
 	upAnim.PushBack({ 65,2,16,22 });//IDLE
 	upAnim.PushBack({ 49,2,16,22 });
 	upAnim.PushBack({ 65,2,16,22 });//IDLE
 	upAnim.PushBack({ 81,2,16,22 });
-	upAnim.speed = defaultSpeed;
+	upAnim.speed = defaultPlayerSpeed;
 
 	//Animation RIGHT
 	rightAnim.PushBack({ 17,26,16,22 });//IDLE
 	rightAnim.PushBack({ 0,26,16,22 });
 	rightAnim.PushBack({ 17,26,16,22 });//IDLE
 	rightAnim.PushBack({ 33,26,16,22 });
-	rightAnim.speed = defaultSpeed;
+	rightAnim.speed = defaultPlayerSpeed;
 
 	//Animation LEFT
 	leftAnim.PushBack({ 17,26,16,22 });//IDLE
 	leftAnim.PushBack({ 0,26,16,22 });
 	leftAnim.PushBack({ 17,26,16,22 });//IDLE
 	leftAnim.PushBack({ 33,26,16,22 });
-	leftAnim.speed = defaultSpeed;
+	leftAnim.speed = defaultPlayerSpeed;
 
 	currentAnimation = &downAnim;
-
-
 }
 
 ModulePlayer::~ModulePlayer()
@@ -59,6 +63,7 @@ bool ModulePlayer::Start()
 
 UpdateResult ModulePlayer::Update()
 {
+	// Player Movement keys
 	// Reset the currentAnimation back to idle before updating the logic
 	currentAnimation->hasIdle = false;
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
@@ -125,11 +130,11 @@ UpdateResult ModulePlayer::PostUpdate()
 		//cout << "\nx1: " << tempRect.x << "\ty1: " << tempRect.y << "\tw1: " << tempRect.w << "\th1: " << tempRect.h;
 
 		SDL_RenderCopyEx(App->render->renderer, texture, &rect, &tempRect, 180, &center, flip);
-		
+
 		//tempRect.x +=5;
 		//tempRect.y = 100;
 		//cout << "\nx2: " << tempRect.x << "\ty2: " << tempRect.y << "\tw2: " << tempRect.w << "\th2: " << tempRect.h;
-		
+
 		//App->render->DrawTexture(texture, position.x, position.y - rect.h, &tempRect);
 	}
 	else
