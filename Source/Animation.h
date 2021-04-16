@@ -11,7 +11,7 @@ public:
 	bool loop = true;
 	float speed = 1.0f;
 	SDL_Rect frames[MAX_FRAMES];
-	bool hasIdle = false;
+	bool hasIdle = true;
 
 private:
 	int loopCount = 0;
