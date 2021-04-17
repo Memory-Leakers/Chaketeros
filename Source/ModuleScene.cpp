@@ -27,6 +27,10 @@ bool ModuleScene::Start()
 
 	bool ret = true;
 
+	textmap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
+	textUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
+
+
 	//-----------------MUSIC TEST------------------------------------------------------------
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
@@ -50,11 +54,16 @@ bool ModuleScene::Start()
 
 UpdateResult ModuleScene::Update()
 {
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 // Update: draw background
 UpdateResult ModuleScene::PostUpdate()
 {
+	SDL_Rect rectUI =  { 0,0,256,23 };
+	
+	App->render->DrawTexture(textmap, 0, 20, nullptr);
+	App->render->DrawTexture(textUI, 0, 0, &rectUI);
 	return UpdateResult::UPDATE_CONTINUE;
 }

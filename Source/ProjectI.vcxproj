@@ -91,6 +91,7 @@
     <ClInclude Include="GlassCapsule.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
     <ClInclude Include="ModuleObstacle.h" />
+    <ClInclude Include="Stone.h" />
     <ClInclude Include="YellowFlower.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCollisions.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Stone.cpp" />
     <ClCompile Include="YellowFlower.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

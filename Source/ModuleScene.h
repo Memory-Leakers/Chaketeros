@@ -28,6 +28,11 @@ public:
 	UpdateResult PostUpdate();
 
 public:
+	//textura mapa
+	SDL_Texture* textmap;
+	//Textura UI 
+	SDL_Texture* textUI;
+	
 	
 };
 
