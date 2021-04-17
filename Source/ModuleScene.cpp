@@ -6,6 +6,7 @@
 #include "ModuleAudio.h"
 #include "YellowFlower.h"
 #include "GlassCapsule.h"
+#include "Stone.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
@@ -40,6 +41,9 @@ bool ModuleScene::Start()
 
 	test[0] = new GlassCapsule();
 	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::WALL);
+
+	test[2] = new Stone();
+	App->obstacles->AddObstacle(*test[2], { 0, 0 }, Type::WALL);
 	
 	return ret;
 }

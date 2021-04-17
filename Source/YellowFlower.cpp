@@ -3,12 +3,13 @@
 YellowFlower::YellowFlower() 
 {
 
-	this->SetRect({ 0,0,17,17 });
+	this->SetRect({ 0,0,1,1 });
 	this->SetCollider(new Collider(this->getRect(), Type::DESTRUCTABLE_WALL, App->obstacles));
 	this->SetType(Type::DESTRUCTABLE_WALL);
 	this->SetDestructible(true);
 	this->SetTexture("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
 	dieTexture = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
+
 
 	idle.PushBack({ 9,8,16,16 });
 
