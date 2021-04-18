@@ -114,6 +114,38 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 	return ret;
 }
 
+bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, float speed)
+{
+	bool ret = true;
+
+	SDL_Rect rect = {
+		(int)(camera.x * speed) + pos.x * SCREEN_SIZE,
+		(int)(camera.y * speed) + pos.y * SCREEN_SIZE,
+		0, 0 };
+
+	if (section != nullptr)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		// Collect the texture size into rect.w and rect.h variables
+		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+	}
+
+	rect.w *= SCREEN_SIZE;
+	rect.h *= SCREEN_SIZE;
+
+	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
 bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed)
 {
 	bool ret = true;

@@ -49,19 +49,29 @@ public:
 	// Param delay		- Delay time from the moment the function is called until the particle is displayed in screen
 	void AddParticle(const Particle& particle, int x, int y, Type Type = Type::NONE, uint delay = 0);
 
+	// Creates a new particle and adds it to the array
+	// Param particle	- A template particle from which the new particle will be created
+	// Param pos		- Position x,y in the screen (upper left axis)
+	// Param delay		- Delay time from the moment the function is called until the particle is displayed in screen
+	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, uint delay = 0);
+
+
 private:
 	// Particles spritesheet loaded into an SDL Texture
-	SDL_Texture* texture = nullptr;
+	SDL_Texture* explosionTexture = nullptr;
 
 	// An array to store and handle all the particles
 	Particle* particles[MAX_ACTIVE_PARTICLES] = { nullptr };
 
 public:
-	//Template particle for an explosion
-	Particle explosion;
+	//Template particle for an center of explosion
+	Particle explosionCenter;
 
-	//Template particle for a laser
-	Particle laser;
+	//Template particle for an middle of explosion
+	Particle explosionMiddle;
+
+	//Template particle for an end of explosion
+	Particle explosionEnd;
 };
 
 #endif // __MODULEPARTICLES_H__

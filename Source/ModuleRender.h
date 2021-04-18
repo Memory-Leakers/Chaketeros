@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "External/SDL/include/SDL_Rect.h"
+#include "Point.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -43,6 +44,16 @@ public:
 	// Param section	- The portion of the texture we want to copy. nullptr for the entire texture
 	// Param speed		- The amount of effect that is applied to the sprite depending on the camera
 	bool DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section = nullptr, float speed = 1.0f);
+
+	/// <summary>
+/// Draws a texture to the screen
+/// </summary>
+/// <param name="texture">A valid SDL Texture, validation checks are not performed</param>
+/// <param name="pos">Position x,y in the screen (upper left axis)</param>
+/// <param name="section">The portion of the texture we want to copy. nullptr for the entire texture</param>
+/// <param name="speed">The amount of effect that is applied to the sprite depending on the camera</param>
+/// <returns></returns>
+	bool DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section = nullptr, float speed = 1.0f);
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 

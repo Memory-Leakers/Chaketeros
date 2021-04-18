@@ -89,12 +89,12 @@ bool Obstacle::getTrigger() {
 
 void Obstacle::Update()
 {
-	cout << "Update Obs" << endl;
+	//cout << "Update Obs" << endl;
 }
 
 void Obstacle::PostUpdate()
 {
-	cout << "PostUpdate Obs" << endl;
+	//cout << "PostUpdate Obs" << endl;
 }
 
 void Obstacle::Die()

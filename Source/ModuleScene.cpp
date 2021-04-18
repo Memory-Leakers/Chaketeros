@@ -7,8 +7,14 @@
 #include "YellowFlower.h"
 #include "GlassCapsule.h"
 #include "Stone.h"
+#include "Bomb.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
+
+#define TESTNUM 10
+
+Obstacle* test[TESTNUM];
+
 
 ModuleScene::ModuleScene()
 {
@@ -18,6 +24,27 @@ ModuleScene::ModuleScene()
 ModuleScene::~ModuleScene()
 {
 
+}
+
+bool ModuleScene::CleanUp()
+{
+	LOG("Freeing all test");
+
+	for (uint i = 0; i < TESTNUM; ++i)
+	{
+		if (test[i] != nullptr)
+		{
+			//BUG
+			//BUG
+			//BUG
+			//BUG
+			//delete test[i];
+			//delete test[i];
+			test[i] = nullptr;
+		}
+	}
+
+	return true;
 }
 
 // Load assets
@@ -47,7 +74,10 @@ bool ModuleScene::Start()
 	App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::WALL);
 
 	test[2] = new Stone();
-	App->obstacles->AddObstacle(*test[2], { 0, 0 }, Type::WALL);
+	App->obstacles->AddObstacle(*test[2], { 100, 50 }, Type::WALL);
+
+	test[3] = new Bomb({ 50, 50 });
+	App->obstacles->AddObstacle(*test[3], { 50, 50 }, Type::BOMB); 
 	
 	return ret;
 }

@@ -91,6 +91,9 @@
     <ClInclude Include="Stone.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -160,6 +163,9 @@
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Stone.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>

@@ -14,23 +14,29 @@ ModuleParticles::~ModuleParticles()
 bool ModuleParticles::Start()
 {
 	LOG("Loading particles");
-	//texture = App->textures->Load("Assets/particles.png");
 
-	//// Explosion particle
-	//explosion.anim.PushBack({274, 296, 33, 30});
-	//explosion.anim.PushBack({313, 296, 33, 30});
-	//explosion.anim.PushBack({346, 296, 33, 30});
-	//explosion.anim.PushBack({382, 296, 33, 30});
-	//explosion.anim.PushBack({419, 296, 33, 30});
-	//explosion.anim.PushBack({457, 296, 33, 30});
-	//explosion.anim.loop = false;
-	//explosion.anim.speed = 0.3f;
+	explosionTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 
-	//laser.anim.PushBack({ 232, 103, 16, 12 });
-	//laser.anim.PushBack({ 249, 103, 16, 12 });
-	//laser.speed.x = 5;
-	//laser.lifetime = 180;
-	//laser.anim.speed = 0.2f;
+	//// ExplosionCenter particle
+	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
+	explosionCenter.anim.loop = false;
+	explosionCenter.anim.speed = 0.02f;
+
+	//// ExplosionCenter particle
+	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
+	explosionMiddle.anim.loop = false;
+	explosionMiddle.anim.speed = 0.02f;
+
+	//// ExplosionCenter particle
+	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
+	explosionEnd.anim.loop = false;
+	explosionEnd.anim.speed = 0.02f;
 
 	return true;
 }
@@ -96,7 +102,7 @@ UpdateResult ModuleParticles::PostUpdate()
 
 		if (particle != nullptr && particle->isAlive)
 		{
-			App->render->DrawTexture(texture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
+			App->render->DrawTexture(explosionTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
 		}
 	}
 
@@ -122,6 +128,31 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type
 				p->col = App->collisions->AddCollider(p->anim.GetCurrentFrame(), Type, this);
 			}
 				
+			particles[i] = p;
+			break;
+		}
+	}
+}
+
+void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, uint delay)
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		// Finding an empty slot for a new particle
+		if (particles[i] == nullptr)
+		{
+			Particle* p = new Particle(particle);
+
+			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
+			p->position.x = pos.x;					// so when frameCount reaches 0 the particle will be activated
+			p->position.y = pos.y;
+
+			// Adding the particle's 
+			if (Type != Type::NONE)
+			{
+				p->col = App->collisions->AddCollider(p->anim.GetCurrentFrame(), Type, this);
+			}
+
 			particles[i] = p;
 			break;
 		}

@@ -21,11 +21,13 @@ public:
 
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
-	UpdateResult Update();
+	UpdateResult Update() override;
 
 	// Called at the end of the application loop.
 	// Performs the render call of all the parts of the scene's background
-	UpdateResult PostUpdate();
+	UpdateResult PostUpdate() override;
+
+	bool CleanUp() override;
 
 public:
 	//textura mapa
