@@ -4,7 +4,7 @@ YellowFlower::YellowFlower()
 {
 
 	this->SetRect({ 0,0,1,1 });
-	this->SetCollider(new Collider(this->getRect(), Type::DESTRUCTABLE_WALL, App->obstacles));
+	this->SetCollider(App->collisions->AddCollider(this->getRect(), Type::DESTRUCTABLE_WALL, App->obstacles));
 	this->SetType(Type::DESTRUCTABLE_WALL);
 	this->SetDestructible(true);
 	this->SetTexture("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");

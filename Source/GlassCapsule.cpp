@@ -9,7 +9,7 @@ GlassCapsule::GlassCapsule()
     this->SetType(Type::WALL);
     this->SetDestructible(false);
     */
-    Obstacle::Obstacle({ 0,0,16,16 }, false, new Collider(getRect(), Type::WALL, App->obstacles),texture);
+    Obstacle::Obstacle({ 0,0,16,16 }, false, App->collisions->AddCollider(getRect(), Type::WALL, App->obstacles), texture);
     idleAnim.hasIdle = false;
 
     idleAnim.PushBack({ 46,112,48,64 });
