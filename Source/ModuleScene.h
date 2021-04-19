@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "Animation.h"
 
+
+
 struct SDL_Texture;
 
 class ModuleScene : public Module
@@ -34,8 +36,7 @@ public:
 	SDL_Texture* textmap;
 	//Textura UI 
 	SDL_Texture* textUI;
-	
-	
+
 };
 
 #endif // __MODULESCENE_H__
