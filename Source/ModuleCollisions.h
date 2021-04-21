@@ -39,6 +39,8 @@ public:
 	// Draws all existing colliders with some transparency
 	void DebugDraw();
 
+	void CleanUpScene();
+
 private:
 	// All existing colliders in the scene
 	Collider* colliders[MAX_COLLIDERS] = { nullptr };

@@ -40,6 +40,8 @@ public:
 	// Destroys all active particles left in the array
 	bool CleanUp() override;
 
+	void CleanUpScene();	//Our CleanUp to destroy a scene
+
 	// Called when a particle  hits another 
 	void OnCollision(Collider* c1, Collider* c2) override;
 

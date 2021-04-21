@@ -55,6 +55,21 @@ bool ModuleTextures::CleanUp()
 	return true;
 }
 
+void ModuleTextures::CleanUpScene()
+{
+	LOG("Freeing textures and Image library on Scene");
+
+	// Free all textures sill existing in the textures array
+	for (uint i = 0; i < MAX_TEXTURES; ++i)
+	{
+		if (textures[i] != nullptr)
+		{
+			SDL_DestroyTexture(textures[i]);
+			textures[i] = nullptr;
+		}
+	}
+}
+
 SDL_Texture* const ModuleTextures::Load(const char* path)
 {
 	SDL_Texture* texture = nullptr;
@@ -89,3 +104,5 @@ SDL_Texture* const ModuleTextures::Load(const char* path)
 
 	return texture;
 }
+
+

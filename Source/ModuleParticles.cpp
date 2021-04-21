@@ -65,6 +65,21 @@ bool ModuleParticles::CleanUp()
 	return true;
 }
 
+void ModuleParticles::CleanUpScene()
+{
+	LOG("Unloading particles");
+
+	// Delete all remaining active particles on application exit 
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		if (particles[i] != nullptr)
+		{
+			delete particles[i];
+			particles[i] = nullptr;
+		}
+	}
+}
+
 void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)

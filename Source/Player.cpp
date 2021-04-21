@@ -6,8 +6,8 @@ using namespace std;
 
 Player::Player()
 {
-	position.x = 100;
-	position.y = 220;
+	position.x = 40;
+	position.y = 32;
 	//Rect for col
 	bounds.x = 0;
 	bounds.y = 0;

@@ -30,6 +30,8 @@ public:
 	// Returns nullptr if the texture could not be created
 	SDL_Texture* const Load(const char* path);
 
+	void CleanUpScene();
+
 public:
 	// An array of all the loaded textures
 	// Allows us to keep track of all textures and free them on application exit

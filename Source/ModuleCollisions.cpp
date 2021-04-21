@@ -182,6 +182,20 @@ bool ModuleCollisions::CleanUp()
 	return true;
 }
 
+void ModuleCollisions::CleanUpScene()
+{
+	LOG("Freeing all colliders in Scene");
+
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (colliders[i] != nullptr)
+		{
+			delete colliders[i];
+			colliders[i] = nullptr;
+		}
+	}
+}
+
 Collider* ModuleCollisions::AddCollider(SDL_Rect rect, Type type, Module* listener)
 {
 	Collider* ret = nullptr;
