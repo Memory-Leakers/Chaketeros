@@ -3,13 +3,16 @@
 #include "GlassCapsule.h"
 #include "Stone.h"
 #include "Bomb.h"
+#include "Tile.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
 // Test
-#define MAX_OBSTACLES 5
+#define SCENE_OBSTACLES_NUM 64
+#define STONES_NUM 26
+#define RED_FLOWER_NUM 4
 
-Obstacle* obstacles[MAX_OBSTACLES];
+Obstacle* obstacles[SCENE_OBSTACLES_NUM];
 SDL_Texture* texBomb;
 SDL_Texture* texStone;
 SDL_Texture* texGlassCapsule;
@@ -18,9 +21,17 @@ SDL_Texture* texItemDestroyed;
 
 Player* bomberman;
 
+Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM];
+
+Tile tileMap;
+
+iPoint stonesPos[STONES_NUM], redFlowerPos[RED_FLOWER_NUM];
+
+int tempCounter;
+
 ModuleScene::ModuleScene()
 {
-	for (int i = 0; i < MAX_OBSTACLES; i++)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		obstacles[i] = nullptr;
 	}
@@ -57,24 +68,79 @@ bool ModuleScene::Start()
 
 	//----------------OBSTACLE TEST-----------------------------------------------------------
 
-	//test[1] = new YellowFlower();
-	//App->obstacles->AddObstacle(*test[1], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+	//obstacles[0] = new YellowFlower({ 200, 100 }, texYellowFlower, texItemDestroyed);
 	//
-	//test[0] = new GlassCapsule();
-	//App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::WALL);
+	//obstacles[1] = new GlassCapsule({ 100,100 }, texGlassCapsule);
+	//
+	//obstacles[2] = new Stone({ 100, 50 }, texStone);
 
-	obstacles[0] = new YellowFlower({ 200, 100 }, texYellowFlower, texItemDestroyed);
-	//App->obstacles->AddObstacle(*obstacles[1], { 200, 100 }, Type::DESTRUCTABLE_WALL);
+	//obstacles[3] = new Bomb({ 50, 50 }, texBomb);
 	
-	obstacles[1] = new GlassCapsule({ 100,100 }, texGlassCapsule);
-	//App->obstacles->AddObstacle(*obstacles[0], { 200, 100 }, Type::WALL);
+	//PUTS EVERY STONE INTO THE sceneObstacles ARRAY AND SETS stonePos to {0,0}
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
+	{	
+		if (tempCounter == STONES_NUM)	//Checks if the last stonePos object is been set to {0,0}
+		{
+			tempCounter = 0;
+			break;	//In that case, there are no more stones to put on the Scene. Therefor, it breaks the loop.
+		}
+		else if (sceneObstacles[i] == nullptr)	//Checks an empty spot on the sceneObstacles array
+		{
+			sceneObstacles[i] = new Stone();	//Creates a new Stone on it
+			tempCounter++;			//And sets the stonePos position to 0,0 (this is another way of initializing the array. It could be made on another for loop)
+		}
+	}
 
-	obstacles[2] = new Stone({ 100, 50 }, texStone);
-	//App->obstacles->AddObstacle(*obstacles[2], { 100, 50 }, Type::WALL);
-
-	obstacles[3] = new Bomb({ 50, 50 }, texBomb);
-	//App->obstacles->AddObstacle(*obstacles[3], { 50, 50 }, Type::BOMB);
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)	//Same process but with red flowers
+	{
+		if (tempCounter == RED_FLOWER_NUM)
+		{
+			tempCounter = 0;
+			break;
+		}
+		else if (sceneObstacles[i] == nullptr)
+		{
+			//sceneObstacles[i] = new RedFlower();
+			redFlowerPos[i] = { 0,0 };
+		}
+	}
 	
+	//ITERAION TO LOCATE ALL OBSTACLES POSITION
+
+	for (int i = 0; i < 13; i++)	//Check TileMap y axis
+	{
+		for (int j = 0; j < 15; j++)	//Check TileMap x axis
+		{
+			if (tileMap.Level1TileMap[i][j] == 2)	//If a Tile == 2 it is a stone
+			{
+				for (int k = 0; k < STONES_NUM; k++)	//We iterate through the stonePos array
+				{
+					if (stonesPos[k].x == 0 && stonesPos[k].y == 0)	//If the stonePos array is empty, we put the Tile located on step 3 on that position
+					{
+						stonesPos[k] = tileMap.getWorldPos({ j,i }) -= {8, -8};
+						break;
+					}
+				}
+			}
+			else if (tileMap.Level1TileMap[i][j] == 3)
+			{
+				for (int k = 0; k < RED_FLOWER_NUM; k++)	//We iterate through the stonePos array
+				{
+					if (redFlowerPos[k].x == 0 && redFlowerPos[k].y == 0)	//If the stonePos array is empty, we put the Tile located on step 3 on that position
+					{
+						redFlowerPos[k] = tileMap.getWorldPos({ j,i }) -= {8, -8};
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	for (int j = 0; j < STONES_NUM; j++)
+	{
+		//App->obstacles->AddObstacle(*sceneObstacles[j], stonesPos[j]);
+	}
+
 	return ret;
 }
 
@@ -84,7 +150,7 @@ UpdateResult ModuleScene::Update()
 	bomberman->Update();
 
 	// Update obstacle
-	for (int i = 0; i < MAX_OBSTACLES; i++)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (obstacles[i] != nullptr)
 		{
@@ -104,7 +170,7 @@ UpdateResult ModuleScene::PostUpdate()
 	App->render->DrawTexture(textmap, 0, 20, nullptr);
 
 	// Draw Obstacle
-	for (int i = 0; i < MAX_OBSTACLES; i++)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (obstacles[i] != nullptr)
 		{
@@ -123,7 +189,7 @@ UpdateResult ModuleScene::PostUpdate()
 
 void ModuleScene::OnCollision(Collider* c1, Collider* c2)
 {
-	for (uint i = 0; i < MAX_OBSTACLES; ++i)
+	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		// cuando se choca algo
 		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
@@ -146,7 +212,7 @@ bool ModuleScene::CleanUp()
 	LOG("Freeing all test");
 
 	// Liberar obstaculos
-	for (uint i = 0; i < MAX_OBSTACLES; ++i)
+	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr)
 		{
