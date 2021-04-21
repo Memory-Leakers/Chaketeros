@@ -107,7 +107,9 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="RedFlower.h" />
     <ClInclude Include="Stone.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="YellowFlower.h" />
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +133,9 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RedFlower.cpp" />
     <ClCompile Include="Stone.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="YellowFlower.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

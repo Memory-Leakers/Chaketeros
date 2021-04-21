@@ -1,6 +1,5 @@
 #include "Player.h";
 
-
 #include <iostream>;
 using namespace std;
 
@@ -13,7 +12,7 @@ Player::Player()
 	bounds.x = 0;
 	bounds.y = 0;
 	bounds.w = 16;
-	bounds.h = 22;
+	bounds.h = 16;
 
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
@@ -147,12 +146,14 @@ UpdateResult Player::PostUpdate()
 	}
 	*/
 
-	App->render->DrawTexture(texture, position.x, position.y, &rect);
+	iPoint tempPos = position;
+	tempPos.y -= 6;
+	App->render->DrawTexture(texture, tempPos, &rect);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Player::OnCollision(Collider* c1, Collider* c2)
+void Player::OnCollision(Collider* col)
 {
 
 }

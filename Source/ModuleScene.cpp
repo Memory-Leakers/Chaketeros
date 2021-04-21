@@ -3,32 +3,37 @@
 #include "GlassCapsule.h"
 #include "Stone.h"
 #include "Bomb.h"
+#include "Tile.h"
+#include "RedFlower.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
 // Test
-#define MAX_OBSTACLES 5
+#define SCENE_OBSTACLES_NUM 128
 
-Obstacle* obstacles[MAX_OBSTACLES];
-SDL_Texture* texBomb;
-SDL_Texture* texStone;
-SDL_Texture* texGlassCapsule;
-SDL_Texture* texYellowFlower;
-SDL_Texture* texItemDestroyed;
+//textura mapa
+SDL_Texture* texMap = nullptr;
+SDL_Texture* texFG = nullptr;
+//Textura UI 
+SDL_Texture* texUI = nullptr;
 
-Player* bomberman;
+SDL_Texture* texBomb = nullptr;
+SDL_Texture* texStone = nullptr;
+SDL_Texture* texGlassCapsule = nullptr;
+SDL_Texture* texYellowFlower = nullptr;
+SDL_Texture* texRedFlower = nullptr;
+SDL_Texture* texItemDestroyed = nullptr;
+Player* bomberman = nullptr;
+
+Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = {nullptr};
+Tile tileMap;
 
 ModuleScene::ModuleScene()
 {
-	for (int i = 0; i < MAX_OBSTACLES; i++)
-	{
-		obstacles[i] = nullptr;
-	}
 }
 
 ModuleScene::~ModuleScene()
 {
-
 }
 
 // Load assets
@@ -38,43 +43,47 @@ bool ModuleScene::Start()
 
 	bool ret = true;
 
+	// Inicializar jugador
 	bomberman = new Player();
-
 	bomberman->Start();
 
-	textmap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
-	textUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
+	// Cargar sprites
+	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
+	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/mapEnv.png");
+	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texStone = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Stone.png");
 	texGlassCapsule = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Fragments_with_machine.png");
 	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
+	texRedFlower = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 
 	//-----------------MUSIC TEST------------------------------------------------------------
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
+	//Check TileMap y axis
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
+		{
+			switch (tileMap.Level1TileMap[i][j])
+			{
+			case 2:
+				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
+				break;
+			case 3:
+				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {8, -8}, texRedFlower);
+				break;
+			case 9:
+				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {8, -8}, texGlassCapsule);
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
-	//----------------OBSTACLE TEST-----------------------------------------------------------
-
-	//test[1] = new YellowFlower();
-	//App->obstacles->AddObstacle(*test[1], { 200, 100 }, Type::DESTRUCTABLE_WALL);
-	//
-	//test[0] = new GlassCapsule();
-	//App->obstacles->AddObstacle(*test[0], { 200, 100 }, Type::WALL);
-
-	obstacles[0] = new YellowFlower({ 200, 100 }, texYellowFlower, texItemDestroyed);
-	//App->obstacles->AddObstacle(*obstacles[1], { 200, 100 }, Type::DESTRUCTABLE_WALL);
-	
-	obstacles[1] = new GlassCapsule({ 100,100 }, texGlassCapsule);
-	//App->obstacles->AddObstacle(*obstacles[0], { 200, 100 }, Type::WALL);
-
-	obstacles[2] = new Stone({ 100, 50 }, texStone);
-	//App->obstacles->AddObstacle(*obstacles[2], { 100, 50 }, Type::WALL);
-
-	obstacles[3] = new Bomb({ 50, 50 }, texBomb);
-	//App->obstacles->AddObstacle(*obstacles[3], { 50, 50 }, Type::BOMB);
-	
 	return ret;
 }
 
@@ -84,11 +93,11 @@ UpdateResult ModuleScene::Update()
 	bomberman->Update();
 
 	// Update obstacle
-	for (int i = 0; i < MAX_OBSTACLES; i++)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
-		if (obstacles[i] != nullptr)
+		if (sceneObstacles[i] != nullptr)
 		{
-			obstacles[i]->Update();
+			sceneObstacles[i]->Update();
 		}	
 	}
 
@@ -101,42 +110,37 @@ UpdateResult ModuleScene::PostUpdate()
 	SDL_Rect rectUI =  { 0,0,256,23 };
 	
 	// Draw Map
-	App->render->DrawTexture(textmap, 0, 20, nullptr);
+	App->render->DrawTexture(texMap, { 0,20 }, nullptr);
 
 	// Draw Obstacle
-	for (int i = 0; i < MAX_OBSTACLES; i++)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
-		if (obstacles[i] != nullptr)
+		if (sceneObstacles[i] != nullptr)
 		{
-			obstacles[i]->PostUpdate();
+			sceneObstacles[i]->PostUpdate();
 		}		
 	}
 
 	// Draw Bomberman
 	bomberman->PostUpdate();
 
+	// Draw FrontGround
+	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
+
 	// Draw UI
-	App->render->DrawTexture(textUI, 0, 0, &rectUI);
+	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 void ModuleScene::OnCollision(Collider* c1, Collider* c2)
 {
-	for (uint i = 0; i < MAX_OBSTACLES; ++i)
+	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		// cuando se choca algo
-		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
 		{
-			/*if (obstacles[i]->getType() == Type::DESTRUCTABLE_WALL && c2->type == Type::EXPLOSION)
-			{
-				obstacles[i]->Die();
-				delete obstacles[i];
-				obstacles[i] = nullptr;
-				break;
-			}*/
-			// Ejecuta la funcion del cuerpo 1
-			obstacles[i]->OnCollision(c2);
+			sceneObstacles[i]->OnCollision(c2);
 		}
 	}
 }
@@ -146,17 +150,12 @@ bool ModuleScene::CleanUp()
 	LOG("Freeing all test");
 
 	// Liberar obstaculos
-	for (uint i = 0; i < MAX_OBSTACLES; ++i)
+	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
-		if (obstacles[i] != nullptr)
+		if (sceneObstacles[i] != nullptr)
 		{
-			//BUG
-			//BUG
-			//BUG
-			//BUG
-			//delete test[i];
-			delete obstacles[i];
-			obstacles[i] = nullptr;
+			delete sceneObstacles[i];
+			sceneObstacles[i] = nullptr;
 		}
 	}
 

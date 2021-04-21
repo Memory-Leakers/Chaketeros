@@ -38,7 +38,6 @@ public:
 	/// ejecuta si ha chocado con algo
 	/// </summary>
 	/// <param name="col">el cuerpo que ha choado</param>
-	void OnCollision(Collider* col);
 	bool getDestructible();
 	Collider* getCollider();
 	iPoint getPosition();
@@ -48,6 +47,7 @@ public:
 
 	// Actualizar la posicion de la colision para que encaje con la posicion de la textura +
 	void ColUpdate();
+	virtual void OnCollision(Collider* col);
 	virtual void Update();
 	virtual void PostUpdate();
 	virtual void Die();

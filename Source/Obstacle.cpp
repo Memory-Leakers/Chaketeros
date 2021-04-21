@@ -99,7 +99,7 @@ void Obstacle::PostUpdate()
 
 void Obstacle::OnCollision(Collider* col)
 {
-
+	//cout << "Col" << endl;
 }
 
 void Obstacle::Die()

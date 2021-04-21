@@ -22,21 +22,28 @@ bool ModuleParticles::Start()
 	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
 	explosionCenter.anim.loop = false;
-	explosionCenter.anim.speed = 0.02f;
+	explosionCenter.anim.speed = 0.001f;
+	explosionCenter.lifetime = 200;
+	explosionCenter.anim.hasIdle = true;
 
-	//// ExplosionCenter particle
+	//// ExplosionMiddle particle
 	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle.anim.loop = false;
-	explosionMiddle.anim.speed = 0.02f;
+	explosionMiddle.anim.speed = 0.001f;
+	explosionMiddle.lifetime = 200;
+	explosionMiddle.anim.hasIdle = true;
+	explosionMiddle.anim.Reset();
 
-	//// ExplosionCenter particle
+	//// ExplosionEnd particle
 	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
 	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
 	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
 	explosionEnd.anim.loop = false;
-	explosionEnd.anim.speed = 0.02f;
+	explosionEnd.anim.speed = 0.001f;
+	explosionEnd.lifetime = 200;
+	explosionEnd.anim.hasIdle = true;
 
 	return true;
 }

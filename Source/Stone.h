@@ -11,15 +11,11 @@ private:
 
 public:
 
-
 	Stone();
 	Stone(iPoint pos, SDL_Texture* tex);
 
 	void PostUpdate() override;
 	
 };
-
-
-
 
 #endif // _ROCK_H_

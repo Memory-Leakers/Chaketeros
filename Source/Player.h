@@ -55,7 +55,7 @@ public:
 	UpdateResult PostUpdate();
 
 	// Collision callback, called when the player intersects with another
-	void OnCollision(Collider* c1, Collider* c2);
+	void OnCollision(Collider* col);
 
 	// Position of the player in the map
 	iPoint position;
