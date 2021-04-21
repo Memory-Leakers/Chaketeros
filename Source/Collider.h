@@ -3,6 +3,8 @@
 
 #include "External/SDL/include/SDL_Rect.h"
 
+#include "Point.h"
+
 class Module;
 
 enum class Type
@@ -23,6 +25,8 @@ struct Collider
 	Collider(SDL_Rect rectangle, Type type, Module* listener = nullptr);
 
 	void SetPos(int x, int y);
+
+	void SetPos(iPoint pos);
 
 	bool Intersects(const SDL_Rect& r) const;
 

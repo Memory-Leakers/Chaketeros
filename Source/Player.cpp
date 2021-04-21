@@ -1,9 +1,11 @@
-#include "ModulePlayer.h"
+#include "Player.h";
+
+
 #include <iostream>;
 using namespace std;
 
 
-ModulePlayer::ModulePlayer()
+Player::Player()
 {
 	position.x = 100;
 	position.y = 220;
@@ -15,7 +17,7 @@ ModulePlayer::ModulePlayer()
 
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
-	downAnim.PushBack({0, 2, 16, 22});
+	downAnim.PushBack({ 0, 2, 16, 22 });
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({ 33, 2, 16, 22 });
 	downAnim.speed = defaultPlayerSpeed;
@@ -44,12 +46,12 @@ ModulePlayer::ModulePlayer()
 	currentAnimation = &downAnim;
 }
 
-ModulePlayer::~ModulePlayer()
+Player::~Player()
 {
-	
+
 }
 
-bool ModulePlayer::Start()
+bool Player::Start()
 {
 	LOG("Loading player textures");
 
@@ -57,12 +59,12 @@ bool ModulePlayer::Start()
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
 
-	col = App->collisions->AddCollider(bounds, Type::PLAYER, this);
+	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
 	return ret;
 }
 
-UpdateResult ModulePlayer::Update()
+UpdateResult Player::Update()
 {
 	// Player Movement keys
 	// Reset the currentAnimation back to idle before updating the logic
@@ -109,7 +111,7 @@ UpdateResult ModulePlayer::Update()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-UpdateResult ModulePlayer::PostUpdate()
+UpdateResult Player::PostUpdate()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
@@ -150,7 +152,7 @@ UpdateResult ModulePlayer::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void ModulePlayer::OnCollision(Collider* c1, Collider* c2)
+void Player::OnCollision(Collider* c1, Collider* c2)
 {
 
 }

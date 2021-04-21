@@ -116,7 +116,7 @@ UpdateResult ModuleCollisions::PreUpdate()
 
 UpdateResult ModuleCollisions::Update()
 {
-	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_F2] == KEY_DOWN)
 		debug = !debug;
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -141,7 +141,7 @@ void ModuleCollisions::DebugDraw()
 		switch(colliders[i]->type)
 		{
 			case Type::NONE: // white
-				App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
+			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
 			break;
 			case Type::WALL: // blue
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 255, alpha });
@@ -159,8 +159,8 @@ void ModuleCollisions::DebugDraw()
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
 			break;
 			case Type::DESTRUCTABLE_WALL: // magenta
-				App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
-				break;
+			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
+			break;
 		}
 	}
 }

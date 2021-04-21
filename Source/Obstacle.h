@@ -5,15 +5,18 @@
 #include "ModuleTextures.h"
 #include "Application.h"
 
-struct Obstacle{
-
+class Obstacle{
 private:
 	bool trigger;
 	bool destructible;
 	Collider* collider = nullptr;
-	SDL_Rect r;
+	SDL_Rect r; // cuadrado de textura
+
 public:
 	SDL_Texture* texture = nullptr;
+
+	// Animacion actual del obstaculo (NO TODO LOS OBSTACULOS TIENEN ANIMACION)
+	Animation* currentAnim = nullptr;
 	
 public:
 //methods
@@ -31,6 +34,11 @@ public:
 	void SetCollider(Collider* collider);
 	void SetRect(SDL_Rect r);
 	void SetDestructible(bool destructible);
+	/// <summary>
+	/// ejecuta si ha chocado con algo
+	/// </summary>
+	/// <param name="col">el cuerpo que ha choado</param>
+	void OnCollision(Collider* col);
 	bool getDestructible();
 	Collider* getCollider();
 	iPoint getPosition();
@@ -38,7 +46,8 @@ public:
 	Type getType();
 	bool getTrigger();
 
-
+	// Actualizar la posicion de la colision para que encaje con la posicion de la textura +
+	void ColUpdate();
 	virtual void Update();
 	virtual void PostUpdate();
 	virtual void Die();

@@ -4,6 +4,8 @@
 #include "Obstacle.h"
 #include "Animation.h"
 
+class Obstacle;
+
 class Bomb : public Obstacle
 {
 private:
@@ -17,21 +19,18 @@ private:
 	int attack = 1;
 
 	// Animacion actual de la bomba
-	Animation* currentAnim = nullptr;
+	//Animation* currentAnim = nullptr;
 
 	// Animaciones de la bomba
 	Animation defaultAnim;
 
-	// Textura de bomba;
-	SDL_Texture* texture = nullptr;
-
 public:
 	Bomb();
-	Bomb(iPoint pos);
+	Bomb(iPoint pos, SDL_Texture* tex);
 	~Bomb();
 
-	void Update() override;
 	void PostUpdate() override;
+	void Update() override;
 	void Die() override;
 
 	bool die = false;

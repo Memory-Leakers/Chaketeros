@@ -67,8 +67,7 @@ void ModuleObstacle::OnCollision(Collider* c1, Collider* c2)
 	{
 		// Always destroy particles that collide
 		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
-		{
-			
+		{			
 			if (obstacles[i]->getType() == Type::DESTRUCTABLE_WALL && c2->type == Type::EXPLOSION) 
 			{
 				obstacles[i]->Die();
@@ -79,7 +78,6 @@ void ModuleObstacle::OnCollision(Collider* c1, Collider* c2)
 
 		}
 	}
-
 }
 
 

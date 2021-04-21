@@ -67,31 +67,28 @@
     <ClInclude Include="ModuleEnemy.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModulePlayer.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEnemy.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="YellowFlower.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleObstacle.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Obstacle.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="GlassCapsule.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEnemyPool.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Stone.h">
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="YellowFlower.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassCapsule.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Stone.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
@@ -141,31 +138,28 @@
     <ClCompile Include="ModuleEnemy.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModulePlayer.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEnemy.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="YellowFlower.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleObstacle.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="GlassCapsule.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEnemyPool.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Stone.cpp">
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="YellowFlower.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassCapsule.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Stone.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>

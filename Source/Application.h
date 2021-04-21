@@ -7,29 +7,25 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
-#include "ModulePlayer.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
 #include "ModuleCollisions.h"
 #include "ModuleParticles.h"
 #include "ModuleEnemyPool.h"
-#include "ModuleObstacle.h"
 
-#define NUM_MODULES 11
+#define NUM_MODULES 9
 
 class Module;
 class ModuleWindow;
 class ModuleInput;
 class ModuleTextures;
 class ModuleEnemyPool;
-class ModulePlayer;
 class ModuleScene;
 class ModuleRender;
 class ModuleAudio;
 class ModuleParticles;
 class ModuleCollisions;
-class ModuleObstacle;
 
 class Application
 {
@@ -62,7 +58,6 @@ public:
 
 	ModuleEnemyPool* enemy = nullptr;
 
-	ModulePlayer* player = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleRender* render = nullptr;
 
@@ -70,7 +65,6 @@ public:
 	ModuleCollisions* collisions = nullptr;
 	ModuleParticles* particle = nullptr;
 
-	ModuleObstacle* obstacles = nullptr;
 };
 
 // Global var made extern for Application ---

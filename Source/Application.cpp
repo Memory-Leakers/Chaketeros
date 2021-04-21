@@ -9,14 +9,12 @@ Application::Application()
 	modules[1] = input = new ModuleInput();
 	modules[2] = textures = new ModuleTextures();
 	modules[3] = scene = new ModuleScene();
-	modules[4] = obstacles = new ModuleObstacle();
-	modules[5] = player = new ModulePlayer();
-	modules[6] = audio = new ModuleAudio();
-	modules[7] = collisions = new ModuleCollisions();
-	modules[8] = particle = new ModuleParticles();
-	modules[9] = enemy = new ModuleEnemyPool();
+	modules[4] = audio = new ModuleAudio();
+	modules[5] = collisions = new ModuleCollisions();
+	modules[6] = particle = new ModuleParticles();
+	modules[7] = enemy = new ModuleEnemyPool();
 
-	modules[10] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
+	modules[8] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 Application::~Application()

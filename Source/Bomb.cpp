@@ -5,22 +5,14 @@ using namespace std;
 
 Bomb::Bomb()
 {
-
+	LOG("Bomb constructor");
 }
 
-Bomb::Bomb(iPoint pos) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->obstacles), texture)
+Bomb::Bomb(iPoint pos, SDL_Texture* tex) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
-	// Inicializar Bomba;
-	this->texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
-	Obstacle::Obstacle({ 0,0,16,16 }, true, new Collider(getRect(), Type::BOMB, App->obstacles), texture);
-	//Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->obstacles), texture)
-
-
-	// Obtener la textura de bomba	
-
-	defaultAnim.hasIdle = false;
 	// Inicializar animacion prestablecida de la bomba
+	defaultAnim.hasIdle = false;
+
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 	defaultAnim.PushBack({ 1,20,16,16 }); //midle
@@ -38,9 +30,25 @@ Bomb::Bomb(iPoint pos) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions
 	startCountTime = SDL_GetPerformanceCounter();
 }
 
+Bomb::~Bomb()
+{
+	// Liberar memoria de animacion
+	if (currentAnim != nullptr)
+	{
+		delete currentAnim;
+		currentAnim = nullptr;
+	}
+}
+
 void Bomb::Update()
 {
+	// Actualizar la posicion de colision
+	ColUpdate();
+
+	// Acualizar frame de animacion
 	currentAnim->Update();
+
+	// TEST
 	if (!die)
 	{
 		// Cuenta Atras para que la bomba se explota
@@ -56,20 +64,19 @@ void Bomb::Update()
 
 void Bomb::PostUpdate()
 {
-	//App->render->DrawTexture()
-	SDL_Rect rect = currentAnim->GetCurrentFrame();
-	App->render->DrawTexture(texture, this->getPosition(), &rect);
+	App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
 }
 
 void Bomb::Die()
 {
 	LOG("BombDie");
 	die = true;
-	// Explision Center
+	// Centro de la explocion
 	App->particle->AddParticle(App->particle->explosionCenter, getPosition(), Type::EXPLOSION);
 
 	for (int i = 1; i < explotionRange; i++)
 	{
+		// 4 Direcciones de explocion
 		iPoint dir[4] = {
 		{ (i) * 16, 0 },
 		{ 0, (i) * 16 },

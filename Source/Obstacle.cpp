@@ -38,8 +38,6 @@ void Obstacle::SetPos(iPoint position) {
 	r.x = position.x;
 	r.y = position.y;
 };
-
-
 void Obstacle::SetType(Type type)
 {
 	this->collider->type = type;
@@ -47,7 +45,7 @@ void Obstacle::SetType(Type type)
 
 
 void Obstacle::SetTexture(const char* path) {
-	this->texture = App->textures->Load(path);
+	//this->texture = App->textures->Load(path);
 }
 
 void Obstacle::SetCollider(Collider* collider)
@@ -58,8 +56,6 @@ void Obstacle::SetCollider(Collider* collider)
 void Obstacle::SetRect(SDL_Rect r) {
 	this->r = r;
 }
-
-
 
 bool Obstacle::getDestructible() {
 	return destructible;
@@ -87,6 +83,11 @@ bool Obstacle::getTrigger() {
 	return trigger;
 }
 
+void Obstacle::ColUpdate()
+{
+	collider->SetPos(getPosition());
+}
+
 void Obstacle::Update()
 {
 	//cout << "Update Obs" << endl;
@@ -95,6 +96,11 @@ void Obstacle::Update()
 void Obstacle::PostUpdate()
 {
 	//cout << "PostUpdate Obs" << endl;
+}
+
+void Obstacle::OnCollision(Collider* col)
+{
+
 }
 
 void Obstacle::Die()
