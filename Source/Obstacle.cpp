@@ -10,7 +10,7 @@ Obstacle::Obstacle()
 
 Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture,bool trigger) {
 
-	this->r = r;
+	this->r = collider->rect;
 	this->destructible = destructible;
 	this->collider = collider;
 	this->texture = texture;
@@ -18,7 +18,7 @@ Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Textur
 }
 
 Obstacle::Obstacle(const Obstacle& Obs) {
-	this->r = Obs.r; 
+	this->r = Obs.collider->rect;
 	this->collider = Obs.collider; 
 	this->trigger = Obs.trigger;
 	this->texture = Obs.texture;
@@ -26,7 +26,6 @@ Obstacle::Obstacle(const Obstacle& Obs) {
 }
 
 Obstacle::~Obstacle() {
-
 
 }
 

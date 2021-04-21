@@ -88,9 +88,8 @@ void ModuleObstacle::AddObstacle(Obstacle& obstacle, iPoint position, Type type)
 		// Finding an empty slot for a new particle
 		if (obstacles[i] == nullptr)
 		{
-
 			obstacle.SetPos(position); 						
-
+			//obstacle.SetType(type);
 			obstacles[i] = &obstacle;
 			break;
 		}

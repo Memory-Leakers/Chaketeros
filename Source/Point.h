@@ -75,6 +75,22 @@ public:
 		return(*this);
 	}
 
+	const Point& operator +=(int num)
+	{
+		x += num;
+		y += num;
+
+		return(*this);
+	}
+
+	const Point& operator *=(const int num)
+	{
+		x* = num;
+		y* = num,
+
+		return(*this);
+	}
+
 	bool operator ==(const Point& v) const
 	{
 		return (x == v.x && y == v.y);

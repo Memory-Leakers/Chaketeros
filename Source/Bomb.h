@@ -29,7 +29,7 @@ public:
 	Bomb(iPoint pos, SDL_Texture* tex);
 	~Bomb();
 
-	void PostUpdate() override;
+ 	void PostUpdate() override;
 	void Update() override;
 	void Die() override;
 

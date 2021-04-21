@@ -13,12 +13,14 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex) :Obstacle({ pos.x, pos.y, 16, 16 }, tru
 	// Inicializar animacion prestablecida de la bomba
 	defaultAnim.hasIdle = false;
 
+	// Obtener la textura de bomba	
+	
+	defaultAnim.hasIdle = false;
+	// Inicializar animacion prestablecida de la bomba
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
-	defaultAnim.PushBack({ 1,20,16,16 }); //midle
 	defaultAnim.PushBack({ 1,39,16,16 }); //big
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
-	defaultAnim.PushBack({ 1,20,16,16 }); //midle
 	defaultAnim.speed = 0.02f;
 	//defaultAnim.hasIdle = false;
 	defaultAnim.loop = true;
@@ -91,7 +93,7 @@ void Bomb::Die()
 
 			// Explosopn End
 			if (i == explotionRange - 1)
-			{
+			{		
 				++i;
 				App->particle->AddParticle(App->particle->explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
 				--i;

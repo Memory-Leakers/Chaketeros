@@ -113,7 +113,11 @@ UpdateResult ModulePlayer::PostUpdate()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
-	// Flip Test
+	//BUG
+	//BUG
+	//BUG
+	//BUG
+	// Flip Intennt
 	/*
 	if(isFlip)
 	{

@@ -55,7 +55,6 @@ public:
 	// Param delay		- Delay time from the moment the function is called until the particle is displayed in screen
 	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, uint delay = 0);
 
-
 private:
 	// Particles spritesheet loaded into an SDL Texture
 	SDL_Texture* explosionTexture = nullptr;
