@@ -3,7 +3,7 @@
 
 #include "Module.h"
 
-#define MAX_TEXTURES 70
+#define MAX_TEXTURES 50
 
 struct SDL_Texture;
 
