@@ -5,6 +5,7 @@
 #include "Bomb.h"
 #include "Tile.h"
 #include "RedFlower.h"
+#include "Coin.h"
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
@@ -23,6 +24,7 @@ SDL_Texture* texGlassCapsule = nullptr;
 SDL_Texture* texYellowFlower = nullptr;
 SDL_Texture* texRedFlower = nullptr;
 SDL_Texture* texItemDestroyed = nullptr;
+SDL_Texture* texCoin = nullptr;
 Player* bomberman = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = {nullptr};
@@ -57,6 +59,7 @@ bool ModuleScene::Start()
 	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
 	texRedFlower = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
+	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 
 	//-----------------MUSIC TEST------------------------------------------------------------
 
@@ -70,7 +73,8 @@ bool ModuleScene::Start()
 			switch (tileMap.Level1TileMap[i][j])
 			{
 			case 2:
-				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
+				sceneObstacles[k] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
+				k++;
 				break;
 			case 3:
 				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {8, -8}, texRedFlower);
@@ -84,11 +88,14 @@ bool ModuleScene::Start()
 		}
 	}
 
+
+
 	return ret;
 }
 
 UpdateResult ModuleScene::Update()
 {
+	
 	// Update bomebrman
 	bomberman->Update();
 
@@ -100,6 +107,8 @@ UpdateResult ModuleScene::Update()
 			sceneObstacles[i]->Update();
 		}	
 	}
+
+
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
