@@ -71,26 +71,38 @@ UpdateResult Player::Update()
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
 	{
 		currentAnimation = &rightAnim;
-		position.x += speed;
-		isFlip = true;
+		if (position.x < 216) // Limiitar movimiento en la mapa
+		{
+			position.x += speed;
+			isFlip = true;
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
 	{
 		currentAnimation = &leftAnim;
-		position.x -= speed;
-		isFlip = false;
+		if (position.x > 24) // Limiitar movimiento en la mapa
+		{
+			position.x -= speed;
+			isFlip = false;
+		}	
 	}
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
 		currentAnimation = &upAnim;
-		position.y -= speed;
-		isFlip = false;
+		if (position.y > 32) // Limiitar movimiento en la mapa
+		{
+			position.y -= speed;
+			isFlip = false;
+		}	
 	}
 	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT)
 	{
 		currentAnimation = &downAnim;
-		position.y += speed;
-		isFlip = false;
+		if (position.y < 208 - 16) // Limiitar movimiento en la mapa
+		{
+			position.y += speed;
+			isFlip = false;
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_D] != KEY_REPEAT &&
 		App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT &&
