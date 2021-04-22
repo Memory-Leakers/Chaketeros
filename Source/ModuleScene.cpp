@@ -15,12 +15,11 @@ ModuleScene::~ModuleScene()
 {
 }
 
-// Load assets
 bool ModuleScene::Start()
 {
 	bool ret = true;
 
-	currentScene = scenes[4];
+	currentScene = scenes[LEVEL1_SCENE];
 	currentScene->Start();
 
 	return ret;
@@ -30,10 +29,10 @@ UpdateResult ModuleScene::Update()
 {
 	currentScene->Update();
 
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-// Update: draw background
 UpdateResult ModuleScene::PostUpdate()
 {
 	currentScene->PostUpdate();

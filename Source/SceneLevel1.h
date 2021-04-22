@@ -14,6 +14,7 @@
 struct SDL_Texture;
 
 #define SCENE_OBSTACLES_NUM 128
+#define MAX_EMPTY_SPACES 104
 
 class SceneLevel1 : public Scene
 {
@@ -39,6 +40,8 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) override;
 
 	bool CleanUp() override;
+
+	void CreateYellowFlowers();
 
 
 
