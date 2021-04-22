@@ -82,7 +82,7 @@ bool ModuleRender::CleanUp()
 }
 
 // Draw to screen
-bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed)
+bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, bool flip, float speed)
 {
 	bool ret = true;
 
@@ -105,16 +105,29 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 	rect.w *= SCREEN_SIZE;
 	rect.h *= SCREEN_SIZE;
 
-	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+	if (flip)
 	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
+		SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
+
+		if (SDL_RenderCopyEx(renderer, texture, section, &rect, 180, NULL, flip))
+		{
+			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+			ret = false;
+		}
+	}
+	else
+	{
+		if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+		{
+			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+			ret = false;
+		}
 	}
 
 	return ret;
 }
 
-bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, float speed)
+bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool flip, float speed)
 {
 	bool ret = true;
 
@@ -137,10 +150,23 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* secti
 	rect.w *= SCREEN_SIZE;
 	rect.h *= SCREEN_SIZE;
 
-	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+	if(flip)
 	{
-		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-		ret = false;
+		SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
+
+		if(SDL_RenderCopyEx(renderer, texture, section, &rect, 180, NULL, flip) != 0)
+		{
+			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+			ret = false;
+		}
+	}
+	else
+	{
+		if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+		{
+			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+			ret = false;
+		}
 	}
 
 	return ret;

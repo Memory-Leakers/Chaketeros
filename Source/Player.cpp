@@ -3,6 +3,7 @@
 #include <iostream>;
 using namespace std;
 
+SDL_Texture* flipTest;
 
 Player::Player()
 {
@@ -57,6 +58,7 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
+	flipTest = App->textures->Load("Assets/Images/Sprites/flipTest.png");
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
@@ -127,40 +129,10 @@ UpdateResult Player::PostUpdate()
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
 	// Flip Test
-	/*
-	if(isFlip)
-	{
-		SDL_Rect r1 = { 0,0,384,224 };
-		SDL_Rect tempRect = rect;
-
-		int mul = 3;
-		tempRect.w *= mul;
-		tempRect.h *= mul;
-
-		SDL_Point center = { (rect.x + rect.w) / 2,(rect.y + rect.h) / 2 };
-		//rect.x = 256 - rect.x;
-		//rect.x += 5;
-		SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
-
-		//cout << "\nx1: " << tempRect.x << "\ty1: " << tempRect.y << "\tw1: " << tempRect.w << "\th1: " << tempRect.h;
-
-		SDL_RenderCopyEx(App->render->renderer, texture, &rect, &tempRect, 180, &center, flip);
-
-		//tempRect.x +=5;
-		//tempRect.y = 100;
-		//cout << "\nx2: " << tempRect.x << "\ty2: " << tempRect.y << "\tw2: " << tempRect.w << "\th2: " << tempRect.h;
-
-		//App->render->DrawTexture(texture, position.x, position.y - rect.h, &tempRect);
-	}
-	else
-	{
-		App->render->DrawTexture(texture, position.x, position.y - rect.h, &rect);
-	}
-	*/
-
 	iPoint tempPos = position;
 	tempPos.y -= 6;
-	App->render->DrawTexture(texture, tempPos, &rect);
+
+	App->render->DrawTexture(texture, tempPos, &rect, isFlip);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
