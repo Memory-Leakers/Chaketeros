@@ -128,7 +128,6 @@ UpdateResult Player::PostUpdate()
 {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
-	// Flip Test
 	iPoint tempPos = position;
 	tempPos.y -= 6;
 
