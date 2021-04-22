@@ -25,12 +25,12 @@ struct SDL_Texture;
 
 enum SCENE_NUM
 {
-	INTRO,
-	TITLE,
-	AREA,
-	STAGE,
-	LEVEL1,
-	GAME_OVER
+	INTRO_SCENE,
+	TITLE_SCENE,
+	AREA_SCENE,
+	STAGE_SCENE,
+	LEVEL1_SCENE,
+	GAME_OVER_SCENE
 };
 
 class ModuleScene : public Module

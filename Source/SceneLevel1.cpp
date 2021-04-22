@@ -10,6 +10,11 @@
 #include "RedFlower.h"
 #include "Coin.h"
 
+#include <time.h>
+#include <iostream>
+#include <vector>
+using namespace std;
+
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
 //textura mapa
@@ -25,13 +30,17 @@ SDL_Texture* texYellowFlower = nullptr;
 SDL_Texture* texRedFlower = nullptr;
 SDL_Texture* texItemDestroyed = nullptr;
 SDL_Texture* texCoin = nullptr;
+SDL_Texture* texDie = nullptr;
 Player* bomberman = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+vector<iPoint> emptySpaces;
+int yellowFlowers;
 Tile tileMap;
 
 SceneLevel1::SceneLevel1()
 {
+	srand(time(NULL));
 }
 
 SceneLevel1::~SceneLevel1()
@@ -48,6 +57,11 @@ bool SceneLevel1::Start()
 	bomberman = new Player();
 	bomberman->Start();
 
+	//Randomize yellow flowers number
+	
+
+	yellowFlowers = rand() % 6 + 43;
+
 	// Cargar sprites
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
 	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/mapEnv.png");
@@ -59,6 +73,7 @@ bool SceneLevel1::Start()
 	texRedFlower = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
+	texDie = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 
 	//-----------------MUSIC TEST------------------------------------------------------------
 
@@ -71,6 +86,9 @@ bool SceneLevel1::Start()
 		{
 			switch (tileMap.Level1TileMap[i][j])
 			{
+			case 0:
+				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {8, -8});
+				break;
 			case 2:
 				sceneObstacles[k] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
 				k++;
@@ -87,7 +105,7 @@ bool SceneLevel1::Start()
 		}
 	}
 
-
+	CreateYellowFlowers();
 
 	return ret;
 }
@@ -173,4 +191,28 @@ bool SceneLevel1::CleanUp()
 	bomberman = nullptr;
 
 	return true;
+}
+
+void SceneLevel1::CreateYellowFlowers()
+{
+	for (int i = 0; i < yellowFlowers; i++)
+	{
+		int randomNum = rand() % emptySpaces.size();
+		for (int j = 0; j < SCENE_OBSTACLES_NUM; j++)
+		{
+			if (sceneObstacles[j] == nullptr)
+			{
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texDie);	//emptySpaces.at = return value at index
+
+				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
+				tileMap.Level1TileMap[temp.y][temp.x] = 4;
+
+				emptySpaces.erase(emptySpaces.begin() + randomNum);		//delete the emptySpace position from the emptySpaces vector
+
+				cout << emptySpaces.size() << endl;
+
+				break;
+			}
+		}
+	}
 }
