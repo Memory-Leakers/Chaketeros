@@ -20,7 +20,8 @@ bool ModuleScene::Start()
 {
 	bool ret = true;
 
-	currentScene = scenes[0];
+	currentScene = scenes[4];
+	currentScene->Start();
 
 	return ret;
 }

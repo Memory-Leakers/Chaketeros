@@ -88,15 +88,17 @@ void Bomb::Die()
 
 		for (int j = 0; j < 4; ++j)
 		{
-			// Explosion Middle
-			App->particle->AddParticle(App->particle->explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
-
 			// Explosopn End
 			if (i == explotionRange - 1)
 			{		
 				++i;
 				App->particle->AddParticle(App->particle->explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
 				--i;
+			}
+			else
+			{
+				// Explosion Middle
+				App->particle->AddParticle(App->particle->explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
 			}
 		}
 	}

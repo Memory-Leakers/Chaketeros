@@ -65,6 +65,7 @@ bool SceneLevel1::Start()
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
 	//Check TileMap y axis
+	
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
@@ -72,8 +73,7 @@ bool SceneLevel1::Start()
 			switch (tileMap.Level1TileMap[i][j])
 			{
 			case 2:
-				sceneObstacles[k] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
-				k++;
+				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
 				break;
 			case 3:
 				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {8, -8}, texRedFlower);
@@ -86,9 +86,7 @@ bool SceneLevel1::Start()
 			}
 		}
 	}
-
-
-
+	
 	return ret;
 }
 

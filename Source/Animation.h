@@ -38,7 +38,7 @@ public:
 		}
 		else {
 			current_frame += speed;
-			if (current_frame >= last_frame) current_frame = 0;
+			if (current_frame >= last_frame && loop) current_frame = 0;
 		}
 	}
 
@@ -49,7 +49,12 @@ public:
 
 	bool HasFinished()
 	{
-		return !loop && loopCount > 0;
+		if(current_frame >= last_frame && !loop)
+		{
+			return true;
+		}
+
+		return false;
 	}
 };
 

@@ -22,28 +22,30 @@ bool ModuleParticles::Start()
 	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
 	explosionCenter.anim.loop = false;
-	explosionCenter.anim.speed = 0.001f;
-	explosionCenter.lifetime = 200;
-	explosionCenter.anim.hasIdle = true;
+	explosionCenter.anim.speed = 0.01f;
+	explosionCenter.lifetime = 500;
+	explosionCenter.anim.hasIdle = false;
+	explosionCenter.isAlive = true;
 
 	//// ExplosionMiddle particle
 	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle.anim.loop = false;
-	explosionMiddle.anim.speed = 0.001f;
-	explosionMiddle.lifetime = 200;
-	explosionMiddle.anim.hasIdle = true;
-	explosionMiddle.anim.Reset();
+	explosionMiddle.anim.speed = 0.01f;
+	explosionMiddle.lifetime = 500;
+	explosionMiddle.anim.hasIdle = false;
+	explosionMiddle.isAlive = true;
 
 	//// ExplosionEnd particle
 	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
 	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
 	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
 	explosionEnd.anim.loop = false;
-	explosionEnd.anim.speed = 0.001f;
-	explosionEnd.lifetime = 200;
-	explosionEnd.anim.hasIdle = true;
+	explosionEnd.anim.speed = 0.01f;
+	explosionEnd.lifetime = 500;
+	explosionEnd.anim.hasIdle = false;
+	explosionEnd.isAlive = true;
 
 	return true;
 }
@@ -94,6 +96,24 @@ void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 			break;
 		}
 	}
+}
+
+UpdateResult ModuleParticles::PreUpdate()
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		Particle* particle = particles[i];
+
+		if (particle == nullptr)	continue;
+
+		if(particle->anim.HasFinished())
+		{
+			delete particle;
+			particles[i] = nullptr;
+		}
+	}
+
+	return UpdateResult::UPDATE_CONTINUE;
 }
 
 UpdateResult ModuleParticles::Update()
