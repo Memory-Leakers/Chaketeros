@@ -32,10 +32,7 @@ public:
 
 	void Update()
 	{
-		if(hasIdle==false)
-		{
 		
-		}
 		if (hasIdle) {
 			current_frame = 0;
 		}

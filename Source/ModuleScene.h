@@ -1,6 +1,16 @@
 #ifndef __MODULESCENE_H__
 #define __MODULESCENE_H__
 
+#include "Scene.h"
+
+
+#include "SceneGameOver.h"
+#include "SceneIntro.h"
+#include "SceneMainTitle.h"
+#include "SceneSelectArea.h"
+#include "SceneSelectStage.h"
+#include "SceneLevel1.h"
+
 #include "Animation.h"
 #include "Application.h"
 #include "ModuleTextures.h"
@@ -8,7 +18,20 @@
 #include "ModuleAudio.h"
 #include "Player.h"
 
+
+#define SCENES_NUM 6
+
 struct SDL_Texture;
+
+enum SCENE_NUM
+{
+	INTRO,
+	TITLE,
+	AREA,
+	STAGE,
+	LEVEL1,
+	GAME_OVER
+};
 
 class ModuleScene : public Module
 {
@@ -33,9 +56,14 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
+	void ChangeCurrentScene(uint index);
+
 	bool CleanUp() override;
 
-public:
+private:
+
+	Scene* scenes[SCENES_NUM] = { nullptr };
+	Scene* currentScene = nullptr;
 
 };
 

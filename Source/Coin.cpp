@@ -1,5 +1,9 @@
 #include "Coin.h"
 
+Coin::~Coin()
+{
+}
+
 Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, position.y, 16, 16 }, true, App->collisions->AddCollider({ position.x, position.y, 16, 16 }, Type::NONE, App->scene), texture)
 {
 
@@ -21,3 +25,4 @@ void Coin::PostUpdate()
 	currentAnim->Update();
 	App->render->DrawTexture(texture, this->getPosition(), &currentAnim->GetCurrentFrame());
 }
+

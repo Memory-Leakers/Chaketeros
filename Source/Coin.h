@@ -11,6 +11,8 @@ private:
 
 public:
 
+	~Coin();
+
 	Coin(iPoint position, SDL_Texture* texture);
 
 	void PostUpdate() override;

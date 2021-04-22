@@ -14,6 +14,9 @@
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{597d1304-3637-4d24-82fd-e95adb08792e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Scenes">
+      <UniqueIdentifier>{8aff0d26-b8f4-4c02-a5b2-c55eab4ee073}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -23,9 +26,6 @@
       <Filter>Source Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
-      <Filter>Source Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="MemLeaks.h">
       <Filter>Source Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="ModuleWindow.h">
@@ -99,6 +99,33 @@
     </ClInclude>
     <ClInclude Include="RedFlower.h">
       <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="MemLeaks.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMainTitle.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSelectArea.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSelectStage.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGameOver.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneIntro.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLevel1.h">
+      <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +206,30 @@
     </ClCompile>
     <ClCompile Include="RedFlower.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMainTitle.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSelectArea.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSelectStage.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGameOver.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneIntro.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLevel1.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
