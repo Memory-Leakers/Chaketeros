@@ -118,11 +118,15 @@ UpdateResult ModuleScene::PostUpdate()
 		if (sceneObstacles[i] != nullptr)
 		{
 			sceneObstacles[i]->PostUpdate();
+
+			// Si hay obstaculo que ubica arriba de player o player esta en primera fila
+			if (sceneObstacles[i]->getPosition().y <= bomberman->position.y || bomberman->position.y < 48) // Pendiente de optimizar
+			{
+				// Draw Bomberman
+				bomberman->PostUpdate();
+			}		
 		}		
 	}
-
-	// Draw Bomberman
-	bomberman->PostUpdate();
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
