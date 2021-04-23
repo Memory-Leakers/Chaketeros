@@ -14,14 +14,17 @@ Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), spee
 
 }
 
-Particle::Particle(bool explosion, float lifetime, float animSpeed, SDL_Texture* tex)
+Particle::Particle(float lifetime, float animSpeed, SDL_Texture* tex)
 {
+	position.SetToZero();
+	speed.SetToZero();
 	anim.loop = false;
 	anim.hasIdle = false;
+	isAlive = true;
+
 	anim.speed = animSpeed;
 	renderTex = tex;
 	this->lifetime = lifetime;
-	isAlive = true;
 }
 
 Particle::~Particle()

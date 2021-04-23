@@ -9,13 +9,14 @@ class Obstacle;
 class Bomb : public Obstacle
 {
 private:
-	// Rango de explosion de bomba
-	int explotionRange = 3;
 	// Cuanta atras de la explosion
 	float explotionTime = 3;
 	// Tiempo cuando empieza a contar
 	double startCountTime;
-	// Ataque de la bomba
+
+	// Rango de explosion de bomba
+	int explotionRange = 3;
+
 	int attack = 1;
 
 	// Animacion actual de la bomba
@@ -28,16 +29,19 @@ private:
 	Particle explosionMiddle;
 	Particle explosionEnd;
 
+	Player* player;
+
 public:
 	Bomb();
 	Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
+	Bomb(Player* p, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
+
 	~Bomb();
 
  	void PostUpdate() override;
 	void Update() override;
 	void Die() override;
-
-	bool die = false;
+	void CleanUp() override;
 };
 
 #endif // !__BOMB_H__

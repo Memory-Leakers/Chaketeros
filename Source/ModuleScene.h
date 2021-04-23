@@ -45,6 +45,8 @@ public:
 	// Loads the necessary textures for the map background
 	bool Start() override;
 
+	UpdateResult PreUpdate() override;
+
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
 	UpdateResult Update() override;

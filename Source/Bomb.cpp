@@ -30,26 +30,45 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 	startCountTime = SDL_GetPerformanceCounter();
 }
 
+Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) 
+:Obstacle({ player->position.x, player->position.y, 16, 16 }, true, App->collisions->AddCollider({ player->position.x, player->position.y, 16, 16 }, Type::BOMB, App->scene), tex)
+{
+	this->player = player;
+
+	explosionCenter = *e1;
+	explosionMiddle = *e2;
+	explosionEnd = *e3;
+
+	explotionRange += player->pUpFlame;
+
+	// Inicializar animacion prestablecida de la bomba
+	defaultAnim.hasIdle = false;
+	defaultAnim.speed = 0.02f;
+	defaultAnim.loop = true;
+	defaultAnim.PushBack({ 1,1,16,16 });  //small
+	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+	defaultAnim.PushBack({ 1,39,16,16 }); //big
+	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+
+	// Assignar anamacion prestablecida a currentAnim
+	currentAnim = &defaultAnim;
+
+	// Init TimeCount
+	startCountTime = SDL_GetPerformanceCounter();
+}
+
 Bomb::~Bomb()
 {
-	// Liberar memoria de animacion
-	if (currentAnim != nullptr)
-	{
-		delete currentAnim;
-		currentAnim = nullptr;
-	}
 }
 
 void Bomb::Update()
 {
-	// Actualizar la posicion de colision
 	ColUpdate();
 
-	// Acualizar frame de animacion
 	currentAnim->Update();
 
-	// TEST
-	if (!die)
+	// Count down
+	if (!pendingToDelete)
 	{
 		// Cuenta Atras para que la bomba se explota
 		double currentCountTime = SDL_GetPerformanceCounter();
@@ -64,13 +83,16 @@ void Bomb::Update()
 
 void Bomb::PostUpdate()
 {
-	App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
+	if(!pendingToDelete)
+	{
+		App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
+	}
 }
 
 void Bomb::Die()
 {
 	LOG("BombDie");
-	die = true;
+	pendingToDelete = true;
 	// Centro de la explocion
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
@@ -100,4 +122,9 @@ void Bomb::Die()
 			}
 		}
 	}
+}
+
+void Bomb::CleanUp()
+{
+	player->maxBombs++;
 }

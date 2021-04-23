@@ -17,7 +17,7 @@ public:
 	// Copy constructor
 	Particle(const Particle& p);
 
-	Particle(bool explosion, float lifetime, float animSpeed, SDL_Texture* tex);
+	Particle(float lifetime, float animSpeed, SDL_Texture* tex);
 
 	// Destructor
 	~Particle();

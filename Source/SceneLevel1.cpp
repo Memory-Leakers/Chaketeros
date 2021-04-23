@@ -17,31 +17,37 @@ using namespace std;
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
 
-//textura mapa
+// Texture
 SDL_Texture* texMap = nullptr;
 SDL_Texture* texFG = nullptr;
-//Textura UI 
 SDL_Texture* texUI = nullptr;
-
 SDL_Texture* texBomb = nullptr;
 SDL_Texture* texStone = nullptr;
 SDL_Texture* texGlassCapsule = nullptr;
 SDL_Texture* texYellowFlower = nullptr;
-SDL_Texture* texRedFlower = nullptr;
+SDL_Texture* texEnemies = nullptr;
 SDL_Texture* texItemDestroyed = nullptr;
 SDL_Texture* texCoin = nullptr;
-SDL_Texture* texDie = nullptr;
+SDL_Texture* texPowerUpDestroyed = nullptr;
+
+// Player
 Player* bomberman = nullptr;
 
 // Particle
-//Template particle for an center of explosion
+// Template particle for an center of explosion
 Particle* explosionCenter = nullptr;
 
-//Template particle for an middle of explosion
+// Template particle for an middle of explosion
 Particle* explosionMiddle = nullptr;
 
-//Template particle for an end of explosion
+// Template particle for an end of explosion
 Particle* explosionEnd = nullptr;
+
+// Template particle for an end of powerUp
+Particle* powerUpDestroyed = nullptr;
+
+// Template particle for an end of red flower
+Particle* redFlowerDestroyed = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 vector<iPoint> emptySpaces;
@@ -50,6 +56,7 @@ Tile tileMap;
 
 SceneLevel1::SceneLevel1()
 {
+	// Init random system
 	srand(time(NULL));
 }
 
@@ -67,17 +74,17 @@ void SceneLevel1::LoadAsset()
 	texStone = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Stone.png");
 	texGlassCapsule = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Fragments_with_machine.png");
 	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
-	texRedFlower = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
+	texEnemies = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
-	texDie = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
+	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 
-	#pragma region Init Explosion Particle
+	#pragma region Init Particle
 
-	// General parameter
-	explosionCenter = new Particle(true, 500.0f, 0.01f, texBomb);
-	explosionMiddle = new Particle(true, 500.0f, 0.01f, texBomb);
-	explosionEnd = new Particle(true, 500.0f, 0.01f, texBomb);
+	// Explisions General parameter
+	explosionCenter = new Particle(500.0f, 0.01f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.01f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.01f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
@@ -94,30 +101,29 @@ void SceneLevel1::LoadAsset()
 	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
 	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
 
+	// PowerUps destroyed particle
+	powerUpDestroyed = new Particle(500.0f, 0.01f, texPowerUpDestroyed);
+	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
+	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
+	powerUpDestroyed->anim.PushBack({ 67,4,26,27 });
+	powerUpDestroyed->anim.PushBack({ 3,34,26,25 });
+	powerUpDestroyed->anim.PushBack({ 35,34,26,25 });
+	powerUpDestroyed->anim.PushBack({ 67,34,26,25 });
+
+	// Red Flower destroyed particle
+	redFlowerDestroyed = new Particle(500.0f, 0.01f, texEnemies);
+	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
+	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
+	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
+	redFlowerDestroyed->anim.PushBack({ 52,133,16,16 });
+	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
+	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
+
 #pragma endregion
 }
 
-bool SceneLevel1::Start()
+void SceneLevel1::CreateScene()
 {
-	LOG("Loading background assets");
-
-	bool ret = true;
-
-	*sceneObstacles = { nullptr };
-
-	// Inicializar jugador
-	bomberman = new Player();
-	bomberman->Start();
-
-	//Randomize yellow flowers number
-	yellowFlowers = rand() % 6 + 43;
-
-	LoadAsset();
-
-	//-----------------MUSIC TEST------------------------------------------------------------
-
-	//App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
-
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
 	for (int i = 0, k = 0; i < 13; ++i)
@@ -133,7 +139,7 @@ bool SceneLevel1::Start()
 				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
-				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texRedFlower);
+				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed);
 				break;
 			case 9:
 				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
@@ -151,25 +157,101 @@ bool SceneLevel1::Start()
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
-		for (int j = 0; j < 15; ++j)	
+		for (int j = 0; j < 15; ++j)
 		{
 			cout << tileMap.Level1TileMap[i][j] << ",";
 		}
 		cout << endl;
 	}
+}
+
+void SceneLevel1::CreateYellowFlowers()
+{
+	//Randomize yellow flowers number
+	yellowFlowers = rand() % 6 + 43;
+
+	for (int i = 0; i < yellowFlowers; i++)
+	{
+		int randomNum = rand() % emptySpaces.size();
+		for (int j = 0; j < SCENE_OBSTACLES_NUM; j++)
+		{
+			if (sceneObstacles[j] == nullptr)
+			{
+				iPoint temporal = tileMap.getTilePos(emptySpaces.at(randomNum));
+
+				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
+
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texPowerUpDestroyed, powerUpDestroyed);	//emptySpaces.at = return value at index
+
+				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
+				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
+
+				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
+
+				break;
+			}
+		}
+	}
+}
+
+bool SceneLevel1::Start()
+{
+	LOG("Loading background assets");
+
+	bool ret = true;
+
+	*sceneObstacles = { nullptr };
+
+	// Inicializar jugador
+	bomberman = new Player();
+	bomberman->Start();
+
+	LoadAsset();
+
+	// Create music
+	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+
+	CreateScene();
 
 	return ret;
 }
 
+bool SceneLevel1::PreUpdate()
+{
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
+	{
+		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
+		{
+			sceneObstacles[i]->CleanUp();
+			delete sceneObstacles[i];
+			sceneObstacles[i] = nullptr;
+		}
+	}
+
+	return true;
+}
+
 bool SceneLevel1::Update()
 {
-
-	// Update bomebrman
-	bomberman->Update();
-
+	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
 		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+	}
+
+	// Update bomebrman
+	bomberman->Update();
+	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
+	{
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		{
+			if(sceneObstacles[i] == nullptr)
+			{
+				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd);
+				bomberman->maxBombs--;
+				break;
+			}
+		}
 	}
 
 	// Update obstacle
@@ -232,12 +314,14 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
 
+	// Clean Scene if not close the game
 	if (!finalCleanUp) {
 		App->audio->CleanUpScene();
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
 	}
+
 	// Delete obstacles
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -254,6 +338,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	emptySpaces.clear();
 	emptySpaces.shrink_to_fit();
 
+	#pragma region Delete Particles
 	// Delete particles
 	delete explosionCenter;
 	explosionCenter = nullptr;
@@ -261,37 +346,16 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	explosionMiddle = nullptr;
 	delete explosionEnd;
 	explosionEnd = nullptr;
+	delete powerUpDestroyed;
+	powerUpDestroyed = nullptr;
+	delete redFlowerDestroyed;
+	redFlowerDestroyed = nullptr;
+	#pragma endregion
 
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
 
-
 	return true;
 }
 
-void SceneLevel1::CreateYellowFlowers()
-{
-	for (int i = 0; i < yellowFlowers; i++)
-	{
-		int randomNum = rand() % emptySpaces.size();
-		for (int j = 0; j < SCENE_OBSTACLES_NUM; j++)
-		{
-			if (sceneObstacles[j] == nullptr)
-			{
-				iPoint temporal = tileMap.getTilePos(emptySpaces.at(randomNum));
-
-				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
-
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texDie);	//emptySpaces.at = return value at index
-
-				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				tileMap.Level1TileMap[temp.y-1][temp.x] = 5;	//-1 en Y no sabemos por qu???
-
-				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
-
-				break;
-			}
-		}
-	}
-}

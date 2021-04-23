@@ -39,8 +39,10 @@ public:
 	Tile();
 
 	iPoint getWorldPos(iPoint pos);
+	iPoint getWorldPos(int x, int y);
 
 	iPoint getTilePos(iPoint pos);
+	iPoint getTilePos(int x, int y);
 
 	void Reset();
 

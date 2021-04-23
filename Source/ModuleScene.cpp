@@ -28,6 +28,13 @@ bool ModuleScene::Start()
 	return ret;
 }
 
+UpdateResult ModuleScene::PreUpdate()
+{
+	currentScene->PreUpdate();
+
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
 UpdateResult ModuleScene::Update()
 {
 	

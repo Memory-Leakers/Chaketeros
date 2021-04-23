@@ -51,6 +51,9 @@ public:
 	virtual void Update();
 	virtual void PostUpdate();
 	virtual void Die();
+	virtual void CleanUp();
+
+	bool pendingToDelete = false;
 
 };
 #endif // !__OBSTACLE_H__

@@ -106,6 +106,7 @@ UpdateResult Player::Update()
 			isFlip = false;
 		}
 	}
+	
 	if (App->input->keys[SDL_SCANCODE_D] != KEY_REPEAT &&
 		App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT &&
 		App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT &&
