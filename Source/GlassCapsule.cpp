@@ -27,7 +27,6 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
 
 	// Init para animacion
     idleAnim.hasIdle = false;
-
     idleAnim.PushBack({ 46,112,48,64 });
     idleAnim.PushBack({ 102,112,48,64 });
     idleAnim.PushBack({ 157,112,48,64 });

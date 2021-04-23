@@ -251,8 +251,6 @@ void SceneLevel1::CreateYellowFlowers()
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);		//delete the emptySpace position from the emptySpaces vector
 
-				cout << emptySpaces.size() << endl;
-
 				break;
 			}
 		}
