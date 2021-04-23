@@ -23,5 +23,8 @@ public:
 
     void Update() override;
     void PostUpdate() override;
+
+private:
+    Animation* currentAnim = nullptr;
 };
 #endif // __GLASSCAPSULE_H_

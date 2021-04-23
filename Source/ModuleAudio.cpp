@@ -83,6 +83,26 @@ bool ModuleAudio::CleanUp() {	//Frees all Mix_Music from the musics array and ex
 	return true;
 }
 
+bool ModuleAudio::CleanUpScene()
+{
+	LOG("Cleaning up Audio libraries in Scene");
+
+	// Free all music existing in the musics array
+	Mix_HaltMusic();
+
+	//Free all sounds existing on the sounds array
+	for (uint i = 0; i < MAX_SOUNDS; ++i)
+	{
+		if (sounds[i] != nullptr)
+		{
+			Mix_FreeChunk(sounds[i]);
+			sounds[i] = nullptr;
+		}
+	}
+
+	return true;
+}
+
 bool ModuleAudio::PlayMusic(const char* path, float fade_time) {	//Loads and returns a Mix_Music* from the given path
 
 	bool ret = true;

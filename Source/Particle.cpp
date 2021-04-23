@@ -9,9 +9,24 @@ Particle::Particle()
 }
 
 Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), speed(p.speed),
-										frameCount(p.frameCount), lifetime(p.lifetime)
+										frameCount(p.frameCount), lifetime(p.lifetime), renderTex(p.renderTex)
 {
 
+}
+
+Particle::Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor, float rotation)
+{
+	position.SetToZero();
+	speed.SetToZero();
+	anim.loop = false;
+	anim.hasIdle = false;
+	isAlive = true;
+
+	anim.speed = animSpeed;
+	renderTex = tex;
+	this->lifetime = lifetime;
+	this->flipHor = flipHor;
+	this->rotation = rotation;
 }
 
 Particle::~Particle()

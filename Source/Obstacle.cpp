@@ -8,8 +8,8 @@ Obstacle::Obstacle()
 
 }
 
-Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture,bool trigger) {
-
+Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Texture* texture, bool trigger)
+{
 	this->r = collider->rect;
 	this->destructible = destructible;
 	this->collider = collider;
@@ -17,7 +17,8 @@ Obstacle::Obstacle(SDL_Rect r, bool destructible, Collider* collider, SDL_Textur
 	this->trigger = trigger;
 }
 
-Obstacle::Obstacle(const Obstacle& Obs) {
+Obstacle::Obstacle(const Obstacle& Obs) 
+{
 	this->r = Obs.collider->rect;
 	this->collider = Obs.collider; 
 	this->trigger = Obs.trigger;
@@ -25,8 +26,12 @@ Obstacle::Obstacle(const Obstacle& Obs) {
 	this->destructible = Obs.destructible;
 }
 
-Obstacle::~Obstacle() {
-
+Obstacle::~Obstacle()
+{
+	if(collider!=nullptr)
+	{
+		collider->pendingToDelete = true;
+	}
 }
 
 void Obstacle::SetDestructible(bool destructible)
@@ -105,4 +110,9 @@ void Obstacle::OnCollision(Collider* col)
 void Obstacle::Die()
 {
 	LOG("Obstacle Destroyed");
+}
+
+void Obstacle::CleanUp()
+{
+	LOG("Obstacle Clean");
 }

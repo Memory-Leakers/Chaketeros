@@ -20,11 +20,9 @@ class Player {
 private:
 	int lives = 2;
 	int score = 0;
-	int maxBombs = 1;
-	bool pUpBomb = false;
-	bool pUpFlame = false;
-	bool pUpKick = false;
-	bool pUpVest = false;
+
+	int pUpKick = 0;
+	int pUpVest = 0;
 
 	SDL_Rect bounds;
 
@@ -80,7 +78,9 @@ public:
 	Animation leftAnim;
 	Animation rightAnim;
 
-	//Test Sound
+	int pUpFlame = 0;
+
+	int maxBombs = 1;
 };
 #endif // __PLAYER_H__
 

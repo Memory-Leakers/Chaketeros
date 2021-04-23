@@ -128,6 +128,9 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
+        <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreMecha.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
@@ -235,6 +238,9 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
+        <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreMecha.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>

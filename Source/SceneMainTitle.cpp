@@ -29,7 +29,7 @@ bool SceneMainTitle::PostUpdate()
 	return true;
 }
 
-bool SceneMainTitle::CleanUp()
+bool SceneMainTitle::CleanUp(bool finalCleanUp)
 {
 	cout << "CleanUp Main Title" << endl;
 	return true;

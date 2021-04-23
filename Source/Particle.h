@@ -4,6 +4,9 @@
 #include "Animation.h"
 #include "Point.h"
 #include "Collider.h"
+//#include "External/SDL_image/include/SDL_image.h"
+
+struct SDL_Texture;
 
 class Particle
 {
@@ -14,6 +17,7 @@ public:
 	// Copy constructor
 	Particle(const Particle& p);
 
+	Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor = true, float rotation = 0);
 	// Destructor
 	~Particle();
 
@@ -36,6 +40,12 @@ public:
 	// Particles will be set to not alive until "spawnTime" is reached
 	bool isAlive = false;
 
+	// Flip when draw
+	bool flipHor = true;
+
+	// rotaion when draw
+	float rotation = 0;
+
 	// Defines the time when the particle will be spawned
 	int frameCount = 0;
 
@@ -44,6 +54,8 @@ public:
 
 	// The particle's 
 	Collider* col  = nullptr;
+
+	SDL_Texture* renderTex = nullptr;
 };
 
 #endif //__PARTICLE_H__

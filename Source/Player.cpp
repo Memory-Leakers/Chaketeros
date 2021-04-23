@@ -106,6 +106,7 @@ UpdateResult Player::Update()
 			isFlip = false;
 		}
 	}
+	
 	if (App->input->keys[SDL_SCANCODE_D] != KEY_REPEAT &&
 		App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT &&
 		App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT &&
@@ -130,8 +131,15 @@ UpdateResult Player::PostUpdate()
 
 	iPoint tempPos = position;
 	tempPos.y -= 6;
-
-	App->render->DrawTexture(texture, tempPos, &rect, isFlip);
+	
+	if(isFlip)
+	{
+		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+	}
+	else
+	{
+		App->render->DrawTexture(texture, tempPos, &rect);
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }

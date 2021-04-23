@@ -13,7 +13,8 @@
 
 struct SDL_Texture;
 
-#define SCENE_OBSTACLES_NUM 128
+#define SCENE_OBSTACLES_NUM 256
+#define MAX_EMPTY_SPACES 104
 
 class SceneLevel1 : public Scene
 {
@@ -28,6 +29,8 @@ public:
 	// Loads the necessary textures for the map background
 	bool Start() override;
 
+	bool PreUpdate() override;
+
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
 	bool Update() override;
@@ -38,9 +41,13 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
-	bool CleanUp() override;
+	bool CleanUp(bool finalCleanUp = true) override;
 
+	void CreateScene();
 
+	void CreateYellowFlowers();
+
+	void LoadAsset();
 
 };
 

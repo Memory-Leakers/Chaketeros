@@ -2,30 +2,7 @@
 
 GlassCapsule::GlassCapsule()
 {
-    //x and y position;
-    texture = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Fragments_with_machine.png");
-    /*SetRect({ 103,64,50,52 });
-    
-    this->SetType(Type::WALL);
-    this->SetDestructible(false);
-    */
-    Obstacle::Obstacle({ 0,0,16,16 }, false, App->collisions->AddCollider(getRect(), Type::WALL, App->scene), texture);
-    idleAnim.hasIdle = false;
-
-    idleAnim.PushBack({ 46,112,48,64 });
-    idleAnim.PushBack({ 102,112,48,64 });
-    idleAnim.PushBack({ 157,112,48,64 });
-    idleAnim.PushBack({ 102,112,48,64 });
-    idleAnim.speed = 0.05f;
-    idleAnim.loop = true;
-    currentAnim = &idleAnim;
-
-    withoutglassAnim.PushBack({ 45,191,48,49 });
-    withoutglassAnim.PushBack({ 101,189,48,51 });
-    withoutglassAnim.PushBack({ 156,186,48,54 });
-    withoutglassAnim.loop = true;
-
-    withoutfragments.PushBack({});
+    LOG("Constructor GlassCapsule");
 }
 
 GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::WALL, App->scene), tex)
@@ -48,10 +25,8 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
         }
     }
 
-
 	// Init para animacion
     idleAnim.hasIdle = false;
-
     idleAnim.PushBack({ 46,112,48,64 });
     idleAnim.PushBack({ 102,112,48,64 });
     idleAnim.PushBack({ 157,112,48,64 });

@@ -15,35 +15,7 @@ bool ModuleParticles::Start()
 {
 	LOG("Loading particles");
 
-	explosionTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
-	//// ExplosionCenter particle
-	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
-	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
-	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
-	explosionCenter.anim.loop = false;
-	explosionCenter.anim.speed = 0.001f;
-	explosionCenter.lifetime = 200;
-	explosionCenter.anim.hasIdle = true;
-
-	//// ExplosionMiddle particle
-	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
-	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
-	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
-	explosionMiddle.anim.loop = false;
-	explosionMiddle.anim.speed = 0.001f;
-	explosionMiddle.lifetime = 200;
-	explosionMiddle.anim.hasIdle = true;
-	explosionMiddle.anim.Reset();
-
-	//// ExplosionEnd particle
-	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
-	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
-	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
-	explosionEnd.anim.loop = false;
-	explosionEnd.anim.speed = 0.001f;
-	explosionEnd.lifetime = 200;
-	explosionEnd.anim.hasIdle = true;
+	powerUpDestroyedTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 
 	return true;
 }
@@ -96,6 +68,24 @@ void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 	}
 }
 
+UpdateResult ModuleParticles::PreUpdate()
+{
+	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	{
+		Particle* particle = particles[i];
+
+		if (particle == nullptr)	continue;
+
+		if(particle->anim.HasFinished())
+		{
+			delete particle;
+			particles[i] = nullptr;
+		}
+	}
+
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
 UpdateResult ModuleParticles::Update()
 {
 	for(uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
@@ -124,7 +114,14 @@ UpdateResult ModuleParticles::PostUpdate()
 
 		if (particle != nullptr && particle->isAlive)
 		{
-			App->render->DrawTexture(explosionTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
+			if (particle->rotation != 0)
+			{
+				App->render->DrawRotateTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), particle->flipHor, particle->rotation);
+			}
+			else
+			{
+				App->render->DrawTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()));
+			}
 		}
 	}
 
@@ -156,7 +153,7 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type
 	}
 }
 
-void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, uint delay)
+void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, bool flipHor, float rotation, uint delay)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -168,6 +165,8 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type T
 			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
 			p->position.x = pos.x;					// so when frameCount reaches 0 the particle will be activated
 			p->position.y = pos.y;
+			p->flipHor = flipHor;
+			p->rotation = rotation;
 
 			// Adding the particle's 
 			if (Type != Type::NONE)

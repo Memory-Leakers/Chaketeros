@@ -8,22 +8,47 @@ Bomb::Bomb()
 	LOG("Bomb constructor");
 }
 
-Bomb::Bomb(iPoint pos, SDL_Texture* tex) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
+Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
-	// Inicializar animacion prestablecida de la bomba
-	defaultAnim.hasIdle = false;
+	explosionCenter = *e1;
+	explosionMiddle = *e2;
+	explosionEnd = *e3;
 
-	// Obtener la textura de bomba	
-	
-	defaultAnim.hasIdle = false;
 	// Inicializar animacion prestablecida de la bomba
+	defaultAnim.hasIdle = false;
+	defaultAnim.speed = 0.02f;
+	defaultAnim.loop = true;
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 	defaultAnim.PushBack({ 1,39,16,16 }); //big
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+
+	// Assignar anamacion prestablecida a currentAnim
+	currentAnim = &defaultAnim;
+
+	// Init TimeCount
+	startCountTime = SDL_GetPerformanceCounter();
+}
+
+Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) 
+:Obstacle({ player->position.x, player->position.y, 16, 16 }, true, App->collisions->AddCollider({ player->position.x, player->position.y, 16, 16 }, Type::BOMB, App->scene), tex)
+{
+	this->player = player;
+
+	explosionCenter = *e1;
+	explosionMiddle = *e2;
+	explosionEnd = *e3;
+
+	explotionRange += player->pUpFlame;
+
+	// Inicializar animacion prestablecida de la bomba
+	defaultAnim.hasIdle = false;
 	defaultAnim.speed = 0.02f;
-	//defaultAnim.hasIdle = false;
 	defaultAnim.loop = true;
+	defaultAnim.PushBack({ 1,1,16,16 });  //small
+	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+	defaultAnim.PushBack({ 1,39,16,16 }); //big
+	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 
 	// Assignar anamacion prestablecida a currentAnim
 	currentAnim = &defaultAnim;
@@ -34,24 +59,16 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex) :Obstacle({ pos.x, pos.y, 16, 16 }, tru
 
 Bomb::~Bomb()
 {
-	// Liberar memoria de animacion
-	if (currentAnim != nullptr)
-	{
-		delete currentAnim;
-		currentAnim = nullptr;
-	}
 }
 
 void Bomb::Update()
 {
-	// Actualizar la posicion de colision
 	ColUpdate();
 
-	// Acualizar frame de animacion
 	currentAnim->Update();
 
-	// TEST
-	if (!die)
+	// Count down
+	if (!pendingToDelete)
 	{
 		// Cuenta Atras para que la bomba se explota
 		double currentCountTime = SDL_GetPerformanceCounter();
@@ -66,38 +83,57 @@ void Bomb::Update()
 
 void Bomb::PostUpdate()
 {
-	App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
+	if(!pendingToDelete)
+	{
+		App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
+	}
 }
 
 void Bomb::Die()
 {
 	LOG("BombDie");
-	die = true;
+	pendingToDelete = true;
 	// Centro de la explocion
-	App->particle->AddParticle(App->particle->explosionCenter, getPosition(), Type::EXPLOSION);
+	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
 	for (int i = 1; i < explotionRange; i++)
 	{
-		// 4 Direcciones de explocion
+		// 4 direction for explotion
 		iPoint dir[4] = {
-		{ (i) * 16, 0 },
-		{ 0, (i) * 16 },
-		{ (i) * -16, 0 },
-		{ 0, (i) * -16 }
+		{ (i) * 16, 0 }, // Right
+		{ 0, (i) * 16 }, // Down
+		{ (i) * -16, 0 },// Left
+		{ 0, (i) * -16 } // Up
 		};
+
+		// 4 rotation for explotion
+		float rotation[4] = { 0, 270, 180, 90 };
+		bool flipHor = true;
 
 		for (int j = 0; j < 4; ++j)
 		{
-			// Explosion Middle
-			App->particle->AddParticle(App->particle->explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
-
+			flipHor = true;
 			// Explosopn End
 			if (i == explotionRange - 1)
 			{		
 				++i;
-				App->particle->AddParticle(App->particle->explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
+				if (j == 2)
+				{
+					flipHor = false;
+				}
+				App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION, flipHor, rotation[j]);
 				--i;
+			}
+			else
+			{
+				// Explosion Middle
+				App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION, flipHor, rotation[j]);
 			}
 		}
 	}
+}
+
+void Bomb::CleanUp()
+{
+	player->maxBombs++;
 }

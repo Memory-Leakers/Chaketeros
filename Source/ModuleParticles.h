@@ -27,6 +27,8 @@ public:
 	// Loads the necessary textures for the particles
 	bool Start() override;
 
+	UpdateResult PreUpdate() override;
+
 	// Called at the middle of the application loop
 	// Iterates all the particles and calls its Update()
 	// Removes any "dead" particles
@@ -55,24 +57,19 @@ public:
 	// Param particle	- A template particle from which the new particle will be created
 	// Param pos		- Position x,y in the screen (upper left axis)
 	// Param delay		- Delay time from the moment the function is called until the particle is displayed in screen
-	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, uint delay = 0);
+	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, bool flipHor = true, float rotation = 0, uint delay = 0);
 
 private:
+
 	// Particles spritesheet loaded into an SDL Texture
-	SDL_Texture* explosionTexture = nullptr;
+	SDL_Texture* powerUpDestroyedTexture = nullptr;
 
 	// An array to store and handle all the particles
 	Particle* particles[MAX_ACTIVE_PARTICLES] = { nullptr };
 
 public:
-	//Template particle for an center of explosion
-	Particle explosionCenter;
 
-	//Template particle for an middle of explosion
-	Particle explosionMiddle;
-
-	//Template particle for an end of explosion
-	Particle explosionEnd;
+	Particle powerUpDestroyed;
 };
 
 #endif // __MODULEPARTICLES_H__

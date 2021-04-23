@@ -3,7 +3,6 @@
 
 #include "Scene.h"
 
-
 #include "SceneGameOver.h"
 #include "SceneIntro.h"
 #include "SceneMainTitle.h"
@@ -25,12 +24,12 @@ struct SDL_Texture;
 
 enum SCENE_NUM
 {
-	INTRO,
-	TITLE,
-	AREA,
-	STAGE,
-	LEVEL1,
-	GAME_OVER
+	INTRO_SCENE,
+	TITLE_SCENE,
+	AREA_SCENE,
+	STAGE_SCENE,
+	LEVEL1_SCENE,
+	GAME_OVER_SCENE
 };
 
 class ModuleScene : public Module
@@ -46,6 +45,8 @@ public:
 	// Loads the necessary textures for the map background
 	bool Start() override;
 
+	UpdateResult PreUpdate() override;
+
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
 	UpdateResult Update() override;
@@ -56,7 +57,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
-	void ChangeCurrentScene(uint index);
+	void ChangeCurrentScene(uint index, int frames);
 
 	bool CleanUp() override;
 
@@ -64,6 +65,21 @@ private:
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
 	Scene* currentScene = nullptr;
+
+	enum FadeSteps
+	{
+		FADE_NONE,
+		FADE_OUT,
+		FADE_IN
+	};
+
+	FadeSteps currentStep = FADE_NONE;
+
+	int currentFrame = 0, maxFrames;
+
+	SDL_Rect screenRect;
+
+	uint newScene;
 
 };
 

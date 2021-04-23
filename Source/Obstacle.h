@@ -16,7 +16,7 @@ public:
 	SDL_Texture* texture = nullptr;
 
 	// Animacion actual del obstaculo (NO TODO LOS OBSTACULOS TIENEN ANIMACION)
-	Animation* currentAnim = nullptr;
+	//Animation* currentAnim = nullptr;
 	
 public:
 //methods
@@ -51,6 +51,9 @@ public:
 	virtual void Update();
 	virtual void PostUpdate();
 	virtual void Die();
+	virtual void CleanUp();
+
+	bool pendingToDelete = false;
 
 };
 #endif // !__OBSTACLE_H__
