@@ -17,7 +17,7 @@ public:
 
 	iPoint pivotPoint = { r.w / 2, r.h / 2 };
 
-	// 0 = EMPTY; 1 = INVISIBLE_WALL; 2 = STONE; 3 = RED FLOWER; 4 = NON EMPTY SPACE; 9 = GLASS CAPSULE
+	// 0 = EMPTY; 1 = INVISIBLE_WALL; 2 = STONE; 3 = RED FLOWER; 4 = NON EMPTY SPACE; 5 = YELLOW FLOWER	; 9 = GLASS CAPSULE
 
 	int Level1TileMap[13][15]
 	{

@@ -48,7 +48,7 @@ UpdateResult ModuleScene::Update()
 		}
 		return UpdateResult::UPDATE_CONTINUE;
 	}
-	else //Si no es FADE_NONE o FADE_IN deberá ser FADE_OUT
+	else //Si no es FADE_NONE o FADE_IN deber?ser FADE_OUT
 	{
 		--currentFrame;		//Restamos la opacidad del rectángulo negro
 		currentScene->Update();

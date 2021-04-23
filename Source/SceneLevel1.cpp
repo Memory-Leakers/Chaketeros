@@ -103,15 +103,6 @@ bool SceneLevel1::Start()
 
 	bool ret = true;
 
-	for (int i = 0, k = 0; i < 13; ++i)
-	{
-		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
-		{
-			cout << tileMap.Level1TileMap[i][j] << ",";
-		}
-		cout << endl;
-	}
-
 	*sceneObstacles = { nullptr };
 
 	// Inicializar jugador
@@ -157,9 +148,10 @@ bool SceneLevel1::Start()
 
 	CreateYellowFlowers();
 
+	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
-		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
+		for (int j = 0; j < 15; ++j)	
 		{
 			cout << tileMap.Level1TileMap[i][j] << ",";
 		}
@@ -177,7 +169,7 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
+		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
 	}
 
 	// Update obstacle
@@ -197,7 +189,7 @@ bool SceneLevel1::PostUpdate()
 	SDL_Rect rectUI = { 0,0,256,23 };
 
 	// Draw Map
-	App->render->DrawTexture(texMap, { 0,20 }, nullptr);
+	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
@@ -287,7 +279,6 @@ void SceneLevel1::CreateYellowFlowers()
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-
 				iPoint temporal = tileMap.getTilePos(emptySpaces.at(randomNum));
 
 				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
@@ -295,22 +286,9 @@ void SceneLevel1::CreateYellowFlowers()
 				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texDie);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				tileMap.Level1TileMap[temp.y-1][temp.x] = 5;	//-1 en Y no sabemos por qué ?¿?
+				tileMap.Level1TileMap[temp.y-1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
-
-
-
-				for (int x = 0; x < 13; ++x)
-				{
-					for (int y = 0; y < 15; ++y)	//Check TileMap x axis
-					{
-						cout << tileMap.Level1TileMap[x][y] << ",";
-					}
-					cout << endl;
-				}
-
-				cout << endl;
 
 				break;
 			}

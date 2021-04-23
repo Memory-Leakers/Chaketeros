@@ -6,7 +6,6 @@ Coin::~Coin()
 
 Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, position.y, 16, 16 }, true, App->collisions->AddCollider({ position.x, position.y, 16, 16 }, Type::NONE, App->scene), texture)
 {
-
 	idle.hasIdle = false;
 
 	idle.PushBack({ 5,6,16,17 });

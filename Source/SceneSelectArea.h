@@ -3,8 +3,6 @@
 
 #include "Scene.h"
 
-
-
 class SceneSelectArea : public Scene
 {
 public:
