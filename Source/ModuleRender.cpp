@@ -82,7 +82,7 @@ bool ModuleRender::CleanUp()
 }
 
 // Draw to screen
-bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, bool flip, float speed)
+bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed)
 {
 	bool ret = true;
 
@@ -105,29 +105,16 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 	rect.w *= SCREEN_SIZE;
 	rect.h *= SCREEN_SIZE;
 
-	if (flip)
+	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{
-		SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
-
-		if (SDL_RenderCopyEx(renderer, texture, section, &rect, 180, NULL, flip))
-		{
-			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-			ret = false;
-		}
-	}
-	else
-	{
-		if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
-		{
-			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-			ret = false;
-		}
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
 	}
 
 	return ret;
 }
 
-bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool flip, float speed)
+bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, float speed)
 {
 	bool ret = true;
 
@@ -150,23 +137,53 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* secti
 	rect.w *= SCREEN_SIZE;
 	rect.h *= SCREEN_SIZE;
 
-	if(flip)
+	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{
-		SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
 
-		if(SDL_RenderCopyEx(renderer, texture, section, &rect, 180, NULL, flip) != 0)
-		{
-			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-			ret = false;
-		}
+	return ret;
+}
+
+bool ModuleRender::DrawRotateTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section, bool flipHor, float rotation, float speed)
+{
+	bool ret = true;
+
+	SDL_Rect rect = {
+		(int)(camera.x * speed) + pos.x * SCREEN_SIZE,
+		(int)(camera.y * speed) + pos.y * SCREEN_SIZE,
+		0, 0 };
+
+	if (section != nullptr)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
 	}
 	else
 	{
-		if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
-		{
-			LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
-			ret = false;
-		}
+		// Collect the texture size into rect.w and rect.h variables
+		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+	}
+
+	rect.w *= SCREEN_SIZE;
+	rect.h *= SCREEN_SIZE;
+
+	SDL_RendererFlip flip;
+
+	if (flipHor)
+	{
+		flip = SDL_FLIP_HORIZONTAL;
+	}
+	else
+	{
+		flip = SDL_FLIP_VERTICAL;
+	}
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, rotation, NULL, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
 	}
 
 	return ret;

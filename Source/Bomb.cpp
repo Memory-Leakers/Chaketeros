@@ -98,27 +98,36 @@ void Bomb::Die()
 
 	for (int i = 1; i < explotionRange; i++)
 	{
-		// 4 Direcciones de explocion
+		// 4 direction for explotion
 		iPoint dir[4] = {
-		{ (i) * 16, 0 },
-		{ 0, (i) * 16 },
-		{ (i) * -16, 0 },
-		{ 0, (i) * -16 }
+		{ (i) * 16, 0 }, // Right
+		{ 0, (i) * 16 }, // Down
+		{ (i) * -16, 0 },// Left
+		{ 0, (i) * -16 } // Up
 		};
+
+		// 4 rotation for explotion
+		float rotation[4] = { 0, 270, 180, 90 };
+		bool flipHor = true;
 
 		for (int j = 0; j < 4; ++j)
 		{
+			flipHor = true;
 			// Explosopn End
 			if (i == explotionRange - 1)
 			{		
 				++i;
-				App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
+				if (j == 2)
+				{
+					flipHor = false;
+				}
+				App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION, flipHor, rotation[j]);
 				--i;
 			}
 			else
 			{
 				// Explosion Middle
-				App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
+				App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION, flipHor, rotation[j]);
 			}
 		}
 	}

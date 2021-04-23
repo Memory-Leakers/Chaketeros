@@ -57,7 +57,7 @@ public:
 	// Param particle	- A template particle from which the new particle will be created
 	// Param pos		- Position x,y in the screen (upper left axis)
 	// Param delay		- Delay time from the moment the function is called until the particle is displayed in screen
-	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, uint delay = 0);
+	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, bool flipHor = true, float rotation = 0, uint delay = 0);
 
 private:
 

@@ -114,7 +114,14 @@ UpdateResult ModuleParticles::PostUpdate()
 
 		if (particle != nullptr && particle->isAlive)
 		{
-			App->render->DrawTexture(particle->renderTex, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
+			if (particle->rotation != 0)
+			{
+				App->render->DrawRotateTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), particle->flipHor, particle->rotation);
+			}
+			else
+			{
+				App->render->DrawTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()));
+			}
 		}
 	}
 
@@ -146,7 +153,7 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type
 	}
 }
 
-void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, uint delay)
+void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, bool flipHor, float rotation, uint delay)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -158,6 +165,8 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type T
 			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
 			p->position.x = pos.x;					// so when frameCount reaches 0 the particle will be activated
 			p->position.y = pos.y;
+			p->flipHor = flipHor;
+			p->rotation = rotation;
 
 			// Adding the particle's 
 			if (Type != Type::NONE)
