@@ -30,7 +30,7 @@ iPoint Tile::getTilePos(iPoint pos)	//EXAMPLE :31, 87
 	pos.x -= pos.x % r.w;	//Calculamos el resto de cada eje	16
 	pos.y -= pos.y % r.w;	// 80
 
-	pos.x /= r.w;	//Encontrar el índice de Level1TileMap 1
+	pos.x /= r.w;	//Encontrar el ú‹dice de Level1TileMap 1
 	pos.y /= r.w;	// 5
 
 

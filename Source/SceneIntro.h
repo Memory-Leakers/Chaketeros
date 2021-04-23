@@ -2,6 +2,7 @@
 #define  _SCENEINTRO_H
 
 #include "Scene.h"
+#include "Application.h"
 
 
 class SceneIntro : public Scene

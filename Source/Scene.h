@@ -2,9 +2,12 @@
 #define _SCENE_H_
 
 #include "Collider.h"
+#include "Text.h"
 
 class Scene
 {
+	protected:
+		Text* text = new Text();
 public:
 	// Constructor
 	Scene();

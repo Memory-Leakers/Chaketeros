@@ -139,6 +139,8 @@ bool SceneLevel1::PostUpdate()
 	// Draw UI
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
+	text->showText(App->render->renderer, 50, 50, "Hellow World!", text->getFonts(80), text->getColors(2));
+
 	return true;
 }
 

@@ -64,7 +64,6 @@ public:
 	ModuleAudio* audio = nullptr;
 	ModuleCollisions* collisions = nullptr;
 	ModuleParticles* particle = nullptr;
-
 };
 
 // Global var made extern for Application ---
