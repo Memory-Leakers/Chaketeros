@@ -16,7 +16,7 @@ public:
 	SDL_Texture* texture = nullptr;
 
 	// Animacion actual del obstaculo (NO TODO LOS OBSTACULOS TIENEN ANIMACION)
-	Animation* currentAnim = nullptr;
+	//Animation* currentAnim = nullptr;
 	
 public:
 //methods

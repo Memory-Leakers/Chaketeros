@@ -6,9 +6,7 @@
 class Stone : public Obstacle
 {
 private:
-
-	Animation idle;
-
+	SDL_Rect renderRect;
 public:
 
 	Stone();

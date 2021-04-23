@@ -15,37 +15,7 @@ bool ModuleParticles::Start()
 {
 	LOG("Loading particles");
 
-	explosionTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
-	//// ExplosionCenter particle
-	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
-	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
-	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
-	explosionCenter.anim.loop = false;
-	explosionCenter.anim.speed = 0.01f;
-	explosionCenter.lifetime = 500;
-	explosionCenter.anim.hasIdle = false;
-	explosionCenter.isAlive = true;
-
-	//// ExplosionMiddle particle
-	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
-	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
-	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
-	explosionMiddle.anim.loop = false;
-	explosionMiddle.anim.speed = 0.01f;
-	explosionMiddle.lifetime = 500;
-	explosionMiddle.anim.hasIdle = false;
-	explosionMiddle.isAlive = true;
-
-	//// ExplosionEnd particle
-	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
-	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
-	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
-	explosionEnd.anim.loop = false;
-	explosionEnd.anim.speed = 0.01f;
-	explosionEnd.lifetime = 500;
-	explosionEnd.anim.hasIdle = false;
-	explosionEnd.isAlive = true;
+	powerUpDestroyedTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 
 	return true;
 }
@@ -144,7 +114,7 @@ UpdateResult ModuleParticles::PostUpdate()
 
 		if (particle != nullptr && particle->isAlive)
 		{
-			App->render->DrawTexture(explosionTexture, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
+			App->render->DrawTexture(particle->renderTex, particle->position.x, particle->position.y, &(particle->anim.GetCurrentFrame()));
 		}
 	}
 

@@ -4,6 +4,9 @@
 #include "Animation.h"
 #include "Point.h"
 #include "Collider.h"
+//#include "External/SDL_image/include/SDL_image.h"
+
+struct SDL_Texture;
 
 class Particle
 {
@@ -13,6 +16,8 @@ public:
 
 	// Copy constructor
 	Particle(const Particle& p);
+
+	Particle(bool explosion, float lifetime, float animSpeed, SDL_Texture* tex);
 
 	// Destructor
 	~Particle();
@@ -44,6 +49,8 @@ public:
 
 	// The particle's 
 	Collider* col  = nullptr;
+
+	SDL_Texture* renderTex = nullptr;
 };
 
 #endif //__PARTICLE_H__

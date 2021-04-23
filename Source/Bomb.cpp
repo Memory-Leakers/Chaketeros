@@ -8,22 +8,20 @@ Bomb::Bomb()
 	LOG("Bomb constructor");
 }
 
-Bomb::Bomb(iPoint pos, SDL_Texture* tex) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
+Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
-	// Inicializar animacion prestablecida de la bomba
-	defaultAnim.hasIdle = false;
+	explosionCenter = *e1;
+	explosionMiddle = *e2;
+	explosionEnd = *e3;
 
-	// Obtener la textura de bomba	
-	
-	defaultAnim.hasIdle = false;
 	// Inicializar animacion prestablecida de la bomba
+	defaultAnim.hasIdle = false;
+	defaultAnim.speed = 0.02f;
+	defaultAnim.loop = true;
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 	defaultAnim.PushBack({ 1,39,16,16 }); //big
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
-	defaultAnim.speed = 0.02f;
-	//defaultAnim.hasIdle = false;
-	defaultAnim.loop = true;
 
 	// Assignar anamacion prestablecida a currentAnim
 	currentAnim = &defaultAnim;
@@ -74,7 +72,7 @@ void Bomb::Die()
 	LOG("BombDie");
 	die = true;
 	// Centro de la explocion
-	App->particle->AddParticle(App->particle->explosionCenter, getPosition(), Type::EXPLOSION);
+	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
 	for (int i = 1; i < explotionRange; i++)
 	{
@@ -92,13 +90,13 @@ void Bomb::Die()
 			if (i == explotionRange - 1)
 			{		
 				++i;
-				App->particle->AddParticle(App->particle->explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
+				App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION);
 				--i;
 			}
 			else
 			{
 				// Explosion Middle
-				App->particle->AddParticle(App->particle->explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
+				App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION);
 			}
 		}
 	}

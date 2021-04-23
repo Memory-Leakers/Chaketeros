@@ -33,6 +33,16 @@ SDL_Texture* texCoin = nullptr;
 SDL_Texture* texDie = nullptr;
 Player* bomberman = nullptr;
 
+// Particle
+//Template particle for an center of explosion
+Particle* explosionCenter = nullptr;
+
+//Template particle for an middle of explosion
+Particle* explosionMiddle = nullptr;
+
+//Template particle for an end of explosion
+Particle* explosionEnd = nullptr;
+
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 vector<iPoint> emptySpaces;
 int yellowFlowers;
@@ -47,21 +57,8 @@ SceneLevel1::~SceneLevel1()
 {
 }
 
-bool SceneLevel1::Start()
+void SceneLevel1::LoadAsset()
 {
-	LOG("Loading background assets");
-
-	bool ret = true;
-
-	// Inicializar jugador
-	bomberman = new Player();
-	bomberman->Start();
-
-	//Randomize yellow flowers number
-	
-
-	yellowFlowers = rand() % 6 + 43;
-
 	// Cargar sprites
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
 	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/mapEnv.png");
@@ -75,12 +72,52 @@ bool SceneLevel1::Start()
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 	texDie = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 
+	#pragma region Init Explosion Particle
+
+	// General parameter
+	explosionCenter = new Particle(true, 500.0f, 0.01f, texBomb);
+	explosionMiddle = new Particle(true, 500.0f, 0.01f, texBomb);
+	explosionEnd = new Particle(true, 500.0f, 0.01f, texBomb);
+
+	// ExplosionCenter particle
+	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 40, 16, 16 });
+
+	// ExplosionMiddle particle
+	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
+	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });	
+
+	// ExplosionEnd particle
+	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
+
+#pragma endregion
+}
+
+bool SceneLevel1::Start()
+{
+	LOG("Loading background assets");
+
+	bool ret = true;
+
+	// Inicializar jugador
+	bomberman = new Player();
+	bomberman->Start();
+
+	//Randomize yellow flowers number
+	yellowFlowers = rand() % 6 + 43;
+
+	LoadAsset();
+
 	//-----------------MUSIC TEST------------------------------------------------------------
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
 	//Check TileMap y axis
-	
+	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
@@ -176,7 +213,7 @@ bool SceneLevel1::CleanUp()
 {
 	LOG("Freeing all test");
 
-	// Liberar obstaculos
+	// Delete obstacles
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (sceneObstacles[i] != nullptr)
@@ -186,7 +223,12 @@ bool SceneLevel1::CleanUp()
 		}
 	}
 
-	// Liberar player
+	// Delete particles
+	delete explosionCenter;
+	delete explosionMiddle;
+	delete explosionEnd;
+
+	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
 

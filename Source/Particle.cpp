@@ -9,9 +9,19 @@ Particle::Particle()
 }
 
 Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), speed(p.speed),
-										frameCount(p.frameCount), lifetime(p.lifetime)
+										frameCount(p.frameCount), lifetime(p.lifetime), renderTex(p.renderTex)
 {
 
+}
+
+Particle::Particle(bool explosion, float lifetime, float animSpeed, SDL_Texture* tex)
+{
+	anim.loop = false;
+	anim.hasIdle = false;
+	anim.speed = animSpeed;
+	renderTex = tex;
+	this->lifetime = lifetime;
+	isAlive = true;
 }
 
 Particle::~Particle()

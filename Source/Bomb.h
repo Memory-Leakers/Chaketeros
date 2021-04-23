@@ -19,14 +19,18 @@ private:
 	int attack = 1;
 
 	// Animacion actual de la bomba
-	//Animation* currentAnim = nullptr;
+	Animation* currentAnim = nullptr;
 
 	// Animaciones de la bomba
 	Animation defaultAnim;
 
+	Particle explosionCenter;
+	Particle explosionMiddle;
+	Particle explosionEnd;
+
 public:
 	Bomb();
-	Bomb(iPoint pos, SDL_Texture* tex);
+	Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
 	~Bomb();
 
  	void PostUpdate() override;

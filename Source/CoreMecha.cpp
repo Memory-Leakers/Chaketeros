@@ -5,10 +5,11 @@ CoreMecha::CoreMecha()
 	LOG("Constructor yellowFlower");
 }
 
-CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
+CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->texDie = texDie;
+	this->destroyed = *destroyed;
 
 	renderRect = { 9, 8, 16, 16 };
 
@@ -28,11 +29,10 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie) : Obstac
 
 void CoreMecha::Die()
 {
-	//currentAnim = &die;
+	//Add Destrpyed particle in module particle
 }
 
 void CoreMecha::PostUpdate()
 {
-	//LOG("FlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\nFlowerUpdate\n");
 	App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &renderRect);
 }

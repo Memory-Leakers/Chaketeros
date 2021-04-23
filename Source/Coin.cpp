@@ -17,7 +17,6 @@ Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, posit
 	idle.loop = true;
 
 	currentAnim = &idle;
-
 }
 
 void Coin::PostUpdate()

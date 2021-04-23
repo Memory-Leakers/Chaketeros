@@ -14,12 +14,14 @@ private:
 	//Animation idle, die;
 	Animation* currentAnim = nullptr;
 
+	Particle destroyed;
+
 	bool isDead = false;
 
 public:
 
 	CoreMecha();
-	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie);
+	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed);
 
 	void Die() override;
 

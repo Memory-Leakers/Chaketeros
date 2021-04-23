@@ -60,21 +60,16 @@ public:
 	void AddParticle(const Particle& particle, iPoint pos, Type Type = Type::NONE, uint delay = 0);
 
 private:
+
 	// Particles spritesheet loaded into an SDL Texture
-	SDL_Texture* explosionTexture = nullptr;
+	SDL_Texture* powerUpDestroyedTexture = nullptr;
 
 	// An array to store and handle all the particles
 	Particle* particles[MAX_ACTIVE_PARTICLES] = { nullptr };
 
 public:
-	//Template particle for an center of explosion
-	Particle explosionCenter;
 
-	//Template particle for an middle of explosion
-	Particle explosionMiddle;
-
-	//Template particle for an end of explosion
-	Particle explosionEnd;
+	Particle powerUpDestroyed;
 };
 
 #endif // __MODULEPARTICLES_H__

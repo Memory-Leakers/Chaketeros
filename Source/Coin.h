@@ -5,10 +5,9 @@
 
 class Coin : public Obstacle
 {
-
 private:
 	Animation idle;
-
+	Animation* currentAnim = nullptr;
 public:
 
 	~Coin();
@@ -17,8 +16,6 @@ public:
 
 	void PostUpdate() override;
 };
-
-
 
 
 #endif //_COIN_H_!

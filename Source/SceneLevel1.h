@@ -43,7 +43,7 @@ public:
 
 	void CreateYellowFlowers();
 
-
+	void LoadAsset();
 
 };
 
