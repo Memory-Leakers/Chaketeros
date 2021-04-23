@@ -29,7 +29,7 @@ bool SceneSelectStage::PostUpdate()
 	return true;
 }
 
-bool SceneSelectStage::CleanUp()
+bool SceneSelectStage::CleanUp(bool finalCleanUp)
 {
 	cout << "CleanUp Select Stage" << endl;
 	return true;

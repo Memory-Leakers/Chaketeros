@@ -29,7 +29,7 @@ bool SceneSelectArea::PostUpdate()
 	return true;
 }
 
-bool SceneSelectArea::CleanUp()
+bool SceneSelectArea::CleanUp(bool finalCleanUp)
 {
 	cout << "CleanUp Select Area" << endl;
 	return true;

@@ -45,6 +45,8 @@ public:
 
 	bool CleanUp() override; //Frees Music and exits MIX
 
+	bool CleanUpScene();
+
 	//Loads the introduced path into a Mix_Music pointer
 	//and locates it into de musics[MAX_MUSICS] array
 	bool PlayMusic(const char* path, float fade_time); 

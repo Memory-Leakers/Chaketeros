@@ -27,7 +27,7 @@ void Scene::OnCollision(Collider* c1, Collider* c2)
 {
 }
 
-bool Scene::CleanUp()
+bool Scene::CleanUp(bool finalCleanUp)
 {
 	return true;
 }

@@ -42,6 +42,8 @@ public:
 
 	iPoint getTilePos(iPoint pos);
 
+	void Reset();
+
 };
 
 

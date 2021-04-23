@@ -13,8 +13,8 @@ iPoint Tile::getWorldPos(iPoint pos)
 
 	ret.x += 8;	//Ajuste para que encajen las Tiles
 
-	ret.x += pivotPoint.x;	//Ajuste para que se alinee con el Pivot Point
-	ret.y += pivotPoint.y;
+	/*ret.x += pivotPoint.x;	//Ajuste para que se alinee con el Pivot Point
+	ret.y += pivotPoint.y;*/
 
 	ret.x += pos.x * 16;
 	ret.y += pos.y * 16;
@@ -35,4 +35,18 @@ iPoint Tile::getTilePos(iPoint pos)	//EXAMPLE :31, 87
 
 
 	return {pos.x, pos.y};
+}
+
+void Tile::Reset()
+{
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)
+		{
+			if (Level1TileMap[i][j] == 5)
+			{
+				Level1TileMap[i][j] = 0;
+			}
+		}
+	}
 }

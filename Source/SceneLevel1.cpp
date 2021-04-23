@@ -103,6 +103,17 @@ bool SceneLevel1::Start()
 
 	bool ret = true;
 
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
+		{
+			cout << tileMap.Level1TileMap[i][j] << ",";
+		}
+		cout << endl;
+	}
+
+	*sceneObstacles = { nullptr };
+
 	// Inicializar jugador
 	bomberman = new Player();
 	bomberman->Start();
@@ -114,7 +125,7 @@ bool SceneLevel1::Start()
 
 	//-----------------MUSIC TEST------------------------------------------------------------
 
-	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	//App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
@@ -125,16 +136,16 @@ bool SceneLevel1::Start()
 			switch (tileMap.Level1TileMap[i][j])
 			{
 			case 0:
-				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {8, -8});
+				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {0, -16});
 				break;
 			case 2:
-				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {8, -8}, texStone);
+				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
-				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {8, -8}, texRedFlower);
+				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texRedFlower);
 				break;
 			case 9:
-				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {8, -8}, texGlassCapsule);
+				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
 				break;
@@ -142,7 +153,18 @@ bool SceneLevel1::Start()
 		}
 	}
 
+	cout << endl;
+
 	CreateYellowFlowers();
+
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
+		{
+			cout << tileMap.Level1TileMap[i][j] << ",";
+		}
+		cout << endl;
+	}
 
 	return ret;
 }
@@ -152,6 +174,11 @@ bool SceneLevel1::Update()
 
 	// Update bomebrman
 	bomberman->Update();
+
+	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
+	{
+		App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
+	}
 
 	// Update obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
@@ -209,10 +236,16 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 	}
 }
 
-bool SceneLevel1::CleanUp()
+bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
 
+	if (!finalCleanUp) {
+		App->audio->CleanUpScene();
+		App->collisions->CleanUpScene();
+		App->textures->CleanUpScene();
+		App->particle->CleanUpScene();
+	}
 	// Delete obstacles
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -223,14 +256,24 @@ bool SceneLevel1::CleanUp()
 		}
 	}
 
+	tileMap.Reset();
+
+	//Delete Vector
+	emptySpaces.clear();
+	emptySpaces.shrink_to_fit();
+
 	// Delete particles
 	delete explosionCenter;
+	explosionCenter = nullptr;
 	delete explosionMiddle;
+	explosionMiddle = nullptr;
 	delete explosionEnd;
+	explosionEnd = nullptr;
 
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
+
 
 	return true;
 }
@@ -244,12 +287,30 @@ void SceneLevel1::CreateYellowFlowers()
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
+
+				iPoint temporal = tileMap.getTilePos(emptySpaces.at(randomNum));
+
+				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
+
 				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texDie);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				tileMap.Level1TileMap[temp.y][temp.x] = 4;
+				tileMap.Level1TileMap[temp.y-1][temp.x] = 5;	//-1 en Y no sabemos por qué ?¿?
 
-				emptySpaces.erase(emptySpaces.begin() + randomNum);		//delete the emptySpace position from the emptySpaces vector
+				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
+
+
+
+				for (int x = 0; x < 13; ++x)
+				{
+					for (int y = 0; y < 15; ++y)	//Check TileMap x axis
+					{
+						cout << tileMap.Level1TileMap[x][y] << ",";
+					}
+					cout << endl;
+				}
+
+				cout << endl;
 
 				break;
 			}

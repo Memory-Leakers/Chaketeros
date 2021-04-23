@@ -23,7 +23,7 @@ public:
 	// Performs the render call of all the parts of the scene's background
 	bool PostUpdate() override;
 
-	bool CleanUp() override;
+	bool CleanUp(bool finalCleanUp = true) override;
 
 
 

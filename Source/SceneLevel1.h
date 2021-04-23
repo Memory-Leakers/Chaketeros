@@ -39,7 +39,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
-	bool CleanUp() override;
+	bool CleanUp(bool finalCleanUp = true) override;
 
 	void CreateYellowFlowers();
 

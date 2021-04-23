@@ -30,7 +30,7 @@ bool SceneGameOver::PostUpdate()
 	return true;
 }
 
-bool SceneGameOver::CleanUp()
+bool SceneGameOver::CleanUp(bool finalCleanUp)
 {
 	cout << "CleanUp Game Over" << endl;
 	return true;
