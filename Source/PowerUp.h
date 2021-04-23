@@ -8,23 +8,19 @@
 class PowerUp
 {
 public:
-    PowerUp(iPoint position, SDL_Texture* tex, bool destruct);
+    PowerUp(iPoint position, SDL_Texture* tex);
 
     ~PowerUp();
 
     void PostUpdate();
 
-
 private:
-    Collider* collision;
-    SDL_Texture* tex;
-    bool destructible;
+    Collider* collision = nullptr;
+    SDL_Texture* texture = nullptr;
+    SDL_Rect* renderRect = nullptr;
+    bool destructible = true;
 
 public:
     iPoint position;
-    Animation idleAnim;
-
-    Animation* currentAnimation;
-
 };
 #endif

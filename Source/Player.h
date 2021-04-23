@@ -21,7 +21,6 @@ private:
 	int lives = 2;
 	int score = 0;
 
-	int pUpBomb = 0;
 	int pUpKick = 0;
 	int pUpVest = 0;
 
