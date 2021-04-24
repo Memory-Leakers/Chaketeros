@@ -236,7 +236,7 @@ bool SceneLevel1::Update()
 	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+		App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
 	}
 
 	// Update bomebrman
@@ -295,7 +295,11 @@ bool SceneLevel1::PostUpdate()
 	// Draw UI
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
-	text->showText(App->render->renderer, 50, 50, "Hellow World!", text->getFonts(80), text->getColors(2));
+	int test = 20;
+	//Draw UI text
+	text->showText(App->render->renderer, 55, 18, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
+	text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
+	text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
 	return true;
 }

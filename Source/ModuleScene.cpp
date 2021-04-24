@@ -3,6 +3,12 @@
 
 ModuleScene::ModuleScene()
 {
+
+	if (TTF_Init() != 0) {
+		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
+		
+	}
+
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
 	scenes[2] = new SceneSelectArea();
@@ -18,6 +24,9 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Start()
 {
 	bool ret = true;
+
+
+
 
 
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle

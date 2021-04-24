@@ -4,6 +4,7 @@
 #include "Collider.h"
 #include "Text.h"
 
+
 class Scene
 {
 	protected:

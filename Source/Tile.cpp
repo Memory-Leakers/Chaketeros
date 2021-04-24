@@ -55,7 +55,7 @@ iPoint Tile::getTilePos(int x, int y)
 	x -= (x % r.w);	//Calculamos el resto de cada eje	16
 	y -= (y % r.w);	// 80
 
-	x /= r.w;	//Encontrar el índice de Level1TileMap 1
+	x /= r.w;	//Encontrar el ú‹dice de Level1TileMap 1
 	y /= r.w;	// 5
 
 	return { x, y};

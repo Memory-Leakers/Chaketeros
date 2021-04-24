@@ -54,10 +54,15 @@ UpdateResult ModuleRender::PreUpdate()
 UpdateResult ModuleRender::Update()
 {
 	// Handle positive vertical movement
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y += cameraSpeed;
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
 
 	// Handle negative vertical movement
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y -= cameraSpeed;
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y += cameraSpeed;
+
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) camera.x += cameraSpeed;
+
+	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
+
 
 	// L4: TODO 1: Handle horizontal movement of the camera
 
@@ -88,8 +93,8 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 	bool ret = true;
 
 	SDL_Rect rect = {
-		(int)(camera.x * speed) + x * SCREEN_SIZE,
-		(int)(camera.y * speed) + y * SCREEN_SIZE,
+		x,
+		y,
 		0, 0 };
 	
 	if (section != nullptr)
@@ -120,8 +125,8 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* secti
 	bool ret = true;
 
 	SDL_Rect rect = {
-		(int)(camera.x * speed) + pos.x * SCREEN_SIZE,
-		(int)(camera.y * speed) + pos.y * SCREEN_SIZE,
+		(int)(-camera.x * speed) + pos.x * SCREEN_SIZE,
+		(int)(-camera.y * speed) + pos.y * SCREEN_SIZE,
 		0, 0 };
 
 	if (section != nullptr)
@@ -152,8 +157,8 @@ bool ModuleRender::DrawRotateTexture(SDL_Texture* texture, iPoint pos, SDL_Rect*
 	bool ret = true;
 
 	SDL_Rect rect = {
-		(int)(camera.x * speed) + pos.x * SCREEN_SIZE,
-		(int)(camera.y * speed) + pos.y * SCREEN_SIZE,
+		(int)(-camera.x * speed) + pos.x * SCREEN_SIZE,
+		(int)(-camera.y * speed) + pos.y * SCREEN_SIZE,
 		0, 0 };
 
 	if (section != nullptr)

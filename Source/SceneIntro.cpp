@@ -42,8 +42,9 @@ bool SceneIntro::PostUpdate()
 {
 	cout << "PostUpdate Scene Intro" << endl;
 
-
+	
 	App->render->DrawTexture(textMap, { 0,20 }, nullptr);
+	text->showText(App->render->renderer, 50, 50, "Hello world", text->getFonts(80), text->getColors(2));
 	//cout << "PostUpdate Scene Intro" << endl;
 
 	return true;

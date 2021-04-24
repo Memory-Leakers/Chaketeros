@@ -26,7 +26,7 @@ void YellowFlower::PostUpdate()
 {
 	if(!pendingToDelete)
 	{
-		App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &renderRect);
+		App->render->DrawTexture(texture, getPosition(), &renderRect);
 	}
 }
 
