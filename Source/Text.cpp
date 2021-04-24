@@ -17,6 +17,7 @@ void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, T
 	textSurface = TTF_RenderText_Solid(testFont,  message.c_str(), color);
 
 	text = SDL_CreateTextureFromSurface(renderer, textSurface);
+
 	textRect.x = x;
 	textRect.y = y;
 	textRect.h = 0;
@@ -24,6 +25,12 @@ void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, T
 	SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);
 
 	SDL_RenderCopy(renderer, text, NULL, &textRect);
+	
+	// Clean memory
+	TTF_CloseFont(testFont);
+	testFont = nullptr;
+	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
 }
 
 

@@ -297,9 +297,9 @@ bool SceneLevel1::PostUpdate()
 
 	int test = 20;
 	//Draw UI text
-	text->showText(App->render->renderer, 55, 18, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+	//App->scene->text->showText(App->render->renderer, 55, 18, "0 : 00", App->scene->text->getFonts(36), App->scene->text->getColors((int) textColour::WHITE));  //Timer
+	//text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
+	//text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
 	return true;
 }

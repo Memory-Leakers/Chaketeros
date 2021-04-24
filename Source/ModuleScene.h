@@ -32,6 +32,8 @@ enum SCENE_NUM
 	GAME_OVER_SCENE
 };
 
+
+
 class ModuleScene : public Module
 {
 public:
@@ -60,6 +62,8 @@ public:
 	void ChangeCurrentScene(uint index, int frames);
 
 	bool CleanUp() override;
+
+	//Text* text = new Text();
 
 private:
 

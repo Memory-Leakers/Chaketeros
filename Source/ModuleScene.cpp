@@ -4,9 +4,9 @@
 ModuleScene::ModuleScene()
 {
 
-	if (TTF_Init() != 0) {
-		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
-		
+	if (TTF_Init() != 0)
+	{
+		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());	
 	}
 
 	scenes[0] = new SceneIntro();
@@ -19,15 +19,12 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
+
 }
 
 bool ModuleScene::Start()
 {
 	bool ret = true;
-
-
-
-
 
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
@@ -47,7 +44,6 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
-
 
 	if (currentStep == FADE_NONE) { currentScene->Update(); return UpdateResult::UPDATE_CONTINUE; }	//Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
 
@@ -121,5 +117,14 @@ bool ModuleScene::CleanUp()
 			scenes[i] = nullptr;
 		}
 	}
+
+	/*if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}*/
+
+	TTF_Quit();
+
 	return true;
 }
