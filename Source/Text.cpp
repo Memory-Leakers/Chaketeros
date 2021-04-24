@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "Application.h"
 
 Text::Text() {
 
@@ -7,14 +8,18 @@ Text::Text() {
 	redC = { 255, 0, 0 };
 }
 
-Text::~Text() {
-	delete textSurface;
-	delete text;
+Text::~Text() 
+{
+	if (font30 != nullptr)
+	{
+		TTF_CloseFont(font30);
+		font30 = nullptr;
+	}
 }
 
-void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* testFont, SDL_Color color) {
+void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, int fontSize, SDL_Color color) {
 
-	textSurface = TTF_RenderText_Solid(testFont,  message.c_str(), color);
+	textSurface = TTF_RenderText_Solid(font30,  message.c_str(), color);
 
 	text = SDL_CreateTextureFromSurface(renderer, textSurface);
 
@@ -22,13 +27,12 @@ void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, T
 	textRect.y = y;
 	textRect.h = 0;
 	textRect.w = 0;
+
 	SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);
 
-	SDL_RenderCopy(renderer, text, NULL, &textRect);
+	SDL_RenderCopy(renderer, text, NULL, &textRect);	
 	
 	// Clean memory
-	TTF_CloseFont(testFont);
-	testFont = nullptr;
 	SDL_FreeSurface(textSurface);
 	textSurface = nullptr;
 }

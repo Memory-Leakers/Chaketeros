@@ -54,6 +54,8 @@ vector<iPoint> emptySpaces;
 int yellowFlowers;
 Tile tileMap;
 
+TTF_Font* testFont = nullptr;
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
@@ -211,6 +213,8 @@ bool SceneLevel1::Start()
 	// Create music
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 
+	testFont = App->scene->text->getFonts(36);
+
 	CreateScene();
 
 	return ret;
@@ -295,9 +299,8 @@ bool SceneLevel1::PostUpdate()
 	// Draw UI
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
-	int test = 20;
 	//Draw UI text
-	//App->scene->text->showText(App->render->renderer, 55, 18, "0 : 00", App->scene->text->getFonts(36), App->scene->text->getColors((int) textColour::WHITE));  //Timer
+	//App->scene->text->showText(App->render->renderer, 55, 18, "0 : 00", 30, App->scene->text->getColors((int) textColour::WHITE));  //Timer
 	//text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
 	//text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
@@ -319,6 +322,12 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
+
+	if (testFont != nullptr)
+	{
+		TTF_CloseFont(testFont);
+		testFont = nullptr;
+	}
 
 	// Clean Scene if not close the game
 	if (!finalCleanUp) {

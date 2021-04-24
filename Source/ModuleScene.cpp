@@ -9,6 +9,8 @@ ModuleScene::ModuleScene()
 		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());	
 	}
 
+	text = new Text();
+
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
 	scenes[2] = new SceneSelectArea();
@@ -99,11 +101,6 @@ void ModuleScene::ChangeCurrentScene(uint index, int frames)	//CleanUp current s
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
-
-	/*currentScene->CleanUp();
-	currentScene = scenes[index];
-	currentScene->Start();
-	*/
 }
 
 bool ModuleScene::CleanUp()
@@ -118,11 +115,11 @@ bool ModuleScene::CleanUp()
 		}
 	}
 
-	/*if (text != nullptr)
+	if (text != nullptr)
 	{
 		delete text;
 		text = nullptr;
-	}*/
+	}
 
 	TTF_Quit();
 

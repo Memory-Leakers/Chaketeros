@@ -17,7 +17,6 @@
 #include "ModuleAudio.h"
 #include "Player.h"
 
-
 #define SCENES_NUM 6
 
 struct SDL_Texture;
@@ -63,7 +62,7 @@ public:
 
 	bool CleanUp() override;
 
-	//Text* text = new Text();
+	Text* text = nullptr;
 
 private:
 
