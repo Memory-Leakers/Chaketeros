@@ -24,4 +24,13 @@ void RedFlower::Die()
 {
 	App->particle->AddParticle(*dieParticle, (getPosition()), Type::NONE);
 	pendingToDelete = true;
+	getCollider()->pendingToDelete = true;
+}
+
+void RedFlower::OnCollision(Collider* col)
+{
+	if (col->type == Type::EXPLOSION)
+	{
+		Die();
+	}
 }

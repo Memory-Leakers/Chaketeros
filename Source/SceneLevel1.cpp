@@ -85,7 +85,7 @@ void SceneLevel1::LoadAsset()
 	texEnemies = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
-	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
+	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/ItemDestroyedSheet.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
@@ -112,16 +112,17 @@ void SceneLevel1::LoadAsset()
 	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
 
 	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.01f, texPowerUpDestroyed);
+	powerUpDestroyed = new Particle(500.0f, 0.3f, texPowerUpDestroyed);
 	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,4,26,27 });
 	powerUpDestroyed->anim.PushBack({ 3,34,26,25 });
 	powerUpDestroyed->anim.PushBack({ 35,34,26,25 });
 	powerUpDestroyed->anim.PushBack({ 67,34,26,25 });
+	powerUpDestroyed->anim.hasIdle = false;
 
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.01f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.3f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
