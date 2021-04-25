@@ -10,7 +10,7 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->texDie = texDie;
 	this->currentTileMap = tile;
-	this->destroyed = *destroyed;
+	this->dieParticle = *destroyed;
 
 	renderRect = { 0, 0, 16, 26 };
 }

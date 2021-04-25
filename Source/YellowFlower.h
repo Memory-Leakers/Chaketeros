@@ -17,7 +17,7 @@ private:
 public: 
 
 	YellowFlower();
-	YellowFlower(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* dieParticle, Tile* tile);
+	YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle, Tile* tile);
 
 	void Die() override;
 

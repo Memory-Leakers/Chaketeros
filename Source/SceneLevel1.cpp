@@ -54,6 +54,9 @@ Particle* powerUpDestroyed = nullptr;
 // Template particle for an end of red flower
 Particle* redFlowerDestroyed = nullptr;
 
+// Template particle for an end of yellow flower
+Particle* yellowFlowerDestroyed = nullptr;
+
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 vector<iPoint> emptySpaces;
@@ -93,9 +96,9 @@ void SceneLevel1::LoadAsset()
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.04f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.04f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.04f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.05f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.05f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.05f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
@@ -119,7 +122,7 @@ void SceneLevel1::LoadAsset()
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 
 	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.02f, texPowerUpDestroyed);
+	powerUpDestroyed = new Particle(500.0f, 0.05f, texPowerUpDestroyed);
 	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,2,26,27 });
@@ -129,13 +132,22 @@ void SceneLevel1::LoadAsset()
 	powerUpDestroyed->anim.hasIdle = false;
 
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.02f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.05f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 52,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
+
+	yellowFlowerDestroyed = new Particle(500.0f, 0.05f, texYellowFlower);
+	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 49,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 65,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 81,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 97,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
 
 #pragma endregion
 }
@@ -207,7 +219,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
 
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texPowerUpDestroyed, powerUpDestroyed, &tileMap);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, &tileMap);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -310,6 +322,7 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
+		cout << endl;
 		// Check Map in Console
 		for (int i = 0, k = 0; i < 13; ++i)
 		{
@@ -317,7 +330,6 @@ bool SceneLevel1::Update()
 			{
 				cout << tileMap.Level1TileMap[i][j] << ",";
 			}
-			cout << endl;
 		}
 	}
 
@@ -457,9 +469,6 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			sceneObstacles[i]->OnCollision(c2);
 		}
 	}
-
-
-
 }
 
 void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
