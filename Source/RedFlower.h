@@ -9,7 +9,7 @@ class RedFlower : public Obstacle
 public:
 	//Constructor
 	RedFlower();
-	RedFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle);
+	RedFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle,Tile* tile);
 
 	//Destructor
 	~RedFlower();
@@ -22,6 +22,7 @@ public:
 private:
 	Particle* dieParticle = nullptr;
 	SDL_Rect renderRect;
+	Tile* currentTileMap = nullptr;
 };
 
 #endif // !_REDFLOWER_H_

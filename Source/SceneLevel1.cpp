@@ -160,11 +160,11 @@ void SceneLevel1::CreateScene()
 				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
-				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed);
+				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, &tileMap);
 				break;
 			case 6:
 				renderExceptionPos[l++] = k;
-				sceneObstacles[k++] = new CoreMecha(tileMap.getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed);
+				sceneObstacles[k++] = new CoreMecha(tileMap.getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, &tileMap);
 				break;
 			case 9:
 				renderExceptionPos[l++] = k;
@@ -207,7 +207,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
 
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, powerUpDestroyed);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texPowerUpDestroyed, powerUpDestroyed, &tileMap);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -305,6 +305,19 @@ bool SceneLevel1::Update()
 		if (sceneObstacles[i] != nullptr)
 		{
 			sceneObstacles[i]->Update();
+		}
+	}
+
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		// Check Map in Console
+		for (int i = 0, k = 0; i < 13; ++i)
+		{
+			for (int j = 0; j < 15; ++j)
+			{
+				cout << tileMap.Level1TileMap[i][j] << ",";
+			}
+			cout << endl;
 		}
 	}
 

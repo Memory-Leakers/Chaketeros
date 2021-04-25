@@ -44,6 +44,9 @@ public:
 	iPoint getTilePos(iPoint pos);
 	iPoint getTilePos(int x, int y);
 
+	void setTile(iPoint tile,int num);
+	void setTile(int tileX, int tileY, int num);
+
 	void Reset();
 
 };
