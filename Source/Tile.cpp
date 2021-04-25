@@ -61,6 +61,17 @@ iPoint Tile::getTilePos(int x, int y)
 	return { x, y};
 }
 
+void Tile::setTile(iPoint tile, int num)
+{
+	Level1TileMap[tile.x][tile.y] = num;
+
+}
+
+void Tile::setTile(int tileX, int tileY, int num)
+{
+	Level1TileMap[tileX][tileY] = num;
+}
+
 void Tile::Reset()
 {
 	for (int i = 0, k = 0; i < 13; ++i)

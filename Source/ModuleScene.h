@@ -17,6 +17,7 @@
 #include "ModuleAudio.h"
 #include "Player.h"
 
+
 #define SCENES_NUM 6
 
 struct SDL_Texture;
@@ -66,10 +67,12 @@ public:
 
 	Text* text = nullptr;
 
+	Scene* currentScene = nullptr;
+
 private:
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
-	Scene* currentScene = nullptr;
+	
 
 	enum FadeSteps
 	{
@@ -85,6 +88,8 @@ private:
 	SDL_Rect screenRect;
 
 	uint newScene;
+
+	
 
 };
 

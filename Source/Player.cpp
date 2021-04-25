@@ -3,7 +3,7 @@
 #include <iostream>;
 using namespace std;
 
-SDL_Texture* flipTest;
+
 Tile tileMapPlayer;
 
 Player::Player()
@@ -59,7 +59,7 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
-	flipTest = App->textures->Load("Assets/Images/Sprites/flipTest.png");
+	
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
