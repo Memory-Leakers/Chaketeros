@@ -11,7 +11,7 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle
 	this->texDie = texDie;
 	this->destroyed = *destroyed;
 
-	renderRect = { 9, 8, 16, 16 };
+	renderRect = { 0, 0, 16, 26 };
 
 	//idle.PushBack({ 9,8,16,16 });
 
@@ -34,5 +34,8 @@ void CoreMecha::Die()
 
 void CoreMecha::PostUpdate()
 {
-	App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &renderRect);
+	iPoint temp = this->getPosition();
+	temp.y -= 10;
+
+	App->render->DrawTexture(texture, temp, &renderRect);
 }

@@ -28,10 +28,7 @@ Obstacle::Obstacle(const Obstacle& Obs)
 
 Obstacle::~Obstacle()
 {
-	if(collider!=nullptr)
-	{
-		collider->pendingToDelete = true;
-	}
+	
 }
 
 void Obstacle::SetDestructible(bool destructible)

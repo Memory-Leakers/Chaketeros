@@ -9,6 +9,7 @@
 #include "Tile.h"
 #include "RedFlower.h"
 #include "Coin.h"
+#include "CoreMecha.h"
 
 #include <time.h>
 #include <iostream>
@@ -29,6 +30,7 @@ SDL_Texture* texEnemies = nullptr;
 SDL_Texture* texItemDestroyed = nullptr;
 SDL_Texture* texCoin = nullptr;
 SDL_Texture* texPowerUpDestroyed = nullptr;
+SDL_Texture* texCoreMecha = nullptr;
 
 // Player
 Player* bomberman = nullptr;
@@ -53,6 +55,7 @@ Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 vector<iPoint> emptySpaces;
 int yellowFlowers;
 Tile tileMap;
+int renderExceptionPos[3];
 
 TTF_Font* testFont = nullptr;
 
@@ -80,6 +83,7 @@ void SceneLevel1::LoadAsset()
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
+	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
 
 	#pragma region Init Particle
 
@@ -128,7 +132,9 @@ void SceneLevel1::CreateScene()
 {
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
-	for (int i = 0, k = 0; i < 13; ++i)
+	
+	
+	for (int i = 0, k = 0, l = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
@@ -143,7 +149,12 @@ void SceneLevel1::CreateScene()
 			case 3:
 				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed);
 				break;
+			case 6:
+				renderExceptionPos[l++] = k;
+				sceneObstacles[k++] = new CoreMecha(tileMap.getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed);
+				break;
 			case 9:
+				renderExceptionPos[l++] = k;
 				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
@@ -212,6 +223,7 @@ bool SceneLevel1::Start()
 
 	// Create music
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	Mix_VolumeMusic(10);
 
 	testFont = App->scene->text->getFonts(36);
 
@@ -284,14 +296,36 @@ bool SceneLevel1::PostUpdate()
 		{
 			sceneObstacles[i]->PostUpdate();
 
-			// Si hay obstaculo que ubica arriba de player o player esta en primera fila
-			if (sceneObstacles[i]->getPosition().y <= bomberman->position.y || bomberman->position.y < 48) // Pendiente de optimizar
-			{
-				// Draw Bomberman
+			
+			
+		}
+	}
+	bool isRender = false;
+	for (int i = 0; i < 3; i++)
+	{
+		// Si hay obstaculo que ubica arriba de player o player esta en primera fila
+		if (sceneObstacles[renderExceptionPos[i]]->getPosition().y >= bomberman->position.y) // Pendiente de optimizar
+		{
+			// Draw Bomberman
+			if (!isRender) {
 				bomberman->PostUpdate();
+				isRender = true;
+			}
+		}
+
+		sceneObstacles[renderExceptionPos[i]]->PostUpdate();
+
+		if (sceneObstacles[renderExceptionPos[i]]->getPosition().y <= bomberman->position.y) // Pendiente de optimizar
+		{
+			// Draw Bomberman
+			if (!isRender) {
+				bomberman->PostUpdate();
+				isRender = true;
 			}
 		}
 	}
+
+
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
