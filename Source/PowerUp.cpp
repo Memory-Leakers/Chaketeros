@@ -2,36 +2,41 @@
 
 PowerUp::PowerUp(iPoint position, SDL_Texture* tex) {
 
+    renderRect = { 2,2,16,16 };
+
+    texture = tex;
+
     this->position.x = position.x;
     this->position.y = position.y;
-    App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene);
+    col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene);
 }
 
-PowerUp::~PowerUp() {
-
+PowerUp::~PowerUp() 
+{
+    col->pendingToDelete = true;
 }
 
 void PowerUp::PostUpdate()
 {
-    App->render->DrawTexture(texture, position, renderRect);
+    App->render->DrawTexture(texture, position, &renderRect);
+}
+
+
+Collider* PowerUp::getCollider()
+{
+    return col;
 }
 
 void PowerUp::Die() {
+
     App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
-	
+
 }
 
-void PowerUp::OnCollision(Collider* c1,Collider* c2) {
+void PowerUp::OnCollision(Collider* col) {
 	
-	for (int i = 0; i < MAX_POWERUPS; ++i)
-	{
-		
-		
-		if ( Powers[i] == nullptr && Powers[i]->col == c1)
-		{
-			delete Powers[i];
-			Powers[i] = nullptr;
-			break;
-		}
-	}
+    if (col->type == Type::PLAYER || col->type == Type::EXPLOSION)
+    {
+        pendingToDelete = true;
+    }
 }

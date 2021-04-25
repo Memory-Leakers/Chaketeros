@@ -4,6 +4,7 @@
 using namespace std;
 
 SDL_Texture* flipTest;
+Tile tileMapPlayer;
 
 Player::Player()
 {
@@ -48,7 +49,7 @@ Player::Player()
 
 Player::~Player()
 {
-
+	col->pendingToDelete = true;
 }
 
 bool Player::Start()
@@ -122,6 +123,9 @@ UpdateResult Player::Update()
 		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 	}
 
+	//Update Pivot Point
+	pivotPoint = { position.x + 8, position.y + 8 };
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -146,5 +150,37 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
+	if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
+	{
+		pendingToDelete = true;
+	}
+	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
+	{
+		if (col->getPos().x == (position.x + bounds.w-1))
+		{
+			cout << "Colision a la derecha de player" << endl;
+		}
+		else if (col->getPos().x + bounds.w - 1 == (position.x))
+		{
+			cout << "Colision a la izquierda de player" << endl;
+		}
+		else if (col->getPos().y == (position.y + bounds.h - 1))
+		{
+			cout << "Colision abajo del player" << endl;
+		}
+		else if (col->getPos().y + bounds.h - 1 == position.y)
+		{
+			cout << "Colision arriba del player" << endl;
+		}
+	}
+}
 
+iPoint Player::getCurrentTilePos()
+{
+	iPoint ret = pivotPoint;
+
+	ret = tileMapPlayer.getTilePos(ret);
+	ret = tileMapPlayer.getWorldPos(ret);
+
+	return ret;
 }

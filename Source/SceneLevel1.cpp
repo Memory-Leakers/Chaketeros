@@ -10,6 +10,7 @@
 #include "RedFlower.h"
 #include "Coin.h"
 #include "CoreMecha.h"
+#include "PowerUp.h"
 
 #include <time.h>
 #include <iostream>
@@ -31,6 +32,7 @@ SDL_Texture* texItemDestroyed = nullptr;
 SDL_Texture* texCoin = nullptr;
 SDL_Texture* texPowerUpDestroyed = nullptr;
 SDL_Texture* texCoreMecha = nullptr;
+SDL_Texture* texPowerUps = nullptr;
 
 // Player
 Player* bomberman = nullptr;
@@ -52,12 +54,13 @@ Particle* powerUpDestroyed = nullptr;
 Particle* redFlowerDestroyed = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+
 vector<iPoint> emptySpaces;
 int yellowFlowers;
 Tile tileMap;
 int renderExceptionPos[3];
 
-TTF_Font* testFont = nullptr;
+PowerUp* Powers[MAX_POWERUPS];
 
 SceneLevel1::SceneLevel1()
 {
@@ -84,6 +87,7 @@ void SceneLevel1::LoadAsset()
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
+	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
 	#pragma region Init Particle
 
@@ -133,6 +137,7 @@ void SceneLevel1::CreateScene()
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
 	
+	Powers[0] = new PowerUp({ 20,100 }, texPowerUps);
 	
 	for (int i = 0, k = 0, l = 0; i < 13; ++i)
 	{
@@ -166,6 +171,8 @@ void SceneLevel1::CreateScene()
 	cout << endl;
 
 	CreateYellowFlowers();
+	
+
 
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
@@ -225,7 +232,7 @@ bool SceneLevel1::Start()
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
 
-	testFont = App->scene->text->getFonts(36);
+	//testFont = App->scene->text->getFonts(36);
 
 	CreateScene();
 
@@ -234,6 +241,13 @@ bool SceneLevel1::Start()
 
 bool SceneLevel1::PreUpdate()
 {
+
+	if (bomberman != nullptr && bomberman->pendingToDelete)
+	{
+		delete bomberman;
+		bomberman = nullptr;
+	}
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -242,6 +256,11 @@ bool SceneLevel1::PreUpdate()
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}
+	}
+	if (Powers[0] != nullptr && Powers[0]->pendingToDelete)
+	{
+		delete Powers[0];
+		Powers[0] = nullptr;
 	}
 
 	return true;
@@ -256,7 +275,11 @@ bool SceneLevel1::Update()
 	}
 
 	// Update bomebrman
-	bomberman->Update();
+	if (bomberman != nullptr)
+	{
+		bomberman->Update();
+	}
+
 	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
 	{
 		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
@@ -301,7 +324,7 @@ bool SceneLevel1::PostUpdate()
 		}
 	}
 	bool isRender = false;
-	for (int i = 0; i < 3; i++)
+	/*for (int i = 0; i < 3; i++)
 	{
 		// Si hay obstaculo que ubica arriba de player o player esta en primera fila
 		if (sceneObstacles[renderExceptionPos[i]]->getPosition().y >= bomberman->position.y) // Pendiente de optimizar
@@ -323,9 +346,28 @@ bool SceneLevel1::PostUpdate()
 				isRender = true;
 			}
 		}
+	}*/
+
+	for (int i = 0; i < 3; i++)	//TEMPORAL
+	{
+		if (sceneObstacles[renderExceptionPos[i]] != nullptr) 
+		{
+			sceneObstacles[renderExceptionPos[i]]->PostUpdate();
+		}
 	}
 
+	if (bomberman != nullptr)
+	{
+		bomberman->PostUpdate();
+	}
 
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr)
+		{
+			Powers[i]->PostUpdate();
+		}
+	}
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
@@ -343,6 +385,22 @@ bool SceneLevel1::PostUpdate()
 
 void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 {
+
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->OnCollision(c2);
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr && Powers[i]->getCollider() == c1)
+		{
+			Powers[i]->OnCollision(c2);
+		}
+	}
+
+
+	//Obstacle Collision ----------------------
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		// cuando se choca algo
@@ -351,17 +409,14 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			sceneObstacles[i]->OnCollision(c2);
 		}
 	}
+
+
+
 }
 
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
-
-	if (testFont != nullptr)
-	{
-		TTF_CloseFont(testFont);
-		testFont = nullptr;
-	}
 
 	// Clean Scene if not close the game
 	if (!finalCleanUp) {
@@ -378,6 +433,14 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		{
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr)
+		{
+			delete Powers[i];
+			Powers[i] = nullptr;
 		}
 	}
 

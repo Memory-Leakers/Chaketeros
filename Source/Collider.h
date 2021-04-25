@@ -30,6 +30,8 @@ struct Collider
 
 	void SetPos(iPoint pos);
 
+	iPoint getPos();
+
 	bool Intersects(const SDL_Rect& r) const;
 
 	// Variables

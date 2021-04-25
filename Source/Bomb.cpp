@@ -31,7 +31,7 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 }
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) 
-:Obstacle({ player->position.x, player->position.y, 16, 16 }, true, App->collisions->AddCollider({ player->position.x, player->position.y, 16, 16 }, Type::BOMB, App->scene), tex)
+:Obstacle({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
 	this->player = player;
 
@@ -136,4 +136,5 @@ void Bomb::Die()
 void Bomb::CleanUp()
 {
 	player->maxBombs++;
+	getCollider()->pendingToDelete = true;
 }

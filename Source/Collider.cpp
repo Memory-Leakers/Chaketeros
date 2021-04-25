@@ -24,19 +24,15 @@ void Collider::SetPos(iPoint pos)
 	rect.y = pos.y;
 }
 
+iPoint Collider::getPos()
+{
+	return { rect.x, rect.y };
+}
+
 bool Collider::Intersects(const SDL_Rect& r) const
 {
-	// L6: TODO 1: Check if there is an overlap
-	// between argument "r" and property "rect"
-	if (rect.x < r.x && r.x < (rect.x + rect.w) ||
-		rect.x < (r.x + r.w) && (r.x + r.w) < (rect.x + rect.w))
-	{
-		if (rect.y < r.y && r.y < (rect.y + rect.h) || 
-			(rect.y < (r.y + r.h) && (r.y + r.h) < (rect.y + rect.h)))
-		{
-			return true;
-		}
-	}
-	
-	return false;
+	return (rect.x < r.x + r.w &&
+		rect.x + rect.w > r.x &&	
+		rect.y < r.y + r.h &&
+		rect.h + rect.y > r.y);
 }

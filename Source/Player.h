@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "ModuleAudio.h"
 #include "Application.h"
+#include "Tile.h"
 
 #include "External/SDL/include/SDL_scancode.h"
 #include "External/SDL/include/SDL_render.h"
@@ -27,6 +28,8 @@ private:
 	SDL_Rect bounds;
 
 	bool isFlip = false;
+
+	
 
 	void dropBomb() {
 
@@ -55,6 +58,8 @@ public:
 	// Collision callback, called when the player intersects with another
 	void OnCollision(Collider* col);
 
+	iPoint getCurrentTilePos();
+
 	// Position of the player in the map
 	iPoint position;
 
@@ -81,6 +86,10 @@ public:
 	int pUpFlame = 0;
 
 	int maxBombs = 1;
+
+	iPoint pivotPoint;
+
+	bool pendingToDelete = false;
 };
 #endif // __PLAYER_H__
 
