@@ -21,6 +21,8 @@ public:
 	void Die() override;
 
 	void PostUpdate() override;
+
+	void OnCollision(Collider* col) override;
 };
 
 #endif // _YELLOWFLOWER_H_

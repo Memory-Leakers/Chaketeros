@@ -20,6 +20,7 @@ void YellowFlower::Die()
 	//Create destroyed particle;
 	App->particle->AddParticle(*dieParticle, (getPosition()), Type::NONE);
 	pendingToDelete = true;
+	getCollider()->pendingToDelete = true;
 }
 
 void YellowFlower::PostUpdate()
@@ -27,6 +28,14 @@ void YellowFlower::PostUpdate()
 	if(!pendingToDelete)
 	{
 		App->render->DrawTexture(texture, getPosition(), &renderRect);
+	}
+}
+
+void YellowFlower::OnCollision(Collider* col)
+{
+	if (col->type == Type::EXPLOSION)
+	{
+		Die();
 	}
 }
 

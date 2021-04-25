@@ -17,6 +17,7 @@ public:
 	// Metodos
 	void PostUpdate() override;
 	void Die() override;
+	void OnCollision(Collider* col) override;
 
 private:
 	Particle* dieParticle = nullptr;
