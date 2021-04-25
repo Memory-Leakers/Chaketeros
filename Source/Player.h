@@ -65,6 +65,7 @@ public:
 	// Collision callback, called when the player intersects with another
 	void OnCollision(Collider* col);
 
+	// Callback if will be collision, called when the player intersects with another
 	void WillCollision(Collider* col);
 
 	iPoint getCurrentTilePos();

@@ -14,7 +14,7 @@ private:
 	//Animation idle, die;
 	Animation* currentAnim = nullptr;
 
-	Particle destroyed;
+	Particle dieParticle;
 
 	bool isDead = false;
 
@@ -26,6 +26,8 @@ public:
 	void Die() override;
 
 	void PostUpdate() override;
+
+	void OnCollision(Collider* col) override;
 };
 
 #endif // ! _COREMECHA_H

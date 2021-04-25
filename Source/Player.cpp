@@ -116,7 +116,6 @@ UpdateResult Player::Update()
 		}
 	}
 
-
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE &&
@@ -175,6 +174,7 @@ void Player::WillCollision(Collider* col)
 {
 	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 	{
+		// Detect if player can move or not
 		if (col->getPos().x == (position.x + bounds.w))
 		{
 			if(col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)

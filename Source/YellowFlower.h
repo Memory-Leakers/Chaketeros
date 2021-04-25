@@ -7,16 +7,14 @@ class YellowFlower : public Obstacle
 {
 private:
 
-	SDL_Texture* texDie = nullptr;
-
 	SDL_Rect renderRect;
 
-	Particle* dieParticle;
+	Particle* dieParticle = nullptr;
 
 public: 
 
 	YellowFlower();
-	YellowFlower(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* dieParticle);
+	YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle);
 
 	void Die() override;
 

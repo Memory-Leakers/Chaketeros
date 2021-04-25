@@ -15,6 +15,7 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include <cstring>
 using namespace std;
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
@@ -85,44 +86,50 @@ void SceneLevel1::LoadAsset()
 	texEnemies = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
-	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/ItemDestroyedSheet.png");
+	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.01f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.01f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.01f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.04f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.04f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.04f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 40, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });	
+	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 
 	// ExplosionEnd particle
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
 	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 
 	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.3f, texPowerUpDestroyed);
+	powerUpDestroyed = new Particle(500.0f, 0.02f, texPowerUpDestroyed);
 	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
-	powerUpDestroyed->anim.PushBack({ 67,4,26,27 });
-	powerUpDestroyed->anim.PushBack({ 3,34,26,25 });
-	powerUpDestroyed->anim.PushBack({ 35,34,26,25 });
-	powerUpDestroyed->anim.PushBack({ 67,34,26,25 });
+	powerUpDestroyed->anim.PushBack({ 67,2,26,27 });
+	powerUpDestroyed->anim.PushBack({ 3,34,26,27 });
+	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
+	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
 	powerUpDestroyed->anim.hasIdle = false;
 
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.3f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.02f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
@@ -173,8 +180,6 @@ void SceneLevel1::CreateScene()
 
 	CreateYellowFlowers();
 	
-
-
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
@@ -202,7 +207,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
 
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texPowerUpDestroyed, powerUpDestroyed);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, powerUpDestroyed);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -318,50 +323,78 @@ bool SceneLevel1::PostUpdate()
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
-			sceneObstacles[i]->PostUpdate();
-
-			
-			
-		}
-	}
-	bool isRender = false;
-	/*for (int i = 0; i < 3; i++)
-	{
-		// Si hay obstaculo que ubica arriba de player o player esta en primera fila
-		if (sceneObstacles[renderExceptionPos[i]]->getPosition().y >= bomberman->position.y) // Pendiente de optimizar
-		{
-			// Draw Bomberman
-			if (!isRender) {
-				bomberman->PostUpdate();
-				isRender = true;
-			}
-		}
-
-		sceneObstacles[renderExceptionPos[i]]->PostUpdate();
-
-		if (sceneObstacles[renderExceptionPos[i]]->getPosition().y <= bomberman->position.y) // Pendiente de optimizar
-		{
-			// Draw Bomberman
-			if (!isRender) {
-				bomberman->PostUpdate();
-				isRender = true;
-			}
-		}
-	}*/
-
-	for (int i = 0; i < 3; i++)	//TEMPORAL
-	{
-		if (sceneObstacles[renderExceptionPos[i]] != nullptr) 
-		{
-			sceneObstacles[renderExceptionPos[i]]->PostUpdate();
+			sceneObstacles[i]->PostUpdate();			
 		}
 	}
 
+	#pragma region RenderExpection
+	// Get renderExpion
+	int ExeptionRenderOrder[4][2];
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (sceneObstacles[renderExceptionPos[i]] != nullptr)
+		{
+			ExeptionRenderOrder[i][0] = i;
+			ExeptionRenderOrder[i][1] = sceneObstacles[renderExceptionPos[i]]->getPosition().y;
+		}
+		else
+		{
+			ExeptionRenderOrder[i][0] = -1;
+		}
+	}
+
+	
+	// Sort render exeption
+	ExeptionRenderOrder[3][0] = 3;
 	if (bomberman != nullptr)
 	{
-		bomberman->PostUpdate();
+		ExeptionRenderOrder[3][1] = bomberman->position.y;
 	}
 
+	int temp = 0;
+	int tempArr[] = { ExeptionRenderOrder[0][0],ExeptionRenderOrder[0][1] };
+
+	for (int j = 0; j < 3; ++j)
+	{
+		memcpy(tempArr, ExeptionRenderOrder[j], sizeof(ExeptionRenderOrder[j]));
+		temp = j;
+		for (int i = j; i < 4; ++i)
+		{
+			if (ExeptionRenderOrder[i][1] < tempArr[1])
+			{
+				memcpy(ExeptionRenderOrder[temp], ExeptionRenderOrder[i], sizeof(ExeptionRenderOrder[i]));
+				memcpy(ExeptionRenderOrder[i], tempArr, sizeof(tempArr));
+				memcpy(tempArr, ExeptionRenderOrder[temp], sizeof(ExeptionRenderOrder[temp]));
+				temp = i;
+			}
+		}
+	}
+	
+
+	//Render exeptions
+	for (int i = 0; i < 4; i++)
+	{
+		if (ExeptionRenderOrder[i][0] != -1)
+		{
+			if (ExeptionRenderOrder[i][0] == 3)
+			{
+				if (bomberman != nullptr)
+				{
+					bomberman->PostUpdate();
+				}
+			}
+			else
+			{
+				if (sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]] != nullptr)
+				{
+					sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]]->PostUpdate();
+				}
+			}
+		}	
+	}
+	
+	// Render PowerUp
 	for (int i = 0; i < 3; i++)
 	{
 		if (Powers[i] != nullptr)
@@ -369,6 +402,7 @@ bool SceneLevel1::PostUpdate()
 			Powers[i]->PostUpdate();
 		}
 	}
+	#pragma endregion
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);

@@ -9,27 +9,26 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->texDie = texDie;
-	this->destroyed = *destroyed;
+	this->dieParticle = *destroyed;
 
 	renderRect = { 0, 0, 16, 26 };
-
-	//idle.PushBack({ 9,8,16,16 });
-
-	//currentAnim = &idle;
-
-	//die.PushBack({ 3,2,26,27 });
-	//die.PushBack({ 35,2,26,27 });
-	//die.PushBack({ 67,4,26,27 });
-	//die.PushBack({ 3,34,26,25 });
-	//die.PushBack({ 35,34,26,25 });
-	//die.PushBack({ 67,34,26,25 });
-	//die.speed = 0.5f;
-	//die.loop = true;
 }
 
 void CoreMecha::Die()
 {
-	//Add Destrpyed particle in module particle
+	iPoint tempPos = getPosition();
+	tempPos -= {5, 11};
+	App->particle->AddParticle(dieParticle, tempPos, Type::NONE);
+	pendingToDelete = true;
+	getCollider()->pendingToDelete = true;
+}
+
+void CoreMecha::OnCollision(Collider* col)
+{
+	if (col->type == Type::EXPLOSION)
+	{
+		Die();
+	}
 }
 
 void CoreMecha::PostUpdate()
