@@ -16,6 +16,14 @@
 #define defaultPlayerSpeed 0.1f //Animation only
 struct SDL_Texture;
 
+enum Dir
+{
+	UP = 0,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class Player {
 
 private:
@@ -29,11 +37,10 @@ private:
 
 	bool isFlip = false;
 
-	
+	void dropBomb() {};
 
-	void dropBomb() {
+	bool canMoveDir[4];
 
-	};
 protected:
 
 public:
@@ -57,6 +64,8 @@ public:
 
 	// Collision callback, called when the player intersects with another
 	void OnCollision(Collider* col);
+
+	void WillCollision(Collider* col);
 
 	iPoint getCurrentTilePos();
 

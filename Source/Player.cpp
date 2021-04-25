@@ -63,6 +63,11 @@ bool Player::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
+
 	return ret;
 }
 
@@ -70,48 +75,53 @@ UpdateResult Player::Update()
 {
 	// Player Movement keys
 	// Reset the currentAnimation back to idle before updating the logic
-	currentAnimation->hasIdle = false;
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
 	{
+		isFlip = true;
 		currentAnimation = &rightAnim;
-		if (position.x < 216) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.x < 216 && canMoveDir[RIGHT]) // Limiitar movimiento en la mapa
 		{
 			position.x += speed;
-			isFlip = true;
 		}
 	}
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &leftAnim;
-		if (position.x > 24) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			position.x -= speed;
-			isFlip = false;
-		}	
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &upAnim;
-		if (position.y > 32) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
 		{
 			position.y -= speed;
-			isFlip = false;
-		}	
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &downAnim;
-		if (position.y < 208 - 16) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			position.y += speed;
-			isFlip = false;
 		}
 	}
-	
-	if (App->input->keys[SDL_SCANCODE_D] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_S] != KEY_REPEAT) {
+
+
+	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+	{
 		currentAnimation->hasIdle = true;
 	}
 
@@ -125,6 +135,11 @@ UpdateResult Player::Update()
 
 	//Update Pivot Point
 	pivotPoint = { position.x + 8, position.y + 8 };
+
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -154,23 +169,43 @@ void Player::OnCollision(Collider* col)
 	{
 		pendingToDelete = true;
 	}
+}
+
+void Player::WillCollision(Collider* col)
+{
 	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 	{
-		if (col->getPos().x == (position.x + bounds.w-1))
+		if (col->getPos().x == (position.x + bounds.w))
 		{
-			cout << "Colision a la derecha de player" << endl;
+			if(col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			{
+				//cout << "Colision a la derecha de player" << endl;
+				canMoveDir[RIGHT] = false;
+			}
 		}
-		else if (col->getPos().x + bounds.w - 1 == (position.x))
+		if (col->getPos().x + bounds.w == (position.x))
 		{
-			cout << "Colision a la izquierda de player" << endl;
+			if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			{
+				//cout << "Colision a la izquierda de player" << endl;
+				canMoveDir[LEFT] = false;
+			}
 		}
-		else if (col->getPos().y == (position.y + bounds.h - 1))
+		if (col->getPos().y == (position.y + bounds.h))
 		{
-			cout << "Colision abajo del player" << endl;
+			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			{
+				//cout << "Colision abajo del player" << endl;
+				canMoveDir[DOWN] = false;
+			}
 		}
-		else if (col->getPos().y + bounds.h - 1 == position.y)
+		if (col->getPos().y + bounds.h == position.y)
 		{
-			cout << "Colision arriba del player" << endl;
+			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			{
+				//cout << "Colision arriba del player" << endl;
+				canMoveDir[UP] = false;
+			}		
 		}
 	}
 }

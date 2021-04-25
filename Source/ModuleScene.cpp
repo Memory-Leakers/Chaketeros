@@ -95,6 +95,11 @@ void ModuleScene::OnCollision(Collider* c1, Collider* c2)
 	currentScene->OnCollision(c1, c2);
 }
 
+void ModuleScene::WillCollision(Collider* c1, Collider* c2)
+{
+	currentScene->WillCollision(c1, c2);
+}
+
 void ModuleScene::ChangeCurrentScene(uint index, int frames)	//CleanUp current scene, change current scene (index), Start current Scene
 {
 	currentStep = FADE_IN;

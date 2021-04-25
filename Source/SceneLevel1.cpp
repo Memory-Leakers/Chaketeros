@@ -414,6 +414,14 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 
 }
 
+void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
+{
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->WillCollision(c2);
+	}
+}
+
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");

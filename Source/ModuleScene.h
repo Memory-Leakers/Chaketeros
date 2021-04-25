@@ -58,6 +58,8 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
+	void WillCollision(Collider* c1, Collider* c2) override;
+
 	void ChangeCurrentScene(uint index, int frames);
 
 	bool CleanUp() override;

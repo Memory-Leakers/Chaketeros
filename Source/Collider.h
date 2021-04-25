@@ -34,6 +34,8 @@ struct Collider
 
 	bool Intersects(const SDL_Rect& r) const;
 
+	bool WillIntersects(const SDL_Rect& r) const;
+
 	// Variables
 	SDL_Rect rect;
 	bool pendingToDelete = false;

@@ -42,6 +42,8 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2) override;
 
+	void WillCollision(Collider* c1, Collider* c2) override;
+
 	bool CleanUp(bool finalCleanUp = true) override;
 
 	void CreateScene();
