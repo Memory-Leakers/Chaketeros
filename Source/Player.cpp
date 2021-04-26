@@ -146,5 +146,8 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
-
+	if (col->type == Type::EXPLOSION ||
+		col->type == Type::ENEMY) {
+		return;
+	}
 }

@@ -8,6 +8,9 @@ ModuleScene::ModuleScene()
 		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
 		
 	}
+	else {
+		SDL_Log("TTF Intitialized");
+	}
 
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
@@ -25,7 +28,7 @@ bool ModuleScene::Start()
 {
 	bool ret = true;
 
-
+	//TTF_Init();
 
 
 
@@ -121,5 +124,12 @@ bool ModuleScene::CleanUp()
 			scenes[i] = nullptr;
 		}
 	}
+
+	//if (text != NULL) {
+	//	delete text;
+	//}
+
+	TTF_Quit();
+
 	return true;
 }

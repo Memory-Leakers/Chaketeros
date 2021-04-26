@@ -109,6 +109,7 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PokaPoka.h" />
     <ClInclude Include="RedFlower.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGameOver.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PokaPoka.cpp" />
     <ClCompile Include="RedFlower.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGameOver.cpp" />

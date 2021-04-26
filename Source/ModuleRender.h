@@ -1,6 +1,7 @@
 #ifndef __MODULERENDER_H__
 #define __MODULERENDER_H__
 
+#include "Text.h"
 #include "Module.h"
 #include "External/SDL/include/SDL_Rect.h"
 #include "Point.h"
@@ -10,6 +11,13 @@ struct SDL_Renderer;
 
 class ModuleRender : public Module
 {
+private:
+	float textTime = 3;
+
+	double startCountTime;
+	bool debugCamera = false;
+	Text* text = new Text();
+
 public:
 	//Constructor
 	ModuleRender();

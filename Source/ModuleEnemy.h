@@ -14,9 +14,13 @@ struct SDL_Texture;
 class ModuleEnemy : public Module{
 
 	private:
+		
+	protected:
 		int points = 0; //Score points
 
 		int destroyedFx = 0;
+
+		SDL_Rect bounds;
 
 		void powerUpDrop() {
 
@@ -24,16 +28,14 @@ class ModuleEnemy : public Module{
 		void move() {
 
 		};
-	protected:
-
 
 	public:
-
+		ModuleEnemy();
 		~ModuleEnemy();
 
-		bool Start() ;
-		UpdateResult Update() ;
-		UpdateResult PostUpdate() ;
+		virtual bool Start() ;
+		virtual UpdateResult Update() ;
+		virtual UpdateResult PostUpdate() ;
 
 		void OnCollision(Collider* otherCol);
 
@@ -46,10 +48,16 @@ class ModuleEnemy : public Module{
 		Animation* currentAnimation = nullptr;
 
 		Animation idleAnim;
+
 		Animation upAnim;
 		Animation downAnim;
 		Animation rightAnim;
 		Animation leftAnim;
+
+		Animation attackUpAnim;
+		Animation attackDownAnim;
+		Animation attackRightAnim;
+		Animation attackLeftAnim;
 
 		/*-----GETTERS AND SETTERS-----*/
 		int getPoints() {
