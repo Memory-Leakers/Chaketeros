@@ -63,6 +63,7 @@ vector<iPoint> emptySpaces;
 int yellowFlowersNum;
 Tile* tileMap;
 int renderExceptionPos[3];
+int redFlowerIndex[4];
 
 int glassCapsuleIndex;
 
@@ -71,6 +72,10 @@ int playerLifes = 3;
 PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
+
+bool isLevelCompleted;
+
+iPoint winPosition = { 120, 96 };
 
 SceneLevel1::SceneLevel1()
 {
@@ -163,7 +168,7 @@ void SceneLevel1::CreateScene()
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
 		
-	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
+	for (int i = 0, k = 0, l = 0, m = 0, n= 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
@@ -176,6 +181,7 @@ void SceneLevel1::CreateScene()
 				stones[m++] = new Stone(tileMap->getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
+				redFlowerIndex[n++] = k;
 				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, tileMap);
 				break;
 			case 6:
@@ -249,6 +255,8 @@ bool SceneLevel1::Start()
 {
 
 	tileMap = new Tile();
+
+	isLevelCompleted = false;
 
 	LOG("Loading background assets");
 
@@ -327,6 +335,7 @@ bool SceneLevel1::PreUpdate()
 			if (!anyCoreMecha)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
+				isLevelCompleted = true;
 			}
 
 			sceneObstacles[i]->CleanUp();
@@ -405,6 +414,23 @@ bool SceneLevel1::Update()
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
+	//Check if Player is on the Glass Capsule after completing the level
+	
+	if (bomberman != nullptr) 
+	{
+		if (bomberman->position == winPosition && isLevelCompleted)
+		{
+			CreateCoins();
+			for (int i = 0; i < 4; i++)
+			{
+				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
+				{
+					sceneObstacles[redFlowerIndex[i]]->pendingToDelete = true;
+					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
+				}
+			}
+		}
+	}
 	return true;
 }
 
@@ -557,13 +583,44 @@ void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
 	}
 }
 
+void SceneLevel1::CreateCoins()
+{
+	for (int i = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)
+		{
+			if (tileMap->Level1TileMap[i][j] == 5)
+			{
+				for (int k = 0, l = 7; k < yellowFlowersNum; k++, l++)
+				{
+					if (sceneObstacles[l] != nullptr)
+					{
+						sceneObstacles[l]->pendingToDelete = true;
+						sceneObstacles[l]->getCollider()->pendingToDelete = true;
+						iPoint tempPos = sceneObstacles[l]->getPosition();
+						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
+						{
+							if (sceneObstacles[m] == nullptr)
+							{
+								sceneObstacles[m] = new Coin(tempPos, texCoin);
+								break;
+							}
+						}
+						
+					}
+				}
+			}
+		}
+	}
+}
+
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
 
 	// Clean Scene if not close the game
-	if (!finalCleanUp) {
-		App->audio->CleanUpScene();
+	if (!finalCleanUp)
+	{
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();

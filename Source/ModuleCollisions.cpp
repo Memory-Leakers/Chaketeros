@@ -19,6 +19,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::WALL)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::WALL)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::WALL)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::WALL)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::PLAYER)][uint(Type::WALL)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::PLAYER)] = false;
@@ -27,6 +28,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::PLAYER)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::FIREPOWER)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::COIN)] = true;
 
 	matrix[uint(Type::ENEMY)][uint(Type::WALL)] = true;
 	matrix[uint(Type::ENEMY)][uint(Type::PLAYER)] = true;
@@ -35,6 +37,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::ENEMY)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::ENEMY)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::ENEMY)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::ENEMY)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::BOMB)][uint(Type::WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::PLAYER)] = true;
@@ -43,6 +46,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = false;
 	matrix[uint(Type::BOMB)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::EXPLOSION)][uint(Type::WALL)] = true;
 	matrix[uint(Type::EXPLOSION)][uint(Type::PLAYER)] = true;
@@ -50,7 +54,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::EXPLOSION)][uint(Type::BOMB)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::EXPLOSION)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::DESTRUCTABLE_WALL)] = true;
-	matrix[uint(Type::EXPLOSION)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::FIREPOWER)] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::COIN)] = true;
 
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::WALL)] = true;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::PLAYER)] = true;
@@ -59,6 +64,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::DESTRUCTABLE_WALL)] = false;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::FIREPOWER)][uint(Type::FIREPOWER)] = false;
 	matrix[uint(Type::FIREPOWER)][uint(Type::WALL)] = false;
@@ -67,6 +73,17 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::FIREPOWER)][uint(Type::BOMB)] = false;
 	matrix[uint(Type::FIREPOWER)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::FIREPOWER)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::FIREPOWER)][uint(Type::COIN)] = false;
+
+
+	matrix[uint(Type::COIN)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::COIN)][uint(Type::WALL)] = false;
+	matrix[uint(Type::COIN)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::COIN)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::COIN)][uint(Type::BOMB)] = true;
+	matrix[uint(Type::COIN)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::COIN)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::COIN)][uint(Type::COIN)] = false;
 
 }
 
