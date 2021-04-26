@@ -44,5 +44,5 @@ class Text {
 		SDL_Color getColors(Uint8 red, Uint8 green, Uint8 blue);
 		SDL_Color getColors(int index);
 
-		void showText(SDL_Renderer* renderer, int x, int y, std::string message, int fontSize, SDL_Color color);
+		void showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* font, SDL_Color color);
 };

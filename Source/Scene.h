@@ -8,6 +8,8 @@
 class Scene
 {
 	protected:
+		Text* text = new Text();
+
 public:
 	// Constructor
 	Scene();
