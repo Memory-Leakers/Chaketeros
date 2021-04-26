@@ -230,6 +230,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				if(hasPowerUp)
 				{
+					cout << "PowerUp Pos" << endl;
 					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
 				}
 				
@@ -248,7 +249,7 @@ bool SceneLevel1::Start()
 	*sceneObstacles = { nullptr };
 
 	// Inicializar jugador
-	bomberman = new Player();
+	bomberman = new Player(&tileMap);
 	bomberman->Start();
 
 	LoadAsset();
@@ -349,13 +350,21 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
+		system("cls");
 		cout << endl;
 		// Check Map in Console
 		for (int i = 0, k = 0; i < 13; ++i)
 		{
 			for (int j = 0; j < 15; ++j)
-			{
-				cout << tileMap.Level1TileMap[i][j] << ",";
+			{		
+				if (tileMap.Level1TileMap[i][j] == -1)
+				{
+					cout << "P,";
+				}
+				else
+				{
+					cout << tileMap.Level1TileMap[i][j] << ",";
+				}
 			}
 			cout << endl;
 		}
@@ -555,7 +564,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		}
 	}
 
-	tileMap.Reset();
+	//tileMap.Reset();
+	tileMap = *new Tile();
 
 	//Delete Vector
 	emptySpaces.clear();

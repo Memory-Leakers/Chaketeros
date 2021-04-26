@@ -3,11 +3,10 @@
 #include <iostream>;
 using namespace std;
 
-
-Tile tileMapPlayer;
-
-Player::Player()
+Player::Player(Tile* level1Tile)
 {
+	this->level1Tile = level1Tile;
+
 	position.x = 40;
 	position.y = 32;
 	//Rect for col
@@ -68,23 +67,54 @@ bool Player::Start()
 		canMoveDir[i] = true;
 	}
 
+	lastTilePos = getCurrentTilePos();
+
 	return ret;
 }
 
 UpdateResult Player::Update()
 {
-	// Player Movement keys
-	// Reset the currentAnimation back to idle before updating the logic
-	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
+	int speedX = 0;
+	int speedY = 0;
+
+	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT)
 	{
 		isFlip = true;
 		currentAnimation = &rightAnim;
 		currentAnimation->hasIdle = false;
-		if (position.x < 216 && canMoveDir[RIGHT]) // Limiitar movimiento en la mapa
+		if (canMoveDir[RIGHT])
 		{
-			position.x += speed;
+			if (position.x < 216) // Limiitar movimiento en la mapa
+			{
+				//position.x += speed;
+				speedX = 1;
+			}
+		}
+		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+		{
+			int tileY = level1Tile->getWorldPos(level1Tile->getTilePos(position)).y;
+
+			if (pivotPoint.y <= (tileY + 4))
+			{
+				position.y -= speed;
+			}
+			else if (pivotPoint.y > (tileY + 4) &&
+				pivotPoint.y < (tileY + 8))
+			{
+				position.y += speed;
+			}
+			else if (pivotPoint.y < (tileY + 10) &&
+				pivotPoint.y >(tileY + 8))
+			{
+				position.y -= speed;
+			}
+			else if (pivotPoint.y >= (tileY + 10))
+			{
+				position.y += speed;
+			}
 		}
 	}
+
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
 	{
 		isFlip = false;
@@ -92,9 +122,34 @@ UpdateResult Player::Update()
 		currentAnimation->hasIdle = false;
 		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
-			position.x -= speed;
+			//position.x -= speed;
+			speedX = -1;
+		}
+		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+		{
+			int tileY = level1Tile->getWorldPos(level1Tile->getTilePos(position)).y;
+
+			if (pivotPoint.y <= (tileY + 4))
+			{
+				position.y -= speed;
+			}
+			else if (pivotPoint.y > (tileY + 4) &&
+				pivotPoint.y < (tileY + 8))
+			{
+				position.y += speed;
+			}
+			else if (pivotPoint.y < (tileY + 10) &&
+				pivotPoint.y >(tileY + 8))
+			{
+				position.y -= speed;
+			}
+			else if (pivotPoint.y >= (tileY + 10))
+			{
+				position.y += speed;
+			}
 		}
 	}
+
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
 		isFlip = false;
@@ -102,19 +157,79 @@ UpdateResult Player::Update()
 		currentAnimation->hasIdle = false;
 		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
 		{
-			position.y -= speed;
+			//position.y -= speed;
+			speedY = -1;
+		}
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		{
+			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+
+			if (pivotPoint.x <= (tileX + 4))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x > (tileX + 4) &&
+				pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+			else if (pivotPoint.x < (tileX + 10) &&
+				pivotPoint.x >(tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x >= (tileX + 10))
+			{
+				position.x += speed;
+			}
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT)
+
+	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
 	{
 		isFlip = false;
 		currentAnimation = &downAnim;
 		currentAnimation->hasIdle = false;
 		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
-			position.y += speed;
+			//position.y += speed;
+			speedY = 1;
+		}
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		{
+			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+
+			if (pivotPoint.x <= (tileX + 4))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x > (tileX + 4) &&
+				pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+			else if (pivotPoint.x < (tileX + 10) &&
+				pivotPoint.x >(tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x >= (tileX + 10))
+			{
+				position.x += speed;
+			}
 		}
 	}
+
+	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
+	{
+		speedY = 0;
+	}
+	if (App->input->keys[SDL_SCANCODE_A] == KEY_UP || App->input->keys[SDL_SCANCODE_D] == KEY_UP)
+	{
+		speedX = 0;
+	}
+
+	position += {speedX, speedY};
 
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
@@ -123,19 +238,26 @@ UpdateResult Player::Update()
 	{
 		currentAnimation->hasIdle = true;
 	}
-
+	
 	col->SetPos(position);
 	currentAnimation->Update();
 
-	// Enable/Disable godMod
-	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	// Update Pivot Point
+	pivotPoint = { position.x + 8, position.y + 8 };
+
+	#pragma region Debug Mods
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		godMode = !godMode;
 	}
 
-	//Update Pivot Point
-	pivotPoint = { position.x + 8, position.y + 8 };
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		posMode = !posMode;
+	}
+	#pragma endregion
 
+	// Reset Move
 	for (int i = 0; i < 4; i++)
 	{
 		canMoveDir[i] = true;
@@ -160,6 +282,35 @@ UpdateResult Player::PostUpdate()
 		App->render->DrawTexture(texture, tempPos, &rect);
 	}
 
+	// Update tile Point
+	tilePos = getCurrentTilePos();
+	if (tilePos != lastTilePos)
+	{
+		level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = 0;
+		level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = -1;
+		lastTilePos = tilePos;
+	}
+	// Console Pos
+	if (posMode)
+	{
+		system("cls");
+		for (int l = 0; l < 13; ++l)
+		{
+			for (int j = 0; j < 15; ++j)
+			{
+				if (level1Tile->Level1TileMap[l][j] == -1)
+				{
+					cout << "P,";
+				}
+				else
+				{
+					cout << level1Tile->Level1TileMap[l][j] << ",";
+				}
+			}
+			cout << endl;
+		}
+	}
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -180,42 +331,51 @@ void Player::OnCollision(Collider* col)
 }
 
 void Player::WillCollision(Collider* col)
-{	
-	if(!godMode)
+{
+	if (!godMode)
 	{
 		// Choc
 		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 		{
-			// Detect if player can move or not
-			if (col->getPos().x == (position.x + bounds.w))
+			//get col position x 
+			int bx = col->getPos().x;
+			//get col position y 
+			int by = col->getPos().y;
+			int px = position.x;
+			int py = position.y;
+
+			// case 1
+			if ((px + 1 + bounds.w) >= bx && (px + 1) <= bx)
 			{
-				if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+				if ((py >= by && py < by + 16) || (py + bounds.h > by && py + bounds.h < by + 16))
 				{
-					//cout << "Colision a la derecha de player" << endl;
 					canMoveDir[RIGHT] = false;
 				}
+
 			}
-			if (col->getPos().x + bounds.w == (position.x))
+			// case 2
+			if (bx + 16 >= px - 1 && (px - 1 + bounds.w) >= bx + 16)
 			{
-				if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+				if ((py >= by && py < by + 16) || (py + bounds.h > by && py + bounds.h < by + 16))
 				{
-					//cout << "Colision a la izquierda de player" << endl;
 					canMoveDir[LEFT] = false;
 				}
 			}
-			if (col->getPos().y == (position.y + bounds.h))
+
+			// case 3
+			if ((py + 1 + bounds.h) >= by && (py + 1) <= by)
 			{
-				if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+				if ((px >= bx && px < bx + 16) || (px + bounds.w > bx && px + bounds.w < bx + 16))
 				{
-					//cout << "Colision abajo del player" << endl;
 					canMoveDir[DOWN] = false;
 				}
+
 			}
-			if (col->getPos().y + bounds.h == position.y)
+			// case 4
+			if (by + 16 >= py - 1 && (py - 1 + bounds.h) >= by + 16)
 			{
-				if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+				if ((px >= bx && px < bx + 16) || (px + bounds.w > bx && px + bounds.w < bx + 16))
 				{
-					//cout << "Colision arriba del player" << endl;
 					canMoveDir[UP] = false;
 				}
 			}
@@ -227,8 +387,7 @@ iPoint Player::getCurrentTilePos()
 {
 	iPoint ret = pivotPoint;
 
-	ret = tileMapPlayer.getTilePos(ret);
-	ret = tileMapPlayer.getWorldPos(ret);
+	ret = level1Tile->getTilePos(ret);
 
 	return ret;
 }

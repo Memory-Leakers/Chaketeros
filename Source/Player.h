@@ -16,6 +16,8 @@
 #define defaultPlayerSpeed 0.1f //Animation only
 struct SDL_Texture;
 
+class Tile;
+
 enum Dir
 {
 	UP = 0,
@@ -41,13 +43,19 @@ private:
 
 	bool canMoveDir[4];
 
+	bool isMoveDie[4];
+
 	bool godMode = false;
+
+	bool posMode = false;
+
+	Tile* level1Tile = nullptr;
 
 protected:
 
 public:
 	// Constructor
-	Player();
+	Player(Tile* level1Tile);
 
 	// Destructor
 	~Player();
@@ -75,7 +83,13 @@ public:
 	// Position of the player in the map
 	iPoint position;
 
-	//
+	// Last position of the player in the tile
+	iPoint lastTilePos;
+
+	// Position of the player in the tile
+	iPoint tilePos;
+
+	// Collider
 	Collider* col = nullptr;
 
 	// The speed in which we move the player (pixels per frame)
