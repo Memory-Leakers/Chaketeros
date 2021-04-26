@@ -8,11 +8,11 @@ Application::Application()
 	modules[0] = window = new ModuleWindow();
 	modules[1] = input = new ModuleInput();
 	modules[2] = textures = new ModuleTextures();
-	modules[3] = scene = new ModuleScene();
+	modules[3] = particle = new ModuleParticles();
 	modules[4] = audio = new ModuleAudio();
-	modules[5] = collisions = new ModuleCollisions();
-	modules[6] = particle = new ModuleParticles();
-	modules[7] = enemy = new ModuleEnemyPool();
+	modules[5] = scene = new ModuleScene();
+	modules[6] = enemy = new ModuleEnemyPool();
+	modules[7] = collisions = new ModuleCollisions();
 
 	modules[8] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
 }

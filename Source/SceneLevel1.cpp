@@ -334,15 +334,15 @@ bool SceneLevel1::Update()
 		}
 	}
 
+	// Draw Map
+	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+
 	return true;
 }
 
 bool SceneLevel1::PostUpdate()
 {
 	SDL_Rect rectUI = { 0,0,256,23 };
-
-	// Draw Map
-	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
 	//Draw Stone
 	for (int i = 0; i < MAX_STONE; i++)
