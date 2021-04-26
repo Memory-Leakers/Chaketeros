@@ -291,6 +291,7 @@ bool SceneLevel1::Update()
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
 		App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
+		App->audio->PlaySound(SFX::INTRO_SFX, 0);
 	}
 
 	// Update bomebrman

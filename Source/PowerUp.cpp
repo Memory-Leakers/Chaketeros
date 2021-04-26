@@ -29,8 +29,9 @@ Collider* PowerUp::getCollider()
 
 void PowerUp::Die() {
 
-    App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
-
+        App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
+    
+    
 }
 
 void PowerUp::OnCollision(Collider* col) {
@@ -38,5 +39,9 @@ void PowerUp::OnCollision(Collider* col) {
     if (col->type == Type::PLAYER || col->type == Type::EXPLOSION)
     {
         pendingToDelete = true;
+    }
+
+    else if (col->type == Type::PLAYER) {
+        App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
     }
 }

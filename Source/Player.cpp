@@ -127,10 +127,7 @@ UpdateResult Player::Update()
 	col->SetPos(position);
 	currentAnimation->Update();
 
-	//------------------SFX TEST--------------------------
-	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
-		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
-	}
+	
 
 	//Update Pivot Point
 	pivotPoint = { position.x + 8, position.y + 8 };
