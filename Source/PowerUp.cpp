@@ -45,4 +45,8 @@ void PowerUp::OnCollision(Collider* col)
         pendingToDelete = true;
         Die();
     }
+
+    else if (col->type == Type::PLAYER) {
+        App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
+    }
 }
