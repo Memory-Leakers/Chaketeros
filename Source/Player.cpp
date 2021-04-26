@@ -168,10 +168,16 @@ void Player::OnCollision(Collider* col)
 	{
 		pendingToDelete = true;
 	}
+
+	if (col->type == Type::FIREPOWER)
+	{
+		pUpFlame++;
+	}
 }
 
 void Player::WillCollision(Collider* col)
 {
+	// Choc
 	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 	{
 		// Detect if player can move or not

@@ -60,11 +60,11 @@ Particle* yellowFlowerDestroyed = nullptr;
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 vector<iPoint> emptySpaces;
-int yellowFlowers;
+int yellowFlowersNum;
 Tile tileMap;
 int renderExceptionPos[3];
 
-PowerUp* Powers[MAX_POWERUPS];
+PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
 
@@ -158,9 +158,7 @@ void SceneLevel1::CreateScene()
 {
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
-	
-	Powers[0] = new PowerUp({ 20,100 }, texPowerUps);
-	
+		
 	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
@@ -208,26 +206,33 @@ void SceneLevel1::CreateScene()
 void SceneLevel1::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
-	yellowFlowers = rand() % 6 + 43;
+	yellowFlowersNum = rand() % 6 + 43;
+	bool hasPowerUp = true;
 
-	for (int i = 0; i < yellowFlowers; i++)
+	for (int i = 0; i < yellowFlowersNum; ++i)
 	{
+		if (i >= 2) // Create 2 powerUps
+		{
+			hasPowerUp = false;
+		} 
+
 		int randomNum = rand() % emptySpaces.size();
-		for (int j = 0; j < SCENE_OBSTACLES_NUM; j++)
+		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				iPoint temporal = tileMap.getTilePos(emptySpaces.at(randomNum));
-
-				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
-
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, &tileMap);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, &tileMap, hasPowerUp);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
+				if(hasPowerUp)
+				{
+					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
+				}
+				
 				break;
 			}
 		}
@@ -271,15 +276,35 @@ bool SceneLevel1::PreUpdate()
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
 		{
+			// Create powerUp
+			for (int l = 0; l < 13; ++l)
+			{
+				for (int j = 0; j < 15; ++j)
+				{
+					if(tileMap.Level1TileMap[l][j] == 8)
+					{
+						for (int k = 0; k < MAX_POWERUPS; ++k)
+						{
+							if (powerUps[k] == nullptr)
+							{
+								powerUps[k] = new PowerUp(tileMap.getWorldPos({ j,l+1 }), texPowerUps, powerUpDestroyed);
+								tileMap.Level1TileMap[l][j] = 0;
+								break;
+							}
+						}
+					}
+				}
+			}
+
 			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}
 	}
-	if (Powers[0] != nullptr && Powers[0]->pendingToDelete)
+	if (powerUps[0] != nullptr && powerUps[0]->pendingToDelete)
 	{
-		delete Powers[0];
-		Powers[0] = nullptr;
+		delete powerUps[0];
+		powerUps[0] = nullptr;
 	}
 
 	return true;
@@ -331,6 +356,7 @@ bool SceneLevel1::Update()
 			{
 				cout << tileMap.Level1TileMap[i][j] << ",";
 			}
+			cout << endl;
 		}
 	}
 
@@ -432,9 +458,9 @@ bool SceneLevel1::PostUpdate()
 	// Render PowerUp
 	for (int i = 0; i < 3; i++)
 	{
-		if (Powers[i] != nullptr)
+		if (powerUps[i] != nullptr)
 		{
-			Powers[i]->PostUpdate();
+			powerUps[i]->PostUpdate();
 		}
 	}
 	#pragma endregion
@@ -463,9 +489,9 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 
 	for (int i = 0; i < 3; i++)
 	{
-		if (Powers[i] != nullptr && Powers[i]->getCollider() == c1)
+		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
 		{
-			Powers[i]->OnCollision(c2);
+			powerUps[i]->OnCollision(c2);
 		}
 	}
 
@@ -521,10 +547,10 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		if (Powers[i] != nullptr)
+		if (powerUps[i] != nullptr)
 		{
-			delete Powers[i];
-			Powers[i] = nullptr;
+			delete powerUps[i];
+			powerUps[i] = nullptr;
 		}
 	}
 
