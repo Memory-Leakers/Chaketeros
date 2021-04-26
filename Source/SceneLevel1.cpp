@@ -66,6 +66,8 @@ int renderExceptionPos[3];
 
 int glassCapsuleIndex;
 
+int playerLifes = 3;
+
 PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
@@ -276,8 +278,20 @@ bool SceneLevel1::PreUpdate()
 
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
-		delete bomberman;
-		bomberman = nullptr;
+
+		if (playerLifes > 0)
+		{
+			delete bomberman;
+			bomberman = nullptr;
+			playerLifes--;
+			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
+		}
+		else 
+		{
+			delete bomberman;
+			bomberman = nullptr;
+			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+		}
 	}
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
