@@ -377,11 +377,23 @@ void Player::WillCollision(Collider* col)
 	}
 }
 
+
+
 iPoint Player::getCurrentTilePos()
 {
 	iPoint ret = pivotPoint;
 
 	ret = level1Tile->getTilePos(ret);
+
+	return ret;
+}
+
+iPoint Player::getCurrentTilewWorldPos()
+{
+	iPoint ret = pivotPoint;
+
+	ret = level1Tile->getTilePos(ret);
+	ret = level1Tile->getWorldPos(ret);
 
 	return ret;
 }

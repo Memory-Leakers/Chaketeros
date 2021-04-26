@@ -78,7 +78,11 @@ public:
 	// Callback if will be collision, called when the player intersects with another
 	void WillCollision(Collider* col);
 
+	// pos for debug
 	iPoint getCurrentTilePos();
+
+	// pos for bomb
+	iPoint getCurrentTilewWorldPos();
 
 	// Position of the player in the map
 	iPoint position;
