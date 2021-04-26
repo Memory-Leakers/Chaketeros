@@ -257,7 +257,7 @@ bool SceneLevel1::Start()
 	*sceneObstacles = { nullptr };
 
 	// Inicializar jugador
-	bomberman = new Player(&tileMap);
+	bomberman = new Player(tileMap);
 	bomberman->Start();
 
 	LoadAsset();
@@ -388,18 +388,18 @@ bool SceneLevel1::Update()
 		{
 			for (int j = 0; j < 15; ++j)
 			{		
-				if (tileMap.Level1TileMap[i][j] == -1)
+				if (tileMap->Level1TileMap[i][j] == -1)
 				{
 					cout << "P,";
 				}
 				else
 				{
-					cout << tileMap.Level1TileMap[i][j] << ",";
+					cout << tileMap->Level1TileMap[i][j] << ",";
 				}
 			}
 			cout << endl;
 		}
-		sceneObstacles[glassCapsuleIndex]->Die();
+		//sceneObstacles[glassCapsuleIndex]->Die();
 	}
 
 	// Draw Map
@@ -596,12 +596,9 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		}
 	}
 
-	tileMap = *new Tile();
-
 	delete tileMap;
 	tileMap = nullptr;
-	
-	
+		
 	//Delete Vector
 	emptySpaces.clear();
 	emptySpaces.shrink_to_fit();

@@ -254,6 +254,15 @@ UpdateResult Player::Update()
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
 		posMode = !posMode;
+
+		if(posMode)
+		{
+			lastTilePos = tilePos;
+		}
+		else
+		{
+			level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = 0;
+		}	
 	}
 	#pragma endregion
 
@@ -282,32 +291,17 @@ UpdateResult Player::PostUpdate()
 		App->render->DrawTexture(texture, tempPos, &rect);
 	}
 
-	// Update tile Point
-	tilePos = getCurrentTilePos();
-	if (tilePos != lastTilePos)
-	{
-		level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = 0;
-		level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = -1;
-		lastTilePos = tilePos;
-	}
+
 	// Console Pos
 	if (posMode)
 	{
-		system("cls");
-		for (int l = 0; l < 13; ++l)
+		// Update tile Point
+		tilePos = getCurrentTilePos();
+		if (tilePos != lastTilePos)
 		{
-			for (int j = 0; j < 15; ++j)
-			{
-				if (level1Tile->Level1TileMap[l][j] == -1)
-				{
-					cout << "P,";
-				}
-				else
-				{
-					cout << level1Tile->Level1TileMap[l][j] << ",";
-				}
-			}
-			cout << endl;
+			level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = 0;
+			level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = -1;
+			lastTilePos = tilePos;
 		}
 	}
 
