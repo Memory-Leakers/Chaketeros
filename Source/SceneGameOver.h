@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 
+
 class SceneGameOver : public Scene
 {
 public:
@@ -24,6 +25,7 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
 };
 
 

@@ -9,7 +9,7 @@
 class PowerUp
 {
 public:
-    PowerUp(iPoint position, SDL_Texture* tex);
+    PowerUp(iPoint position, SDL_Texture* tex , Particle* dieParticle);
 
     ~PowerUp();
 

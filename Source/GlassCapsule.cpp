@@ -34,11 +34,12 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
     idleAnim.speed = 0.05f;
     idleAnim.loop = true;
 
-    withoutglassAnim.PushBack({ 45,191,48,49 });
-    withoutglassAnim.PushBack({ 101,189,48,51 });
-    withoutglassAnim.PushBack({ 156,186,48,54 });
+    withoutglassAnim.PushBack({ 46,186,48,54 });
+    withoutglassAnim.PushBack({ 102,186,48,54 });
+    withoutglassAnim.PushBack({ 157,186,48,54 });
     withoutglassAnim.loop = true;
-
+    withoutglassAnim.speed = 0.03f;
+    withoutglassAnim.hasIdle = false;
     //withoutfragments.PushBack({});
 
     currentAnim = &idleAnim;
@@ -51,13 +52,27 @@ void GlassCapsule::Update()
 
 void GlassCapsule::PostUpdate()
 {  
-    iPoint tempPos = getPosition();
-    tempPos.y -= 16;
-    App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
-
+   
+    if (!isDead) {
+        iPoint tempPos = getPosition();
+        tempPos.y -= 16;
+        App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
+    }
+    else 
+    {
+        iPoint tempPos = getPosition();
+        tempPos.y -= 6;
+        App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
+    }
     //falta condicion
     /*CurrentAnimation = &withoutglassAnim
     rec = CurrentAnimation->GetCurrentFrame();
     App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &rec);
     */
+}
+
+void GlassCapsule::Die()
+{
+    isDead = true;
+    currentAnim = &withoutglassAnim;
 }

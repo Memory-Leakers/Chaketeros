@@ -127,9 +127,10 @@ UpdateResult Player::Update()
 	col->SetPos(position);
 	currentAnimation->Update();
 
-	//------------------SFX TEST--------------------------
-	if (App->input->keys[SDL_SCANCODE_E] == KEY_DOWN) {
-		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
+	// Enable/Disable godMod
+	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	{
+		godMode = !godMode;
 	}
 
 	//Update Pivot Point
@@ -164,52 +165,59 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
-
-if (col->type == Type::EXPLOSION ||
-	col->type == Type::ENEMY) {
-	return;
-}
-	if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
+	if(!godMode)
 	{
-		pendingToDelete = true;
+		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
+		{
+			pendingToDelete = true;
+		}
+
+		if (col->type == Type::FIREPOWER)
+		{
+			pUpFlame++;
+		}
 	}
 }
 
 void Player::WillCollision(Collider* col)
 {
-	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
+	if(!godMode)
 	{
-		// Detect if player can move or not
-		if (col->getPos().x == (position.x + bounds.w))
+		// Choc
+		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 		{
-			if(col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			// Detect if player can move or not
+			if (col->getPos().x == (position.x + bounds.w))
 			{
-				//cout << "Colision a la derecha de player" << endl;
-				canMoveDir[RIGHT] = false;
+				if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+				{
+					//cout << "Colision a la derecha de player" << endl;
+					canMoveDir[RIGHT] = false;
+				}
 			}
-		}
-		if (col->getPos().x + bounds.w == (position.x))
-		{
-			if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			if (col->getPos().x + bounds.w == (position.x))
 			{
-				//cout << "Colision a la izquierda de player" << endl;
-				canMoveDir[LEFT] = false;
+				if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+				{
+					//cout << "Colision a la izquierda de player" << endl;
+					canMoveDir[LEFT] = false;
+				}
 			}
-		}
-		if (col->getPos().y == (position.y + bounds.h))
-		{
-			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			if (col->getPos().y == (position.y + bounds.h))
 			{
-				//cout << "Colision abajo del player" << endl;
-				canMoveDir[DOWN] = false;
+				if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+				{
+					//cout << "Colision abajo del player" << endl;
+					canMoveDir[DOWN] = false;
+				}
 			}
-		}
-		if (col->getPos().y + bounds.h == position.y)
-		{
-			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			if (col->getPos().y + bounds.h == position.y)
 			{
-				//cout << "Colision arriba del player" << endl;
-				canMoveDir[UP] = false;
+				if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+				{
+					//cout << "Colision arriba del player" << endl;
+					canMoveDir[UP] = false;
+				}
 			}
 		}
 	}

@@ -28,12 +28,16 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
+
+	// SFX Put bomb
+	App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 }
+
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
 :Obstacle({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
-	this->player = player;
+ 	this->player = player;
 	lv1Tile = tile;
 
 	explosionCenter = *e1;
@@ -56,6 +60,9 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
+
+	// SFX Put bomb
+	App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 }
 
 Bomb::~Bomb()
