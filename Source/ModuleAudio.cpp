@@ -183,6 +183,7 @@ bool ModuleAudio::PlaySound(uint index, int repeat)
 
 	if (sounds[index] != nullptr)
 	{
+		Mix_Volume(-1, 50);
 		Mix_PlayChannel(-1, sounds[index], repeat);
 		ret = true;
 	}

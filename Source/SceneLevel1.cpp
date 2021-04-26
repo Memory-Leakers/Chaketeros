@@ -360,6 +360,11 @@ bool SceneLevel1::Update()
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 	}
 
+	if (App->input->keys[SDL_SCANCODE_C] == KEY_DOWN)
+	{
+		cout << "Score: " << score << endl;
+	}
+
 	// Update bomebrman
 	if (bomberman != nullptr)
 	{
@@ -427,6 +432,7 @@ bool SceneLevel1::Update()
 				{
 					sceneObstacles[redFlowerIndex[i]]->pendingToDelete = true;
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
+					App->scene->currentScene->score += 100;
 				}
 			}
 		}
@@ -585,19 +591,19 @@ void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
 
 void SceneLevel1::CreateCoins()
 {
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0, l = 7; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)
 		{
 			if (tileMap->Level1TileMap[i][j] == 5)
 			{
-				for (int k = 0, l = 7; k < yellowFlowersNum; k++, l++)
+				for (int k = 0; k < yellowFlowersNum; k++)
 				{
 					if (sceneObstacles[l] != nullptr)
 					{
 						sceneObstacles[l]->pendingToDelete = true;
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
-						iPoint tempPos = sceneObstacles[l]->getPosition();
+						iPoint tempPos = sceneObstacles[l++]->getPosition();
 						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
 						{
 							if (sceneObstacles[m] == nullptr)
@@ -608,6 +614,7 @@ void SceneLevel1::CreateCoins()
 						}
 						
 					}
+					break;
 				}
 			}
 		}
