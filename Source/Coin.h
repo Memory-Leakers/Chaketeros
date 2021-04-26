@@ -17,6 +17,8 @@ public:
 	void Update() override;
 
 	void PostUpdate() override;
+
+	void OnCollision(Collider* c1) override;
 };
 
 

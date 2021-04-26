@@ -14,9 +14,11 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	cout << "Start Game Over" << endl;
+	/*cout << "Start Game Over" << endl;
 
-	cout << "Score: " << this->score << endl;
+	cout << "Score: " << this->score << endl;*/
+
+	//App->audio->PlaySound(SFX::GAME_OVER_SFX, 0);
 
 	return true;
 }
@@ -35,6 +37,6 @@ bool SceneGameOver::PostUpdate()
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
 {
-	cout << "CleanUp Game Over" << endl;
+	/*cout << "CleanUp Game Over" << endl;*/
 	return true;
 }
