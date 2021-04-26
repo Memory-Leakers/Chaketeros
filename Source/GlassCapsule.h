@@ -17,12 +17,15 @@ public:
     Animation withoutglassAnim;
     Animation withoutfragments;
 
+    bool isDead = false;
+
     Collider* auxCol[6] = { nullptr };
 
 public:
 
     void Update() override;
     void PostUpdate() override;
+    void Die() override;
 
 private:
     Animation* currentAnim = nullptr;

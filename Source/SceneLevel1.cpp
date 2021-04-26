@@ -64,6 +64,8 @@ int yellowFlowersNum;
 Tile tileMap;
 int renderExceptionPos[3];
 
+int glassCapsuleIndex;
+
 PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
@@ -180,6 +182,7 @@ void SceneLevel1::CreateScene()
 				break;
 			case 9:
 				renderExceptionPos[l++] = k;
+				glassCapsuleIndex = k;
 				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
@@ -267,6 +270,8 @@ bool SceneLevel1::Start()
 bool SceneLevel1::PreUpdate()
 {
 
+	bool anyCoreMecha = false;
+
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 		delete bomberman;
@@ -293,7 +298,15 @@ bool SceneLevel1::PreUpdate()
 							}
 						}
 					}
+					if (tileMap.Level1TileMap[l][j] == 6)
+					{
+						anyCoreMecha = true;
+					}
 				}
+			}
+			if (!anyCoreMecha)
+			{
+				sceneObstacles[glassCapsuleIndex]->Die();
 			}
 
 			sceneObstacles[i]->CleanUp();
@@ -359,6 +372,7 @@ bool SceneLevel1::Update()
 			}
 			cout << endl;
 		}
+		sceneObstacles[glassCapsuleIndex]->Die();
 	}
 
 	// Draw Map
