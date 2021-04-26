@@ -30,10 +30,11 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 	startCountTime = SDL_GetPerformanceCounter();
 }
 
-Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) 
+Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
 :Obstacle({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
 	this->player = player;
+	lv1Tile = tile;
 
 	explosionCenter = *e1;
 	explosionMiddle = *e2;
@@ -96,6 +97,37 @@ void Bomb::Die()
 	// Centro de la explocion
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
+	// Calculate spawn number
+	int explotionNum[4] = { 0,0,0,0 };
+	int tileX, tileY;
+	tileX = lv1Tile->getTilePos(getPosition()).x;
+	tileY = (lv1Tile->getTilePos(getPosition()).y) - 1;
+	iPoint dirSpawn[4] = { {1,0},{0,1},{-1,0},{0,-1} };
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 1; j <= explotionRange; j++)
+		{
+			if (lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j ] == 0||
+				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4)
+			{
+				explotionNum[i]++;
+			}
+			else
+			{
+				if(lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] !=1
+					&&lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 2
+					&& lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 7
+					&& lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 9)
+				{
+					explotionNum[i]++;
+				}
+				break;
+			}
+		}
+	}
+
+	// Create explotion
 	for (int i = 1; i < explotionRange; i++)
 	{
 		// 4 direction for explotion
@@ -112,23 +144,26 @@ void Bomb::Die()
 
 		for (int j = 0; j < 4; ++j)
 		{
-			flipHor = true;
-			// Explosopn End
-			if (i == explotionRange - 1)
-			{		
-				++i;
-				if (j == 2)
-				{
-					flipHor = false;
-				}
-				App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION, flipHor, rotation[j]);
-				--i;
-			}
-			else
+			if (explotionNum[j]-- > 0)
 			{
-				// Explosion Middle
-				App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION, flipHor, rotation[j]);
-			}
+				flipHor = true;
+				// Explosopn End
+				if (i == explotionRange - 1)
+				{
+					++i;
+					if (j == 2)
+					{
+						flipHor = false;
+					}
+					App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION, flipHor, rotation[j]);
+					--i;
+				}
+				else
+				{
+					// Explosion Middle
+					App->particle->AddParticle(explosionMiddle, (getPosition() + dir[j]), Type::EXPLOSION, flipHor, rotation[j]);
+				}
+			}			
 		}
 	}
 }

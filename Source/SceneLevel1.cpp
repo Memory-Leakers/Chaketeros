@@ -66,6 +66,8 @@ int renderExceptionPos[3];
 
 PowerUp* Powers[MAX_POWERUPS];
 
+Stone* stones[MAX_STONE];
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
@@ -159,7 +161,7 @@ void SceneLevel1::CreateScene()
 	
 	Powers[0] = new PowerUp({ 20,100 }, texPowerUps);
 	
-	for (int i = 0, k = 0, l = 0; i < 13; ++i)
+	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
@@ -169,7 +171,7 @@ void SceneLevel1::CreateScene()
 				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {0, -16});
 				break;
 			case 2:
-				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
+				stones[m++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
 				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, &tileMap);
@@ -265,7 +267,6 @@ bool SceneLevel1::PreUpdate()
 		delete bomberman;
 		bomberman = nullptr;
 	}
-
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -304,7 +305,7 @@ bool SceneLevel1::Update()
 		{
 			if(sceneObstacles[i] == nullptr)
 			{
-				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd);
+				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, &tileMap);
 				bomberman->maxBombs--;
 				break;
 			}
@@ -342,6 +343,15 @@ bool SceneLevel1::PostUpdate()
 
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+
+	//Draw Stone
+	for (int i = 0; i < MAX_STONE; i++)
+	{
+		if (stones[i] != nullptr)
+		{
+			stones[i]->PostUpdate();
+		}
+	}
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
@@ -491,8 +501,17 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->particle->CleanUpScene();
 	}
 
+	for (int i = 0; i < MAX_STONE; i++)
+	{
+		if (stones[i] != nullptr)
+		{
+			delete stones[i];
+			stones[i] = nullptr;
+		}
+	}
+
 	// Delete obstacles
-	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
@@ -527,6 +546,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	powerUpDestroyed = nullptr;
 	delete redFlowerDestroyed;
 	redFlowerDestroyed = nullptr;
+	delete yellowFlowerDestroyed;
+	yellowFlowerDestroyed = nullptr;
 	#pragma endregion
 
 	// Delete player

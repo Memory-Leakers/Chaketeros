@@ -16,6 +16,7 @@ struct SDL_Texture;
 #define SCENE_OBSTACLES_NUM 256
 #define MAX_EMPTY_SPACES 104
 #define MAX_POWERUPS 5
+#define MAX_STONE 30
 
 class SceneLevel1 : public Scene
 {

@@ -29,12 +29,14 @@ private:
 	Particle explosionMiddle;
 	Particle explosionEnd;
 
-	Player* player;
+	Player* player = nullptr;
+
+	Tile* lv1Tile = nullptr;
 
 public:
 	Bomb();
 	Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
-	Bomb(Player* p, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
+	Bomb(Player* p, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile);
 
 	~Bomb();
 
