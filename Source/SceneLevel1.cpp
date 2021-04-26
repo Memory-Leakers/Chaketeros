@@ -77,10 +77,12 @@ bool isLevelCompleted;
 
 iPoint winPosition = { 120, 96 };
 
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
 	srand(time(NULL));
+	score = 0;
 }
 
 SceneLevel1::~SceneLevel1()
@@ -277,8 +279,6 @@ bool SceneLevel1::Start()
 	//testFont = App->scene->text->getFonts(36);
 
 	CreateScene();
-
-	score = 0;
 
 	return ret;
 }
