@@ -2,7 +2,7 @@
 
 CoreMecha::CoreMecha()
 {
-	LOG("Constructor yellowFlower");
+
 }
 
 CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)

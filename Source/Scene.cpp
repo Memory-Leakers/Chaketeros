@@ -10,6 +10,7 @@ Scene::~Scene()
 
 bool Scene::Start()
 {
+	score = 0;
 	return true;
 }
 

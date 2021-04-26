@@ -7,7 +7,7 @@
 
 class Scene
 {
-	protected:
+
 public:
 	// Constructor
 	Scene();
@@ -28,6 +28,8 @@ public:
 	virtual void WillCollision(Collider* c1, Collider* c2);
 
 	virtual bool CleanUp(bool finalCleanUp = true);
+
+	int score;
 };
 
 

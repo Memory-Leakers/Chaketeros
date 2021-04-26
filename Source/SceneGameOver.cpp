@@ -15,18 +15,21 @@ SceneGameOver::~SceneGameOver()
 bool SceneGameOver::Start()
 {
 	cout << "Start Game Over" << endl;
+
+	cout << "Score: " << this->score << endl;
+
 	return true;
 }
 
 bool SceneGameOver::Update()
 {
-	cout << "Update Game Over" << endl;
+	//cout << "Update Game Over" << endl;
 	return true;
 }
 
 bool SceneGameOver::PostUpdate()
 {
-	cout << "PostUpdate Game Over" << endl;
+	//cout << "PostUpdate Game Over" << endl;
 	return true;
 }
 
