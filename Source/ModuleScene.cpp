@@ -18,6 +18,8 @@ ModuleScene::ModuleScene()
 	scenes[3] = new SceneSelectStage();
 	scenes[4] = new SceneLevel1();
 	scenes[5] = new SceneGameOver();
+
+	currentScore = 0;
 }
 
 ModuleScene::~ModuleScene()
@@ -34,6 +36,7 @@ bool ModuleScene::Start()
 
 	currentScene = scenes[LEVEL1_SCENE];
 	currentScene->Start();
+
 
 	return ret;
 }
@@ -58,6 +61,7 @@ UpdateResult ModuleScene::Update()
 		{
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+			currentScene->score = currentScore;
 			currentScene->Start();
 			currentStep = FADE_OUT;
 			return UpdateResult::UPDATE_CONTINUE;
@@ -101,12 +105,13 @@ void ModuleScene::WillCollision(Collider* c1, Collider* c2)
 	currentScene->WillCollision(c1, c2);
 }
 
-void ModuleScene::ChangeCurrentScene(uint index, int frames)	//CleanUp current scene, change current scene (index), Start current Scene
+void ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//CleanUp current scene, change current scene (index), Start current Scene
 {
 	currentStep = FADE_IN;
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
+	currentScore = sceneScore;
 }
 
 bool ModuleScene::CleanUp()

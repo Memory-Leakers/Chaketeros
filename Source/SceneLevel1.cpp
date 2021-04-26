@@ -264,6 +264,8 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
+	score = 0;
+
 	return ret;
 }
 
@@ -328,8 +330,7 @@ bool SceneLevel1::Update()
 	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
-		App->audio->PlaySound(SFX::INTRO_SFX, 0);
+		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 	}
 
 	// Update bomebrman
