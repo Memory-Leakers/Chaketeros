@@ -183,6 +183,9 @@ void ModuleCollisions::DebugDraw()
 			case Type::DESTRUCTABLE_WALL: // magenta
 			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
 			break;
+			case Type::FIREPOWER: // black
+			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
+			break;
 		}
 	}
 }

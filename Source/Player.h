@@ -41,6 +41,8 @@ private:
 
 	bool canMoveDir[4];
 
+	bool godMode = false;
+
 protected:
 
 public:
