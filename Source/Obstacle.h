@@ -5,6 +5,7 @@
 #include "ModuleTextures.h"
 #include "Application.h"
 
+
 class Obstacle{
 private:
 	bool trigger;

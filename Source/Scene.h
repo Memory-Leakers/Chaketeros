@@ -8,7 +8,6 @@
 class Scene
 {
 	protected:
-		Text* text = new Text();
 public:
 	// Constructor
 	Scene();
@@ -25,6 +24,8 @@ public:
 	virtual bool PostUpdate();
 
 	virtual void OnCollision(Collider* c1, Collider* c2);
+
+	virtual void WillCollision(Collider* c1, Collider* c2);
 
 	virtual bool CleanUp(bool finalCleanUp = true);
 };

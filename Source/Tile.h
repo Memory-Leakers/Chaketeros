@@ -17,20 +17,20 @@ public:
 
 	iPoint pivotPoint = { r.w / 2, r.h / 2 };
 
-	// 0 = EMPTY; 1 = INVISIBLE_WALL; 2 = STONE; 3 = RED FLOWER; 4 = NON EMPTY SPACE; 5 = YELLOW FLOWER	; 9 = GLASS CAPSULE
+	// 0 = EMPTY; 1 = INVISIBLE_WALL; 2 = STONE; 3 = RED FLOWER; 4 = NON EMPTY SPACE; 5 = YELLOW FLOWER	; 6 = CORE MECHA; 7 = GLASS CAPSULE BODY; 9 = GLASS CAPSULE
 
 	int Level1TileMap[13][15]
 	{
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
 		{ 1,4,4,4,0,0,0,0,0,0,0,0,0,0,1 },
 		{ 1,4,2,0,2,0,2,0,2,0,2,0,2,0,1 },
-		{ 1,4,0,0,0,3,0,0,0,3,0,0,0,0,1 },
-		{ 1,0,2,0,2,0,9,4,4,0,2,0,2,0,1 },
-		{ 1,0,0,0,0,0,4,4,4,0,0,0,0,0,1 },
-		{ 1,0,2,0,2,0,4,4,4,0,2,0,2,0,1 },
+		{ 1,4,0,0,0,3,0,0,0,3,0,6,0,0,1 },
+		{ 1,0,2,0,2,0,9,7,7,0,2,0,2,0,1 },
+		{ 1,0,0,0,0,0,7,7,7,0,0,0,0,0,1 },
+		{ 1,0,2,0,2,0,7,7,7,0,2,0,2,0,1 },
 		{ 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
 		{ 1,0,2,0,2,0,2,0,2,0,2,0,2,0,1 },
-		{ 1,0,0,0,0,3,0,0,0,3,0,0,0,0,1 },
+		{ 1,0,0,6,0,3,0,0,0,3,0,0,0,0,1 },
 		{ 1,0,2,0,2,0,2,0,2,0,2,0,2,0,1 },
 		{ 1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
@@ -43,6 +43,9 @@ public:
 
 	iPoint getTilePos(iPoint pos);
 	iPoint getTilePos(int x, int y);
+
+	void setTile(iPoint tile,int num);
+	void setTile(int tileX, int tileY, int num);
 
 	void Reset();
 

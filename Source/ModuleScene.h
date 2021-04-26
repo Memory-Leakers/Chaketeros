@@ -32,6 +32,8 @@ enum SCENE_NUM
 	GAME_OVER_SCENE
 };
 
+
+
 class ModuleScene : public Module
 {
 public:
@@ -58,16 +60,20 @@ public:
 	void
  OnCollision(Collider* c1, Collider* c2) override;
 
+	void WillCollision(Collider* c1, Collider* c2) override;
+
 	void ChangeCurrentScene(uint index, int frames);
 
 	bool CleanUp() override;
 
-	//Text* text = new Text();
+	//Text* text = nullptr;
+
+	Scene* currentScene = nullptr;
 
 private:
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
-	Scene* currentScene = nullptr;
+
 
 	enum FadeSteps
 	{
@@ -83,6 +89,8 @@ private:
 	SDL_Rect screenRect;
 
 	uint newScene;
+
+
 
 };
 

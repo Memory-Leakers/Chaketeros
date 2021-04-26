@@ -29,6 +29,8 @@ public:
 	// and the module is registered as the listener
 	 virtual void OnCollision(Collider* c1, Collider* c2);
 
+	 virtual void WillCollision(Collider* c1, Collider* c2);
+
 	// Called at the end of the application
 	virtual bool CleanUp();
 };

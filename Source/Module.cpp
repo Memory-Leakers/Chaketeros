@@ -30,6 +30,11 @@ void Module::OnCollision(Collider* c1, Collider* c2)
 
 }
 
+void Module::WillCollision(Collider* c1, Collider* c2)
+{
+
+}
+
 bool Module::CleanUp()
 {
 	return true;

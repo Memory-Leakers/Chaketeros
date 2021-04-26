@@ -9,10 +9,13 @@
 #include "Tile.h"
 #include "RedFlower.h"
 #include "Coin.h"
+#include "CoreMecha.h"
+#include "PowerUp.h"
 
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include <cstring>
 using namespace std;
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
@@ -29,6 +32,8 @@ SDL_Texture* texEnemies = nullptr;
 SDL_Texture* texItemDestroyed = nullptr;
 SDL_Texture* texCoin = nullptr;
 SDL_Texture* texPowerUpDestroyed = nullptr;
+SDL_Texture* texCoreMecha = nullptr;
+SDL_Texture* texPowerUps = nullptr;
 
 // Player
 Player* bomberman = nullptr;
@@ -49,10 +54,19 @@ Particle* powerUpDestroyed = nullptr;
 // Template particle for an end of red flower
 Particle* redFlowerDestroyed = nullptr;
 
+// Template particle for an end of yellow flower
+Particle* yellowFlowerDestroyed = nullptr;
+
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+
 vector<iPoint> emptySpaces;
 int yellowFlowers;
 Tile tileMap;
+int renderExceptionPos[3];
+
+PowerUp* Powers[MAX_POWERUPS];
+
+Stone* stones[MAX_STONE];
 
 SceneLevel1::SceneLevel1()
 {
@@ -77,47 +91,65 @@ void SceneLevel1::LoadAsset()
 	texEnemies = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
-	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
+	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
+	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
+	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.01f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.01f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.01f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.05f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.05f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.05f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 40, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });	
+	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 
 	// ExplosionEnd particle
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
 	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 
 	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.01f, texPowerUpDestroyed);
+	powerUpDestroyed = new Particle(500.0f, 0.05f, texPowerUpDestroyed);
 	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
-	powerUpDestroyed->anim.PushBack({ 67,4,26,27 });
-	powerUpDestroyed->anim.PushBack({ 3,34,26,25 });
-	powerUpDestroyed->anim.PushBack({ 35,34,26,25 });
-	powerUpDestroyed->anim.PushBack({ 67,34,26,25 });
+	powerUpDestroyed->anim.PushBack({ 67,2,26,27 });
+	powerUpDestroyed->anim.PushBack({ 3,34,26,27 });
+	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
+	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
+	powerUpDestroyed->anim.hasIdle = false;
 
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.01f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.05f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 52,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
+
+	yellowFlowerDestroyed = new Particle(500.0f, 0.05f, texYellowFlower);
+	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 49,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 65,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 81,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 97,0,16,16 });
+	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
 
 #pragma endregion
 }
@@ -126,7 +158,10 @@ void SceneLevel1::CreateScene()
 {
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
-	for (int i = 0, k = 0; i < 13; ++i)
+	
+	Powers[0] = new PowerUp({ 20,100 }, texPowerUps);
+	
+	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
@@ -136,12 +171,17 @@ void SceneLevel1::CreateScene()
 				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {0, -16});
 				break;
 			case 2:
-				sceneObstacles[k++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
+				stones[m++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
-				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed);
+				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, &tileMap);
+				break;
+			case 6:
+				renderExceptionPos[l++] = k;
+				sceneObstacles[k++] = new CoreMecha(tileMap.getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, &tileMap);
 				break;
 			case 9:
+				renderExceptionPos[l++] = k;
 				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
@@ -153,7 +193,7 @@ void SceneLevel1::CreateScene()
 	cout << endl;
 
 	CreateYellowFlowers();
-
+	
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
@@ -181,7 +221,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				//if (tileMap.Level1TileMap[temporal.x][temporal.y])
 
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, texPowerUpDestroyed, powerUpDestroyed);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, &tileMap);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -210,6 +250,9 @@ bool SceneLevel1::Start()
 
 	// Create music
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	Mix_VolumeMusic(10);
+
+	//testFont = App->scene->text->getFonts(36);
 
 	CreateScene();
 
@@ -218,6 +261,12 @@ bool SceneLevel1::Start()
 
 bool SceneLevel1::PreUpdate()
 {
+
+	if (bomberman != nullptr && bomberman->pendingToDelete)
+	{
+		delete bomberman;
+		bomberman = nullptr;
+	}
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -226,6 +275,11 @@ bool SceneLevel1::PreUpdate()
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}
+	}
+	if (Powers[0] != nullptr && Powers[0]->pendingToDelete)
+	{
+		delete Powers[0];
+		Powers[0] = nullptr;
 	}
 
 	return true;
@@ -240,14 +294,18 @@ bool SceneLevel1::Update()
 	}
 
 	// Update bomebrman
-	bomberman->Update();
+	if (bomberman != nullptr)
+	{
+		bomberman->Update();
+	}
+
 	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
 	{
 		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
 			if(sceneObstacles[i] == nullptr)
 			{
-				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd);
+				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, &tileMap);
 				bomberman->maxBombs--;
 				break;
 			}
@@ -263,6 +321,22 @@ bool SceneLevel1::Update()
 		}
 	}
 
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		cout << endl;
+		// Check Map in Console
+		for (int i = 0, k = 0; i < 13; ++i)
+		{
+			for (int j = 0; j < 15; ++j)
+			{
+				cout << tileMap.Level1TileMap[i][j] << ",";
+			}
+		}
+	}
+
+	// Draw Map
+	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+
 	return true;
 }
 
@@ -270,24 +344,100 @@ bool SceneLevel1::PostUpdate()
 {
 	SDL_Rect rectUI = { 0,0,256,23 };
 
-	// Draw Map
-	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+	//Draw Stone
+	for (int i = 0; i < MAX_STONE; i++)
+	{
+		if (stones[i] != nullptr)
+		{
+			stones[i]->PostUpdate();
+		}
+	}
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
-			sceneObstacles[i]->PostUpdate();
+			sceneObstacles[i]->PostUpdate();			
+		}
+	}
 
-			// Si hay obstaculo que ubica arriba de player o player esta en primera fila
-			if (sceneObstacles[i]->getPosition().y <= bomberman->position.y || bomberman->position.y < 48) // Pendiente de optimizar
+	#pragma region RenderExpection
+	// Get renderExpion
+	int ExeptionRenderOrder[4][2];
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (sceneObstacles[renderExceptionPos[i]] != nullptr)
+		{
+			ExeptionRenderOrder[i][0] = i;
+			ExeptionRenderOrder[i][1] = sceneObstacles[renderExceptionPos[i]]->getPosition().y;
+		}
+		else
+		{
+			ExeptionRenderOrder[i][0] = -1;
+		}
+	}
+
+	
+	// Sort render exeption
+	ExeptionRenderOrder[3][0] = 3;
+	if (bomberman != nullptr)
+	{
+		ExeptionRenderOrder[3][1] = bomberman->position.y;
+	}
+
+	int temp = 0;
+	int tempArr[] = { ExeptionRenderOrder[0][0],ExeptionRenderOrder[0][1] };
+
+	for (int j = 0; j < 3; ++j)
+	{
+		memcpy(tempArr, ExeptionRenderOrder[j], sizeof(ExeptionRenderOrder[j]));
+		temp = j;
+		for (int i = j; i < 4; ++i)
+		{
+			if (ExeptionRenderOrder[i][1] < tempArr[1])
 			{
-				// Draw Bomberman
-				bomberman->PostUpdate();
+				memcpy(ExeptionRenderOrder[temp], ExeptionRenderOrder[i], sizeof(ExeptionRenderOrder[i]));
+				memcpy(ExeptionRenderOrder[i], tempArr, sizeof(tempArr));
+				memcpy(tempArr, ExeptionRenderOrder[temp], sizeof(ExeptionRenderOrder[temp]));
+				temp = i;
 			}
 		}
 	}
+	
+
+	//Render exeptions
+	for (int i = 0; i < 4; i++)
+	{
+		if (ExeptionRenderOrder[i][0] != -1)
+		{
+			if (ExeptionRenderOrder[i][0] == 3)
+			{
+				if (bomberman != nullptr)
+				{
+					bomberman->PostUpdate();
+				}
+			}
+			else
+			{
+				if (sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]] != nullptr)
+				{
+					sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]]->PostUpdate();
+				}
+			}
+		}	
+	}
+	
+	// Render PowerUp
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr)
+		{
+			Powers[i]->PostUpdate();
+		}
+	}
+	#pragma endregion
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
@@ -295,17 +445,32 @@ bool SceneLevel1::PostUpdate()
 	// Draw UI
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
-	int test = 20;
 	//Draw UI text
-	text->showText(App->render->renderer, 55, 18, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+	//App->scene->text->showText(App->render->renderer, 55, 18, "0 : 00", 30, App->scene->text->getColors((int) textColour::WHITE));  //Timer
+	//text->showText(App->render->renderer, 360, 18, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t" + std::to_string(test), text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
+	//text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
 	return true;
 }
 
 void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 {
+
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->OnCollision(c2);
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr && Powers[i]->getCollider() == c1)
+		{
+			Powers[i]->OnCollision(c2);
+		}
+	}
+
+
+	//Obstacle Collision ----------------------
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		// cuando se choca algo
@@ -313,6 +478,14 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		{
 			sceneObstacles[i]->OnCollision(c2);
 		}
+	}
+}
+
+void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
+{
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->WillCollision(c2);
 	}
 }
 
@@ -328,13 +501,30 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->particle->CleanUpScene();
 	}
 
+	for (int i = 0; i < MAX_STONE; i++)
+	{
+		if (stones[i] != nullptr)
+		{
+			delete stones[i];
+			stones[i] = nullptr;
+		}
+	}
+
 	// Delete obstacles
-	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (Powers[i] != nullptr)
+		{
+			delete Powers[i];
+			Powers[i] = nullptr;
 		}
 	}
 
@@ -356,6 +546,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	powerUpDestroyed = nullptr;
 	delete redFlowerDestroyed;
 	redFlowerDestroyed = nullptr;
+	delete yellowFlowerDestroyed;
+	yellowFlowerDestroyed = nullptr;
 	#pragma endregion
 
 	// Delete player

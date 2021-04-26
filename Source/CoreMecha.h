@@ -14,18 +14,22 @@ private:
 	//Animation idle, die;
 	Animation* currentAnim = nullptr;
 
-	Particle destroyed;
+	Particle dieParticle;
 
 	bool isDead = false;
+
+	Tile* currentTileMap;
 
 public:
 
 	CoreMecha();
-	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed);
+	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile);
 
 	void Die() override;
 
 	void PostUpdate() override;
+
+	void OnCollision(Collider* col) override;
 };
 
 #endif // ! _COREMECHA_H

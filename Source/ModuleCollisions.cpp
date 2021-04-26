@@ -43,7 +43,7 @@ ModuleCollisions::ModuleCollisions()
 
 	matrix[uint(Type::EXPLOSION)][uint(Type::WALL)] = true;
 	matrix[uint(Type::EXPLOSION)][uint(Type::PLAYER)] = true;
-	matrix[uint(Type::EXPLOSION)][uint(Type::ENEMY)] = true;
+	matrix[uint(Type::EXPLOSION)][uint(Type::ENEMY)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::BOMB)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::EXPLOSION)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::DESTRUCTABLE_WALL)] = true;
@@ -99,6 +99,15 @@ UpdateResult ModuleCollisions::PreUpdate()
 				continue;
 
 			c2 = colliders[k];
+
+			if (c1->WillIntersects(c2->rect))
+			{
+				if (matrix[uint(c1->type)][uint(c2->type)] && c1->listener)
+					c1->listener->WillCollision(c1, c2);
+
+				if (matrix[uint(c2->type)][uint(c1->type)] && c2->listener)
+					c2->listener->WillCollision(c2, c1);
+			}
 
 			if(c1->Intersects(c2->rect))
 			{

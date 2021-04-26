@@ -29,6 +29,9 @@ class Text {
 		SDL_Color blackC;
 		SDL_Color whiteC;
 		SDL_Color redC;
+
+		TTF_Font* font30 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 30);
+
 	protected:
 
 	public:
@@ -41,5 +44,5 @@ class Text {
 		SDL_Color getColors(Uint8 red, Uint8 green, Uint8 blue);
 		SDL_Color getColors(int index);
 
-		void showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* testFont, SDL_Color color);
+		void showText(SDL_Renderer* renderer, int x, int y, std::string message, int fontSize, SDL_Color color);
 };

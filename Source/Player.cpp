@@ -3,7 +3,8 @@
 #include <iostream>;
 using namespace std;
 
-SDL_Texture* flipTest;
+
+Tile tileMapPlayer;
 
 Player::Player()
 {
@@ -48,7 +49,7 @@ Player::Player()
 
 Player::~Player()
 {
-
+	col->pendingToDelete = true;
 }
 
 bool Player::Start()
@@ -58,9 +59,14 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
-	flipTest = App->textures->Load("Assets/Images/Sprites/flipTest.png");
+
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
+
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
 
 	return ret;
 }
@@ -69,48 +75,52 @@ UpdateResult Player::Update()
 {
 	// Player Movement keys
 	// Reset the currentAnimation back to idle before updating the logic
-	currentAnimation->hasIdle = false;
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT)
 	{
+		isFlip = true;
 		currentAnimation = &rightAnim;
-		if (position.x < 216) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.x < 216 && canMoveDir[RIGHT]) // Limiitar movimiento en la mapa
 		{
 			position.x += speed;
-			isFlip = true;
 		}
 	}
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &leftAnim;
-		if (position.x > 24) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			position.x -= speed;
-			isFlip = false;
-		}	
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &upAnim;
-		if (position.y > 32) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
 		{
 			position.y -= speed;
-			isFlip = false;
-		}	
+		}
 	}
 	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT)
 	{
+		isFlip = false;
 		currentAnimation = &downAnim;
-		if (position.y < 208 - 16) // Limiitar movimiento en la mapa
+		currentAnimation->hasIdle = false;
+		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			position.y += speed;
-			isFlip = false;
 		}
 	}
-	
-	if (App->input->keys[SDL_SCANCODE_D] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT &&
-		App->input->keys[SDL_SCANCODE_S] != KEY_REPEAT) {
+
+	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+	{
 		currentAnimation->hasIdle = true;
 	}
 
@@ -122,6 +132,14 @@ UpdateResult Player::Update()
 		App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 	}
 
+	//Update Pivot Point
+	pivotPoint = { position.x + 8, position.y + 8 };
+
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -131,7 +149,7 @@ UpdateResult Player::PostUpdate()
 
 	iPoint tempPos = position;
 	tempPos.y -= 6;
-	
+
 	if(isFlip)
 	{
 		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
@@ -146,8 +164,63 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
-	if (col->type == Type::EXPLOSION ||
-		col->type == Type::ENEMY) {
-		return;
+
+if (col->type == Type::EXPLOSION ||
+	col->type == Type::ENEMY) {
+	return;
+}
+	if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
+	{
+		pendingToDelete = true;
 	}
+}
+
+void Player::WillCollision(Collider* col)
+{
+	if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
+	{
+		// Detect if player can move or not
+		if (col->getPos().x == (position.x + bounds.w))
+		{
+			if(col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			{
+				//cout << "Colision a la derecha de player" << endl;
+				canMoveDir[RIGHT] = false;
+			}
+		}
+		if (col->getPos().x + bounds.w == (position.x))
+		{
+			if (col->getPos().y != (position.y + bounds.h) && col->getPos().y + bounds.h != position.y)
+			{
+				//cout << "Colision a la izquierda de player" << endl;
+				canMoveDir[LEFT] = false;
+			}
+		}
+		if (col->getPos().y == (position.y + bounds.h))
+		{
+			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			{
+				//cout << "Colision abajo del player" << endl;
+				canMoveDir[DOWN] = false;
+			}
+		}
+		if (col->getPos().y + bounds.h == position.y)
+		{
+			if (col->getPos().x != (position.x + bounds.w) && col->getPos().x + bounds.w != (position.x))
+			{
+				//cout << "Colision arriba del player" << endl;
+				canMoveDir[UP] = false;
+			}
+		}
+	}
+}
+
+iPoint Player::getCurrentTilePos()
+{
+	iPoint ret = pivotPoint;
+
+	ret = tileMapPlayer.getTilePos(ret);
+	ret = tileMapPlayer.getWorldPos(ret);
+
+	return ret;
 }

@@ -1,16 +1,19 @@
 #include "ModuleScene.h"
 
 
+
 ModuleScene::ModuleScene()
 {
 
-	if (TTF_Init() != 0) {
+	if (TTF_Init() != 0)
+	{
 		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
-		
 	}
 	else {
 		SDL_Log("TTF Intitialized");
 	}
+
+	//text = new Text();
 
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
@@ -22,6 +25,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
+
 }
 
 bool ModuleScene::Start()
@@ -50,7 +54,6 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
-
 
 	if (currentStep == FADE_NONE) { currentScene->Update(); return UpdateResult::UPDATE_CONTINUE; }	//Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
 
@@ -100,17 +103,17 @@ void ModuleScene::OnCollision(Collider* c1, Collider* c2)
 	currentScene->OnCollision(c1, c2);
 }
 
+void ModuleScene::WillCollision(Collider* c1, Collider* c2)
+{
+	currentScene->WillCollision(c1, c2);
+}
+
 void ModuleScene::ChangeCurrentScene(uint index, int frames)	//CleanUp current scene, change current scene (index), Start current Scene
 {
 	currentStep = FADE_IN;
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
-
-	/*currentScene->CleanUp();
-	currentScene = scenes[index];
-	currentScene->Start();
-	*/
 }
 
 bool ModuleScene::CleanUp()
@@ -125,10 +128,13 @@ bool ModuleScene::CleanUp()
 		}
 	}
 
-	//if (text != NULL) {
-	//	delete text;
-	//}
-
+/*
+	if (text != nullptr)
+	{
+		delete text;
+		text = nullptr;
+	}
+*/
 	TTF_Quit();
 
 	return true;

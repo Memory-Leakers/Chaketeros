@@ -1,7 +1,8 @@
 #include "Text.h"
+#include "Application.h"
 
 Text::Text() {
-	
+
 	if (!TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 80)) {
 		std::cout << TTF_GetError();
 	}
@@ -11,14 +12,14 @@ Text::Text() {
 	Font35 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 35);
 	Font20 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 20);
 	Font10 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 10);
-	
+
 	blackC = { 0,0,0 };
 	whiteC = { 255, 255, 255 };
 	redC = { 255, 0, 0 };
 }
 
 Text::~Text() {
-	
+
 	TTF_CloseFont(Font80);
 	TTF_CloseFont(Font50);
 	TTF_CloseFont(Font35);
@@ -29,25 +30,28 @@ Text::~Text() {
 	delete text;
 }
 
-void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* testFont, SDL_Color color) {
+void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* font, SDL_Color color) {
 
 	if (textSurface == NULL) {
-		textSurface = TTF_RenderText_Solid(testFont, message.c_str(), color);
+		textSurface = TTF_RenderText_Solid(font, message.c_str(), color);
 	}
-	
+
 	if (text == NULL) {
 		text = SDL_CreateTextureFromSurface(renderer, textSurface);
 	}
-	
+
 	textRect.x = x;
 	textRect.y = y;
 	textRect.h = 0;
 	textRect.w = 0;
+
 	SDL_QueryTexture(text, NULL, NULL, &textRect.w, &textRect.h);
 
 	SDL_RenderCopy(renderer, text, NULL, &textRect);
 
-	//SDL_
+	// Clean memory
+	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
 }
 
 

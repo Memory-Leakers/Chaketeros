@@ -20,6 +20,12 @@
     <Filter Include="Source Files\Util\Enemies">
       <UniqueIdentifier>{6feab8f4-903f-42df-b489-09ba6b91b90f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Obstacle">
+      <UniqueIdentifier>{a32e3285-b3f9-4c3a-92d1-6511ff19ab59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util\PowerUp">
+      <UniqueIdentifier>{0003379a-6dd6-4952-9682-b91ac3616c5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -73,25 +79,10 @@
     <ClInclude Include="ModuleEnemy.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEnemyPool.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="YellowFlower.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassCapsule.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Stone.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
@@ -100,14 +91,8 @@
     <ClInclude Include="Tile.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="RedFlower.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="MemLeaks.h">
       <Filter>Source Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Source Files\Util\Scenes</Filter>
@@ -133,7 +118,34 @@
     <ClInclude Include="Text.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
     <ClInclude Include="CoreMecha.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassCapsule.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="RedFlower.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="Stone.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="YellowFlower.h">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp.h">
+      <Filter>Source Files\Util\PowerUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="PokaPoka.h">
@@ -189,37 +201,16 @@
     <ClCompile Include="ModuleEnemy.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEnemyPool.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="YellowFlower.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassCapsule.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Stone.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="RedFlower.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -246,7 +237,34 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
     <ClCompile Include="CoreMecha.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassCapsule.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="RedFlower.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="Stone.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="YellowFlower.cpp">
+      <Filter>Source Files\Util\Obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerUp.cpp">
+      <Filter>Source Files\Util\PowerUp</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="PokaPoka.cpp">
