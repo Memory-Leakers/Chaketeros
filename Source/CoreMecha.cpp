@@ -42,6 +42,7 @@ void CoreMecha::OnCollision(Collider* col)
 {
 	if (col->type == Type::EXPLOSION)
 	{
+		App->audio->PlaySound(SFX::ORBS_DESTROYED_SFX, 0);
 		Die();
 	}
 }
