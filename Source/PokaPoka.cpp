@@ -152,6 +152,6 @@ void PokaPoka::onCollision(Collider* otherCol) {
 
 void PokaPoka::die() {
 	//powerUpDrop();
-
 	isDead = false;
+
 }

@@ -61,13 +61,6 @@ UpdateResult ModuleRender::Update()
 			camera.x = 0;
 		}
 	}
-	
-
-	double currentCountTime = SDL_GetPerformanceCounter();
-	double timeOffset = SDL_GetPerformanceFrequency();
-	
-
-
 
 
 	if (debugCamera) {

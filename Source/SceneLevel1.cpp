@@ -595,9 +595,12 @@ bool SceneLevel1::PostUpdate()
 	string strScore = std::to_string(bomberman->getScore());
 
 
+	/*
 	text->showText(App->render->renderer, 50, 10, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
 	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t" + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
 	text->showText(App->render->renderer, 700, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+
+	*/
 	}
 	return true;
 }
@@ -746,6 +749,17 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
+
+	//Delete Enemy
+
+	for (int i = 0; i < 1; i++) {
+		delete enemy[i];
+		enemy[i] = nullptr;
+	}
+
+
+
+	delete text;
 
 	return true;
 }

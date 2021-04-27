@@ -31,6 +31,7 @@ bool SceneMainTitle::PostUpdate()
 
 bool SceneMainTitle::CleanUp(bool finalCleanUp)
 {
+	delete text;
 	cout << "CleanUp Main Title" << endl;
 	return true;
 }

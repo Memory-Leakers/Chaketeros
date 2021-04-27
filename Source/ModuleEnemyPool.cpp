@@ -8,7 +8,7 @@ ModuleEnemyPool::ModuleEnemyPool() {
 }
 
 ModuleEnemyPool::~ModuleEnemyPool() {
-
+	CleanUp();
 }
 
 bool ModuleEnemyPool::Start() {

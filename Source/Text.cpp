@@ -19,14 +19,14 @@ Text::Text() {
 }
 
 Text::~Text() {
-
+	
 	TTF_CloseFont(Font80);
 	TTF_CloseFont(Font50);
 	TTF_CloseFont(Font35);
 	TTF_CloseFont(Font20);
 	TTF_CloseFont(Font10);
 
-	delete textSurface;
+	SDL_FreeSurface(textSurface);
 	SDL_DestroyTexture(text);
 }
 

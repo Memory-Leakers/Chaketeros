@@ -37,6 +37,7 @@ bool SceneGameOver::PostUpdate()
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
 {
+	delete text;
 	/*cout << "CleanUp Game Over" << endl;*/
 	return true;
 }

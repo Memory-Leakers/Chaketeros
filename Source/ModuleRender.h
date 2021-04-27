@@ -16,7 +16,6 @@ private:
 
 	double startCountTime;
 	bool debugCamera = false;
-	Text* text = new Text();
 
 public:
 	//Constructor
