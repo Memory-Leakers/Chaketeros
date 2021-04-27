@@ -355,7 +355,18 @@ bool SceneLevel1::PreUpdate()
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
+			if (isLevelCompleted && bomberman->position == winPosition) {
 
+				/*double currentCountTime = SDL_GetPerformanceCounter();
+				double timeOffset = SDL_GetPerformanceFrequency();
+
+				while (((currentCountTime - startCountTime) / timeOffset) >= CoinTime)
+				{
+					Mix_HaltMusic();
+
+					App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
+				}*/
+			}
 			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
