@@ -14,9 +14,9 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	/*cout << "Start Game Over" << endl;
+	cout << "Start Game Over" << endl;
 
-	cout << "Score: " << this->score << endl;*/
+	cout << "Score: " << this->score << endl;
 
 	//App->audio->PlaySound(SFX::GAME_OVER_SFX, 0);
 
