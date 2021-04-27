@@ -332,8 +332,9 @@ bool SceneLevel1::PreUpdate()
 					}
 				}
 			}
-			if (!anyCoreMecha)
+			if (!anyCoreMecha && !isLevelCompleted)
 			{
+				
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
@@ -420,6 +421,7 @@ bool SceneLevel1::Update()
 	{
 		if (bomberman->position == winPosition && isLevelCompleted)
 		{
+			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
 			for (int i = 0; i < 4; i++)
 			{
@@ -432,6 +434,10 @@ bool SceneLevel1::Update()
 		}
 	}
 	return true;
+
+	
+	
+	
 }
 
 bool SceneLevel1::PostUpdate()
@@ -613,6 +619,8 @@ void SceneLevel1::CreateCoins()
 		}
 	}
 }
+
+
 
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {

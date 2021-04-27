@@ -4,7 +4,7 @@
 #include "Collider.h"
 #include "ModuleTextures.h"
 #include "Application.h"
-
+#include "Scene.h"
 
 class Obstacle{
 private:

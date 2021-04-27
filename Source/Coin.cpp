@@ -32,4 +32,6 @@ void Coin::OnCollision(Collider* c1) {
 	if (c1->type == Type::PLAYER) {
 		App->audio->PlaySound(SFX::PICK_COIN_SFX, 0);
 	}
+	pendingToDelete = true;
+	getCollider()->pendingToDelete = true;
 }
