@@ -728,6 +728,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	}
 
+	Mix_HaltMusic();
+
 	delete tileMap;
 	tileMap = nullptr;
 
