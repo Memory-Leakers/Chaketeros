@@ -434,7 +434,6 @@ bool SceneLevel1::Update()
 				{
 					sceneObstacles[redFlowerIndex[i]]->pendingToDelete = true;
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
-					App->scene->currentScene->score += 100;
 				}
 			}
 		}
@@ -609,7 +608,8 @@ void SceneLevel1::CreateCoins()
 					{
 						sceneObstacles[l]->pendingToDelete = true;
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
-						iPoint tempPos = sceneObstacles[l++]->getPosition();
+						iPoint tempPos = sceneObstacles[l]->getPosition();
+						l++;
 						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
 						{
 							if (sceneObstacles[m] == nullptr)
@@ -618,10 +618,14 @@ void SceneLevel1::CreateCoins()
 								break;
 							}
 						}
-						
+						break;
 					}
-					break;
+					else
+					{
+						l++;
+					}
 				}
+				tileMap->Level1TileMap[i][j] = 0;
 			}
 		}
 	}
