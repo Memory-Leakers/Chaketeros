@@ -58,8 +58,9 @@ public:
 
 	void LoadAsset();
 
-	
+	double startCountTime;
 
+	float CoinTime = 15;
 };
 
 #endif
