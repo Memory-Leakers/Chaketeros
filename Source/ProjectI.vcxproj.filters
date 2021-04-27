@@ -17,6 +17,9 @@
     <Filter Include="Source Files\Util\Scenes">
       <UniqueIdentifier>{8aff0d26-b8f4-4c02-a5b2-c55eab4ee073}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Enemies">
+      <UniqueIdentifier>{6feab8f4-903f-42df-b489-09ba6b91b90f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Util\Obstacle">
       <UniqueIdentifier>{a32e3285-b3f9-4c3a-92d1-6511ff19ab59}</UniqueIdentifier>
     </Filter>
@@ -112,6 +115,9 @@
     <ClInclude Include="SceneLevel1.h">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>Source Files\Util\Obstacle</Filter>
     </ClInclude>
@@ -141,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PokaPoka.h">
+      <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +234,9 @@
     <ClCompile Include="SceneLevel1.cpp">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Util\Obstacle</Filter>
     </ClCompile>
@@ -254,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PokaPoka.cpp">
+      <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

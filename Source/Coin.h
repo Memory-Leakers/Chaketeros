@@ -14,7 +14,11 @@ public:
 
 	Coin(iPoint position, SDL_Texture* texture);
 
+	void Update() override;
+
 	void PostUpdate() override;
+
+	void OnCollision(Collider* c1) override;
 };
 
 

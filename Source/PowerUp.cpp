@@ -13,7 +13,7 @@ PowerUp::PowerUp(iPoint position, SDL_Texture* tex, Particle* dieParticle) {
     col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::FIREPOWER, App->scene);
 }
 
-PowerUp::~PowerUp() 
+PowerUp::~PowerUp()
 {
     col->pendingToDelete = true;
 }
@@ -29,24 +29,22 @@ Collider* PowerUp::getCollider()
     return col;
 }
 
-void PowerUp::Die() 
+void PowerUp::Die()
 {
     App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
+
 }
 
-void PowerUp::OnCollision(Collider* col) 
-{	
+void PowerUp::OnCollision(Collider* col)
+{
     if (col->type == Type::PLAYER)
     {
+        App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
         pendingToDelete = true;
     }
     else if(col->type == Type::EXPLOSION)
     {
         pendingToDelete = true;
         Die();
-    }
-
-    else if (col->type == Type::PLAYER) {
-        App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
     }
 }

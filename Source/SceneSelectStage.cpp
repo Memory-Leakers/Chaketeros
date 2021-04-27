@@ -31,6 +31,7 @@ bool SceneSelectStage::PostUpdate()
 
 bool SceneSelectStage::CleanUp(bool finalCleanUp)
 {
+	delete text;
 	cout << "CleanUp Select Stage" << endl;
 	return true;
 }

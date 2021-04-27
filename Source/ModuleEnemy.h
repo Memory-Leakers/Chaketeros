@@ -1,10 +1,14 @@
-#pragma once
+#ifndef __MODULEENEMY_H__
+#define __MODULEENEMY_H__
 
 #include "Animation.h"
 #include "Collider.h"
 #include "Point.h"
 #include "ModuleAudio.h"
 #include "Application.h"
+#include "PowerUp.h"
+
+
 
 
 #define defaultEnemySpeed 0.1f //Animation only
@@ -14,30 +18,59 @@ struct SDL_Texture;
 class ModuleEnemy : public Module{
 
 	private:
+	protected:
+		bool isFlip = false;;
+
 		int points = 0; //Score points
 
 		int destroyedFx = 0;
+		bool isDead = false;
 
-		void powerUpDrop() {
+		SDL_Rect bounds;
 
+		/*
+		PowerUp* powerUpDrop() {
+			int rand1 = rand() % 10;
+			int rand2 = rand() % 10;
+
+			if (rand1 == rand2) {
+				int rand3 = rand() % 4;
+				switch (rand3) {
+					case 0:
+						//return PowerUp(position, );
+						break;
+					case 1:
+
+						break;
+					case 2:
+
+						break;
+					case 3:
+
+						break;
+				}
+			}
+
+			return nullptr;
 		};
-		void move() {
+		*/
+		virtual void movement() {};
 
-		};
-	protected:
-
+		virtual void die() {};
 
 	public:
-
+		ModuleEnemy();
 		~ModuleEnemy();
 
-		bool Start() ;
-		UpdateResult Update() ;
-		UpdateResult PostUpdate() ;
+		virtual bool Start() ;
+		virtual UpdateResult Update() ;
+		virtual UpdateResult PostUpdate() ;
 
-		void OnCollision(Collider* otherCol);
+		virtual void OnCollision(Collider* otherCol);
+
 
 		iPoint position;
+		iPoint pivotPoint;
 		Collider* col = nullptr;
 		int speed = 1; //Movement only
 
@@ -46,10 +79,16 @@ class ModuleEnemy : public Module{
 		Animation* currentAnimation = nullptr;
 
 		Animation idleAnim;
+
 		Animation upAnim;
 		Animation downAnim;
 		Animation rightAnim;
 		Animation leftAnim;
+
+		Animation attackUpAnim;
+		Animation attackDownAnim;
+		Animation attackRightAnim;
+		Animation attackLeftAnim;
 
 		/*-----GETTERS AND SETTERS-----*/
 		int getPoints() {
@@ -73,3 +112,6 @@ class ModuleEnemy : public Module{
 			position.y = y;
 		};
 };
+
+
+#endif

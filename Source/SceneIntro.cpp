@@ -17,7 +17,8 @@ SceneIntro::~SceneIntro()
 bool SceneIntro::Start()
 {
 	cout << "Start Scene Intro" << endl;
-
+	App->audio->PlayMusic("Assets/Audio/Music/INT_MUSIC.ogg", 1.5f);
+	Mix_VolumeMusic(10);
 	return true;
 }
 
@@ -45,6 +46,7 @@ bool SceneIntro::PostUpdate()
 
 bool SceneIntro::CleanUp(bool finalCleanUp)
 {
+	delete text;
 	cout << "CleanUp Scene Intro" << endl;
 	return true;
 }

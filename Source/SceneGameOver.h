@@ -2,7 +2,7 @@
 #define _SCENEGAMEOVER_H
 
 #include "Scene.h"
-
+//#include "Application.h";
 
 class SceneGameOver : public Scene
 {

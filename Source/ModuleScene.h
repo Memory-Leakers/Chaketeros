@@ -57,7 +57,8 @@ public:
 	// Performs the render call of all the parts of the scene's background
 	UpdateResult PostUpdate() override;
 
-	void OnCollision(Collider* c1, Collider* c2) override;
+	void
+ OnCollision(Collider* c1, Collider* c2) override;
 
 	void WillCollision(Collider* c1, Collider* c2) override;
 
@@ -65,7 +66,7 @@ public:
 
 	bool CleanUp() override;
 
-	Text* text = nullptr;
+	//Text* text = nullptr;
 
 	Scene* currentScene = nullptr;
 
@@ -90,7 +91,7 @@ private:
 
 	uint newScene;
 
-	
+
 
 };
 

@@ -44,7 +44,7 @@ UpdateResult ModuleRender::PreUpdate()
 {
 	// Set the color used for drawing operations
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
+	
 	// Clear rendering target
 	SDL_RenderClear(renderer);
 
@@ -53,18 +53,27 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
-	// Handle positive vertical movement
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN) {
+		debugCamera = !debugCamera;
+		startCountTime = SDL_GetPerformanceCounter();
+		if (!debugCamera) {
+			camera.y = 0;
+			camera.x = 0;
+		}
+	}
 
-	// Handle negative vertical movement
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y += cameraSpeed;
 
-	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) camera.x += cameraSpeed;
+	if (debugCamera) {
+		// Handle positive vertical movement
+		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
 
-	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
+		// Handle negative vertical movement
+		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y += cameraSpeed;
 
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) camera.x += cameraSpeed;
 
-	// L4: TODO 1: Handle horizontal movement of the camera
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }

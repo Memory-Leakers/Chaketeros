@@ -65,6 +65,9 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Source\External\SDL\lib\x86;$(SolutionDir)Source\External\SDL_image\lib\x86;$(SolutionDir)Source\External\SDL_ttf\lib\x86;$(SolutionDir)Source\External\SDL_mixer\lib\x86</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -80,9 +83,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\External\SDL\lib\x86;$(SolutionDir)Source\External\SDL_image\lib\x86;$(SolutionDir)Source\External\SDL_mixer\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Source\External\SDL\lib\x86;$(SolutionDir)Source\External\SDL_image\lib\x86;$(SolutionDir)Source\External\SDL_ttf\lib\x86;$(SolutionDir)Source\External\SDL_mixer\lib\x86</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib</AdditionalDependencies>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -110,6 +116,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="PokaPoka.h" />
     <ClInclude Include="RedFlower.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGameOver.h" />
@@ -147,6 +154,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowerUp.cpp" />
+    <ClCompile Include="PokaPoka.cpp" />
     <ClCompile Include="RedFlower.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGameOver.cpp" />

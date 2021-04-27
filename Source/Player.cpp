@@ -58,7 +58,7 @@ bool Player::Start()
 	bool ret = true;
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
-	
+
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
@@ -220,6 +220,10 @@ UpdateResult Player::Update()
 		}
 	}
 
+	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) {
+		score += 100;
+	}
+
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
 	{
 		speedY = 0;
@@ -238,7 +242,7 @@ UpdateResult Player::Update()
 	{
 		currentAnimation->hasIdle = true;
 	}
-	
+
 	col->SetPos(position);
 	currentAnimation->Update();
 
@@ -262,7 +266,7 @@ UpdateResult Player::Update()
 		else
 		{
 			level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = 0;
-		}	
+		}
 	}
 	#pragma endregion
 
@@ -281,7 +285,7 @@ UpdateResult Player::PostUpdate()
 
 	iPoint tempPos = position;
 	tempPos.y -= 6;
-	
+
 	if(isFlip)
 	{
 		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
@@ -310,6 +314,7 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
+
 	if(!godMode)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
@@ -322,6 +327,7 @@ void Player::OnCollision(Collider* col)
 			pUpFlame++;
 		}
 	}
+
 }
 
 void Player::WillCollision(Collider* col)
@@ -331,9 +337,9 @@ void Player::WillCollision(Collider* col)
 		// Choc
 		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
 		{
-			//get col position x 
+			//get col position x
 			int bx = col->getPos().x;
-			//get col position y 
+			//get col position y
 			int by = col->getPos().y;
 			int px = position.x;
 			int py = position.y;

@@ -3,6 +3,7 @@
 
 #include "Obstacle.h"
 
+
 class GlassCapsule :public Obstacle {
 public:
 
@@ -18,6 +19,8 @@ public:
     Animation withoutfragments;
 
     bool isDead = false;
+    
+    int dieCount = 0;
 
     Collider* auxCol[6] = { nullptr };
 
@@ -26,6 +29,7 @@ public:
     void Update() override;
     void PostUpdate() override;
     void Die() override;
+  
 
 private:
     Animation* currentAnim = nullptr;
