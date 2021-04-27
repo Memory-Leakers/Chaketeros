@@ -46,7 +46,10 @@ bool SceneIntro::PostUpdate()
 
 bool SceneIntro::CleanUp(bool finalCleanUp)
 {
-	delete text;
+	if (finalCleanUp)
+	{
+		delete text;
+	}
 	cout << "CleanUp Scene Intro" << endl;
 	return true;
 }

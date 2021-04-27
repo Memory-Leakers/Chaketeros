@@ -46,7 +46,7 @@ PokaPoka::PokaPoka(int x, int y) {
 }
 
 PokaPoka::~PokaPoka() {
-	col->pendingToDelete = true;
+	//col->pendingToDelete = true;
 }
 
 bool PokaPoka::Start() {

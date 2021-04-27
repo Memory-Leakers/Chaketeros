@@ -31,7 +31,10 @@ bool SceneSelectArea::PostUpdate()
 
 bool SceneSelectArea::CleanUp(bool finalCleanUp)
 {
-	delete text;
+	if (finalCleanUp)
+	{
+		delete text;
+	}
 	cout << "CleanUp Select Area" << endl;
 	return true;
 }

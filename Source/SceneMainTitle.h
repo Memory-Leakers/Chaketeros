@@ -27,6 +27,16 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
+	SDL_Texture* texMainMenu;
+	SDL_Texture* texMenuArrow;
+	SDL_Rect menuBackgroundRect;
+	SDL_Rect menuStarsBackgroundRect;
+	SDL_Rect menuOptionsRect;
+	SDL_Rect menuBottomRect;
+	SDL_Rect menuTitleRect;
+	iPoint arrowPosition[3];
+	iPoint* currentArrowPos;
+
 };
 
 #endif

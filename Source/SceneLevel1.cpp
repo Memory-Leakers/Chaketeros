@@ -595,12 +595,12 @@ bool SceneLevel1::PostUpdate()
 	string strScore = std::to_string(bomberman->getScore());
 
 
-	/*
+	
 	text->showText(App->render->renderer, 50, 10, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
 	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t" + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
 	text->showText(App->render->renderer, 700, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
-	*/
+	
 	}
 	return true;
 }
@@ -692,6 +692,11 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
+		
+	}
+	else
+	{
+		delete text;
 	}
 
 	for (int i = 0; i < MAX_STONE; i++)
@@ -759,7 +764,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 
 
-	delete text;
+	
 
 	return true;
 }
