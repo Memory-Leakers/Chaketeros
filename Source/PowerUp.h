@@ -5,6 +5,7 @@
 #include "ModuleTextures.h"
 #include "Application.h"
 #include "Obstacle.h"
+#include "Particle.h"
 
 class PowerUp
 {
@@ -33,4 +34,5 @@ public:
     Particle* powerUpDestroyed = nullptr;
     iPoint position;
 };
+
 #endif

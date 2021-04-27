@@ -1,16 +1,14 @@
 #include "ModuleEnemy.h"
 
 
-/*
-ModuleEnemy::ModuleEnemy(int x, int y) {
-	position.x = x;
-	position.y = y;
+
+ModuleEnemy::ModuleEnemy() {
 
 };
-*/
+
 ModuleEnemy::~ModuleEnemy() {
 	//Power-Up drop
-	powerUpDrop();
+	//powerUpDrop();
 };
 
 bool ModuleEnemy::Start() {

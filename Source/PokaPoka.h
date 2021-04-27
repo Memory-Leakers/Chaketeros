@@ -2,18 +2,21 @@
 
 #include "ModuleEnemy.h"
 
-/*
+
 class PokaPoka : public ModuleEnemy
 {
 	private:
-	
+		int moveRand = rand() % 4;
 	
 	protected:
 
+		void die();
+
+		void movement();
 	
 	public:
 
-		PokaPoka();
+		PokaPoka(int x, int y);
 
 		~PokaPoka();
 		
@@ -22,6 +25,8 @@ class PokaPoka : public ModuleEnemy
 		UpdateResult PostUpdate();
 
 		void onCollision(Collider* otherCol);
+
+
 
 		iPoint position;
 		Collider* col = nullptr;
@@ -38,10 +43,6 @@ class PokaPoka : public ModuleEnemy
 		Animation rightAnim;
 		Animation leftAnim;
 
-		Animation attackUpAnim;
-		Animation attackDownAnim;
-		Animation attackRightAnim;
-		Animation attackLeftAnim;
+		Animation attackAnim;
 };
 
-*/

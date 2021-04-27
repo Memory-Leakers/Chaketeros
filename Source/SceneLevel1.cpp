@@ -11,6 +11,7 @@
 #include "Coin.h"
 #include "CoreMecha.h"
 #include "PowerUp.h"
+#include "PokaPoka.h"
 
 #include <time.h>
 #include <iostream>
@@ -71,6 +72,8 @@ int playerLifes = 3;
 PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
+
+PokaPoka* enemy[1];
 
 SceneLevel1::SceneLevel1()
 {
@@ -266,7 +269,17 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
+	enemy[0] = new PokaPoka(200, 160);
+
+
 	score = 0;
+
+
+	//Start Enemy
+
+	for (int i = 0; i < 1; i++) {
+		enemy[i]->Start();
+	}
 
 	return ret;
 }
@@ -306,12 +319,14 @@ bool SceneLevel1::PreUpdate()
 					{
 						for (int k = 0; k < MAX_POWERUPS; ++k)
 						{
+							
 							if (powerUps[k] == nullptr)
 							{
 								powerUps[k] = new PowerUp(tileMap.getWorldPos({ j,l+1 }), texPowerUps, powerUpDestroyed);
 								tileMap.Level1TileMap[l][j] = 0;
 								break;
 							}
+							
 						}
 					}
 					if (tileMap.Level1TileMap[l][j] == 6)
@@ -330,12 +345,13 @@ bool SceneLevel1::PreUpdate()
 			sceneObstacles[i] = nullptr;
 		}
 	}
+	
 	if (powerUps[0] != nullptr && powerUps[0]->pendingToDelete)
 	{
 		delete powerUps[0];
 		powerUps[0] = nullptr;
 	}
-
+	
 	return true;
 }
 
@@ -389,9 +405,16 @@ bool SceneLevel1::Update()
 		}
 		sceneObstacles[glassCapsuleIndex]->Die();
 	}
+	
 
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+
+	//Update Enemy
+
+	for (int i = 0; i < 1; i++) {
+		enemy[i]->Update();
+	}
 
 	return true;
 }
@@ -416,6 +439,12 @@ bool SceneLevel1::PostUpdate()
 		{
 			sceneObstacles[i]->PostUpdate();			
 		}
+	}
+
+	//Draw Enemy
+
+	for (int i = 0; i < 1; i++) {
+		enemy[i]->PostUpdate();
 	}
 
 	#pragma region RenderExpection
@@ -488,12 +517,17 @@ bool SceneLevel1::PostUpdate()
 	// Render PowerUp
 	for (int i = 0; i < 3; i++)
 	{
+		
 		if (powerUps[i] != nullptr)
 		{
 			powerUps[i]->PostUpdate();
 		}
+		
 	}
 	#pragma endregion
+
+
+	
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
@@ -502,10 +536,17 @@ bool SceneLevel1::PostUpdate()
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
 	//Draw UI text
-	//App->scene->text->showText(App->render->renderer, 55, 18, "0 : 00", 30, App->scene->text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t\t\t\t\t\t\t\t", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	//text->showText(App->render->renderer, 700, 18, "3", text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+	
+	if(bomberman != NULL) {
 
+	string strLife = std::to_string(bomberman->getLives());
+	string strScore = std::to_string(bomberman->getScore());
+
+
+	text->showText(App->render->renderer, 50, 10, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
+	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t" + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
+	text->showText(App->render->renderer, 700, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+	}
 	return true;
 }
 
@@ -519,10 +560,12 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 
 	for (int i = 0; i < 3; i++)
 	{
+	
 		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
 		{
 			powerUps[i]->OnCollision(c2);
 		}
+		
 	}
 
 
@@ -577,11 +620,13 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	}
 	for (int i = 0; i < 3; i++)
 	{
+		
 		if (powerUps[i] != nullptr)
 		{
 			delete powerUps[i];
 			powerUps[i] = nullptr;
 		}
+		
 	}
 
 	tileMap.Reset();

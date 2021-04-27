@@ -11,6 +11,9 @@
 #include "ModuleAudio.h"
 #include "Player.h"
 
+#include "ModuleEnemy.h"
+
+
 struct SDL_Texture;
 
 #define SCENE_OBSTACLES_NUM 256

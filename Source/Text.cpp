@@ -27,7 +27,7 @@ Text::~Text() {
 	TTF_CloseFont(Font10);
 
 	delete textSurface;
-	delete text;
+	SDL_DestroyTexture(text);
 }
 
 void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* font, SDL_Color color) {
@@ -52,6 +52,8 @@ void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, T
 	// Clean memory
 	SDL_FreeSurface(textSurface);
 	textSurface = nullptr;
+	SDL_DestroyTexture(text);
+	text = nullptr;
 }
 
 

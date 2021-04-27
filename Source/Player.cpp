@@ -116,6 +116,10 @@ UpdateResult Player::Update()
 		}
 	}
 
+	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) {
+		score += 100;
+	}
+
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE &&
@@ -165,6 +169,7 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
+	
 	if(!godMode)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
@@ -177,6 +182,7 @@ void Player::OnCollision(Collider* col)
 			pUpFlame++;
 		}
 	}
+	
 }
 
 void Player::WillCollision(Collider* col)

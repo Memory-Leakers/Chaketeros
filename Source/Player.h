@@ -102,6 +102,15 @@ public:
 	iPoint pivotPoint;
 
 	bool pendingToDelete = false;
+
+	//GETTERS AND SETTERS
+	int getScore() {
+		return score;
+	}
+
+	int getLives() {
+		return lives;
+	}
 };
 #endif // __PLAYER_H__
 
