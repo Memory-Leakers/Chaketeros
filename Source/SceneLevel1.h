@@ -54,7 +54,11 @@ public:
 
 	void CreateYellowFlowers();
 
+	void CreateCoins();
+
 	void LoadAsset();
+
+	
 
 };
 

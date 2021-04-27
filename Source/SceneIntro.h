@@ -1,5 +1,5 @@
-#ifndef _SCENEINTRO_H
-#define  _SCENEINTRO_H
+#ifndef _SCENEINTRO_H_
+#define _SCENEINTRO_H_ 
 
 #include "Scene.h"
 #include "Application.h"
@@ -31,7 +31,7 @@ public:
 
 
 
-#endif // !_SCENEINTRO_H
+#endif // !_SCENEINTRO_H_
 
 
 

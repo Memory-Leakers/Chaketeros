@@ -62,8 +62,9 @@ Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 vector<iPoint> emptySpaces;
 int yellowFlowersNum;
-Tile tileMap;
+Tile* tileMap;
 int renderExceptionPos[3];
+int redFlowerIndex[4];
 
 int glassCapsuleIndex;
 
@@ -75,10 +76,16 @@ Stone* stones[MAX_STONE];
 
 PokaPoka* enemy[1];
 
+bool isLevelCompleted;
+
+iPoint winPosition = { 120, 96 };
+
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
 	srand(time(NULL));
+	score = 0;
 }
 
 SceneLevel1::~SceneLevel1()
@@ -119,7 +126,7 @@ void SceneLevel1::LoadAsset()
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
-	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });	
+	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 
@@ -165,30 +172,31 @@ void SceneLevel1::CreateScene()
 {
 	//Check TileMap y axis
 	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
-		
-	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
+
+	for (int i = 0, k = 0, l = 0, m = 0, n= 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
-			switch (tileMap.Level1TileMap[i][j])
+			switch (tileMap->Level1TileMap[i][j])
 			{
 			case 0:
-				emptySpaces.push_back(tileMap.getWorldPos({ j,i }) -= {0, -16});
+				emptySpaces.push_back(tileMap->getWorldPos({ j,i }) -= {0, -16});
 				break;
 			case 2:
-				stones[m++] = new Stone(tileMap.getWorldPos({ j,i }) -= {0, -16}, texStone);
+				stones[m++] = new Stone(tileMap->getWorldPos({ j,i }) -= {0, -16}, texStone);
 				break;
 			case 3:
-				sceneObstacles[k++] = new RedFlower(tileMap.getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, &tileMap);
+				redFlowerIndex[n++] = k;
+				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, tileMap);
 				break;
 			case 6:
 				renderExceptionPos[l++] = k;
-				sceneObstacles[k++] = new CoreMecha(tileMap.getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, &tileMap);
+				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap);
 				break;
 			case 9:
 				renderExceptionPos[l++] = k;
 				glassCapsuleIndex = k;
-				sceneObstacles[k++] = new GlassCapsule(tileMap.getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
+				sceneObstacles[k++] = new GlassCapsule(tileMap->getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
 				break;
@@ -199,13 +207,13 @@ void SceneLevel1::CreateScene()
 	cout << endl;
 
 	CreateYellowFlowers();
-	
+
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 15; ++j)
 		{
-			cout << tileMap.Level1TileMap[i][j] << ",";
+			cout << tileMap->Level1TileMap[i][j] << ",";
 		}
 		cout << endl;
 	}
@@ -222,25 +230,26 @@ void SceneLevel1::CreateYellowFlowers()
 		if (i >= 2) // Create 2 powerUps
 		{
 			hasPowerUp = false;
-		} 
+		}
 
 		int randomNum = rand() % emptySpaces.size();
 		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, &tileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
 
-				iPoint temp = tileMap.getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				tileMap.Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
+				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
+				tileMap->Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
 				if(hasPowerUp)
 				{
+					cout << "PowerUp Pos" << endl;
 					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
 				}
-				
+
 				break;
 			}
 		}
@@ -249,6 +258,11 @@ void SceneLevel1::CreateYellowFlowers()
 
 bool SceneLevel1::Start()
 {
+
+	tileMap = new Tile();
+
+	isLevelCompleted = false;
+
 	LOG("Loading background assets");
 
 	bool ret = true;
@@ -256,7 +270,7 @@ bool SceneLevel1::Start()
 	*sceneObstacles = { nullptr };
 
 	// Inicializar jugador
-	bomberman = new Player();
+	bomberman = new Player(tileMap);
 	bomberman->Start();
 
 	LoadAsset();
@@ -299,7 +313,7 @@ bool SceneLevel1::PreUpdate()
 			playerLifes--;
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 		}
-		else 
+		else
 		{
 			delete bomberman;
 			bomberman = nullptr;
@@ -315,29 +329,31 @@ bool SceneLevel1::PreUpdate()
 			{
 				for (int j = 0; j < 15; ++j)
 				{
-					if(tileMap.Level1TileMap[l][j] == 8)
+					if(tileMap->Level1TileMap[l][j] == 8)
 					{
 						for (int k = 0; k < MAX_POWERUPS; ++k)
 						{
-							
+
 							if (powerUps[k] == nullptr)
 							{
-								powerUps[k] = new PowerUp(tileMap.getWorldPos({ j,l+1 }), texPowerUps, powerUpDestroyed);
-								tileMap.Level1TileMap[l][j] = 0;
+								powerUps[k] = new PowerUp(tileMap->getWorldPos({ j,l+1 }), texPowerUps, powerUpDestroyed);
+								tileMap->Level1TileMap[l][j] = 0;
 								break;
 							}
-							
+
 						}
 					}
-					if (tileMap.Level1TileMap[l][j] == 6)
+					if (tileMap->Level1TileMap[l][j] == 6)
 					{
 						anyCoreMecha = true;
 					}
 				}
 			}
-			if (!anyCoreMecha)
+			if (!anyCoreMecha && !isLevelCompleted)
 			{
+
 				sceneObstacles[glassCapsuleIndex]->Die();
+				isLevelCompleted = true;
 			}
 
 			sceneObstacles[i]->CleanUp();
@@ -345,13 +361,13 @@ bool SceneLevel1::PreUpdate()
 			sceneObstacles[i] = nullptr;
 		}
 	}
-	
+
 	if (powerUps[0] != nullptr && powerUps[0]->pendingToDelete)
 	{
 		delete powerUps[0];
 		powerUps[0] = nullptr;
 	}
-	
+
 	return true;
 }
 
@@ -361,6 +377,11 @@ bool SceneLevel1::Update()
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+	}
+
+	if (App->input->keys[SDL_SCANCODE_C] == KEY_DOWN)
+	{
+		cout << "Score: " << score << endl;
 	}
 
 	// Update bomebrman
@@ -375,7 +396,7 @@ bool SceneLevel1::Update()
 		{
 			if(sceneObstacles[i] == nullptr)
 			{
-				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, &tileMap);
+				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
 				bomberman->maxBombs--;
 				break;
 			}
@@ -393,19 +414,27 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
+		system("cls");
 		cout << endl;
 		// Check Map in Console
 		for (int i = 0, k = 0; i < 13; ++i)
 		{
 			for (int j = 0; j < 15; ++j)
 			{
-				cout << tileMap.Level1TileMap[i][j] << ",";
+				if (tileMap->Level1TileMap[i][j] == -1)
+				{
+					cout << "P,";
+				}
+				else
+				{
+					cout << tileMap->Level1TileMap[i][j] << ",";
+				}
 			}
 			cout << endl;
 		}
-		sceneObstacles[glassCapsuleIndex]->Die();
+		//sceneObstacles[glassCapsuleIndex]->Die();
 	}
-	
+
 
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
@@ -416,7 +445,30 @@ bool SceneLevel1::Update()
 		enemy[i]->Update();
 	}
 
+
+	//Check if Player is on the Glass Capsule after completing the level
+
+	if (bomberman != nullptr)
+	{
+		if (bomberman->position == winPosition && isLevelCompleted)
+		{
+			sceneObstacles[glassCapsuleIndex]->Die();
+			CreateCoins();
+			for (int i = 0; i < 4; i++)
+			{
+				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
+				{
+					sceneObstacles[redFlowerIndex[i]]->pendingToDelete = true;
+					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
+				}
+			}
+		}
+	}
 	return true;
+
+
+
+
 }
 
 bool SceneLevel1::PostUpdate()
@@ -437,7 +489,7 @@ bool SceneLevel1::PostUpdate()
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
-			sceneObstacles[i]->PostUpdate();			
+			sceneObstacles[i]->PostUpdate();
 		}
 	}
 
@@ -464,7 +516,7 @@ bool SceneLevel1::PostUpdate()
 		}
 	}
 
-	
+
 	// Sort render exeption
 	ExeptionRenderOrder[3][0] = 3;
 	if (bomberman != nullptr)
@@ -490,7 +542,7 @@ bool SceneLevel1::PostUpdate()
 			}
 		}
 	}
-	
+
 
 	//Render exeptions
 	for (int i = 0; i < 4; i++)
@@ -511,23 +563,23 @@ bool SceneLevel1::PostUpdate()
 					sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]]->PostUpdate();
 				}
 			}
-		}	
+		}
 	}
-	
+
 	// Render PowerUp
 	for (int i = 0; i < 3; i++)
 	{
-		
+
 		if (powerUps[i] != nullptr)
 		{
 			powerUps[i]->PostUpdate();
 		}
-		
+
 	}
 	#pragma endregion
 
 
-	
+
 
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
@@ -536,7 +588,7 @@ bool SceneLevel1::PostUpdate()
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
 	//Draw UI text
-	
+
 	if(bomberman != NULL) {
 
 	string strLife = std::to_string(bomberman->getLives());
@@ -560,12 +612,12 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 
 	for (int i = 0; i < 3; i++)
 	{
-	
+
 		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
 		{
 			powerUps[i]->OnCollision(c2);
 		}
-		
+
 	}
 
 
@@ -588,13 +640,52 @@ void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
 	}
 }
 
+void SceneLevel1::CreateCoins()
+{
+	for (int i = 0, l = 7; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)
+		{
+			if (tileMap->Level1TileMap[i][j] == 5)
+			{
+				for (int k = 0; k < yellowFlowersNum; k++)
+				{
+					if (sceneObstacles[l] != nullptr)
+					{
+						sceneObstacles[l]->pendingToDelete = true;
+						sceneObstacles[l]->getCollider()->pendingToDelete = true;
+						iPoint tempPos = sceneObstacles[l]->getPosition();
+						l++;
+						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
+						{
+							if (sceneObstacles[m] == nullptr)
+							{
+								sceneObstacles[m] = new Coin(tempPos, texCoin);
+								break;
+							}
+						}
+						break;
+					}
+					else
+					{
+						l++;
+					}
+				}
+				tileMap->Level1TileMap[i][j] = 0;
+			}
+		}
+	}
+}
+
+
+
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
 
 	// Clean Scene if not close the game
-	if (!finalCleanUp) {
-		App->audio->CleanUpScene();
+	if (!finalCleanUp)
+	{
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
@@ -620,16 +711,17 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	}
 	for (int i = 0; i < 3; i++)
 	{
-		
+
 		if (powerUps[i] != nullptr)
 		{
 			delete powerUps[i];
 			powerUps[i] = nullptr;
 		}
-		
+
 	}
 
-	tileMap.Reset();
+	delete tileMap;
+	tileMap = nullptr;
 
 	//Delete Vector
 	emptySpaces.clear();
@@ -657,4 +749,3 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	return true;
 }
-

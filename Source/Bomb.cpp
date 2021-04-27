@@ -35,7 +35,7 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
-:Obstacle({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilePos().x, player->getCurrentTilePos().y, 16, 16 }, Type::BOMB, App->scene), tex)
+:Obstacle({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
  	this->player = player;
 	lv1Tile = tile;
@@ -104,7 +104,7 @@ void Bomb::Die()
 	// Centro de la explocion
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
-	// Calculate spawn number
+	// Calculate spawn number for dir
 	int explotionNum[4] = { 0,0,0,0 };
 	int tileX, tileY;
 	tileX = lv1Tile->getTilePos(getPosition()).x;

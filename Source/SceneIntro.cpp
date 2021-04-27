@@ -17,7 +17,8 @@ SceneIntro::~SceneIntro()
 bool SceneIntro::Start()
 {
 	cout << "Start Scene Intro" << endl;
-
+	App->audio->PlayMusic("Assets/Audio/Music/INT_MUSIC.ogg", 1.5f);
+	Mix_VolumeMusic(10);
 	return true;
 }
 

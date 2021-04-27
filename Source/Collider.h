@@ -17,6 +17,7 @@ enum class Type
 	EXPLOSION,
 	DESTRUCTABLE_WALL,
 	FIREPOWER,
+	COIN,
 	MAX
 };
 

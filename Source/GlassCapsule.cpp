@@ -40,7 +40,8 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
     withoutglassAnim.loop = true;
     withoutglassAnim.speed = 0.03f;
     withoutglassAnim.hasIdle = false;
-    //withoutfragments.PushBack({});
+    
+    withoutfragments.PushBack({102,47,48,54});
 
     currentAnim = &idleAnim;
 }
@@ -64,15 +65,19 @@ void GlassCapsule::PostUpdate()
         tempPos.y -= 6;
         App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
     }
-    //falta condicion
-    /*CurrentAnimation = &withoutglassAnim
-    rec = CurrentAnimation->GetCurrentFrame();
-    App->render->DrawTexture(texture, this->getPosition().x, this->getPosition().y, &rec);
-    */
+    
 }
 
 void GlassCapsule::Die()
 {
-    isDead = true;
-    currentAnim = &withoutglassAnim;
+    dieCount++;
+    if (dieCount == 1) {
+        isDead = true;
+        currentAnim = &withoutglassAnim;
+    }
+    
+    if (dieCount == 2) {
+        currentAnim = &withoutfragments;
+    }
 }
+
