@@ -85,10 +85,12 @@ bool isLevelCompleted;
 
 iPoint winPosition = { 120, 96 };
 
+bool isExtraPointsActive;
+
 //Timer variables
 
 Timer* timer;
-int totalSeconds = 59;
+int totalSeconds;
 int minutes;
 int currentSecond = 0;
 int secondsXOffset = 100;
@@ -312,11 +314,14 @@ bool SceneLevel1::Start()
 
 	enemy[0] = new PokaPoka(200, 160);
 	
+	isExtraPointsActive = false;
+
 	//Timer Init
 	timer = Timer::Instance();
 	isTimeOut = false;
 	isChangingScene = false;
 	minutes = 4;
+	totalSeconds = 59;
 
 	//Start Enemy
 
@@ -352,7 +357,8 @@ bool SceneLevel1::PreUpdate()
 		}
 	}
 	
-	else if (minutes == 1 && currentSecond == 00) {
+	if (minutes == 1 && currentSecond == 00) 
+	{
 		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
 	}
 
@@ -360,24 +366,34 @@ bool SceneLevel1::PreUpdate()
 	
 	if (bomberman != nullptr && isTimeOut)
 	{
-		App->audio->PlaySound(SFX::OUT_OF_TIME_SFX, 0);
-		bomberman->speed = 0;
-		if (playerLifes > 0 && !isChangingScene)
+		if (isExtraPointsActive && !isChangingScene)
 		{
+			App->audio->PlaySound(SFX::END_WHISTLING_SFX, 0);
+			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120, score);
+			bomberman->speed = 0;
 			isChangingScene = true;
-			playerLifes--;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 		}
-		
-		else
+		else if (!isExtraPointsActive)
 		{
-			if (!isChangingScene)
+			App->audio->PlaySound(SFX::OUT_OF_TIME_SFX, 0);
+			bomberman->speed = 0;
+			if (playerLifes > 0 && !isChangingScene)
 			{
-				App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 				isChangingScene = true;
-				playerLifes = 3;
+				playerLifes--;
+				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 			}
-			
+
+			else
+			{
+				if (!isChangingScene)
+				{
+					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+					isChangingScene = true;
+					playerLifes = 3;
+				}
+
+			}
 		}
 	}
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
@@ -415,14 +431,7 @@ bool SceneLevel1::PreUpdate()
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
-			if (isLevelCompleted && bomberman->position == winPosition) {
 
-				
-				/*Mix_HaltMusic();
-
-				App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);*/
-				
-			}
 			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
@@ -530,8 +539,18 @@ bool SceneLevel1::Update()
 	{
 		if (bomberman->position == winPosition && isLevelCompleted)
 		{
+
+			minutes = 0;
+			if (currentSecond > 15)
+			{
+				totalSeconds = 15;
+				timer->Reset();
+			}
+			isExtraPointsActive = true;
+
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
+
 			for (int i = 0; i < 4; i++)
 			{
 				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
