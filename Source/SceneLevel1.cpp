@@ -95,6 +95,11 @@ int secondsXOffset = 100;
 bool isTimeOut;
 bool isChangingScene;
 
+string strLife;
+string strScore;
+string strSeconds;
+string strMinutes;
+
 
 SceneLevel1::SceneLevel1()
 {
@@ -342,6 +347,7 @@ bool SceneLevel1::PreUpdate()
 			delete bomberman;
 			bomberman = nullptr;
 			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+			playerLifes = 3;
 		}
 	}
 
@@ -362,6 +368,7 @@ bool SceneLevel1::PreUpdate()
 			{
 				App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 				isChangingScene = true;
+				playerLifes = 3;
 			}
 			
 		}
@@ -682,10 +689,11 @@ bool SceneLevel1::PostUpdate()
 	}
 	//------------------
 
-	string strLife = std::to_string(playerLifes);
-	string strScore = std::to_string(score);
-	string strSeconds = std::to_string(currentSecond);
-	string strMinutes = std::to_string(minutes);
+
+	if (bomberman != nullptr) { strLife = std::to_string(playerLifes); }
+	strScore = std::to_string(score);
+	strSeconds = std::to_string(currentSecond);
+	strMinutes = std::to_string(minutes);
 
 	text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
 	text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
