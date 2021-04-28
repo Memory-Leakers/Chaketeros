@@ -15,6 +15,8 @@ SceneMainTitle::~SceneMainTitle()
 
 bool SceneMainTitle::Start()
 {
+	Mix_VolumeMusic(15);
+	App->audio->PlayMusic("Assets/Audio/Music/TitleScreen.ogg", 1.5f);
 
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texMenuArrow = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenuArrow.png");
@@ -98,7 +100,7 @@ bool SceneMainTitle::CleanUp(bool finalCleanUp)
 		delete text;
 	}
 
-
+	Mix_HaltMusic();
 	currentArrowPos = nullptr;
 
 	cout << "CleanUp Main Title" << endl;
