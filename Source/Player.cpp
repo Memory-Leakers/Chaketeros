@@ -136,6 +136,7 @@ UpdateResult Player::Update()
 		isFlip = false;
 		currentAnimation = &leftAnim;
 		currentAnimation->hasIdle = false;
+
 		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;

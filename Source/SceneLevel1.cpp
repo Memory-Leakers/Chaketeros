@@ -351,11 +351,16 @@ bool SceneLevel1::PreUpdate()
 			playerLifes = 3;
 		}
 	}
+	
+	else if (minutes == 1 && currentSecond == 00) {
+		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
+	}
 
 	//Runs out of time Condition
 	
 	if (bomberman != nullptr && isTimeOut)
 	{
+		App->audio->PlaySound(SFX::OUT_OF_TIME_SFX, 0);
 		bomberman->speed = 0;
 		if (playerLifes > 0 && !isChangingScene)
 		{
@@ -363,6 +368,7 @@ bool SceneLevel1::PreUpdate()
 			playerLifes--;
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 		}
+		
 		else
 		{
 			if (!isChangingScene)
@@ -411,15 +417,11 @@ bool SceneLevel1::PreUpdate()
 			}
 			if (isLevelCompleted && bomberman->position == winPosition) {
 
-				/*double currentCountTime = SDL_GetPerformanceCounter();
-				double timeOffset = SDL_GetPerformanceFrequency();
+				
+				/*Mix_HaltMusic();
 
-				while (((currentCountTime - startCountTime) / timeOffset) >= CoinTime)
-				{
-					Mix_HaltMusic();
-
-					App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
-				}*/
+				App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);*/
+				
 			}
 			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
@@ -456,7 +458,11 @@ bool SceneLevel1::Update()
 	// Update bomebrman
 	if (bomberman != nullptr)
 	{
+		if (isLevelCompleted && bomberman->position == winPosition) {
+			App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+		}
 		bomberman->Update();
+		
 	}
 
 
