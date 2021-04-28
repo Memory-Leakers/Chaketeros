@@ -28,12 +28,19 @@ void Coin::PostUpdate()
 	App->render->DrawTexture(texture, this->getPosition(), &currentAnim->GetCurrentFrame());
 }
 
-void Coin::OnCollision(Collider* c1) 
+void Coin::OnCollision(Collider* c1)
 {
-	if (c1->type == Type::PLAYER) 
+	if (c1->type == Type::PLAYER)
 	{
 		App->audio->PlaySound(SFX::PICK_COIN_SFX, 0);
 
+		App->scene->currentScene->score += 100;
+
+		pendingToDelete = true;
+		getCollider()->pendingToDelete = true;
+	}
+	if (c1->type == Type::EXPLOSION)
+	{
 		App->scene->currentScene->score += 100;
 
 		pendingToDelete = true;

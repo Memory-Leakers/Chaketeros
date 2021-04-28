@@ -30,7 +30,7 @@ class Text {
 		SDL_Color whiteC;
 		SDL_Color redC;
 
-		TTF_Font* font30 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 30);
+		TTF_Font* font30 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 30);
 
 	protected:
 

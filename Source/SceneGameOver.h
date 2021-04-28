@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Application.h"
+#include "Animation.h"
 
 class SceneGameOver : public Scene
 {
@@ -25,6 +26,18 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
+	SDL_Texture* texGameOver;
+	SDL_Texture* texGameOverMisc;
+
+	SDL_Rect gameOverBackgroundRec;
+	SDL_Rect gameOverPointerRec;
+
+	Animation gameOverAnim;
+
+	iPoint pointerPos[2];
+	iPoint* currentPointerPos;
+
 };
 
 #endif // !_SCENEGAMEOVER_H_

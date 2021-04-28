@@ -84,6 +84,7 @@ void Bomb::Update()
 
 		if (((currentCountTime - startCountTime) / timeOffset) >= explotionTime)
 		{
+			App->audio->PlaySound(SFX::EXPLOSION_BOMB_SFX, 0);
 			Die();
 		}
 	}

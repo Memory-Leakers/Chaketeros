@@ -334,6 +334,8 @@ void Player::OnCollision(Collider* col)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
 		{
+			App->audio->PlaySound(SFX::DEATH_SFX, 0);
+			App->audio->PlaySound(SFX::GAME_OVER_SFX, 0);
 			pendingToDelete = true;
 
 			// Create die particle

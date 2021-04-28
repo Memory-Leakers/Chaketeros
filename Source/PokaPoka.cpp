@@ -153,5 +153,5 @@ void PokaPoka::onCollision(Collider* otherCol) {
 void PokaPoka::die() {
 	//powerUpDrop();
 	isDead = false;
-
+	col->pendingToDelete = true;
 }
