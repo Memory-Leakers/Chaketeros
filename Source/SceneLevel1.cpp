@@ -89,7 +89,7 @@ iPoint winPosition = { 120, 96 };
 
 Timer* timer;
 int totalSeconds = 59;
-int minutes = 4;
+int minutes;
 int currentSecond = 0;
 int secondsXOffset = 100;
 bool isTimeOut;
@@ -316,6 +316,7 @@ bool SceneLevel1::Start()
 	timer = Timer::Instance();
 	isTimeOut = false;
 	isChangingScene = false;
+	minutes = 4;
 
 	//Start Enemy
 
@@ -870,10 +871,5 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		delete enemy[i];
 		enemy[i] = nullptr;
 	}
-
-
-
-	
-
 	return true;
 }
