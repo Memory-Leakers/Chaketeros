@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _POKAPOKA_H_
+#define _POKAPOKA_H_
 
 #include "ModuleEnemy.h"
 
@@ -26,8 +27,6 @@ class PokaPoka : public ModuleEnemy
 
 		void onCollision(Collider* otherCol);
 
-
-
 		iPoint position;
 		Collider* col = nullptr;
 		int speed = 1; //Movement only
@@ -45,4 +44,6 @@ class PokaPoka : public ModuleEnemy
 
 		Animation attackAnim;
 };
+
+#endif // !_POLAPOLA_H_
 

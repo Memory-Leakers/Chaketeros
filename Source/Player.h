@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
 
 #include "Animation.h"
 #include "Collider.h"
@@ -11,7 +11,7 @@
 #include "External/SDL/include/SDL_scancode.h"
 #include "External/SDL/include/SDL_render.h"
 
-//class ModuleEntity;
+class Particle;
 
 #define defaultPlayerSpeed 0.1f //Animation only
 struct SDL_Texture;
@@ -50,6 +50,9 @@ private:
 	bool posMode = false;
 
 	Tile* level1Tile = nullptr;
+
+	// Template particle for an end of player
+	Particle* playerDestroyed = nullptr;
 
 protected:
 

@@ -58,6 +58,9 @@ Particle* redFlowerDestroyed = nullptr;
 // Template particle for an end of yellow flower
 Particle* yellowFlowerDestroyed = nullptr;
 
+// Template particle for an end of mover
+Particle* moverDestroyed = nullptr;
+
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 vector<iPoint> emptySpaces;
@@ -156,6 +159,7 @@ void SceneLevel1::LoadAsset()
 	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
 
+	// Yellow Flower destroyed particle
 	yellowFlowerDestroyed = new Particle(500.0f, 0.05f, texYellowFlower);
 	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
@@ -164,6 +168,10 @@ void SceneLevel1::LoadAsset()
 	yellowFlowerDestroyed->anim.PushBack({ 81,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 97,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
+
+	// Mover destroyed particle
+	moverDestroyed = new Particle(500.0f, 0.05f, texEnemies);
+	moverDestroyed->anim.PushBack({ 232,166,23,30 });
 
 #pragma endregion
 }

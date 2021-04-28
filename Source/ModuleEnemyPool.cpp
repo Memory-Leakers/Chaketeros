@@ -13,7 +13,6 @@ ModuleEnemyPool::~ModuleEnemyPool() {
 
 bool ModuleEnemyPool::Start() {
 	//texture = App->textures->Load("Assets/enemies.png");
-	enemyDestroyedFx = App->audio->LoadSound("Assets/explosion.wav");
 
 	return true;
 }

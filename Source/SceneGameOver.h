@@ -1,8 +1,8 @@
 #ifndef _SCENEGAMEOVER_H_
-#define _SCENEGAMEOVER_H
+#define _SCENEGAMEOVER_H_
 
 #include "Scene.h"
-//#include "Application.h";
+#include "Application.h"
 
 class SceneGameOver : public Scene
 {
@@ -25,9 +25,7 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
-
 };
-
 
 #endif // !_SCENEGAMEOVER_H_
 

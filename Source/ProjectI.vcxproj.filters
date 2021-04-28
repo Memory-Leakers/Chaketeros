@@ -17,14 +17,14 @@
     <Filter Include="Source Files\Util\Scenes">
       <UniqueIdentifier>{8aff0d26-b8f4-4c02-a5b2-c55eab4ee073}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Util\Enemies">
-      <UniqueIdentifier>{6feab8f4-903f-42df-b489-09ba6b91b90f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Util\Obstacle">
       <UniqueIdentifier>{a32e3285-b3f9-4c3a-92d1-6511ff19ab59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Util\PowerUp">
       <UniqueIdentifier>{0003379a-6dd6-4952-9682-b91ac3616c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Util\Enemies">
+      <UniqueIdentifier>{6feab8f4-903f-42df-b489-09ba6b91b90f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +151,9 @@
     <ClInclude Include="PokaPoka.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Mover.h">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -268,6 +271,9 @@
       <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="PokaPoka.cpp">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Mover.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
