@@ -29,14 +29,18 @@ public:
 
 	SDL_Texture* texGameOver;
 	SDL_Texture* texGameOverMisc;
+	SDL_Texture* texGameOverContinue;
 
 	SDL_Rect gameOverBackgroundRec;
 	SDL_Rect gameOverPointerRec;
 
-	Animation gameOverAnim;
+
+	Animation gameOverAnim, gameOverContinueAnim;
 
 	iPoint pointerPos[2];
 	iPoint* currentPointerPos;
+
+	bool pressedContinue;
 
 };
 

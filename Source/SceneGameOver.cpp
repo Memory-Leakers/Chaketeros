@@ -25,6 +25,7 @@ bool SceneGameOver::Start()
 
 	texGameOver = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOver.png");
 	texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
+	texGameOverContinue = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOverContinue.png");
 
 	gameOverBackgroundRec = {256, 0, 256, 224};
 
@@ -35,10 +36,24 @@ bool SceneGameOver::Start()
 	gameOverAnim.speed = 0.05f;
 	gameOverAnim.hasIdle = false;
 
+
+	gameOverContinueAnim.PushBack({ 0,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 512,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 768,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1024,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1280,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1536,0, 256, 224 });
+	gameOverContinueAnim.speed = 0.05f;
+	gameOverContinueAnim.hasIdle = false;
+	gameOverContinueAnim.loop = false;
+
 	pointerPos[0] = { 63,78 };
 	pointerPos[1] = { 63,110 };
 
 	currentPointerPos = &pointerPos[0];
+
+	pressedContinue = false;
+
 	return true;
 }
 
@@ -46,7 +61,7 @@ bool SceneGameOver::Update()
 {
 	//cout << "Update Game Over" << endl;
 	gameOverAnim.Update();
-
+	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
@@ -76,14 +91,17 @@ bool SceneGameOver::Update()
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
 		App->audio->PlaySound(SFX::SELECT_SFX, 0);
+
 		if (currentPointerPos == &pointerPos[0])
 		{
+			pressedContinue = true;
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
 		}
 		else if (currentPointerPos == &pointerPos[1])
 		{
 			App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
 		}
+
 	}
 	return true;
 }
@@ -91,8 +109,13 @@ bool SceneGameOver::Update()
 bool SceneGameOver::PostUpdate()
 {
 	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
-	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame());
+	
+	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
+
+	else { App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame()); }
+	
 	App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
+
 
 	//cout << "PostUpdate Game Over" << endl;
 	return true;

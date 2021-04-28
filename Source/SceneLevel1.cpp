@@ -610,14 +610,14 @@ bool SceneLevel1::PostUpdate()
 
 	if(bomberman != NULL) {
 
-	string strLife = std::to_string(bomberman->getLives());
+	string strLife = std::to_string(playerLifes);
 	string strScore = std::to_string(score);
 
 
 	
-	text->showText(App->render->renderer, 50, 10, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t" + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 700, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
+	text->showText(App->render->renderer, 50, 10, "0  00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
+	text->showText(App->render->renderer, 360, 10, "SC             " + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
+	text->showText(App->render->renderer, 695, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
 	
 	}
@@ -770,6 +770,9 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	redFlowerDestroyed = nullptr;
 	delete yellowFlowerDestroyed;
 	yellowFlowerDestroyed = nullptr;
+	delete yellowFlowerDestroyed;
+	delete moverDestroyed;
+	moverDestroyed = nullptr;
 	#pragma endregion
 
 	// Delete player
