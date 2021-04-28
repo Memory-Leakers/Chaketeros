@@ -129,6 +129,7 @@
     <ClInclude Include="Stone.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="YellowFlower.h" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="YellowFlower.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

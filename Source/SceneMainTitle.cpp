@@ -67,9 +67,10 @@ bool SceneMainTitle::Update()
 
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::SELECT_SFX, 0);
+		
 		if (currentArrowPos == &arrowPosition[0])
 		{
+			App->audio->PlaySound(SFX::SELECT_SFX, 0);
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
 			
 		}

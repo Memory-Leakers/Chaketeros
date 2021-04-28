@@ -12,6 +12,8 @@
 #include "CoreMecha.h"
 #include "PowerUp.h"
 #include "PokaPoka.h"
+#include "Timer.h"
+
 
 #include <time.h>
 #include <iostream>
@@ -71,7 +73,7 @@ int redFlowerIndex[4];
 
 int glassCapsuleIndex;
 
-int playerLifes = 3;
+int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
 
 PowerUp* powerUps[MAX_POWERUPS];
 
@@ -83,12 +85,23 @@ bool isLevelCompleted;
 
 iPoint winPosition = { 120, 96 };
 
+//Timer variables
+
+Timer* timer;
+int totalSeconds = 59;
+int minutes = 4;
+int currentSecond = 0;
+int secondsXOffset = 100;
+bool isTimeOut;
+bool isChangingScene;
+
 
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
 	srand(time(NULL));
 	score = 0;
+	
 }
 
 SceneLevel1::~SceneLevel1()
@@ -280,6 +293,7 @@ bool SceneLevel1::Start()
 	// Inicializar jugador
 	bomberman = new Player(tileMap);
 	bomberman->Start();
+	
 
 	LoadAsset();
 
@@ -292,7 +306,11 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	enemy[0] = new PokaPoka(200, 160);
-
+	
+	//Timer Init
+	timer = Timer::Instance();
+	isTimeOut = false;
+	isChangingScene = false;
 
 	//Start Enemy
 
@@ -308,6 +326,7 @@ bool SceneLevel1::PreUpdate()
 
 	bool anyCoreMecha = false;
 
+	//Bomberman Dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 
@@ -323,6 +342,28 @@ bool SceneLevel1::PreUpdate()
 			delete bomberman;
 			bomberman = nullptr;
 			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+		}
+	}
+
+	//Runs out of time Condition
+	
+	if (bomberman != nullptr && isTimeOut)
+	{
+		bomberman->speed = 0;
+		if (playerLifes > 0 && !isChangingScene)
+		{
+			isChangingScene = true;
+			playerLifes--;
+			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
+		}
+		else
+		{
+			if (!isChangingScene)
+			{
+				App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+				isChangingScene = true;
+			}
+			
 		}
 	}
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
@@ -389,6 +430,10 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
+	timer->Update();
+
+	cout << timer->getDeltaTime() << endl;	//contador de tiempo
+
 	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
@@ -608,19 +653,47 @@ bool SceneLevel1::PostUpdate()
 
 	//Draw UI text
 
-	if(bomberman != NULL) {
+	//Timer Logic-------
+	if (!isTimeOut)
+	{
+		currentSecond = totalSeconds - (int)timer->getDeltaTime();
+	}
+	
+	if (currentSecond == 0)
+	{
+		if (minutes != 0) 
+		{
+			minutes--;
+			timer->Reset();
+		}
+		else {
+			isTimeOut = true;
+		}
+	}
+
+
+	if (currentSecond < 10)
+	{
+		secondsXOffset = 123;
+	}
+	else 
+	{
+		secondsXOffset = 100;
+	}
+	//------------------
 
 	string strLife = std::to_string(playerLifes);
 	string strScore = std::to_string(score);
+	string strSeconds = std::to_string(currentSecond);
+	string strMinutes = std::to_string(minutes);
 
+	text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
+	text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
+	text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
+	text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
 
 	
-	text->showText(App->render->renderer, 50, 10, "0  00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 10, "SC             " + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 695, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
 
-	
-	}
 	return true;
 }
 
@@ -778,6 +851,10 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
+
+
+	Timer::Release();
+	timer = NULL;
 
 	//Delete Enemy
 

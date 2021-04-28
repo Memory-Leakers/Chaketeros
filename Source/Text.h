@@ -19,9 +19,11 @@ class Text {
 		
 		//TTF_Font* Font80;
 		TTF_Font* Font50;
+		TTF_Font* Font40;
 		TTF_Font* Font35;
 		TTF_Font* Font20;
 		TTF_Font* Font10;
+		
 		
 
 		TTF_Font* tempFont;
