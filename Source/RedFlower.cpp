@@ -38,6 +38,7 @@ void RedFlower::OnCollision(Collider* col)
 	if (col->type == Type::EXPLOSION)
 	{
 		App->scene->currentScene->score += 100;
+
 		Die();
 	}
 }
