@@ -59,7 +59,6 @@ void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 		// Always destroy particles that collide
 		if (particles[i] != nullptr && particles[i]->col == c1)
 		{
-			// L6: TODO 6: Every time a particle hits a wall it triggers an explosion particle
 
 			delete particles[i];
 			particles[i] = nullptr;

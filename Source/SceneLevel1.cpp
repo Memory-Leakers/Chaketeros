@@ -286,9 +286,6 @@ bool SceneLevel1::Start()
 	enemy[0] = new PokaPoka(200, 160);
 
 
-	score = 0;
-
-
 	//Start Enemy
 
 	for (int i = 0; i < 1; i++) {
@@ -401,19 +398,22 @@ bool SceneLevel1::Update()
 		bomberman->Update();
 	}
 
-	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
+
+	if (bomberman != nullptr)
 	{
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
 		{
-			if(sceneObstacles[i] == nullptr)
+			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 			{
-				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
-				bomberman->maxBombs--;
-				break;
+				if (sceneObstacles[i] == nullptr)
+				{
+					sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
+					bomberman->maxBombs--;
+					break;
+				}
 			}
 		}
 	}
-
 	// Update obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
@@ -603,7 +603,7 @@ bool SceneLevel1::PostUpdate()
 	if(bomberman != NULL) {
 
 	string strLife = std::to_string(bomberman->getLives());
-	string strScore = std::to_string(bomberman->getScore());
+	string strScore = std::to_string(score);
 
 
 	

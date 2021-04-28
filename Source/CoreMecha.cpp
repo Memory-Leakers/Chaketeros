@@ -23,6 +23,8 @@ void CoreMecha::Die()
 	pendingToDelete = true;
 	getCollider()->pendingToDelete = true;
 
+	App->scene->currentScene->score += 800;
+
 	int tileX, tileY;
 	tileX = currentTileMap->getTilePos(getPosition()).x;
 	tileY = currentTileMap->getTilePos(getPosition()).y;

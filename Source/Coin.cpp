@@ -39,4 +39,11 @@ void Coin::OnCollision(Collider* c1)
 		pendingToDelete = true;
 		getCollider()->pendingToDelete = true;
 	}
+	if (c1->type == Type::EXPLOSION)
+	{
+		App->scene->currentScene->score += 100;
+
+		pendingToDelete = true;
+		getCollider()->pendingToDelete = true;
+	}
 }

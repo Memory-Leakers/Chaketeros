@@ -19,6 +19,8 @@ bool SceneGameOver::Start()
 
 	cout << "Score: " << this->score << endl;
 
+	Mix_HaltMusic();
+
 	App->audio->PlayMusic("Assets/Audio/Music/GameOverMusic.ogg", 1.5f);
 
 	texGameOver = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOver.png");
@@ -48,6 +50,7 @@ bool SceneGameOver::Update()
 
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
+		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
 		if (currentPointerPos == &pointerPos[1])
 		{
 			currentPointerPos = &pointerPos[0];
@@ -59,6 +62,7 @@ bool SceneGameOver::Update()
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
+		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
 		if (currentPointerPos == &pointerPos[0])
 		{
 			currentPointerPos = &pointerPos[1];
@@ -71,6 +75,7 @@ bool SceneGameOver::Update()
 
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
+		App->audio->PlaySound(SFX::SELECT_SFX, 0);
 		if (currentPointerPos == &pointerPos[0])
 		{
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
