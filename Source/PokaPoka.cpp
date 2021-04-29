@@ -48,14 +48,18 @@ PokaPoka::PokaPoka(int x, int y, Tile* level1Tile) {
 
 
 	//Animation Attack
-	//attackAnim.PushBack();//
+	//attackAnim.PushBack();
 
 
 	currentAnimation = &downAnim;
 }
 
 PokaPoka::~PokaPoka() {
-	//col->pendingToDelete = true;
+	if (dieParticle != nullptr)
+	{
+		delete dieParticle;
+		dieParticle = nullptr;
+	}
 }
 
 bool PokaPoka::Start() {
@@ -221,7 +225,8 @@ void PokaPoka::OnCollision(Collider* col) {
 
 
 void PokaPoka::die() {
-	//powerUpDrop();
+	if (pendingToDelete) return;
+
 	isDead = true;
 
 	col->pendingToDelete = true;
@@ -230,5 +235,11 @@ void PokaPoka::die() {
 	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
 
 	pendingToDelete = true;
+
+	delete dieParticle;
 	dieParticle = nullptr;
+}
+
+void PokaPoka::attack() {
+
 }

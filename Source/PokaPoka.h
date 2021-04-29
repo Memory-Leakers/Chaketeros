@@ -10,6 +10,8 @@ class PokaPoka : public ModuleEnemy
 		int pC = 0;
 		iPoint nPoint;
 		Particle* dieParticle = nullptr;
+
+		void attack();
 	protected:
 		
 		void die();
