@@ -382,7 +382,7 @@ bool SceneLevel1::PreUpdate()
 		}
 		else if (!isExtraPointsActive)
 		{
-			App->audio->PlaySound(SFX::OUT_OF_TIME_SFX, 0);
+			
 			bomberman->speed = 0;
 			if (playerLifes > 0 && !isChangingScene)
 			{
@@ -475,11 +475,12 @@ bool SceneLevel1::Update()
 	// Update bomebrman
 	if (bomberman != nullptr)
 	{
-		if (isLevelCompleted && bomberman->position == winPosition) {
-			App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
-		}
 		bomberman->Update();
-		
+		/*if (isLevelCompleted && bomberman->position == winPosition && isExtraPointsActive) {
+
+			App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+		}*/
 	}
 
 	if (bomberman != nullptr)
@@ -545,7 +546,8 @@ bool SceneLevel1::Update()
 	{
 		if (bomberman->position == winPosition && isLevelCompleted)
 		{
-
+			Mix_HaltMusic();
+			App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
 			minutes = 0;
 			if (currentSecond > 15)
 			{
@@ -556,7 +558,7 @@ bool SceneLevel1::Update()
 
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
-
+			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 35);
 			for (int i = 0; i < 4; i++)
 			{
 				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
@@ -564,6 +566,9 @@ bool SceneLevel1::Update()
 					sceneObstacles[redFlowerIndex[i]]->pendingToDelete = true;
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
 				}
+			}
+			if (currentSecond == 0) {
+				App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
 			}
 		}
 	}
