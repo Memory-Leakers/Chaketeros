@@ -9,6 +9,7 @@ class PokaPoka : public ModuleEnemy
 		int moveRand = rand() % 4;
 		int pC = 0;
 		iPoint nPoint;
+		Particle* dieParticle = nullptr;
 	protected:
 		
 		void die();
@@ -26,10 +27,10 @@ class PokaPoka : public ModuleEnemy
 		UpdateResult Update();
 		UpdateResult PostUpdate();
 
-		void onCollision(Collider* col);
+		void OnCollision(Collider* col);
 
 		iPoint position;
-		Collider* col = nullptr;
+		
 		int speed = 1; //Movement only
 
 		SDL_Texture* texture = nullptr;
