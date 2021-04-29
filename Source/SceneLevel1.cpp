@@ -377,7 +377,6 @@ bool SceneLevel1::PreUpdate()
 		{
 			App->audio->PlaySound(SFX::END_WHISTLING_SFX, 0);
 			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120, score);
-			bomberman->speed = 0;
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
@@ -900,6 +899,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	//Delete Enemy
 
 	for (int i = 0; i < 2; i++) {
+
+		enemy[i]->CleanUp();
 		delete enemy[i];
 		enemy[i] = nullptr;
 	}

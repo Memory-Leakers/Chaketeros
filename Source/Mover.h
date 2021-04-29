@@ -23,14 +23,10 @@ class Mover : public ModuleEnemy
 {
 private:
 	// private variable
-	
-	SDL_Texture* texture = nullptr;
 
 	Particle* dieParticle = nullptr;
 
 	iPoint* playerPos = nullptr;
-
-	Tile* levelMap = nullptr;
 
 	Animation upAnim;
 	Animation downAnim;

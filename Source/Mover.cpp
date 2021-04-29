@@ -1,6 +1,6 @@
 #include "Mover.h"
 
-Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* levelMap)
+Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 {
 	position.x = spawnPos.x;
 	position.y = spawnPos.y;
@@ -9,7 +9,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* levelMap)
 	bounds.w = 16;
 	bounds.h = 16;
 	this->playerPos = playerPos;
-	this->levelMap = levelMap;
+	this->level1Tile = level1Tile;
 
 	#pragma region Init Anim
 
@@ -52,7 +52,8 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* levelMap)
 
 Mover::~Mover() 
 {
-	
+	delete dieParticle;
+	dieParticle = nullptr;
 }
 
 bool Mover::Start() 
@@ -70,8 +71,8 @@ bool Mover::Start()
 
 UpdateResult Mover::PreUpdate()
 {
-	iPoint tilePos =  levelMap->getTilePos(position);
-	iPoint centerTile = levelMap->getWorldPos(tilePos);
+	iPoint tilePos =  level1Tile->getTilePos(position);
+	iPoint centerTile = level1Tile->getWorldPos(tilePos);
 
 	if (position == centerTile)
 	{
@@ -171,10 +172,10 @@ void Mover::RandomMov() {
 int Mover::AStar()
 {
 	// 我的初始格子的坐标 // mi posicion (tile)
-	iPoint myTilePos = levelMap->getTilePos(position);	
+	iPoint myTilePos = level1Tile->getTilePos(position);	
 	myTilePos.y--;
 	// 目标的格子的坐标 // posicion de destinatario (tile)
-	iPoint playerTilePos = levelMap->getTilePos(*playerPos);
+	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
 	playerTilePos.y--;
 
 	// 我到目标的距离 // distancia entre yo y destinatario
@@ -253,7 +254,7 @@ int Mover::AStar()
 			pass = false;
 
 			// 如果当前格子是障碍物 // si el grid que vamos a ir no es 0 o 4
-			if(levelMap->Level1TileMap[dir[i].y][dir[i].x] != 0 && levelMap->Level1TileMap[dir[i].y][dir[i].x] != 4)
+			if(level1Tile->Level1TileMap[dir[i].y][dir[i].x] != 0 && level1Tile->Level1TileMap[dir[i].y][dir[i].x] != 4)
 			{
 				// 跳过当前格子 // ignoramos este grid
 				pass = true;

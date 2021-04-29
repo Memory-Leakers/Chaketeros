@@ -34,7 +34,7 @@ class ModuleEnemy : public Module{
 
 		virtual void movement() {};
 
-	virtual void die() {};
+		virtual void die() {};
 
 public:
 	ModuleEnemy();
