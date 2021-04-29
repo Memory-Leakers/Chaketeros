@@ -20,6 +20,11 @@ private:
 
 public:
 
+	float getCurrentFrameF()
+	{
+		return current_frame;
+	}
+
 	void PushBack(const SDL_Rect& rect)
 	{
 		frames[last_frame++] = rect;

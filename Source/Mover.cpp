@@ -18,31 +18,43 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	downAnim.PushBack({ 37,166,23,30 });
 	downAnim.PushBack({ 5,166,23,30 });//IDLE
 	downAnim.PushBack({ 37,166,23,30 });
-	downAnim.speed = defaultEnemySpeed;
+	downAnim.speed = 0.02f;
+	downAnim.loop = true;
+	downAnim.hasIdle = false;
 
 	//Animation UP
 	upAnim.PushBack({ 69,166,23,30 });//IDLE
 	upAnim.PushBack({ 101,166,23,30 });
 	upAnim.PushBack({ 69,166,23,30 });//IDLE
 	upAnim.PushBack({ 101,166,23,30 });
-	upAnim.speed = defaultEnemySpeed;
+	upAnim.speed = 0.02f;
+	upAnim.loop = true;
+	upAnim.hasIdle = false;
 
 	//Animation RIGHT
 	rightAnim.PushBack({ 135,166,23,30 });//IDLE
 	rightAnim.PushBack({ 168,166,23,30 });
 	rightAnim.PushBack({ 135,166,23,30 });//IDLE
 	rightAnim.PushBack({ 201,166,23,30 });
-	rightAnim.speed = defaultEnemySpeed;
+	rightAnim.speed = 0.02f;
+	rightAnim.loop = true;
+	rightAnim.hasIdle = false;
 
 	//Animation LEFT
 	leftAnim.PushBack({ 135,166,23,30 });//IDLE
 	leftAnim.PushBack({ 168,166,23,30 });
 	leftAnim.PushBack({ 135,166,23,30 });//IDLE
 	leftAnim.PushBack({ 201,166,23,30 });
-	leftAnim.speed = defaultEnemySpeed;
+	leftAnim.speed = 0.02f;
+	leftAnim.loop = true;
+	leftAnim.hasIdle = false;
 
 	#pragma endregion
+
 	currentAnimation = &downAnim;
+	currentAnimation->loop = true;
+	currentAnimation->hasIdle = false;
+	currentAnimation->speed = 0.02f;
 }
 
 Mover::~Mover() 
@@ -66,7 +78,6 @@ bool Mover::Start()
 	dieParticle->anim.speed = 0.01f;
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
-
 
 	return true;
 }
@@ -115,14 +126,49 @@ void Mover::FixedUpdate()
 		position += moveDir[randomMoveDirIndex];
 		currentDir = randomMoveDirIndex;
 	}
+
+	isFlip = false;
+
+	switch (currentDir)
+	{
+	case 0:
+		if (currentAnimation != &rightAnim)
+		currentAnimation = &rightAnim;
+		isFlip = true;
+		break;
+	case 1:
+		if (currentAnimation != &leftAnim)
+		currentAnimation = &leftAnim;
+		break;
+	case 2:
+		if (currentAnimation != &upAnim)
+		currentAnimation = &upAnim;
+		break;
+	case 3:
+		if (currentAnimation != &downAnim)
+		currentAnimation = &downAnim;
+		break;
+	default:
+		break;
+	}
 }
 
 UpdateResult Mover::PostUpdate() {
+
+	currentAnimation->Update();
 
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
 	tempPos += {-4, -14};
+
+	if(currentAnimation == &downAnim || currentAnimation == &upAnim)
+	{
+		if (currentAnimation->getCurrentFrameF() >= 3 && currentAnimation->getCurrentFrameF() <= 4)
+		{
+			isFlip = true;
+		}
+	}
 
 	if (isFlip)
 	{
@@ -342,6 +388,7 @@ void Mover::OnCollision(Collider* col)
 	if (col->type == Type::EXPLOSION) 
 	{
 		die();
+		App->scene->currentScene->score += 800;
 	}
 }
 

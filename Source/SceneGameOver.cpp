@@ -36,7 +36,6 @@ bool SceneGameOver::Start()
 	gameOverAnim.speed = 0.05f;
 	gameOverAnim.hasIdle = false;
 
-
 	gameOverContinueAnim.PushBack({ 0,0, 256, 224 });
 	gameOverContinueAnim.PushBack({ 512,0, 256, 224 });
 	gameOverContinueAnim.PushBack({ 768,0, 256, 224 });
@@ -128,18 +127,14 @@ bool SceneGameOver::PostUpdate()
 		{
 			if (!digitVec.at(i) == 1)
 			{
-				xOffset = 12;
-				
+				xOffset = 12;				
 			}
 			else 
 			{
 				xOffset = 11;
 			}
 			isOneBefore = false;
-		}
-		
-		
-		
+		}	
 
 		if (digitVec.at(i) == 1)
 		{
