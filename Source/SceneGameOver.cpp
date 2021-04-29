@@ -15,7 +15,7 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	cout << "Start Game Over" << endl;
+	/*cout << "Start Game Over" << endl;
 
 	cout << "Score: " << this->score << endl;
 
@@ -54,13 +54,13 @@ bool SceneGameOver::Start()
 	pressedContinue = false;
 
 	DrawGameOverScore();
-
+	*/
 	return true;
 }
 
 bool SceneGameOver::Update()
 {
-	//cout << "Update Game Over" << endl;
+	/*//cout << "Update Game Over" << endl;
 	gameOverAnim.Update();
 	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
@@ -103,13 +103,13 @@ bool SceneGameOver::Update()
 			App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
 		}
 
-	}
+	}*/
 	return true;
 }
 
 bool SceneGameOver::PostUpdate()
 {
-	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
+	/*App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
 	
 	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
 
@@ -149,7 +149,7 @@ bool SceneGameOver::PostUpdate()
 		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
 	}
 
-	//cout << "PostUpdate Game Over" << endl;
+	//cout << "PostUpdate Game Over" << endl;*/
 	return true;
 }
 
@@ -157,7 +157,7 @@ bool SceneGameOver::PostUpdate()
 void SceneGameOver::DrawGameOverScore()
 {
 		
-	for (int i = 0; i < 10; i++)
+/*	for (int i = 0; i < 10; i++)
 	{
 		numRec[i] = { 14 * i, 64, 14, 15 };
 	}
@@ -183,7 +183,7 @@ void SceneGameOver::DrawGameOverScore()
 		digits.pop();
 		cout << digit << endl;
 
-	}
+	}*/
 	
 }
 
@@ -194,7 +194,13 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 		delete text;
 	}
 
+	//currentPointerPos = nullptr;
+
+	vector<int>().swap(digitVec);
 	digitVec.clear();
-	digitVec.shrink_to_fit();
+
+	cout << digitVec.capacity() << endl;	//Aquí se genera un memory leak pero todo se limpia correctamente. Creemos que se llama a
+
+	//digitVec.shrink_to_fit();
 	return true;
 }

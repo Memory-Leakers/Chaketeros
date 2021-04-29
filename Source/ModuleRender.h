@@ -62,6 +62,8 @@ public:
 /// <returns></returns>
 	bool DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section = nullptr, float speed = 1.0f);
 
+	bool DrawTextureFreeScaled(SDL_Texture* texture, iPoint pos, float scale = 1.0f, SDL_Rect* section = nullptr, float speed = 1.0f);
+
 	bool DrawRotateTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section = nullptr, bool flipHor = false, float rotation = 0, float speed = 1.0f);
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);

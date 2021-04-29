@@ -1,10 +1,11 @@
-#include "PokaPoka.h"
+﻿#include "PokaPoka.h"
 
 #include <iostream>
 using namespace std;
 
-PokaPoka::PokaPoka(int x, int y, Tile* level1Tile) {
+PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	this->level1Tile = level1Tile;
+	this->playerPos = playerPos;
 	position.x = x;
 	position.y = y;
 	bounds.x = position.x;
@@ -48,8 +49,12 @@ PokaPoka::PokaPoka(int x, int y, Tile* level1Tile) {
 
 
 	//Animation Attack
-	//attackAnim.PushBack();
-
+	attackAnim.PushBack({ 121,1,15,28 });
+	attackAnim.PushBack({ 139,1,15,28 });
+	attackAnim.PushBack({ 155,1,16,28 });
+	attackAnim.PushBack({ 173,1,15,28 });
+	attackAnim.PushBack({ 190,1,15,28 });
+	attackAnim.speed = 0.08f;
 
 	currentAnimation = &downAnim;
 }
@@ -65,7 +70,6 @@ PokaPoka::~PokaPoka() {
 bool PokaPoka::Start() {
 	LOG("LOADING ENEMY POKAPOKA");
 	bool ret = true;
-
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
@@ -93,7 +97,18 @@ UpdateResult PokaPoka::Update() {
 
 	}
 	col->SetPos(this->position.x, this->position.y);
-	movement();
+	if (attacking == 1 || attacking == 2) {
+
+		attackTimer.Update();
+	}
+	
+	moveTimer.Update();
+	if (moveTimer.getDeltaTime() >= 0.15f)
+	{
+		movement();
+		moveTimer.Reset();
+	}
+	currentAnimation->Update();
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -121,99 +136,129 @@ void PokaPoka::movement() {
 	nPoint = level1Tile->getTilePos(position);
 	nPoint.y -= 1;
 
+	//Posició del Jugador
+	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
+
+	//Steps
 	if (pC >= 17 || pC == 0) {
 		pC = 0;
 		moveRand = rand() % 4;
+		//attacking = 3;
 	}
 
-	switch (moveRand) {
+		if (attacking == 1 || attacking == 2) {
+			attack();
+			currentAnimation->Update();
+			return;
+		}
 
-		case 0://DOWN
-			if (level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 0 ||
-				level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 4) {
-				isFlip = false;
-				currentAnimation = &downAnim;
-				currentAnimation->hasIdle = false;
+		playerTilePos.y -= 1;
+		switch (moveRand) {
+			case 0://DOWN
+				if (playerTilePos.x == nPoint.x && playerTilePos.y == (nPoint.y + 1) && attacking == 3) {
+					cout << "DOWN" << endl;
+					attacking = 1;
+					break;
+				}
+				else if (level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 0 ||
+					
+					level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 4) {
+					isFlip = false;
+					currentAnimation = &downAnim;
+					currentAnimation->hasIdle = false;
 
-				if (pC == 0) ++pC;
-			}
+					if (pC == 0) ++pC;
+				}
+			
 
-			if (pC >= 1) {
-				position.y += speed;
-				 ++pC;
-			}
-			else if (pC == 0) {
-				currentAnimation->hasIdle = true;
-				while (moveRand == 0) { moveRand = rand() % 4; }
-			}
-			break;
-		case 1://UP
-			if (level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 0 ||
-				level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 4) {
-				isFlip = false;
-				currentAnimation = &upAnim;
-				currentAnimation->hasIdle = false;
+				if (pC >= 1) {
+					position.y += speed;
+					 ++pC;
+				}
+				else if (pC == 0) {
+					currentAnimation->hasIdle = true;
+					while (moveRand == 0) { moveRand = rand() % 4; }
+				}
+				break;
+			case 1://UP
+				if (playerTilePos.x == nPoint.x && playerTilePos.y == (nPoint.y - 1) && attacking == 3) {
+					cout << "UP" << endl;
+					attacking = 1;
+					break;
+				}
+				else if (level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 0 ||
+					level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 4) {
+					isFlip = false;
+					currentAnimation = &upAnim;
+					currentAnimation->hasIdle = false;
 
-				if (pC == 0) ++pC;
-			}
+					if (pC == 0) ++pC;
+				}
 
-			if (pC >= 1) {
-				position.y -= speed;
-				++pC;
-			}
-			else {
-				currentAnimation->hasIdle = true;
-				while (moveRand == 1) { moveRand = rand() % 4; }
-			}
-			break;
+				if (pC >= 1) {
+					position.y -= speed;
+					++pC;
+				}
+				else {
+					currentAnimation->hasIdle = true;
+					while (moveRand == 1) { moveRand = rand() % 4; }
+				}
+				break;
+			case 2://RIGHT
+				if (playerTilePos.x == (nPoint.x + 1) && playerTilePos.y == nPoint.y && attacking == 3) {
+					cout << "RIGHT" << endl;
+					attacking = 2;
+					break;
+				}
+				else if (level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 0 ||
+					level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 4) {
+					isFlip = true;
+					currentAnimation = &rightAnim;
+					currentAnimation->hasIdle = false;
 
+					if (pC == 0)  ++pC;
+				} 
+				if (pC >= 1) {
+					position.x += speed;
+					++pC;
+				}
+				else if (pC == 0) {
+					currentAnimation->hasIdle = true;
+					while (moveRand == 2) { moveRand = rand() % 4; }
+				}
+				break;
+			case 3://LEFT
+				if (playerTilePos.x == (nPoint.x - 1) && playerTilePos.y == nPoint.y && attacking == 3) {
+					cout << "LEFT" << endl;
+					attacking = 1;
+					break;
+				}
+				else if (level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 0 ||
+					level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 4) {
+					isFlip = false;
+					currentAnimation = &leftAnim;
+					currentAnimation->hasIdle = false;
 
-		case 2://RIGHT
-			if (level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 0 ||
-				level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 4) {
-				isFlip = true;
-				currentAnimation = &rightAnim;
-				currentAnimation->hasIdle = false;
+					if(pC == 0) ++pC;
+				}
+			
 
-				if (pC == 0)  ++pC;
-			}
+				if (pC >= 1) {
+					position.x -= speed;
+					++pC;
+				}
+				else if (pC == 0) {
+					currentAnimation->hasIdle = true;
+					while (moveRand == 3) { moveRand = rand() % 4; }
+				}
+				break;
+			default:
+				moveRand = rand() % 10;
+				break;
 
-			if (pC >= 1) {
-				position.x += speed;
-				++pC;
-			}
-			else if (pC == 0) {
-				currentAnimation->hasIdle = true;
-				while (moveRand == 2) { moveRand = rand() % 4; }
-			}
-			break;
-
-		case 3://LEFT
-			if (level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 0 ||
-				level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 4) {
-				isFlip = false;
-				currentAnimation = &leftAnim;
-				currentAnimation->hasIdle = false;
-
-				if(pC == 0) ++pC;
-			}
-
-			if (pC >= 1) {
-				position.x -= speed;
-				++pC;
-			}
-			else if (pC == 0) {
-				currentAnimation->hasIdle = true;
-				while (moveRand == 3) { moveRand = rand() % 4; }
-			}
-			break;
-		default:
-			moveRand = rand() % 10;
-			break;
-
-	}
+		}
 	
-	currentAnimation->Update();
+
 }
 
 void PokaPoka::OnCollision(Collider* col) {
@@ -236,10 +281,23 @@ void PokaPoka::die() {
 
 	pendingToDelete = true;
 
+
 	delete dieParticle;
 	dieParticle = nullptr;
 }
 
 void PokaPoka::attack() {
+	currentAnimation = &attackAnim;
+	currentAnimation->hasIdle = false;
+	if (attacking == 1) {
+		isFlip = false;
+	}
+	else {
+		isFlip = true;
+	}
 
+	if (attackTimer.getDeltaTime() >= 2.0f) {
+		attacking = 3;
+		attackTimer.Reset();
+	}
 }
