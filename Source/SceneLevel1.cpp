@@ -314,7 +314,7 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
-	enemy[0] = new PokaPoka( 200, 160, tileMap);
+	enemy[0] = new PokaPoka( 200, 160, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 24,64 }, &bomberman->position, tileMap);
 
 	isExtraPointsActive = false;

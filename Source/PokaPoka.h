@@ -2,7 +2,7 @@
 #define _POKAPOKA_H_
 
 #include "ModuleEnemy.h"
-
+#include "Timer.h"
 class PokaPoka : public ModuleEnemy
 {
 	private:
@@ -10,8 +10,11 @@ class PokaPoka : public ModuleEnemy
 		int pC = 0;
 		iPoint nPoint;
 		Particle* dieParticle = nullptr;
-
+		iPoint* playerPos = nullptr;
 		void attack();
+		Timer* attackTimer = nullptr;
+		Timer* moveTimer = nullptr;
+		int attacking = 3;
 	protected:
 		
 		void die();
@@ -20,7 +23,7 @@ class PokaPoka : public ModuleEnemy
 	
 	public:
 		
-		PokaPoka(int x, int y, Tile* level1Tile);
+		PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile);
 
 		~PokaPoka();
 		
