@@ -85,6 +85,8 @@ bool Player::Start()
 	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
 
+	
+
 	return ret;
 }
 
@@ -92,6 +94,8 @@ UpdateResult Player::Update()
 {
 	int speedX = 0;
 	int speedY = 0;
+
+	
 
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
@@ -126,7 +130,20 @@ UpdateResult Player::Update()
 				position.x += speed;
 			}
 		}
+		playerTimer.Update();
+
+		if (playerTimer.getDeltaTime() >= 0.5f) {
+
+			if (ExtraPoints == true) {
+				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+			}
+			playerTimer.Reset();
+
+		}
 	}
+
+	
 
 	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
 	{
@@ -160,6 +177,17 @@ UpdateResult Player::Update()
 			{
 				position.x += speed;
 			}
+		}
+		playerTimer.Update();
+
+		if (playerTimer.getDeltaTime() >= 0.5f) {
+
+			if (ExtraPoints == true) {
+				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+			}
+			playerTimer.Reset();
+
 		}
 	}
 
@@ -199,6 +227,17 @@ UpdateResult Player::Update()
 				position.y += speed;
 			}
 		}
+		playerTimer.Update();
+
+		if (playerTimer.getDeltaTime() >= 0.5f) {
+
+			if (ExtraPoints == true) {
+				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+			}
+			playerTimer.Reset();
+
+		}
 	}
 
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
@@ -234,6 +273,17 @@ UpdateResult Player::Update()
 			{
 				position.y += speed;
 			}
+		}
+		playerTimer.Update();
+
+		if (playerTimer.getDeltaTime() >= 0.5f) {
+
+			if (ExtraPoints == true) {
+				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+			}
+			playerTimer.Reset();
+
 		}
 	}
 

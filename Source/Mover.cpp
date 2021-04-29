@@ -67,7 +67,6 @@ bool Mover::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
-	moverTimer = Timer::Instance();
 
 	return true;
 }
@@ -92,13 +91,13 @@ UpdateResult Mover::Update()
 {
 	col->SetPos(this->position.x, this->position.y);
 
-	moverTimer->Update();
+	moverTimer.Update();
 
-	if (moverTimer->getDeltaTime() >= 0.2f)
+	if (moverTimer.getDeltaTime() >= 0.2f)
 	{
 		FixedUpdate();
 
-		moverTimer->Reset();	
+		moverTimer.Reset();	
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -193,27 +192,27 @@ int Mover::AStar()
 		return -1;
 	}
 
-	// �ҵĳ�ʼ���ӵ����� // mi posicion (tile)
+	// mi posicion (tile)
 	iPoint myTilePos = level1Tile->getTilePos(position);	
 	myTilePos.y--;
 
-	// Ŀ��ĸ��ӵ����� // posicion de destinatario (tile)
+	// posicion de destinatario (tile)
 	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
 	playerTilePos.y--;
 
-	// �ҵ�Ŀ��ľ��� // distancia entre yo y destinatario
+	// distancia entre yo y destinatario
 	int distance = position.DistanceManhattan(myTilePos, playerTilePos);
 
-	// �ҵ�ǰ�ڵĸ��� // grid que estoy ubicado
+	// grid que estoy ubicado
 	PathNode currentGrid;
 
-	// ��ʼ���ӵ��ﵱǰ���ӵĻ��� // el coste de grid que estaba en principio hasta este grid
+	// el coste de grid que estaba en principio hasta este grid
 	currentGrid.g_cost = 0;
 
-	// ��ǰ���ӵ���Ŀ����ӵĻ��� // el coste del grid que estoy hasta el destinatatio
+	// el coste del grid que estoy hasta el destinatatio
 	currentGrid.h_cost = distance;
 
-	// �������������� // suma de los dos = coste de este grid
+	// suma de los dos = coste de este grid
 	currentGrid.total_cost = currentGrid.g_cost + currentGrid.h_cost;
 
 	// Inicial la posicion del primer grid
@@ -223,41 +222,41 @@ int Mover::AStar()
 	// el primer indice es -1
 	currentGrid.lastIndex = -1;
 
-	// ���浱ǰ��⵽����û�ߵĸ��� // guarda los grids que detectadas 
+	// guarda los grids que detectadas 
 	vector<PathNode> openGrid;
 
-	// �����Ѿ��߹��ĸ��� // guarda los grids que esta usada
+	// guarda los grids que esta usada
 	vector<PathNode> closeGrid;	
 
-	// ����ʵ���Ӵ��뵽������� // guardar el grid que estamos ahora dentro de grid detectada
+	// guardar el grid que estamos ahora dentro de grid detectada
 	openGrid.push_back(currentGrid);
 
-	// �жϵ�ǰ���ĸ����Ƿ��Ǹ���Ч�ĸ��� // detectar si es un grid util o no
+	// detectar si es un grid util o no
 	bool pass = false;
 
-	// �����⵽�ĸ��ӻ�û���� // si nos quedan grids para detectar
+	// si nos quedan grids para detectar
 	while (!openGrid.empty())
 	{	
-		// ����˵ĸ��� // grid que tiene menos coste
+		// grid que tiene menos coste
 		int lessGrid[2] = { 0, openGrid[0].total_cost };
 
 		for (int i = 0; i < openGrid.size(); i++)
 		{
 			if (openGrid[i].total_cost < openGrid[lessGrid[0]].total_cost)
 			{
-				// ˢ������˵ĸ��� // actuaizar el grid que tiene menos coste
+				// actuaizar el grid que tiene menos coste
 				lessGrid[0] = i;
 				lessGrid[1] = openGrid[i].total_cost;		
 			}
 		}
 
-		// ��������˵ĸ���Ϊ��ǰ�����ĸ��� // guardar el grid que tiene menos coste como el grid acutual
+		// guardar el grid que tiene menos coste como el grid acutual
 		PathNode lessNode = openGrid[lessGrid[0]];
 
-		// ɾ��ԭ�еĸ��� // eleminarlo del openGrid
+		// eleminarlo del openGrid
 		openGrid.erase(openGrid.begin() + lessGrid[0]);
 
-		// �����ǰ���������ĸ��� // si el grid actual es el grid de destinatario
+		// si el grid actual es el grid de destinatario
 		if (lessNode.h_cost == 0)
 		{
 			closeGrid.push_back(lessNode);
@@ -272,33 +271,32 @@ int Mover::AStar()
 			return instruction[instruction.size() - 2];
 		}
 		
-		// ��ȡ�ĸ�����ĸ��� // obtener grid de 4 direcciones alrededor del grid actual
+		// obtener grid de 4 direcciones alrededor del grid actual
 		iPoint dir[4] =
 		{{ lessNode.pos.x + 1, lessNode.pos.y}, // Right
 		{ lessNode.pos.x - 1, lessNode.pos.y }, // Left
 		{ lessNode.pos.x , lessNode.pos.y - 1 }, // Up
 		{ lessNode.pos.x , lessNode.pos.y + 1}}; // Down
 		
-		// �ж��ĸ�����ĸ����Ƿ���Ч // detectar si puedes avanzar en alguna de las 4 direcciones
+		// detectar si puedes avanzar en alguna de las 4 direcciones
 		for (int i = 0; i < 4; ++i)
 		{
 			pass = false;
 
 			int thisGrid = level1Tile->Level1TileMap[dir[i].y][dir[i].x];
-			// �����ǰ�������ϰ��� // si el grid que vamos a ir no es 0 o 4
+			// si el grid que vamos a ir no es 0 o 4
 			if(thisGrid != 0 && thisGrid != 4)
 			{
-				// ������ǰ���� // ignoramos este grid
+				// ignoramos este grid
 				pass = true;
 				continue;
 			}
 
 			for (int j = 0; j < closeGrid.size(); ++j)
 			{
-				// �����ǰ�����Ѿ�������closeGrid���� // si ya existe en close grid
+				// si ya existe en close grid
 				if (closeGrid[j].pos == dir[i])
 				{
-					// ������ǰ����
 					pass = true;
 					break;
 				}
@@ -306,16 +304,15 @@ int Mover::AStar()
 
 			for (int k = 0; k < openGrid.size(); ++k)
 			{
-				// �����ǰ�����Ѿ�������openGrid���� // si ya existe en opengrid
+				// si ya existe en opengrid
 				if (openGrid[k].pos == dir[i])
 				{
-					// ������ǰ����
 					pass = true;
 					break;
 				}
 			}
 
-			// �����Ч������뵽���ĸ����� // si es un grid valido
+			// si es un grid valido
 			if(!pass)
 			{
 				// creamos un nuevo nodo para el grid
@@ -359,8 +356,6 @@ void Mover::die()
 	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
 
 	pendingToDelete = true;
-
-	moverTimer->Release();
 
 	delete dieParticle;
 	dieParticle = nullptr;

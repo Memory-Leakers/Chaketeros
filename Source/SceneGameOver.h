@@ -5,6 +5,12 @@
 #include "Application.h"
 #include "Animation.h"
 
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
 class SceneGameOver : public Scene
 {
 public:
@@ -27,12 +33,15 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
-	SDL_Texture* texGameOver;
-	SDL_Texture* texGameOverMisc;
-	SDL_Texture* texGameOverContinue;
+	void DrawGameOverScore();
+
+	SDL_Texture* texGameOver = nullptr;
+	SDL_Texture* texGameOverMisc = nullptr;
+	SDL_Texture* texGameOverContinue = nullptr;
 
 	SDL_Rect gameOverBackgroundRec;
 	SDL_Rect gameOverPointerRec;
+	SDL_Rect numRec[10];
 
 
 	Animation gameOverAnim, gameOverContinueAnim;
@@ -40,8 +49,11 @@ public:
 	iPoint pointerPos[2];
 	iPoint* currentPointerPos;
 
-	bool pressedContinue;
+	int totalDigits;
+	vector <int> digitVec;
 
+	bool pressedContinue;
+	
 };
 
 #endif // !_SCENEGAMEOVER_H_

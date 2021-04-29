@@ -7,7 +7,7 @@
 #include "ModuleAudio.h"
 #include "Application.h"
 #include "Tile.h"
-
+#include "Timer.h"
 #include "External/SDL/include/SDL_scancode.h"
 #include "External/SDL/include/SDL_render.h"
 
@@ -49,7 +49,11 @@ private:
 
 	bool posMode = false;
 
+	
+
 	Tile* level1Tile = nullptr;
+
+	Timer playerTimer;
 
 	// Template particle for an end of player
 	Particle* playerDestroyed = nullptr;
@@ -124,6 +128,7 @@ public:
 
 	bool pendingToDelete = false;
 
+	bool ExtraPoints = false;
 	//GETTERS AND SETTERS
 	int getScore() {
 		return score;

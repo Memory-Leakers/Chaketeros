@@ -1,6 +1,6 @@
 #include "SceneGameOver.h"
 
-#include <iostream>
+
 using namespace std;
 
 
@@ -15,7 +15,7 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	cout << "Start Game Over" << endl;
+	/*cout << "Start Game Over" << endl;
 
 	cout << "Score: " << this->score << endl;
 
@@ -54,12 +54,14 @@ bool SceneGameOver::Start()
 
 	pressedContinue = false;
 
+	DrawGameOverScore();
+	*/
 	return true;
 }
 
 bool SceneGameOver::Update()
 {
-	//cout << "Update Game Over" << endl;
+	/*//cout << "Update Game Over" << endl;
 	gameOverAnim.Update();
 	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
@@ -102,13 +104,13 @@ bool SceneGameOver::Update()
 			App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
 		}
 
-	}
+	}*/
 	return true;
 }
 
 bool SceneGameOver::PostUpdate()
 {
-	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
+	/*App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
 	
 	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
 
@@ -116,9 +118,78 @@ bool SceneGameOver::PostUpdate()
 	
 	App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
 
+	bool isOneBefore = false;
+	int xOffset = 15;
+	int xPos = 130;
 
-	//cout << "PostUpdate Game Over" << endl;
+	for (int i = 0; i < totalDigits; i++)
+	{
+		if (isOneBefore)
+		{
+			if (!digitVec.at(i) == 1)
+			{
+				xOffset = 12;
+				
+			}
+			else 
+			{
+				xOffset = 11;
+			}
+			isOneBefore = false;
+		}
+		
+		
+		
+
+		if (digitVec.at(i) == 1)
+		{
+			if (xOffset == 15) 
+			{
+				 xOffset = 12;
+			}
+			isOneBefore = true;
+		}
+		
+		
+		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
+	}
+
+	//cout << "PostUpdate Game Over" << endl;*/
 	return true;
+}
+
+
+void SceneGameOver::DrawGameOverScore()
+{
+		
+/*	for (int i = 0; i < 10; i++)
+	{
+		numRec[i] = { 14 * i, 64, 14, 15 };
+	}
+
+	stack<int> digits;
+
+	int currentScore = score;
+	int decimals = 0;
+
+	while (currentScore > 0)
+	{
+		int digit = currentScore % 10;
+		currentScore /= 10;
+		digits.push(digit);
+	}
+
+	totalDigits = digits.size();
+
+	while (!digits.empty())
+	{
+		int digit = digits.top();
+		digitVec.push_back(digit);
+		digits.pop();
+		cout << digit << endl;
+
+	}*/
+	
 }
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
@@ -127,6 +198,14 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 	{
 		delete text;
 	}
-	/*cout << "CleanUp Game Over" << endl;*/
+
+	//currentPointerPos = nullptr;
+
+	vector<int>().swap(digitVec);
+	digitVec.clear();
+
+	cout << digitVec.capacity() << endl;	//Aquí se genera un memory leak pero todo se limpia correctamente. Creemos que se llama a
+
+	//digitVec.shrink_to_fit();
 	return true;
 }

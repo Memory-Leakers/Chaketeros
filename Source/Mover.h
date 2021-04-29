@@ -39,7 +39,7 @@ private:
 
 	vector <int> movePath;
 
-	Timer* moverTimer = nullptr;
+	Timer moverTimer;
 
 	iPoint moveDir[4]{ 
 	 { 1, 0 },

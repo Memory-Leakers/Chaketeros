@@ -27,6 +27,11 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
+	int currentImage;
+
+	SDL_Texture* image1;
+	SDL_Texture* image2;
+
 };
 
 
