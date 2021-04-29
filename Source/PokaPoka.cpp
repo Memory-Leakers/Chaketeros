@@ -110,14 +110,14 @@ void PokaPoka::movement() {
 		moveRand = rand() % 4;
 	}
 	switch (moveRand) {
-		
+
 		case 0://DOWN
 			if (level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 0 ||
 				level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 4) {
 				isFlip = false;
 				currentAnimation = &downAnim;
 				currentAnimation->hasIdle = false;
-				
+
 				if (pC == 0) ++pC;
 			}
 
@@ -136,7 +136,7 @@ void PokaPoka::movement() {
 				isFlip = false;
 				currentAnimation = &upAnim;
 				currentAnimation->hasIdle = false;
-				
+
 				if (pC == 0) ++pC;
 			}
 
@@ -149,15 +149,15 @@ void PokaPoka::movement() {
 				while (moveRand == 1) { moveRand = rand() % 4; }
 			}
 			break;
-			
-			
+
+
 		case 2://RIGHT
 			if (level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 0 ||
 				level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 4) {
 				isFlip = true;
 				currentAnimation = &rightAnim;
 				currentAnimation->hasIdle = false;
-				
+
 				if (pC == 0)  ++pC;
 			}
 
@@ -170,14 +170,14 @@ void PokaPoka::movement() {
 				while (moveRand == 2) { moveRand = rand() % 4; }
 			}
 			break;
-			
+
 		case 3://LEFT
 			if (level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 0 ||
 				level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 4) {
 				isFlip = false;
 				currentAnimation = &leftAnim;
 				currentAnimation->hasIdle = false;
-				
+
 				if(pC == 0) ++pC;
 			}
 
@@ -193,16 +193,15 @@ void PokaPoka::movement() {
 		default:
 			moveRand = rand() % 10;
 			break;
-			
+
 	}
 	currentAnimation->Update();
 }
 
-void PokaPoka::onCollision(Collider* otherCol) {
-	cout << "ouch" << endl;
-	if (otherCol->type == Type::EXPLOSION) {
+void PokaPoka::onCollision(Collider* col) {
+	if (col->type == Type::EXPLOSION) {
 		die();
-		
+
 	}
 }
 
@@ -210,5 +209,5 @@ void PokaPoka::onCollision(Collider* otherCol) {
 void PokaPoka::die() {
 	//powerUpDrop();
 	isDead = false;
-
+	col->pendingToDelete = true;
 }

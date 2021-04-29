@@ -34,62 +34,44 @@ class ModuleEnemy : public Module{
 
 		virtual void movement() {};
 
-		virtual void die() {};
+	virtual void die() {};
 
-	public:
-		ModuleEnemy();
-		~ModuleEnemy();
+public:
+	ModuleEnemy();
+	ModuleEnemy(int x, int y);
+	~ModuleEnemy();
 
-		virtual bool Start() ;
-		virtual UpdateResult Update() ;
-		virtual UpdateResult PostUpdate() ;
+	virtual bool Start();
+	virtual UpdateResult PreUpdate();
+	virtual UpdateResult Update();
+	virtual UpdateResult PostUpdate();
+	virtual void OnCollision(Collider* col);
 
-		virtual void OnCollision(Collider* otherCol);
+	iPoint position;
+	iPoint pivotPoint;
+	Collider* col = nullptr;
+	int speed = 1; //Movement only
 
+	SDL_Texture* texture = nullptr;
 
-		iPoint position;
-		iPoint pivotPoint;
-		Collider* col = nullptr;
-		int speed = 1; //Movement only
+	Animation* currentAnimation = nullptr;
 
-		SDL_Texture* texture = nullptr;
-
-		Animation* currentAnimation = nullptr;
-
-		Animation idleAnim;
-
-		Animation upAnim;
-		Animation downAnim;
-		Animation rightAnim;
-		Animation leftAnim;
-
-		Animation attackUpAnim;
-		Animation attackDownAnim;
-		Animation attackRightAnim;
-		Animation attackLeftAnim;
-
-		/*-----GETTERS AND SETTERS-----*/
-		int getPoints() {
-			return points;
-		}
-		void setPoints(int points) {
-			this->points = points;
-		}
-		int getDestroyedFx() {
-			return destroyedFx;
-		}
-		void setDestroyedFx(int fxId) {
-			this->destroyedFx = fxId;
-		}
-		const Collider* getCollider() const {
-			return col;
-		}
-
-		ModuleEnemy(int x, int y) {
-			position.x = x;
-			position.y = y;
-		};
+	/*-----GETTERS AND SETTERS-----*/
+	int getPoints() {
+		return points;
+	}
+	void setPoints(int points) {
+		this->points = points;
+	}
+	int getDestroyedFx() {
+		return destroyedFx;
+	}
+	void setDestroyedFx(int fxId) {
+		this->destroyedFx = fxId;
+	}
+	const Collider* getCollider() const {
+		return col;
+	}
 };
-
 
 #endif

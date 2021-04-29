@@ -13,7 +13,6 @@ ModuleEnemyPool::~ModuleEnemyPool() {
 
 bool ModuleEnemyPool::Start() {
 	//texture = App->textures->Load("Assets/enemies.png");
-	enemyDestroyedFx = App->audio->LoadSound("Assets/explosion.wav");
 
 	return true;
 }
@@ -101,8 +100,10 @@ void ModuleEnemyPool::SpawnEnemy(const EnemySpawnpoint& info)
 }
 
 void ModuleEnemyPool::OnCollision(Collider* c1, Collider* c2) {
-	for (uint i = 0; i < MAX_ENEMIES; ++i) {
-		if (enemies[i] != nullptr && enemies[i]->getCollider() == c1) {
+	for (uint i = 0; i < MAX_ENEMIES; ++i) 
+	{
+		if (enemies[i] != nullptr && enemies[i]->getCollider() == c1) 
+		{
 			enemies[i]->OnCollision(c2); //Notify the enemy of a collision
 
 			delete enemies[i];

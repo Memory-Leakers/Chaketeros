@@ -3,15 +3,16 @@
 
 Text::Text() {
 
-	if (!TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 80)) {
+	if (!TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 80)) {
 		std::cout << TTF_GetError();
 	}
 
 	//Font80 =
-	Font50 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 50);
-	Font35 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 35);
-	Font20 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 20);
-	Font10 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 10);
+	Font50 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 50);
+	Font40 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 40);
+	Font35 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 35);
+	Font20 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 20);
+	Font10 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 10);
 
 	blackC = { 0,0,0 };
 	whiteC = { 255, 255, 255 };
@@ -22,6 +23,7 @@ Text::~Text() {
 	
 	//TTF_CloseFont(Font80);
 	TTF_CloseFont(Font50);
+	TTF_CloseFont(Font40);
 	TTF_CloseFont(Font35);
 	TTF_CloseFont(Font20);
 	TTF_CloseFont(Font10);
@@ -63,12 +65,13 @@ TTF_Font* Text::getFonts(int size) {
 		TTF_CloseFont(tempFont);
 	}
 
-	return TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", size);
+	return TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", size);
 	*/
 
 	switch (size) {
 	//case 80: return Font80; break;
 	case 50: return Font50; break;
+	case 40: return Font40; break;
 	case 35: return Font35; break;
 	case 20: return Font20; break;
 	case 10: return Font10; break;

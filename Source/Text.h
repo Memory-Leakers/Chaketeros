@@ -19,18 +19,18 @@ class Text {
 		
 		//TTF_Font* Font80;
 		TTF_Font* Font50;
+		TTF_Font* Font40;
 		TTF_Font* Font35;
 		TTF_Font* Font20;
 		TTF_Font* Font10;
-		
-
+	
 		TTF_Font* tempFont;
 
 		SDL_Color blackC;
 		SDL_Color whiteC;
 		SDL_Color redC;
 
-		TTF_Font* font30 = TTF_OpenFont("Assets/Fonts/advanced_pixel.ttf", 30);
+		TTF_Font* font30 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 30);
 
 	protected:
 

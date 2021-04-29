@@ -12,6 +12,9 @@
 #include "CoreMecha.h"
 #include "PowerUp.h"
 #include "PokaPoka.h"
+#include "Mover.h"
+#include "Timer.h"
+
 
 #include <time.h>
 #include <iostream>
@@ -58,6 +61,9 @@ Particle* redFlowerDestroyed = nullptr;
 // Template particle for an end of yellow flower
 Particle* yellowFlowerDestroyed = nullptr;
 
+// Template particle for an end of mover
+Particle* moverDestroyed = nullptr;
+
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 vector<iPoint> emptySpaces;
@@ -68,17 +74,34 @@ int redFlowerIndex[4];
 
 int glassCapsuleIndex;
 
-int playerLifes = 3;
+int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
 
 PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
 
-PokaPoka* enemy[1];
+ModuleEnemy* enemy[2];
 
 bool isLevelCompleted;
 
 iPoint winPosition = { 120, 96 };
+
+bool isExtraPointsActive;
+
+//Timer variables
+
+Timer* timer;
+int totalSeconds;
+int minutes;
+int currentSecond = 0;
+int secondsXOffset = 100;
+bool isTimeOut;
+bool isChangingScene;
+
+string strLife;
+string strScore;
+string strSeconds;
+string strMinutes;
 
 
 SceneLevel1::SceneLevel1()
@@ -86,6 +109,7 @@ SceneLevel1::SceneLevel1()
 	// Init random system
 	srand(time(NULL));
 	score = 0;
+
 }
 
 SceneLevel1::~SceneLevel1()
@@ -156,6 +180,7 @@ void SceneLevel1::LoadAsset()
 	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
 
+	// Yellow Flower destroyed particle
 	yellowFlowerDestroyed = new Particle(500.0f, 0.05f, texYellowFlower);
 	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
@@ -164,6 +189,10 @@ void SceneLevel1::LoadAsset()
 	yellowFlowerDestroyed->anim.PushBack({ 81,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 97,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
+
+	// Mover destroyed particle
+	moverDestroyed = new Particle(500.0f, 0.05f, texEnemies);
+	moverDestroyed->anim.PushBack({ 232,166,23,30 });
 
 #pragma endregion
 }
@@ -273,6 +302,7 @@ bool SceneLevel1::Start()
 	bomberman = new Player(tileMap);
 	bomberman->Start();
 
+
 	LoadAsset();
 
 	// Create music
@@ -283,15 +313,22 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
-	enemy[0] = new PokaPoka(200, 160, tileMap);
+	enemy[0] = new PokaPoka( 200, 160, tileMap);
+	enemy[1] = new Mover({ 24,64 }, &bomberman->position, tileMap);
 
+	isExtraPointsActive = false;
 
-	score = 0;
-
+	//Timer Init
+	timer = Timer::Instance();
+	isTimeOut = false;
+	isChangingScene = false;
+	minutes = 4;
+	totalSeconds = 59;
 
 	//Start Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++)
+	{
 		enemy[i]->Start();
 	}
 
@@ -300,9 +337,14 @@ bool SceneLevel1::Start()
 
 bool SceneLevel1::PreUpdate()
 {
+	for (int i = 0; i < 2; i++)
+	{
+		enemy[i]->PreUpdate();
+	}
 
 	bool anyCoreMecha = false;
 
+	//Bomberman Dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 
@@ -318,8 +360,50 @@ bool SceneLevel1::PreUpdate()
 			delete bomberman;
 			bomberman = nullptr;
 			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+			playerLifes = 3;
 		}
 	}
+
+	if (minutes == 1 && currentSecond == 00)
+	{
+		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
+	}
+
+	//Runs out of time Condition
+
+	if (bomberman != nullptr && isTimeOut)
+	{
+		if (isExtraPointsActive && !isChangingScene)
+		{
+			App->audio->PlaySound(SFX::END_WHISTLING_SFX, 0);
+			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120, score);
+			bomberman->speed = 0;
+			isChangingScene = true;
+		}
+		else if (!isExtraPointsActive)
+		{
+
+			bomberman->speed = 0;
+			if (playerLifes > 0 && !isChangingScene)
+			{
+				isChangingScene = true;
+				playerLifes--;
+				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
+			}
+
+			else
+			{
+				if (!isChangingScene)
+				{
+					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+					isChangingScene = true;
+					playerLifes = 3;
+				}
+
+			}
+		}
+	}
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -355,18 +439,7 @@ bool SceneLevel1::PreUpdate()
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
-			if (isLevelCompleted && bomberman->position == winPosition) {
 
-				/*double currentCountTime = SDL_GetPerformanceCounter();
-				double timeOffset = SDL_GetPerformanceFrequency();
-
-				while (((currentCountTime - startCountTime) / timeOffset) >= CoinTime)
-				{
-					Mix_HaltMusic();
-
-					App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
-				}*/
-			}
 			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
@@ -384,6 +457,10 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
+	timer->Update();
+
+	//cout << timer->getDeltaTime() << endl;	//contador de tiempo
+
 	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
 	{
@@ -399,17 +476,25 @@ bool SceneLevel1::Update()
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
+		/*if (isLevelCompleted && bomberman->position == winPosition && isExtraPointsActive) {
+
+			App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+
+		}*/
 	}
 
-	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
+	if (bomberman != nullptr)
 	{
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
 		{
-			if(sceneObstacles[i] == nullptr)
+			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 			{
-				sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
-				bomberman->maxBombs--;
-				break;
+				if (sceneObstacles[i] == nullptr)
+				{
+					sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
+					bomberman->maxBombs--;
+					break;
+				}
 			}
 		}
 	}
@@ -446,16 +531,14 @@ bool SceneLevel1::Update()
 		//sceneObstacles[glassCapsuleIndex]->Die();
 	}
 
-
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
 	//Update Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		enemy[i]->Update();
 	}
-
 
 	//Check if Player is on the Glass Capsule after completing the level
 
@@ -463,8 +546,19 @@ bool SceneLevel1::Update()
 	{
 		if (bomberman->position == winPosition && isLevelCompleted)
 		{
+			Mix_HaltMusic();
+			App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
+			minutes = 0;
+			if (currentSecond > 15)
+			{
+				totalSeconds = 15;
+				timer->Reset();
+			}
+			isExtraPointsActive = true;
+
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
+			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 35);
 			for (int i = 0; i < 4; i++)
 			{
 				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
@@ -473,12 +567,12 @@ bool SceneLevel1::Update()
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
 				}
 			}
+			if (currentSecond == 0) {
+				App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
+			}
 		}
 	}
 	return true;
-
-
-
 
 }
 
@@ -505,8 +599,7 @@ bool SceneLevel1::PostUpdate()
 	}
 
 	//Draw Enemy
-
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		enemy[i]->PostUpdate();
 	}
 
@@ -526,7 +619,6 @@ bool SceneLevel1::PostUpdate()
 			ExeptionRenderOrder[i][0] = -1;
 		}
 	}
-
 
 	// Sort render exeption
 	ExeptionRenderOrder[3][0] = 3;
@@ -589,9 +681,6 @@ bool SceneLevel1::PostUpdate()
 	}
 	#pragma endregion
 
-
-
-
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
 
@@ -600,19 +689,45 @@ bool SceneLevel1::PostUpdate()
 
 	//Draw UI text
 
-	if(bomberman != NULL) {
-
-	string strLife = std::to_string(bomberman->getLives());
-	string strScore = std::to_string(bomberman->getScore());
-
-
-	
-	text->showText(App->render->renderer, 50, 10, "0 : 00", text->getFonts(36), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 10, "SC\t\t\t\t\t\t" + strScore, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 700, 10, strLife, text->getFonts(36), text->getColors((int)textColour::WHITE)); //Lifes
-
-	
+	//Timer Logic-------
+	if (!isTimeOut)
+	{
+		currentSecond = totalSeconds - (int)timer->getDeltaTime();
 	}
+
+	if (currentSecond == 0)
+	{
+		if (minutes != 0)
+		{
+			minutes--;
+			timer->Reset();
+		}
+		else {
+			isTimeOut = true;
+		}
+	}
+
+	if (currentSecond < 10)
+	{
+		secondsXOffset = 123;
+	}
+	else
+	{
+		secondsXOffset = 100;
+	}
+	//------------------
+
+
+	if (bomberman != nullptr) { strLife = std::to_string(playerLifes); }
+	strScore = std::to_string(score);
+	strSeconds = std::to_string(currentSecond);
+	strMinutes = std::to_string(minutes);
+
+	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
+	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
+	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
+	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
+
 	return true;
 }
 
@@ -633,7 +748,6 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		}
 
 	}
-
 
 	//Obstacle Collision ----------------------
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
@@ -701,8 +815,6 @@ void SceneLevel1::CreateCoins()
 	}
 }
 
-
-
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
@@ -713,7 +825,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
-		
+
 	}
 	else
 	{
@@ -749,6 +861,8 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	}
 
+	Mix_HaltMusic();
+
 	delete tileMap;
 	tileMap = nullptr;
 
@@ -770,22 +884,24 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	redFlowerDestroyed = nullptr;
 	delete yellowFlowerDestroyed;
 	yellowFlowerDestroyed = nullptr;
+	delete yellowFlowerDestroyed;
+	delete moverDestroyed;
+	moverDestroyed = nullptr;
 	#pragma endregion
 
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
 
+
+	Timer::Release();
+	timer = NULL;
+
 	//Delete Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		delete enemy[i];
 		enemy[i] = nullptr;
 	}
-
-
-
-	
-
 	return true;
 }

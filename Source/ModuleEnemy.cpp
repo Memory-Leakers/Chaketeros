@@ -1,24 +1,36 @@
 #include "ModuleEnemy.h"
 
-
-
-ModuleEnemy::ModuleEnemy() {
+ModuleEnemy::ModuleEnemy()
+{
 
 };
 
-ModuleEnemy::~ModuleEnemy() {
-	//Power-Up drop
-	//powerUpDrop();
+ModuleEnemy::ModuleEnemy(int x, int y)
+{
+	position.x = x;
+	position.y = y;
 };
 
-bool ModuleEnemy::Start() {
+ModuleEnemy::~ModuleEnemy()
+{
+};
+
+bool ModuleEnemy::Start()
+{
 	return true;
 };
 
-UpdateResult ModuleEnemy::Update() {
+UpdateResult ModuleEnemy::PreUpdate()
+{
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
+UpdateResult ModuleEnemy::Update()
+{
 	return UpdateResult::UPDATE_CONTINUE;
 };
-UpdateResult ModuleEnemy::PostUpdate() {
+UpdateResult ModuleEnemy::PostUpdate()
+{
 	return UpdateResult::UPDATE_CONTINUE;
 };
 void ModuleEnemy::OnCollision(Collider* otherCol) {};

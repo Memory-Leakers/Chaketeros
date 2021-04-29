@@ -99,6 +99,7 @@
     <ClInclude Include="CoreMecha.h" />
     <ClInclude Include="GlassCapsule.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
+    <ClInclude Include="Mover.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCollisions.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Stone.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="YellowFlower.h" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +152,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Mover.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -166,6 +169,7 @@
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="YellowFlower.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

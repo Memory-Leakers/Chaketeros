@@ -15,6 +15,8 @@ SceneMainTitle::~SceneMainTitle()
 
 bool SceneMainTitle::Start()
 {
+	Mix_VolumeMusic(15);
+	App->audio->PlayMusic("Assets/Audio/Music/TitleScreen.ogg", 1.5f);
 
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texMenuArrow = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenuArrow.png");
@@ -40,6 +42,7 @@ bool SceneMainTitle::Update()
 
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
+		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
 		if (currentArrowPos == &arrowPosition[2])
 		{
 			currentArrowPos = &arrowPosition[0];
@@ -51,6 +54,7 @@ bool SceneMainTitle::Update()
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
+		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
 		if (currentArrowPos == &arrowPosition[0])
 		{
 			currentArrowPos = &arrowPosition[2];
@@ -63,9 +67,12 @@ bool SceneMainTitle::Update()
 
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
+		
 		if (currentArrowPos == &arrowPosition[0])
 		{
+			App->audio->PlaySound(SFX::SELECT_SFX, 0);
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+			
 		}
 	}
 
@@ -94,7 +101,7 @@ bool SceneMainTitle::CleanUp(bool finalCleanUp)
 		delete text;
 	}
 
-
+	Mix_HaltMusic();
 	currentArrowPos = nullptr;
 
 	cout << "CleanUp Main Title" << endl;

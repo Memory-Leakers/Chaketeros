@@ -1,8 +1,9 @@
 #ifndef _SCENEGAMEOVER_H_
-#define _SCENEGAMEOVER_H
+#define _SCENEGAMEOVER_H_
 
 #include "Scene.h"
-//#include "Application.h";
+#include "Application.h"
+#include "Animation.h"
 
 class SceneGameOver : public Scene
 {
@@ -26,8 +27,22 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
-};
+	SDL_Texture* texGameOver;
+	SDL_Texture* texGameOverMisc;
+	SDL_Texture* texGameOverContinue;
 
+	SDL_Rect gameOverBackgroundRec;
+	SDL_Rect gameOverPointerRec;
+
+
+	Animation gameOverAnim, gameOverContinueAnim;
+
+	iPoint pointerPos[2];
+	iPoint* currentPointerPos;
+
+	bool pressedContinue;
+
+};
 
 #endif // !_SCENEGAMEOVER_H_
 

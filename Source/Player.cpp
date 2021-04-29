@@ -49,6 +49,12 @@ Player::Player(Tile* level1Tile)
 Player::~Player()
 {
 	col->pendingToDelete = true;
+
+	if (playerDestroyed != nullptr)
+	{
+		delete playerDestroyed;
+		playerDestroyed = nullptr;
+	}
 }
 
 bool Player::Start()
@@ -59,14 +65,24 @@ bool Player::Start()
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
 
-
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
+	playerDestroyed = new Particle(500.0f, 0.05f, texture);
+
+	playerDestroyed->anim.PushBack({ 4, 71, 22, 21});
+	playerDestroyed->anim.PushBack({ 26, 71, 22, 21});
+	playerDestroyed->anim.PushBack({ 48, 71, 22, 21});
+	playerDestroyed->anim.PushBack({ 70, 71, 22, 21});
+	playerDestroyed->anim.PushBack({ 92, 71, 22, 21});
+	playerDestroyed->anim.PushBack({ 114, 71, 22, 21});
+
+	// Init move direccion
 	for (int i = 0; i < 4; i++)
 	{
 		canMoveDir[i] = true;
 	}
 
+	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
 
 	return ret;
@@ -190,6 +206,7 @@ UpdateResult Player::Update()
 		isFlip = false;
 		currentAnimation = &leftAnim;
 		currentAnimation->hasIdle = false;
+
 		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;
@@ -316,12 +333,18 @@ UpdateResult Player::PostUpdate()
 
 void Player::OnCollision(Collider* col)
 {
-
 	if(!godMode)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
 		{
+			App->audio->PlaySound(SFX::DEATH_SFX, 0);
+			App->audio->PlaySound(SFX::GAME_OVER_SFX, 0);
 			pendingToDelete = true;
+
+			// Create die particle
+			iPoint tempPos = position;
+			tempPos -= {3, 5};
+			App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
 		}
 
 		if (col->type == Type::FIREPOWER)
@@ -329,7 +352,6 @@ void Player::OnCollision(Collider* col)
 			pUpFlame++;
 		}
 	}
-
 }
 
 void Player::WillCollision(Collider* col)
@@ -384,8 +406,6 @@ void Player::WillCollision(Collider* col)
 		}
 	}
 }
-
-
 
 iPoint Player::getCurrentTilePos()
 {

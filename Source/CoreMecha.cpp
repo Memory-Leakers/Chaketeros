@@ -23,6 +23,8 @@ void CoreMecha::Die()
 	pendingToDelete = true;
 	getCollider()->pendingToDelete = true;
 
+	App->scene->currentScene->score += 800;
+
 	int tileX, tileY;
 	tileX = currentTileMap->getTilePos(getPosition()).x;
 	tileY = currentTileMap->getTilePos(getPosition()).y;
@@ -42,6 +44,7 @@ void CoreMecha::OnCollision(Collider* col)
 {
 	if (col->type == Type::EXPLOSION)
 	{
+		App->audio->PlaySound(SFX::ORBS_DESTROYED_SFX, 0);
 		Die();
 	}
 }
