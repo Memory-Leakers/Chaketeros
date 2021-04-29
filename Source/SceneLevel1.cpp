@@ -283,7 +283,7 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
-	enemy[0] = new PokaPoka(200, 160);
+	enemy[0] = new PokaPoka(200, 160, tileMap);
 
 
 	score = 0;
@@ -644,6 +644,16 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			sceneObstacles[i]->OnCollision(c2);
 		}
 	}
+	/*
+	//Enemy Collision with bomb
+	for (int i = 0; i < 1; ++i) {
+		// cuando se choca algo
+		if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+		{
+			enemy[i]->OnCollision(c2);
+		}
+	}
+	*/
 }
 
 void SceneLevel1::WillCollision(Collider* c1, Collider* c2)

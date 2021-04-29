@@ -77,6 +77,76 @@ UpdateResult Player::Update()
 	int speedX = 0;
 	int speedY = 0;
 
+	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
+	{
+		isFlip = false;
+		currentAnimation = &upAnim;
+		currentAnimation->hasIdle = false;
+		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
+		{
+			//position.y -= speed;
+			speedY = -1;
+		}
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		{
+			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+
+			if (pivotPoint.x <= (tileX + 4))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x > (tileX + 4) &&
+				pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+			else if (pivotPoint.x < (tileX + 10) &&
+				pivotPoint.x >(tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x >= (tileX + 10))
+			{
+				position.x += speed;
+			}
+		}
+	}
+
+	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
+	{
+		isFlip = false;
+		currentAnimation = &downAnim;
+		currentAnimation->hasIdle = false;
+		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
+		{
+			//position.y += speed;
+			speedY = 1;
+		}
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		{
+			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+
+			if (pivotPoint.x <= (tileX + 4))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x > (tileX + 4) &&
+				pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+			else if (pivotPoint.x < (tileX + 10) &&
+				pivotPoint.x >(tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x >= (tileX + 10))
+			{
+				position.x += speed;
+			}
+		}
+	}
+
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT)
 	{
 		isFlip = true;
@@ -150,75 +220,7 @@ UpdateResult Player::Update()
 		}
 	}
 
-	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
-	{
-		isFlip = false;
-		currentAnimation = &upAnim;
-		currentAnimation->hasIdle = false;
-		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
-		{
-			//position.y -= speed;
-			speedY = -1;
-		}
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
-		{
-			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
 
-			if (pivotPoint.x <= (tileX + 4))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x > (tileX + 4) &&
-				pivotPoint.x < (tileX + 8))
-			{
-				position.x += speed;
-			}
-			else if (pivotPoint.x < (tileX + 10) &&
-				pivotPoint.x >(tileX + 8))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x >= (tileX + 10))
-			{
-				position.x += speed;
-			}
-		}
-	}
-
-	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
-	{
-		isFlip = false;
-		currentAnimation = &downAnim;
-		currentAnimation->hasIdle = false;
-		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
-		{
-			//position.y += speed;
-			speedY = 1;
-		}
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
-		{
-			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
-
-			if (pivotPoint.x <= (tileX + 4))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x > (tileX + 4) &&
-				pivotPoint.x < (tileX + 8))
-			{
-				position.x += speed;
-			}
-			else if (pivotPoint.x < (tileX + 10) &&
-				pivotPoint.x >(tileX + 8))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x >= (tileX + 10))
-			{
-				position.x += speed;
-			}
-		}
-	}
 
 	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) {
 		score += 100;

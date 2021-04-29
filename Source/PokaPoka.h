@@ -2,21 +2,21 @@
 
 #include "ModuleEnemy.h"
 
-
 class PokaPoka : public ModuleEnemy
 {
 	private:
 		int moveRand = rand() % 4;
-	
+		int pC = 0;
+		iPoint nPoint;
 	protected:
-
+		
 		void die();
 
 		void movement();
 	
 	public:
-
-		PokaPoka(int x, int y);
+		
+		PokaPoka(int x, int y, Tile* level1Tile);
 
 		~PokaPoka();
 		

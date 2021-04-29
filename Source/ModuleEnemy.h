@@ -7,7 +7,7 @@
 #include "ModuleAudio.h"
 #include "Application.h"
 #include "PowerUp.h"
-
+#include "Tile.h"
 
 
 
@@ -28,32 +28,10 @@ class ModuleEnemy : public Module{
 
 		SDL_Rect bounds;
 
-		/*
-		PowerUp* powerUpDrop() {
-			int rand1 = rand() % 10;
-			int rand2 = rand() % 10;
+		Tile* level1Tile = nullptr;
 
-			if (rand1 == rand2) {
-				int rand3 = rand() % 4;
-				switch (rand3) {
-					case 0:
-						//return PowerUp(position, );
-						break;
-					case 1:
 
-						break;
-					case 2:
 
-						break;
-					case 3:
-
-						break;
-				}
-			}
-
-			return nullptr;
-		};
-		*/
 		virtual void movement() {};
 
 		virtual void die() {};
