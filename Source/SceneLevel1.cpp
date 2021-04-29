@@ -542,6 +542,7 @@ bool SceneLevel1::Update()
 			if (currentSecond > 15)
 			{
 				totalSeconds = 15;
+
 				timer.Reset();
 			}
 			isExtraPointsActive = true;
@@ -550,7 +551,9 @@ bool SceneLevel1::Update()
 
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
-			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
+
+			
+			
 			for (int i = 0; i < 4; ++i)
 			{
 				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
@@ -562,6 +565,16 @@ bool SceneLevel1::Update()
 			if (currentSecond == 0) {
 				App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
 			}
+		}
+	}
+
+	if (isExtraPointsActive) {
+		timer.Update();
+
+		if (timer.getDeltaTime() >= 0.6f) {
+
+			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
+			timer.Reset();
 		}
 	}
 
