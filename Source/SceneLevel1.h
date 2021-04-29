@@ -20,6 +20,7 @@ struct SDL_Texture;
 #define MAX_EMPTY_SPACES 104
 #define MAX_POWERUPS 5
 #define MAX_STONE 30
+#define MAX_ENEMY 3
 
 class SceneLevel1 : public Scene
 {

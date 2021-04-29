@@ -15,8 +15,6 @@ bool ModuleParticles::Start()
 {
 	LOG("Loading particles");
 
-	powerUpDestroyedTexture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
 	return true;
 }
 

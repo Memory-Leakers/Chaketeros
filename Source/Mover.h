@@ -35,11 +35,11 @@ private:
 
 	bool hasPathToPlayer = false;
 
-	int randomDir;
+	int randomDir = 0;
 
 	vector <int> movePath;
 
-	Timer* moverTimer;
+	Timer* moverTimer = nullptr;
 
 	iPoint moveDir[4]{ 
 	 { 1, 0 },

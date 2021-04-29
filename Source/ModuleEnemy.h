@@ -30,8 +30,6 @@ class ModuleEnemy : public Module{
 
 		Tile* level1Tile = nullptr;
 
-
-
 		virtual void movement() {};
 
 		virtual void die() {};
@@ -48,13 +46,18 @@ public:
 	virtual void OnCollision(Collider* col);
 
 	iPoint position;
+
 	iPoint pivotPoint;
+
 	Collider* col = nullptr;
+
 	int speed = 1; //Movement only
 
 	SDL_Texture* texture = nullptr;
 
 	Animation* currentAnimation = nullptr;
+
+	bool pendingToDelete = false;
 
 	/*-----GETTERS AND SETTERS-----*/
 	int getPoints() {

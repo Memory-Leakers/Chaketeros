@@ -43,17 +43,15 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 
 	#pragma endregion
 	currentAnimation = &downAnim;
-
-	// Init destroyed particle
-	dieParticle = new Particle(500.0f, 0.05f, texture);
-	dieParticle->anim.PushBack({ 232,166,23,30 });
-
 }
 
 Mover::~Mover() 
 {
-	delete dieParticle;
-	dieParticle = nullptr;
+	if(dieParticle!=nullptr)
+	{
+		delete dieParticle;
+		dieParticle = nullptr;
+	}
 }
 
 bool Mover::Start() 
@@ -61,6 +59,11 @@ bool Mover::Start()
 	LOG("LOADING ENEMY MOVER");
 
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
+
+	// Init destroyed particle
+	dieParticle = new Particle(500.0f, 0.05f, texture);
+	dieParticle->anim.PushBack({ 232,166,23,30 });
+	dieParticle->anim.speed = 0.01f;
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
@@ -319,11 +322,15 @@ void Mover::OnCollision(Collider* col)
 
 void Mover::die()
 {
-	isDead = false;
+	isDead = true;
 
 	col->pendingToDelete = true;
 
-	App->particle->AddParticle(*dieParticle, position, Type::NONE, true, 0, 0);
+	iPoint tempPos = position;
+	tempPos += {-4, -14};
+	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
+
+	pendingToDelete = true;
 
 	moverTimer->Release();
 
