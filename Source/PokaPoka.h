@@ -12,8 +12,8 @@ class PokaPoka : public ModuleEnemy
 		Particle* dieParticle = nullptr;
 		iPoint* playerPos = nullptr;
 		void attack();
-		Timer* attackTimer = nullptr;
-		Timer* moveTimer = nullptr;
+		Timer attackTimer;
+		Timer moveTimer;
 		int attacking = 3;
 	protected:
 		

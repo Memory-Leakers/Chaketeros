@@ -70,8 +70,6 @@ PokaPoka::~PokaPoka() {
 bool PokaPoka::Start() {
 	LOG("LOADING ENEMY POKAPOKA");
 	bool ret = true;
-	attackTimer = Timer::Instance();
-	moveTimer = Timer::Instance();
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
@@ -101,14 +99,14 @@ UpdateResult PokaPoka::Update() {
 	col->SetPos(this->position.x, this->position.y);
 	if (attacking == 1 || attacking == 2) {
 
-		attackTimer->Update();
+		attackTimer.Update();
 	}
 	
-	moveTimer->Update();
-	if (moveTimer->getDeltaTime() >= 0.15f)
+	moveTimer.Update();
+	if (moveTimer.getDeltaTime() >= 0.15f)
 	{
 		movement();
-		moveTimer->Reset();
+		moveTimer.Reset();
 	}
 	currentAnimation->Update();
 
@@ -282,8 +280,7 @@ void PokaPoka::die() {
 	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
 
 	pendingToDelete = true;
-	attackTimer->Release();
-	moveTimer->Release();
+
 
 	delete dieParticle;
 	dieParticle = nullptr;
@@ -299,8 +296,8 @@ void PokaPoka::attack() {
 		isFlip = true;
 	}
 
-	if (attackTimer->getDeltaTime() >= 2.0f) {
+	if (attackTimer.getDeltaTime() >= 2.0f) {
 		attacking = 3;
-		attackTimer->Reset();
+		attackTimer.Reset();
 	}
 }
