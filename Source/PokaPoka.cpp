@@ -272,6 +272,7 @@ void PokaPoka::OnCollision(Collider* col) {
 void PokaPoka::die() {
 	if (pendingToDelete) return;
 
+	App->scene->currentScene->score += 200;
 	isDead = true;
 
 	col->pendingToDelete = true;
