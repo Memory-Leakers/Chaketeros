@@ -374,7 +374,7 @@ bool SceneLevel1::PreUpdate()
 	}
 	#pragma endregion
 
-	if (minutes == 0 && currentSecond == 0)
+	if (minutes == 0 && currentSecond == 59)
 	{
 		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
 	}
@@ -517,11 +517,7 @@ bool SceneLevel1::Update()
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
-		/*if (isLevelCompleted && bomberman->position == winPosition && isExtraPointsActive) {
-
-			App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
-
-		}*/
+		
 
 		// Drop bomb
 		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
@@ -538,7 +534,7 @@ bool SceneLevel1::Update()
 		}
 
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && isLevelCompleted)
+		if (bomberman->position == winPosition && isLevelCompleted && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
@@ -549,10 +545,12 @@ bool SceneLevel1::Update()
 				timer.Reset();
 			}
 			isExtraPointsActive = true;
+			bomberman->ExtraPoints = true;
+			
 
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
-			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 35);
+			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
 			for (int i = 0; i < 4; ++i)
 			{
 				if (sceneObstacles[redFlowerIndex[i]] != nullptr)
