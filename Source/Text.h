@@ -23,9 +23,7 @@ class Text {
 		TTF_Font* Font35;
 		TTF_Font* Font20;
 		TTF_Font* Font10;
-		
-		
-
+	
 		TTF_Font* tempFont;
 
 		SDL_Color blackC;

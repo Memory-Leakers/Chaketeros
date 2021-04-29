@@ -22,10 +22,11 @@ class PokaPoka : public ModuleEnemy
 		~PokaPoka();
 		
 		bool Start();
+
 		UpdateResult Update();
 		UpdateResult PostUpdate();
 
-		void onCollision(Collider* otherCol);
+		void onCollision(Collider* col);
 
 		iPoint position;
 		Collider* col = nullptr;

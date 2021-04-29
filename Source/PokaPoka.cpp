@@ -143,8 +143,8 @@ void PokaPoka::movement() {
 
 }
 
-void PokaPoka::onCollision(Collider* otherCol) {
-	if (otherCol->type == Type::EXPLOSION) {
+void PokaPoka::onCollision(Collider* col) {
+	if (col->type == Type::EXPLOSION) {
 		die();
 	}
 }

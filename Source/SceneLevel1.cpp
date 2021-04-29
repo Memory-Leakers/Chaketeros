@@ -12,6 +12,7 @@
 #include "CoreMecha.h"
 #include "PowerUp.h"
 #include "PokaPoka.h"
+#include "Mover.h"
 #include "Timer.h"
 
 
@@ -79,7 +80,7 @@ PowerUp* powerUps[MAX_POWERUPS];
 
 Stone* stones[MAX_STONE];
 
-PokaPoka* enemy[1];
+ModuleEnemy* enemy[2];
 
 bool isLevelCompleted;
 
@@ -306,6 +307,7 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	enemy[0] = new PokaPoka(200, 160);
+	enemy[1] = new Mover({ 24,64 }, &bomberman->position, tileMap);
 	
 	//Timer Init
 	timer = Timer::Instance();
@@ -314,7 +316,8 @@ bool SceneLevel1::Start()
 
 	//Start Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) 
+	{
 		enemy[i]->Start();
 	}
 
@@ -323,6 +326,10 @@ bool SceneLevel1::Start()
 
 bool SceneLevel1::PreUpdate()
 {
+	for (int i = 0; i < 2; i++)
+	{
+		enemy[i]->PreUpdate();
+	}
 
 	bool anyCoreMecha = false;
 
@@ -366,6 +373,7 @@ bool SceneLevel1::PreUpdate()
 			
 		}
 	}
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -401,8 +409,8 @@ bool SceneLevel1::PreUpdate()
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
-			if (isLevelCompleted && bomberman->position == winPosition) {
-
+			if (isLevelCompleted && bomberman->position == winPosition) 
+			{
 				/*double currentCountTime = SDL_GetPerformanceCounter();
 				double timeOffset = SDL_GetPerformanceFrequency();
 
@@ -432,7 +440,7 @@ bool SceneLevel1::Update()
 {
 	timer->Update();
 
-	cout << timer->getDeltaTime() << endl;	//contador de tiempo
+	//cout << timer->getDeltaTime() << endl;	//contador de tiempo
 
 	// Get keys
 	if (App->input->keys[SDL_SCANCODE_T] == KEY_DOWN)
@@ -451,7 +459,6 @@ bool SceneLevel1::Update()
 		bomberman->Update();
 	}
 
-
 	if (bomberman != nullptr)
 	{
 		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
@@ -467,6 +474,7 @@ bool SceneLevel1::Update()
 			}
 		}
 	}
+
 	// Update obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)
 	{
@@ -499,16 +507,14 @@ bool SceneLevel1::Update()
 		//sceneObstacles[glassCapsuleIndex]->Die();
 	}
 
-
 	// Draw Map
 	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
 	//Update Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		enemy[i]->Update();
 	}
-
 
 	//Check if Player is on the Glass Capsule after completing the level
 
@@ -529,9 +535,6 @@ bool SceneLevel1::Update()
 		}
 	}
 	return true;
-
-
-
 
 }
 
@@ -558,8 +561,7 @@ bool SceneLevel1::PostUpdate()
 	}
 
 	//Draw Enemy
-
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		enemy[i]->PostUpdate();
 	}
 
@@ -579,7 +581,6 @@ bool SceneLevel1::PostUpdate()
 			ExeptionRenderOrder[i][0] = -1;
 		}
 	}
-
 
 	// Sort render exeption
 	ExeptionRenderOrder[3][0] = 3;
@@ -642,9 +643,6 @@ bool SceneLevel1::PostUpdate()
 	}
 	#pragma endregion
 
-
-
-
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
 
@@ -671,7 +669,6 @@ bool SceneLevel1::PostUpdate()
 		}
 	}
 
-
 	if (currentSecond < 10)
 	{
 		secondsXOffset = 123;
@@ -687,12 +684,10 @@ bool SceneLevel1::PostUpdate()
 	string strSeconds = std::to_string(currentSecond);
 	string strMinutes = std::to_string(minutes);
 
-	text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
-	text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
-	text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
-	text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
-
-	
+	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
+	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
+	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
+	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
 
 	return true;
 }
@@ -714,7 +709,6 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		}
 
 	}
-
 
 	//Obstacle Collision ----------------------
 	for (uint i = 0; i < SCENE_OBSTACLES_NUM; ++i)
@@ -771,8 +765,6 @@ void SceneLevel1::CreateCoins()
 		}
 	}
 }
-
-
 
 bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
@@ -858,14 +850,10 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	//Delete Enemy
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < 2; i++) {
 		delete enemy[i];
 		enemy[i] = nullptr;
 	}
-
-
-
-	
 
 	return true;
 }

@@ -142,6 +142,11 @@ public:
 	{
 		return abs(v.x - x) + abs(v.y - y);
 	}
+
+	TYPE DistanceManhattan(const Point& v, const Point& v2) const
+	{
+		return abs(v.x - v2.x) + abs(v.y - v2.y);
+	}
 };
 
 typedef Point<int> iPoint;

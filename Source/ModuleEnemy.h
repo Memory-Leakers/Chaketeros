@@ -11,7 +11,7 @@
 
 struct SDL_Texture;
 
-class ModuleEnemy : public Module {
+class ModuleEnemy{
 
 protected:
 	bool isFlip = false;;
@@ -33,9 +33,10 @@ public:
 	~ModuleEnemy();
 
 	virtual bool Start();
+	virtual UpdateResult PreUpdate();
 	virtual UpdateResult Update();
 	virtual UpdateResult PostUpdate();
-	virtual void OnCollision(Collider* otherCol);
+	virtual void OnCollision(Collider* col);
 
 	iPoint position;
 	iPoint pivotPoint;
@@ -45,8 +46,6 @@ public:
 	SDL_Texture* texture = nullptr;
 
 	Animation* currentAnimation = nullptr;
-
-	Animation idleAnim;
 
 	/*-----GETTERS AND SETTERS-----*/
 	int getPoints() {
@@ -65,6 +64,5 @@ public:
 		return col;
 	}
 };
-
 
 #endif

@@ -102,6 +102,7 @@ void Bomb::Die()
 {
 	LOG("BombDie");
 	pendingToDelete = true;
+
 	// Centro de la explocion
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
