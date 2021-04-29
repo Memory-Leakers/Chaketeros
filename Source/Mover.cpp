@@ -96,8 +96,9 @@ UpdateResult Mover::Update()
 		if (moveDirIndex != -1)
 		{
 			FixedUpdate();
-		}		
+		}
 		moverTimer->Reset();
+	
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
