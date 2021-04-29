@@ -13,7 +13,7 @@ PokaPoka::PokaPoka(int x, int y, Tile* level1Tile) {
 	bounds.h = 16;
 
 	//Animation DOWN
-	downAnim.PushBack({ 2,1,15,28 });//IDLE
+	downAnim.PushBack({ 2,1,15, 28 });//IDLE
 	downAnim.PushBack({ 19, 1, 15,28 });
 	downAnim.PushBack({ 2,1,15,28 });//IDLE
 	downAnim.PushBack({ 19, 1, 15,28 });
@@ -48,14 +48,18 @@ PokaPoka::PokaPoka(int x, int y, Tile* level1Tile) {
 
 
 	//Animation Attack
-	//attackAnim.PushBack();//
+	//attackAnim.PushBack();
 
 
 	currentAnimation = &downAnim;
 }
 
 PokaPoka::~PokaPoka() {
-	//col->pendingToDelete = true;
+	if (dieParticle != nullptr)
+	{
+		delete dieParticle;
+		dieParticle = nullptr;
+	}
 }
 
 bool PokaPoka::Start() {
@@ -66,6 +70,18 @@ bool PokaPoka::Start() {
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
+	//Die Particle(Animation)
+	dieParticle = new Particle(500.0f, 0.05f, texture);
+
+	dieParticle->anim.PushBack({ 206,1,15,28 });
+	dieParticle->anim.PushBack({ 223,1,15,28 });
+	dieParticle->anim.PushBack({ 240,1,15,28 });
+	dieParticle->anim.PushBack({ 2,29,15,28 });
+	dieParticle->anim.PushBack({ 19,29,15,28 });
+	dieParticle->anim.PushBack({ 37,29,15,28 });
+	dieParticle->anim.PushBack({ 71,29,15,28 });
+
+	dieParticle->anim.speed = 0.06f;
 	//lastTilePos = getCurrentTilePos();
 
 	return ret;
@@ -87,7 +103,7 @@ UpdateResult PokaPoka::PostUpdate() {
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
-	tempPos.y -= 10;
+	tempPos.y -= 14;
 
 	if (isFlip)
 	{
@@ -109,6 +125,7 @@ void PokaPoka::movement() {
 		pC = 0;
 		moveRand = rand() % 4;
 	}
+
 	switch (moveRand) {
 
 		case 0://DOWN
@@ -195,10 +212,11 @@ void PokaPoka::movement() {
 			break;
 
 	}
+	
 	currentAnimation->Update();
 }
 
-void PokaPoka::onCollision(Collider* col) {
+void PokaPoka::OnCollision(Collider* col) {
 	if (col->type == Type::EXPLOSION) {
 		die();
 
@@ -207,7 +225,21 @@ void PokaPoka::onCollision(Collider* col) {
 
 
 void PokaPoka::die() {
-	//powerUpDrop();
-	isDead = false;
+	if (pendingToDelete) return;
+
+	isDead = true;
+
 	col->pendingToDelete = true;
+	iPoint tempPos = position;
+	tempPos += {0, -14};
+	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
+
+	pendingToDelete = true;
+
+	delete dieParticle;
+	dieParticle = nullptr;
+}
+
+void PokaPoka::attack() {
+
 }

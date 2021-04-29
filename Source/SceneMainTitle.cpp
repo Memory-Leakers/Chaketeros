@@ -102,7 +102,12 @@ bool SceneMainTitle::CleanUp(bool finalCleanUp)
 	}
 
 	Mix_HaltMusic();
-	currentArrowPos = nullptr;
+
+	if (currentArrowPos != nullptr)
+	{
+		currentArrowPos = nullptr;
+	}
+
 
 	cout << "CleanUp Main Title" << endl;
 	return true;
