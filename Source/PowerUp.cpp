@@ -15,7 +15,6 @@ PowerUp::PowerUp(iPoint position, SDL_Texture* tex, Particle* dieParticle) {
 
 PowerUp::~PowerUp()
 {
-    col->pendingToDelete = true;
 }
 
 void PowerUp::PostUpdate()
@@ -31,8 +30,9 @@ Collider* PowerUp::getCollider()
 
 void PowerUp::Die()
 {
+    pendingToDelete = true;
+    this->col->pendingToDelete = true;
     App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
-
 }
 
 void PowerUp::OnCollision(Collider* col)
@@ -41,10 +41,10 @@ void PowerUp::OnCollision(Collider* col)
     {
         App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
         pendingToDelete = true;
+        this->col->pendingToDelete = true;
     }
     else if(col->type == Type::EXPLOSION)
-    {
-        pendingToDelete = true;
+    {      
         Die();
     }
 }

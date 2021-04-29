@@ -118,7 +118,8 @@ SceneLevel1::~SceneLevel1()
 
 void SceneLevel1::LoadAsset()
 {
-	// Cargar sprites
+	#pragma region Load Sprites
+
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
 	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/mapEnv.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
@@ -132,6 +133,8 @@ void SceneLevel1::LoadAsset()
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+
+	#pragma endregion
 
 	#pragma region Init Particle
 
@@ -194,7 +197,7 @@ void SceneLevel1::LoadAsset()
 	moverDestroyed = new Particle(500.0f, 0.05f, texEnemies);
 	moverDestroyed->anim.PushBack({ 232,166,23,30 });
 
-#pragma endregion
+	#pragma endregion
 }
 
 void SceneLevel1::CreateScene()
@@ -353,9 +356,7 @@ bool SceneLevel1::PreUpdate()
 	}
 	# pragma endregion
 
-	bool anyCoreMecha = false;
-
-	#pragma region Bomberman Dies Condition
+	#pragma region Bomberman dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 		delete bomberman;
@@ -373,7 +374,7 @@ bool SceneLevel1::PreUpdate()
 	}
 	#pragma endregion
 
-	if (minutes == 1 && currentSecond == 00)
+	if (minutes == 0 && currentSecond == 0)
 	{
 		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
 	}
@@ -412,6 +413,7 @@ bool SceneLevel1::PreUpdate()
 	}
 	#pragma endregion
 
+	bool anyCoreMecha = false;
 	#pragma region Clean obstacles
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -446,7 +448,6 @@ bool SceneLevel1::PreUpdate()
 			// Detect if level is complete
 			if (!anyCoreMecha && !isLevelCompleted)
 			{
-
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
 			}
@@ -868,13 +869,11 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	// Delete powerUps
 	for (int i = 0; i < 3; ++i)
 	{
-
 		if (powerUps[i] != nullptr)
 		{
 			delete powerUps[i];
 			powerUps[i] = nullptr;
 		}
-
 	}
 
 	Mix_HaltMusic();

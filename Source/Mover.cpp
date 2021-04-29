@@ -77,9 +77,12 @@ UpdateResult Mover::PreUpdate()
 	iPoint tilePos =  level1Tile->getTilePos(position);
 	iPoint centerTile = level1Tile->getWorldPos(tilePos);
 
+	// Deteci if mover is center of grid
 	if (position == centerTile)
 	{
 		moveDirIndex = AStar();
+
+		randomMoveDirIndex = RandomMov();
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -93,10 +96,8 @@ UpdateResult Mover::Update()
 
 	if (moverTimer->getDeltaTime() >= 0.2f)
 	{
-		if (moveDirIndex != -1)
-		{
-			FixedUpdate();
-		}		
+		FixedUpdate();
+
 		moverTimer->Reset();
 	}
 
@@ -105,7 +106,16 @@ UpdateResult Mover::Update()
 
 void Mover::FixedUpdate()
 {
-	position += moveDir[moveDirIndex];
+	if (moveDirIndex != -1)
+	{
+		position += moveDir[moveDirIndex];
+		currentDir = moveDirIndex;
+	}
+	else if(randomMoveDirIndex != -1)
+	{
+		position += moveDir[randomMoveDirIndex];
+		currentDir = randomMoveDirIndex;
+	}
 }
 
 UpdateResult Mover::PostUpdate() {
@@ -127,56 +137,66 @@ UpdateResult Mover::PostUpdate() {
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Mover::RandomMov() {
-	
-	if ((position.x - 8) % (32) == 0 && position.y % 32 == 0) 
+int Mover::RandomMov()
+{
+	// Get mover tile posiion
+	iPoint myTilePos = level1Tile->getTilePos(position);
+	// offset
+	myTilePos.y--;
+
+	iPoint dir[4] =
+	{ { myTilePos.x + 1, myTilePos.y}, // Right
+	{ myTilePos.x - 1, myTilePos.y }, // Left
+	{ myTilePos.x , myTilePos.y - 1 }, // Up
+	{myTilePos.x , myTilePos.y + 1} }; // Down
+
+	vector <int> dirIndex;
+
+	for (int i = 0; i < 4; ++i)
 	{
-		randomDir = rand() % 4;
+		int thisGrid = level1Tile->Level1TileMap[dir[i].y][dir[i].x];
+		if(thisGrid == 0 || thisGrid == 4)
+		{
+			// Save usable direccion
+			dirIndex.push_back(i);
+		}
 	}
 
-	switch (randomDir)
+	// if has 2 or more dieccion
+	if (dirIndex.size() > 1)
 	{
-	case 0: //UP
-		isFlip = false;
-		currentAnimation = &upAnim;
-		currentAnimation->hasIdle = false;
-		position.y -= speed;
-		break;
-	case 1: //DOWN
-		isFlip = false;
-		currentAnimation = &downAnim;
-		currentAnimation->hasIdle = false;
-		position.y += speed;
-		break;
-	case 2: //RIGHT
-		isFlip = false;
-		currentAnimation = &rightAnim;
-		currentAnimation->hasIdle = false;
-		position.x += speed;
-		break;
-	case 3: //LEFT
-		isFlip = false;
-		currentAnimation = &leftAnim;
-		currentAnimation->hasIdle = false;
-		position.x -= speed;
-		break;
+		for (int i = 0; i < dirIndex.size(); ++i)
+		{
+			// if has option turn around
+			if(moveDirContrary[currentDir] == dirIndex[i])
+			{
+				// quit turn around option
+				dirIndex.erase(dirIndex.begin() + i);
+			}
+		}
 	}
 
-	//currentAnimation = &downAnim;
-	col->SetPos(position);
-	currentAnimation->Update();
+	// if has usable direccion
+	if(!dirIndex.empty())
+	{
+		// return random usable direccion	
+		return dirIndex[rand() % dirIndex.size()];
+	}
 
-	bounds.x = position.x;
-	bounds.y = position.y;
-
-	pivotPoint = { position.x + 8, position.y + 8 };
+	return -1;
 }
 
 int Mover::AStar()
 {
+	if (playerPos == nullptr)
+	{
+		return -1;
+	}
+
 	// 我的初始格子的坐标 // mi posicion (tile)
 	iPoint myTilePos = level1Tile->getTilePos(position);	
 	myTilePos.y--;
+
 	// 目标的格子的坐标 // posicion de destinatario (tile)
 	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
 	playerTilePos.y--;
@@ -186,22 +206,29 @@ int Mover::AStar()
 
 	// 我当前在的格子 // grid que estoy ubicado
 	PathNode currentGrid;
+
 	// 起始格子到达当前格子的花费 // el coste de grid que estaba en principio hasta este grid
 	currentGrid.g_cost = 0;
+
 	// 当前格子到达目标格子的花费 // el coste del grid que estoy hasta el destinatatio
 	currentGrid.h_cost = distance;
+
 	// 上面两个加起来 // suma de los dos = coste de este grid
 	currentGrid.total_cost = currentGrid.g_cost + currentGrid.h_cost;
+
 	// Inicial la posicion del primer grid
 	currentGrid.pos.x = myTilePos.x;
 	currentGrid.pos.y = myTilePos.y;
+
 	// el primer indice es -1
 	currentGrid.lastIndex = -1;
 
 	// 储存当前检测到但还没走的格子 // guarda los grids que detectadas 
 	vector<PathNode> openGrid;
+
 	// 储存已经走过的格子 // guarda los grids que esta usada
 	vector<PathNode> closeGrid;	
+
 	// 将其实格子存入到检测里面 // guardar el grid que estamos ahora dentro de grid detectada
 	openGrid.push_back(currentGrid);
 
@@ -226,6 +253,7 @@ int Mover::AStar()
 
 		// 保存最便宜的格子为当前处理的格子 // guardar el grid que tiene menos coste como el grid acutual
 		PathNode lessNode = openGrid[lessGrid[0]];
+
 		// 删除原有的格子 // eleminarlo del openGrid
 		openGrid.erase(openGrid.begin() + lessGrid[0]);
 
@@ -256,8 +284,9 @@ int Mover::AStar()
 		{
 			pass = false;
 
+			int thisGrid = level1Tile->Level1TileMap[dir[i].y][dir[i].x];
 			// 如果当前格子是障碍物 // si el grid que vamos a ir no es 0 o 4
-			if(level1Tile->Level1TileMap[dir[i].y][dir[i].x] != 0 && level1Tile->Level1TileMap[dir[i].y][dir[i].x] != 4)
+			if(thisGrid != 0 && thisGrid != 4)
 			{
 				// 跳过当前格子 // ignoramos este grid
 				pass = true;
@@ -303,7 +332,6 @@ int Mover::AStar()
 				openGrid.push_back(node);
 			}
 		}
-
 		// metemos el grid que estamos gestionando dentro del closeGrid
 		closeGrid.push_back(lessNode);
 	}
@@ -322,7 +350,7 @@ void Mover::OnCollision(Collider* col)
 
 void Mover::die()
 {
-	isDead = true;
+	if(pendingToDelete) return;
 
 	col->pendingToDelete = true;
 

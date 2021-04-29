@@ -47,12 +47,22 @@ private:
 	 { 0,-1 },
 	 { 0, 1 } };
 
+	int moveDirContrary[4]{
+	 {1 },
+	 {0 },
+	 {3 },
+	 {2} };
+
 	int moveDirIndex = 0;
+
+	int randomMoveDirIndex = 0;
+
+	int currentDir = 0;
 
 	// private metod
 	void die() override;
 
-	void RandomMov();
+	int RandomMov();
 
 	int AStar();
 
