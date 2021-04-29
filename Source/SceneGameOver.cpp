@@ -1,6 +1,6 @@
 #include "SceneGameOver.h"
 
-#include <iostream>
+
 using namespace std;
 
 
@@ -53,6 +53,8 @@ bool SceneGameOver::Start()
 	currentPointerPos = &pointerPos[0];
 
 	pressedContinue = false;
+
+	DrawGameOverScore();
 
 	return true;
 }
@@ -116,9 +118,78 @@ bool SceneGameOver::PostUpdate()
 	
 	App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
 
+	bool isOneBefore = false;
+	int xOffset = 15;
+	int xPos = 130;
+
+	for (int i = 0; i < totalDigits; i++)
+	{
+		if (isOneBefore)
+		{
+			if (!digitVec.at(i) == 1)
+			{
+				xOffset = 12;
+				
+			}
+			else 
+			{
+				xOffset = 11;
+			}
+			isOneBefore = false;
+		}
+		
+		
+		
+
+		if (digitVec.at(i) == 1)
+		{
+			if (xOffset == 15) 
+			{
+				 xOffset = 12;
+			}
+			isOneBefore = true;
+		}
+		
+		
+		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
+	}
 
 	//cout << "PostUpdate Game Over" << endl;
 	return true;
+}
+
+
+void SceneGameOver::DrawGameOverScore()
+{
+		
+	for (int i = 0; i < 10; i++)
+	{
+		numRec[i] = { 14 * i, 64, 14, 15 };
+	}
+
+	stack<int> digits;
+
+	int currentScore = score;
+	int decimals = 0;
+
+	while (currentScore > 0)
+	{
+		int digit = currentScore % 10;
+		currentScore /= 10;
+		digits.push(digit);
+	}
+
+	totalDigits = digits.size();
+
+	while (!digits.empty())
+	{
+		int digit = digits.top();
+		digitVec.push_back(digit);
+		digits.pop();
+		cout << digit << endl;
+
+	}
+	
 }
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
@@ -127,6 +198,8 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 	{
 		delete text;
 	}
-	/*cout << "CleanUp Game Over" << endl;*/
+
+	digitVec.clear();
+	digitVec.shrink_to_fit();
 	return true;
 }

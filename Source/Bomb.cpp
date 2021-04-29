@@ -40,6 +40,11 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
  	this->player = player;
 	lv1Tile = tile;
 
+	myTilePos = lv1Tile->getTilePos(getPosition());
+	myTilePos.y--;
+
+	lv1Tile->Level1TileMap[myTilePos.y][myTilePos.x] = 11;
+
 	explosionCenter = *e1;
 	explosionMiddle = *e2;
 	explosionEnd = *e3;
@@ -112,6 +117,8 @@ void Bomb::Die()
 	tileX = lv1Tile->getTilePos(getPosition()).x;
 	tileY = (lv1Tile->getTilePos(getPosition()).y) - 1;
 	iPoint dirSpawn[4] = { {1,0},{0,1},{-1,0},{0,-1} };
+
+	lv1Tile->Level1TileMap[myTilePos.y][myTilePos.x] = 0;	//Cambiar el numero en tileMap al morir
 
 	for (int i = 0; i < 4; i++)
 	{

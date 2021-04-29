@@ -29,6 +29,8 @@ private:
 	Particle explosionMiddle;
 	Particle explosionEnd;
 
+	iPoint myTilePos;
+
 	Player* player = nullptr;
 
 	Tile* lv1Tile = nullptr;

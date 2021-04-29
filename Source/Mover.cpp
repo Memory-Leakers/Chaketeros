@@ -67,7 +67,6 @@ bool Mover::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
-	moverTimer = Timer::Instance();
 
 	return true;
 }
@@ -92,13 +91,13 @@ UpdateResult Mover::Update()
 {
 	col->SetPos(this->position.x, this->position.y);
 
-	moverTimer->Update();
+	moverTimer.Update();
 
-	if (moverTimer->getDeltaTime() >= 0.2f)
+	if (moverTimer.getDeltaTime() >= 0.2f)
 	{
 		FixedUpdate();
 
-		moverTimer->Reset();	
+		moverTimer.Reset();	
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -359,8 +358,6 @@ void Mover::die()
 	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
 
 	pendingToDelete = true;
-
-	moverTimer->Release();
 
 	delete dieParticle;
 	dieParticle = nullptr;

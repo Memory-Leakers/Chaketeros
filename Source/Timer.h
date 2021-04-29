@@ -8,18 +8,15 @@ class Timer
 {
 private:
 
-	static Timer* sInstance[5];
-	
 	uint mStartTicks;
 	uint mElapsedTicks;
 	float mDeltaTime;
 	float mTimeScale;
-	static int instanceIndex;
 
 public:
 
-	static Timer* Instance();
-	static void Release();
+	Timer();
+	~Timer();
 
 	void Reset();
 	float getDeltaTime();
@@ -29,10 +26,7 @@ public:
 
 	void Update();
 
-private:
-
-	Timer();
-	~Timer();
+	
 };
 
 #endif

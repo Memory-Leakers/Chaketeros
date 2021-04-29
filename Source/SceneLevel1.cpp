@@ -90,7 +90,7 @@ bool isExtraPointsActive;
 
 //Timer variables
 
-Timer* timer;
+Timer timer;
 int totalSeconds;
 int minutes;
 int currentSecond = 0;
@@ -225,7 +225,7 @@ void SceneLevel1::CreateScene()
 				renderExceptionPos[l++] = k;
 				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap);
 				break;
-			case 9:
+			case 10:
 				renderExceptionPos[l++] = k;
 				glassCapsuleIndex = k;
 				sceneObstacles[k++] = new GlassCapsule(tileMap->getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
@@ -320,7 +320,7 @@ bool SceneLevel1::Start()
 	isExtraPointsActive = false;
 
 	//Timer Init
-	timer = Timer::Instance();
+	timer.Reset();
 	isTimeOut = false;
 	isChangingScene = false;
 	minutes = 4;
@@ -473,7 +473,7 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
-	timer->Update();
+	timer.Update();
 
 	//cout << timer->getDeltaTime() << endl;	//contador de tiempo
 
@@ -546,7 +546,7 @@ bool SceneLevel1::Update()
 			if (currentSecond > 15)
 			{
 				totalSeconds = 15;
-				timer->Reset();
+				timer.Reset();
 			}
 			isExtraPointsActive = true;
 
@@ -712,7 +712,7 @@ bool SceneLevel1::PostUpdate()
 	//Timer Logic-------
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - (int)timer->getDeltaTime();
+		currentSecond = totalSeconds - (int)timer.getDeltaTime();
 	}
 
 	if (currentSecond == 0)
@@ -720,7 +720,7 @@ bool SceneLevel1::PostUpdate()
 		if (minutes != 0)
 		{
 			minutes--;
-			timer->Reset();
+			timer.Reset();
 		}
 		else {
 			isTimeOut = true;
@@ -908,8 +908,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	delete bomberman;
 	bomberman = nullptr;
 
-	Timer::Release();
-	timer = NULL;
+
 
 	//Delete Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)
