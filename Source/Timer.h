@@ -8,12 +8,13 @@ class Timer
 {
 private:
 
-	static Timer* sInstance;
+	static Timer* sInstance[5];
 	
 	uint mStartTicks;
 	uint mElapsedTicks;
 	float mDeltaTime;
 	float mTimeScale;
+	static int instanceIndex;
 
 public:
 

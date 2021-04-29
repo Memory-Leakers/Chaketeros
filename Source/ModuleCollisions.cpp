@@ -50,7 +50,7 @@ ModuleCollisions::ModuleCollisions()
 
 	matrix[uint(Type::EXPLOSION)][uint(Type::WALL)] = true;
 	matrix[uint(Type::EXPLOSION)][uint(Type::PLAYER)] = true;
-	matrix[uint(Type::EXPLOSION)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::ENEMY)] = true;
 	matrix[uint(Type::EXPLOSION)][uint(Type::BOMB)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::EXPLOSION)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::DESTRUCTABLE_WALL)] = true;

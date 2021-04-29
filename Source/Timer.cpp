@@ -1,21 +1,29 @@
 #include "Timer.h"
 
-Timer* Timer::sInstance = NULL;
+Timer* Timer::sInstance[] = { NULL };
+int Timer::instanceIndex = 0;
 
 Timer* Timer::Instance()
 {
-	if (sInstance == nullptr)
+	for (int i = 0; i < 5; i++)
 	{
-		sInstance = new Timer();
+		if (sInstance[i] == nullptr)
+		{
+			sInstance[i] = new Timer();
+			return sInstance[i];
+			break;
+		}
 	}
-
-	return sInstance;
+	
 }
 
 void Timer::Release()
 {
-	delete sInstance;
-	sInstance = nullptr;
+	for (int i = 0; i < 5; i++)
+	{
+		delete sInstance[i];
+		sInstance[i] = nullptr;
+	}
 }
 
 Timer::Timer()

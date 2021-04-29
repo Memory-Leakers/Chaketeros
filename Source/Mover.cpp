@@ -98,7 +98,7 @@ UpdateResult Mover::Update()
 	{
 		FixedUpdate();
 
-		moverTimer->Reset();
+		moverTimer->Reset();	
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -193,27 +193,27 @@ int Mover::AStar()
 		return -1;
 	}
 
-	// ÎÒµÄ³õÊ¼¸ñ×ÓµÄ×ø±ê // mi posicion (tile)
+	// ï¿½ÒµÄ³ï¿½Ê¼ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ // mi posicion (tile)
 	iPoint myTilePos = level1Tile->getTilePos(position);	
 	myTilePos.y--;
 
-	// Ä¿±êµÄ¸ñ×ÓµÄ×ø±ê // posicion de destinatario (tile)
+	// Ä¿ï¿½ï¿½Ä¸ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ // posicion de destinatario (tile)
 	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
 	playerTilePos.y--;
 
-	// ÎÒµ½Ä¿±êµÄ¾àÀë // distancia entre yo y destinatario
+	// ï¿½Òµï¿½Ä¿ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ // distancia entre yo y destinatario
 	int distance = position.DistanceManhattan(myTilePos, playerTilePos);
 
-	// ÎÒµ±Ç°ÔÚµÄ¸ñ×Ó // grid que estoy ubicado
+	// ï¿½Òµï¿½Ç°ï¿½ÚµÄ¸ï¿½ï¿½ï¿½ // grid que estoy ubicado
 	PathNode currentGrid;
 
-	// ÆðÊ¼¸ñ×Óµ½´ïµ±Ç°¸ñ×ÓµÄ»¨·Ñ // el coste de grid que estaba en principio hasta este grid
+	// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Óµï¿½ï¿½ïµ±Ç°ï¿½ï¿½ï¿½ÓµÄ»ï¿½ï¿½ï¿½ // el coste de grid que estaba en principio hasta este grid
 	currentGrid.g_cost = 0;
 
-	// µ±Ç°¸ñ×Óµ½´ïÄ¿±ê¸ñ×ÓµÄ»¨·Ñ // el coste del grid que estoy hasta el destinatatio
+	// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ÓµÄ»ï¿½ï¿½ï¿½ // el coste del grid que estoy hasta el destinatatio
 	currentGrid.h_cost = distance;
 
-	// ÉÏÃæÁ½¸ö¼ÓÆðÀ´ // suma de los dos = coste de este grid
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // suma de los dos = coste de este grid
 	currentGrid.total_cost = currentGrid.g_cost + currentGrid.h_cost;
 
 	// Inicial la posicion del primer grid
@@ -223,41 +223,41 @@ int Mover::AStar()
 	// el primer indice es -1
 	currentGrid.lastIndex = -1;
 
-	// ´¢´æµ±Ç°¼ì²âµ½µ«»¹Ã»×ßµÄ¸ñ×Ó // guarda los grids que detectadas 
+	// ï¿½ï¿½ï¿½æµ±Ç°ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ßµÄ¸ï¿½ï¿½ï¿½ // guarda los grids que detectadas 
 	vector<PathNode> openGrid;
 
-	// ´¢´æÒÑ¾­×ß¹ýµÄ¸ñ×Ó // guarda los grids que esta usada
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ß¹ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ // guarda los grids que esta usada
 	vector<PathNode> closeGrid;	
 
-	// ½«ÆäÊµ¸ñ×Ó´æÈëµ½¼ì²âÀïÃæ // guardar el grid que estamos ahora dentro de grid detectada
+	// ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ó´ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // guardar el grid que estamos ahora dentro de grid detectada
 	openGrid.push_back(currentGrid);
 
-	// ÅÐ¶Ïµ±Ç°¼ì²âµÄ¸ñ×ÓÊÇ·ñÊÇ¸öÓÐÐ§µÄ¸ñ×Ó // detectar si es un grid util o no
+	// ï¿½Ð¶Ïµï¿½Ç°ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½Ð§ï¿½Ä¸ï¿½ï¿½ï¿½ // detectar si es un grid util o no
 	bool pass = false;
 
-	// Èç¹û¼ì²âµ½µÄ¸ñ×Ó»¹Ã»ÓÃÍê // si nos quedan grids para detectar
+	// ï¿½ï¿½ï¿½ï¿½ï¿½âµ½ï¿½Ä¸ï¿½ï¿½Ó»ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ // si nos quedan grids para detectar
 	while (!openGrid.empty())
 	{	
-		// ×î±ãÒËµÄ¸ñ×Ó // grid que tiene menos coste
+		// ï¿½ï¿½ï¿½ï¿½ËµÄ¸ï¿½ï¿½ï¿½ // grid que tiene menos coste
 		int lessGrid[2] = { 0, openGrid[0].total_cost };
 
 		for (int i = 0; i < openGrid.size(); i++)
 		{
 			if (openGrid[i].total_cost < openGrid[lessGrid[0]].total_cost)
 			{
-				// Ë¢ÐÂ×î±ãÒËµÄ¸ñ×Ó // actuaizar el grid que tiene menos coste
+				// Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ËµÄ¸ï¿½ï¿½ï¿½ // actuaizar el grid que tiene menos coste
 				lessGrid[0] = i;
 				lessGrid[1] = openGrid[i].total_cost;		
 			}
 		}
 
-		// ±£´æ×î±ãÒËµÄ¸ñ×ÓÎªµ±Ç°´¦ÀíµÄ¸ñ×Ó // guardar el grid que tiene menos coste como el grid acutual
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ËµÄ¸ï¿½ï¿½ï¿½Îªï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ // guardar el grid que tiene menos coste como el grid acutual
 		PathNode lessNode = openGrid[lessGrid[0]];
 
-		// É¾³ýÔ­ÓÐµÄ¸ñ×Ó // eleminarlo del openGrid
+		// É¾ï¿½ï¿½Ô­ï¿½ÐµÄ¸ï¿½ï¿½ï¿½ // eleminarlo del openGrid
 		openGrid.erase(openGrid.begin() + lessGrid[0]);
 
-		// Èç¹ûµ±Ç°¸ñ×ÓÊÇ×îºóµÄ¸ñ×Ó // si el grid actual es el grid de destinatario
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ // si el grid actual es el grid de destinatario
 		if (lessNode.h_cost == 0)
 		{
 			closeGrid.push_back(lessNode);
@@ -272,33 +272,33 @@ int Mover::AStar()
 			return instruction[instruction.size() - 2];
 		}
 		
-		// »ñÈ¡ËÄ¸ö·½ÏòµÄ¸ñ×Ó // obtener grid de 4 direcciones alrededor del grid actual
+		// ï¿½ï¿½È¡ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ // obtener grid de 4 direcciones alrededor del grid actual
 		iPoint dir[4] =
 		{{ lessNode.pos.x + 1, lessNode.pos.y}, // Right
 		{ lessNode.pos.x - 1, lessNode.pos.y }, // Left
 		{ lessNode.pos.x , lessNode.pos.y - 1 }, // Up
 		{ lessNode.pos.x , lessNode.pos.y + 1}}; // Down
 		
-		// ÅÐ¶ÏËÄ¸ö·½ÏòµÄ¸ñ×ÓÊÇ·ñÓÐÐ§ // detectar si puedes avanzar en alguna de las 4 direcciones
+		// ï¿½Ð¶ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§ // detectar si puedes avanzar en alguna de las 4 direcciones
 		for (int i = 0; i < 4; ++i)
 		{
 			pass = false;
 
 			int thisGrid = level1Tile->Level1TileMap[dir[i].y][dir[i].x];
-			// Èç¹ûµ±Ç°¸ñ×ÓÊÇÕÏ°­Îï // si el grid que vamos a ir no es 0 o 4
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ // si el grid que vamos a ir no es 0 o 4
 			if(thisGrid != 0 && thisGrid != 4)
 			{
-				// Ìø¹ýµ±Ç°¸ñ×Ó // ignoramos este grid
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ // ignoramos este grid
 				pass = true;
 				continue;
 			}
 
 			for (int j = 0; j < closeGrid.size(); ++j)
 			{
-				// Èç¹ûµ±Ç°¸ñ×ÓÒÑ¾­´æÔÚÔÚcloseGridÀïÃæ // si ya existe en close grid
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½closeGridï¿½ï¿½ï¿½ï¿½ // si ya existe en close grid
 				if (closeGrid[j].pos == dir[i])
 				{
-					// Ìø¹ýµ±Ç°¸ñ×Ó
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
 					pass = true;
 					break;
 				}
@@ -306,16 +306,16 @@ int Mover::AStar()
 
 			for (int k = 0; k < openGrid.size(); ++k)
 			{
-				// Èç¹ûµ±Ç°¸ñ×ÓÒÑ¾­´æÔÚÔÚopenGridÀïÃæ // si ya existe en opengrid
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½openGridï¿½ï¿½ï¿½ï¿½ // si ya existe en opengrid
 				if (openGrid[k].pos == dir[i])
 				{
-					// Ìø¹ýµ±Ç°¸ñ×Ó
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
 					pass = true;
 					break;
 				}
 			}
 
-			// Èç¹ûÓÐÐ§£¬Ôò¼ÓÈëµ½¼ì²âµÄ¸ñ×ÓÀï // si es un grid valido
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ // si es un grid valido
 			if(!pass)
 			{
 				// creamos un nuevo nodo para el grid
