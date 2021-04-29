@@ -76,11 +76,11 @@ public:
 
 	bool Start() override;
 
+	void FixedUpdate();
+
 	UpdateResult PreUpdate() override;
 
 	UpdateResult Update() override;
-
-	void FixedUpdate();
 
 	UpdateResult PostUpdate() override;
 
