@@ -102,9 +102,9 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* sec
 	bool ret = true;
 
 	SDL_Rect rect = {
-		x,
-		y,
-		0, 0 };
+			(int)(-camera.x * speed) + x * SCREEN_SIZE,
+			(int)(-camera.y * speed) + y * SCREEN_SIZE,
+			0, 0 };
 	
 	if (section != nullptr)
 	{
@@ -151,6 +151,38 @@ bool ModuleRender::DrawTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* secti
 
 	rect.w *= SCREEN_SIZE;
 	rect.h *= SCREEN_SIZE;
+
+	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}
+
+	return ret;
+}
+
+bool ModuleRender::DrawTextureFreeScaled(SDL_Texture* texture, iPoint pos, float scale, SDL_Rect* section, float speed)
+{
+	bool ret = true;
+
+	SDL_Rect rect = {
+		(int)(-camera.x * speed) + pos.x * scale,
+		(int)(-camera.y * speed) + pos.y * scale,
+		0, 0 };
+
+	if (section != nullptr)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		// Collect the texture size into rect.w and rect.h variables
+		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+	}
+
+	rect.w *= scale;
+	rect.h *= scale;
 
 	if (SDL_RenderCopy(renderer, texture, section, &rect) != 0)
 	{

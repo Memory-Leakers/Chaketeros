@@ -35,15 +35,14 @@ public:
 
 	void DrawGameOverScore();
 
-	SDL_Texture* texGameOver;
-	SDL_Texture* texGameOverMisc;
-	SDL_Texture* texGameOverContinue;
+	SDL_Texture* texGameOver = nullptr;
+	SDL_Texture* texGameOverMisc = nullptr;
+	SDL_Texture* texGameOverContinue = nullptr;
 
 	SDL_Rect gameOverBackgroundRec;
 	SDL_Rect gameOverPointerRec;
 	SDL_Rect numRec[10];
 
-	
 
 	Animation gameOverAnim, gameOverContinueAnim;
 
@@ -54,7 +53,7 @@ public:
 	vector <int> digitVec;
 
 	bool pressedContinue;
-
+	
 };
 
 #endif // !_SCENEGAMEOVER_H_

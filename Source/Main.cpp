@@ -26,7 +26,7 @@ Application* App = nullptr;
 
 int main(int argc, char* argv[])
 {
-	ReportMemoryLeaks();
+	
 
 	int main_result = EXIT_FAILURE;
 	MainState state = MainState::MAIN_CREATION;
@@ -87,6 +87,8 @@ int main(int argc, char* argv[])
 			default: break;
 		}
 	}
+
+	ReportMemoryLeaks();
 
 	LOG("\nBye :)\n");
 
