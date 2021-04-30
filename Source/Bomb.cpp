@@ -16,7 +16,7 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 
 	// Inicializar animacion prestablecida de la bomba
 	defaultAnim.hasIdle = false;
-	defaultAnim.speed = 0.02f;
+	defaultAnim.speed = 0.1f;
 	defaultAnim.loop = true;
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
@@ -32,7 +32,6 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 	// SFX Put bomb
 	App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
 }
-
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
 :Obstacle({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)

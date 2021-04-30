@@ -58,28 +58,35 @@ UpdateResult Application::Update()
 {
 	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
 
-	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
+	globalTime.Update();
+
+	if (globalTime.getDeltaTime() >= 1.0f / FPS)
 	{
-		if(modules[i] != nullptr)
+		for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		{
-			ret = modules[i]->PreUpdate();
+			if (modules[i] != nullptr)
+			{
+				ret = modules[i]->PreUpdate();
+			}
 		}
-	}
-		
-	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
-	{
-		if (modules[i] != nullptr)
+
+		for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		{
-			ret = modules[i]->Update();
+			if (modules[i] != nullptr)
+			{
+				ret = modules[i]->Update();
+			}
 		}
-	}
-		
-	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
-	{
-		if (modules[i] != nullptr)
+
+		for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		{
-			ret = modules[i]->PostUpdate();
+			if (modules[i] != nullptr)
+			{
+				ret = modules[i]->PostUpdate();
+			}
 		}
+
+		globalTime.Reset();
 	}
 
 	return ret;

@@ -57,8 +57,7 @@ public:
 	// Performs the render call of all the parts of the scene's background
 	UpdateResult PostUpdate() override;
 
-	void
- OnCollision(Collider* c1, Collider* c2) override;
+	void OnCollision(Collider* c1, Collider* c2) override;
 
 	void WillCollision(Collider* c1, Collider* c2) override;
 
@@ -85,13 +84,11 @@ private:
 
 	FadeSteps currentStep = FADE_NONE;
 
-	int currentFrame = 0, maxFrames;
+	int currentFrame = 0, maxFrames = 0;
 
 	SDL_Rect screenRect;
 
 	uint newScene;
-
-
 
 };
 

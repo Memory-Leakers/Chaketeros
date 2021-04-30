@@ -12,6 +12,7 @@ private:
 	uint mElapsedTicks;
 	float mDeltaTime;
 	float mTimeScale;
+	float lastTime = 0;
 
 public:
 
@@ -24,9 +25,10 @@ public:
 	void setTimeScale(float t);
 	float getTimeScale();
 
-	void Update();
+	float getExecuteTime(bool second = false);
 
-	
+	float Update();
+
 };
 
 #endif

@@ -14,7 +14,10 @@
 #include "ModuleParticles.h"
 #include "ModuleEnemyPool.h"
 
+#include "Timer.h"
+
 #define NUM_MODULES 9
+#define FPS 60
 
 class Module;
 class ModuleWindow;
@@ -64,6 +67,8 @@ public:
 	ModuleAudio* audio = nullptr;
 	ModuleCollisions* collisions = nullptr;
 	ModuleParticles* particle = nullptr;
+
+	Timer globalTime;
 };
 
 // Global var made extern for Application ---

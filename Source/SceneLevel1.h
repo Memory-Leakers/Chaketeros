@@ -58,7 +58,6 @@ public:
 
 	void LoadAsset();
 
-	
 };
 
 #endif

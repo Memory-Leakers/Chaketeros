@@ -18,7 +18,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	downAnim.PushBack({ 37,166,23,30 });
 	downAnim.PushBack({ 5,166,23,30 });//IDLE
 	downAnim.PushBack({ 37,166,23,30 });
-	downAnim.speed = 0.02f;
+	downAnim.speed = 0.08f;
 	downAnim.loop = true;
 	downAnim.hasIdle = false;
 
@@ -27,7 +27,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	upAnim.PushBack({ 101,166,23,30 });
 	upAnim.PushBack({ 69,166,23,30 });//IDLE
 	upAnim.PushBack({ 101,166,23,30 });
-	upAnim.speed = 0.02f;
+	upAnim.speed = 0.08f;
 	upAnim.loop = true;
 	upAnim.hasIdle = false;
 
@@ -36,7 +36,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	rightAnim.PushBack({ 168,166,23,30 });
 	rightAnim.PushBack({ 135,166,23,30 });//IDLE
 	rightAnim.PushBack({ 201,166,23,30 });
-	rightAnim.speed = 0.02f;
+	rightAnim.speed = 0.08f;
 	rightAnim.loop = true;
 	rightAnim.hasIdle = false;
 
@@ -45,7 +45,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	leftAnim.PushBack({ 168,166,23,30 });
 	leftAnim.PushBack({ 135,166,23,30 });//IDLE
 	leftAnim.PushBack({ 201,166,23,30 });
-	leftAnim.speed = 0.02f;
+	leftAnim.speed = 0.08f;
 	leftAnim.loop = true;
 	leftAnim.hasIdle = false;
 
@@ -54,7 +54,7 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 	currentAnimation = &downAnim;
 	currentAnimation->loop = true;
 	currentAnimation->hasIdle = false;
-	currentAnimation->speed = 0.02f;
+	currentAnimation->speed = 0.08f;
 }
 
 Mover::~Mover() 
@@ -75,7 +75,7 @@ bool Mover::Start()
 	// Init destroyed particle
 	dieParticle = new Particle(500.0f, 0.05f, texture);
 	dieParticle->anim.PushBack({ 232,166,23,30 });
-	dieParticle->anim.speed = 0.01f;
+	dieParticle->anim.speed = 0.1f;
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
@@ -104,7 +104,7 @@ UpdateResult Mover::Update()
 
 	moverTimer.Update();
 
-	if (moverTimer.getDeltaTime() >= 0.1f)
+	if (moverTimer.getDeltaTime() >= 0.08f)
 	{
 		FixedUpdate();
 

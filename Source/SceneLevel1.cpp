@@ -103,6 +103,7 @@ string strScore;
 string strSeconds;
 string strMinutes;
 
+float BGFX_CoinsCounter = 0;
 
 SceneLevel1::SceneLevel1()
 {
@@ -139,9 +140,9 @@ void SceneLevel1::LoadAsset()
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.05f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.05f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.05f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.1f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.1f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.1f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
@@ -175,7 +176,7 @@ void SceneLevel1::LoadAsset()
 	powerUpDestroyed->anim.hasIdle = false;
 
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.05f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.1f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
@@ -184,7 +185,7 @@ void SceneLevel1::LoadAsset()
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
 
 	// Yellow Flower destroyed particle
-	yellowFlowerDestroyed = new Particle(500.0f, 0.05f, texYellowFlower);
+	yellowFlowerDestroyed = new Particle(500.0f, 0.1f, texYellowFlower);
 	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 49,0,16,16 });
@@ -194,7 +195,7 @@ void SceneLevel1::LoadAsset()
 	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
 
 	// Mover destroyed particle
-	moverDestroyed = new Particle(500.0f, 0.05f, texEnemies);
+	moverDestroyed = new Particle(500.0f, 0.1f, texEnemies);
 	moverDestroyed->anim.PushBack({ 232,166,23,30 });
 
 	#pragma endregion
@@ -475,7 +476,7 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
-	timer.Update();
+	BGFX_CoinsCounter += timer.Update();
 
 	//cout << timer->getDeltaTime() << endl;	//contador de tiempo
 
@@ -550,7 +551,6 @@ bool SceneLevel1::Update()
 			isExtraPointsActive = true;
 			bomberman->ExtraPoints = true;
 			
-
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
 
@@ -570,13 +570,16 @@ bool SceneLevel1::Update()
 		}
 	}
 
-	if (isExtraPointsActive) {
-		timer.Update();
-
-		if (timer.getDeltaTime() >= 0.6f) {
-
+	// If level's complete
+	if (isExtraPointsActive) 
+	{
+		// Check 0.6s
+		if (BGFX_CoinsCounter >= 0.6f)
+		{
+			// Play BG_SFX
 			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
-			timer.Reset();
+			// Reset counter
+			BGFX_CoinsCounter = 0;
 		}
 	}
 
@@ -721,7 +724,6 @@ bool SceneLevel1::PostUpdate()
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
 	//Draw UI text
-
 	//Timer Logic-------
 	if (!isTimeOut)
 	{
@@ -748,13 +750,12 @@ bool SceneLevel1::PostUpdate()
 	{
 		secondsXOffset = 100;
 	}
-	//------------------
 
 
-	if (bomberman != nullptr) { strLife = std::to_string(playerLifes); }
-	strScore = std::to_string(score);
-	strSeconds = std::to_string(currentSecond);
-	strMinutes = std::to_string(minutes);
+	if (bomberman != nullptr) { strLife = to_string(playerLifes); }
+	strScore = to_string(score);
+	strSeconds = to_string(currentSecond);
+	strMinutes = to_string(minutes);
 
 	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
 	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
@@ -920,8 +921,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
-
-
 
 	//Delete Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)

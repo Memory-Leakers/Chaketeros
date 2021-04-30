@@ -32,10 +32,25 @@ float Timer::getTimeScale()
 	return mTimeScale;
 }
 
-void Timer::Update()
+float Timer::getExecuteTime(bool second)
 {
+	if (second)
+	{
+		return  (SDL_GetTicks() - (SDL_GetTicks() % 1000) ) * 0.001f; 
+	}
+
+	return SDL_GetTicks();
+}
+
+float Timer::Update()
+{
+	float frame2frame = SDL_GetTicks() - lastTime;
+	lastTime = SDL_GetTicks();
+
 	mElapsedTicks = SDL_GetTicks() - mStartTicks;
 	mDeltaTime = mElapsedTicks * 0.001f;
+
+	return (frame2frame * 0.001f);
 }
 
 
