@@ -246,6 +246,11 @@ int Mover::AStar()
 	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
 	playerTilePos.y--;
 
+	if (myTilePos == playerTilePos)
+	{
+		return -1;
+	}
+
 	// distancia entre yo y destinatario
 	int distance = position.DistanceManhattan(myTilePos, playerTilePos);
 
