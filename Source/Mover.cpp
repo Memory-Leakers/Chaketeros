@@ -104,7 +104,7 @@ UpdateResult Mover::Update()
 
 	moverTimer.Update();
 
-	if (moverTimer.getDeltaTime() >= 0.2f)
+	if (moverTimer.getDeltaTime() >= 0.1f)
 	{
 		FixedUpdate();
 

@@ -50,7 +50,8 @@ public:
 	iPoint* currentPointerPos;
 
 	int totalDigits;
-	vector <int> digitVec;
+
+	
 
 	bool pressedContinue;
 	

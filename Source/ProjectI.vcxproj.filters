@@ -26,6 +26,9 @@
     <Filter Include="Source Files\Util\Enemies">
       <UniqueIdentifier>{6feab8f4-903f-42df-b489-09ba6b91b90f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ExternalCode">
+      <UniqueIdentifier>{9e4615fd-c3c7-45fe-98aa-51c57e9ebab0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">

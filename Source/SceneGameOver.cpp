@@ -1,9 +1,8 @@
 #include "SceneGameOver.h"
 
-
 using namespace std;
 
-
+vector <int> digitVec;// Memory leak!!!!
 
 SceneGameOver::SceneGameOver()
 {
@@ -15,7 +14,7 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	/*cout << "Start Game Over" << endl;
+	cout << "Start Game Over" << endl;
 
 	cout << "Score: " << this->score << endl;
 
@@ -54,13 +53,13 @@ bool SceneGameOver::Start()
 	pressedContinue = false;
 
 	DrawGameOverScore();
-	*/
+	
 	return true;
 }
 
 bool SceneGameOver::Update()
 {
-	/*//cout << "Update Game Over" << endl;
+	//cout << "Update Game Over" << endl;
 	gameOverAnim.Update();
 	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
@@ -103,13 +102,13 @@ bool SceneGameOver::Update()
 			App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
 		}
 
-	}*/
+	}
 	return true;
 }
 
 bool SceneGameOver::PostUpdate()
 {
-	/*App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
+	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
 	
 	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
 
@@ -144,8 +143,7 @@ bool SceneGameOver::PostUpdate()
 			}
 			isOneBefore = true;
 		}
-		
-		
+				
 		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
 	}
 
@@ -155,9 +153,8 @@ bool SceneGameOver::PostUpdate()
 
 
 void SceneGameOver::DrawGameOverScore()
-{
-		
-/*	for (int i = 0; i < 10; i++)
+{	
+	for (int i = 0; i < 10; i++)
 	{
 		numRec[i] = { 14 * i, 64, 14, 15 };
 	}
@@ -182,9 +179,7 @@ void SceneGameOver::DrawGameOverScore()
 		digitVec.push_back(digit);
 		digits.pop();
 		cout << digit << endl;
-
-	}*/
-	
+	}	
 }
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
@@ -196,11 +191,12 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 
 	//currentPointerPos = nullptr;
 
-	vector<int>().swap(digitVec);
+	
+	//vector<int>().swap(digitVec);
+
+	//cout << digitVec.capacity() << endl;	//Aqu?se genera un memory leak pero todo se limpia correctamente. Creemos que se llama a
 	digitVec.clear();
+	digitVec.shrink_to_fit();
 
-	cout << digitVec.capacity() << endl;	//Aquí se genera un memory leak pero todo se limpia correctamente. Creemos que se llama a
-
-	//digitVec.shrink_to_fit();
 	return true;
 }

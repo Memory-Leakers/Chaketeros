@@ -16,7 +16,7 @@ SceneIntro::~SceneIntro()
 
 bool SceneIntro::Start()
 {
-	cout << "Start Scene Intro" << endl;
+	//cout << "Start Scene Intro" << endl;
 	//App->audio->PlayMusic("Assets/Audio/Music/INT_MUSIC.ogg", 1.5f);
 	//Mix_VolumeMusic(10);
 
@@ -40,8 +40,7 @@ bool SceneIntro::Update()
 		else
 		{
 			currentImage++;
-		}
-		
+		}	
 	}
 
 	//cout << "Update Scene Intro" << endl;
@@ -50,11 +49,10 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
-	cout << "PostUpdate Scene Intro" << endl;
+	//cout << "PostUpdate Scene Intro" << endl;
 
 	if (currentImage == 0)
 	{
-
 		SDL_Rect temp = { 0,0,512,512 };
 		App->render->DrawTextureFreeScaled(image1, { 0,-100 }, 1.5f);
 	}
@@ -73,7 +71,11 @@ bool SceneIntro::CleanUp(bool finalCleanUp)
 {
 	if (finalCleanUp)
 	{
-		delete text;
+		if (text != nullptr)
+		{
+			delete text;
+			text = nullptr;
+		}		
 	}
 	cout << "CleanUp Scene Intro" << endl;
 	return true;

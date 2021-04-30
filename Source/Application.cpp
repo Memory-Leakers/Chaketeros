@@ -5,6 +5,7 @@ Application::Application()
 	// The order in which the modules are added is very important.
 	// It will define the order in which Pre/Update/Post will be called
 	// Render should always be last, as our last action should be updating the screen
+	// = nullptr for testing
 	modules[0] = window = new ModuleWindow();
 	modules[1] = input = new ModuleInput();
 	modules[2] = textures = new ModuleTextures();
@@ -21,20 +22,35 @@ Application::~Application()
 {
 	for (int i = 0; i < NUM_MODULES; ++i)
 	{
-		// WARNING: When deleting a pointer, set it to nullptr afterwards
-		// It allows us for null check in other parts of the code
-		delete modules[i];
-		modules[i] = nullptr;
+		if(modules[i]!=nullptr)
+		{
+			// WARNING: When deleting a pointer, set it to nullptr afterwards
+			// It allows us for null check in other parts of the code
+			delete modules[i];
+			modules[i] = nullptr;
+		}
 	}
 }
 
 bool Application::Init()
 {
 	bool ret = true;
-	for (int i = 0; (i < NUM_MODULES) && ret; ++i) ret = modules[i]->Init();
+	for (int i = 0; (i < NUM_MODULES) && ret; ++i)
+	{
+		if (modules[i] != nullptr)
+		{
+			ret = modules[i]->Init();
+		}		
+	}
 
 	// We will consider that all modules are always active
-	for (int i = 0; (i < NUM_MODULES) && ret; ++i) ret = modules[i]->Start();
+	for (int i = 0; (i < NUM_MODULES) && ret; ++i)
+	{
+		if (modules[i] != nullptr)
+		{
+			ret = modules[i]->Start();
+		}
+	}
 	return ret;
 }
 
@@ -43,13 +59,28 @@ UpdateResult Application::Update()
 	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
 
 	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PreUpdate();
-
+	{
+		if(modules[i] != nullptr)
+		{
+			ret = modules[i]->PreUpdate();
+		}
+	}
+		
 	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
-		ret = modules[i]->Update();
-
+	{
+		if (modules[i] != nullptr)
+		{
+			ret = modules[i]->Update();
+		}
+	}
+		
 	for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
-		ret = modules[i]->PostUpdate();
+	{
+		if (modules[i] != nullptr)
+		{
+			ret = modules[i]->PostUpdate();
+		}
+	}
 
 	return ret;
 }
@@ -58,7 +89,13 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (int i = NUM_MODULES - 1; (i >= 0) && ret; --i) ret = modules[i]->CleanUp();
+	for (int i = NUM_MODULES - 1; (i >= 0) && ret; --i)
+	{
+		if (modules[i] != nullptr)
+		{
+			ret = modules[i]->CleanUp();		
+		}
+	}
 
 	return ret;
 }

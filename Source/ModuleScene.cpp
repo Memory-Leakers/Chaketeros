@@ -15,11 +15,11 @@ ModuleScene::ModuleScene()
 
 	//text = new Text();
 
-	scenes[0] = new SceneIntro();
-	scenes[1] = new SceneMainTitle();
-	scenes[2] = new SceneSelectArea();
-	scenes[3] = new SceneSelectStage();
-	scenes[4] = new SceneLevel1();
+	//scenes[0] = new SceneIntro();
+	//scenes[1] = new SceneMainTitle();
+	//scenes[2] = new SceneSelectArea();
+	//scenes[3] = new SceneSelectStage();
+	//scenes[4] = new SceneLevel1();
 	scenes[5] = new SceneGameOver();
 
 	currentScore = 0;
@@ -36,20 +36,28 @@ bool ModuleScene::Start()
 
 	//TTF_Init();
 
-
-
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
 	currentScene = scenes[INTRO_SCENE];
-	currentScene->Start();
 
+	if(currentScene == nullptr)
+	{
+		return ret;
+	}
+
+	currentScene->Start();
 
 	return ret;
 }
 
 UpdateResult ModuleScene::PreUpdate()
 {
+	if (currentScene == nullptr)
+	{
+		return UpdateResult::UPDATE_CONTINUE;
+	}
+
 	currentScene->PreUpdate();
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -57,7 +65,11 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
-
+	if (currentScene == nullptr)
+	{
+		return UpdateResult::UPDATE_CONTINUE;
+	}
+		
 	if (currentStep == FADE_NONE) { currentScene->Update(); return UpdateResult::UPDATE_CONTINUE; }	//Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
 
 	if (currentStep == FADE_IN)		//Si hay FADE IN, se ejecuta el Update HASTA QUE EL RECTANGULO NEGRO tenga opacidad m�xima
@@ -87,7 +99,11 @@ UpdateResult ModuleScene::Update()
 
 UpdateResult ModuleScene::PostUpdate()
 {
-
+	if (currentScene == nullptr)
+	{
+		return UpdateResult::UPDATE_CONTINUE;
+	}
+	
 	currentScene->PostUpdate();
 
 	if (currentStep != FADE_NONE)
@@ -97,8 +113,7 @@ UpdateResult ModuleScene::PostUpdate()
 		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
 		SDL_RenderFillRect(App->render->renderer, &screenRect);
 	}
-
-
+	
 	return UpdateResult::UPDATE_CONTINUE;
 }
 

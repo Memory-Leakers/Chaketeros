@@ -50,7 +50,7 @@ private:
 	bool matrix[uint(Type::MAX)][uint(Type::MAX)];
 
 	// Simple debugging flag to draw all colliders
-	bool debug = true;
+	bool debug = false;
 };
 
 #endif // __MODULECOLLISIONS_H__

@@ -3,11 +3,6 @@
 
 Text::Text() {
 
-	if (!TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 80)) {
-		std::cout << TTF_GetError();
-	}
-
-	//Font80 =
 	Font50 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 50);
 	Font40 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 40);
 	Font35 = TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", 35);
@@ -17,11 +12,11 @@ Text::Text() {
 	blackC = { 0,0,0 };
 	whiteC = { 255, 255, 255 };
 	redC = { 255, 0, 0 };
+
 }
 
 Text::~Text() {
 	
-	//TTF_CloseFont(Font80);
 	TTF_CloseFont(Font50);
 	TTF_CloseFont(Font40);
 	TTF_CloseFont(Font35);
@@ -32,13 +27,17 @@ Text::~Text() {
 	SDL_DestroyTexture(text);
 }
 
-void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* font, SDL_Color color) {
+void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, TTF_Font* font, SDL_Color color) 
+{
+	//SDL_Surface* surf = TTF_RenderText_Solid(font, message.c_str(), color);;
 
-	if (textSurface == NULL) {
+	if (textSurface == nullptr)
+	{
 		textSurface = TTF_RenderText_Solid(font, message.c_str(), color);
 	}
 
-	if (text == NULL) {
+	if (text == nullptr) 
+	{
 		text = SDL_CreateTextureFromSurface(renderer, textSurface);
 	}
 
@@ -61,30 +60,33 @@ void Text::showText(SDL_Renderer* renderer, int x, int y, std::string message, T
 
 TTF_Font* Text::getFonts(int size) {
 	/*
-	if (tempFont != NULL) {
+	if (tempFont != NULL) 
+	{
 		TTF_CloseFont(tempFont);
 	}
 
 	return TTF_OpenFont("Assets/Fonts/ARCADECLASSIC.ttf", size);
 	*/
 
-	switch (size) {
-	//case 80: return Font80; break;
+	switch (size)
+	{
 	case 50: return Font50; break;
 	case 40: return Font40; break;
 	case 35: return Font35; break;
 	case 20: return Font20; break;
 	case 10: return Font10; break;
-	default: return Font50;
 	}
 
+	return Font50;
 }
 SDL_Color Text::getColors(Uint8 red, Uint8 green, Uint8 blue) {
 	return SDL_Color({ red, green, blue });
 }
 
-SDL_Color Text::getColors(int index) {
-	switch (index) {
+SDL_Color Text::getColors(int index) 
+{
+	switch (index)
+	{
 	case 0: return blackC; break;
 	case 1: return whiteC; break;
 	case 2: return redC; break;

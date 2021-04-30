@@ -31,7 +31,6 @@ public:
 
 	SDL_Texture* image1;
 	SDL_Texture* image2;
-
 };
 
 
