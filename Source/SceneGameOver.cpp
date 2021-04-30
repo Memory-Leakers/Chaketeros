@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector <int> digitVec;// Memory leak!!!!
+vector <int> digitVec;
 
 SceneGameOver::SceneGameOver()
 {
@@ -150,7 +150,6 @@ bool SceneGameOver::PostUpdate()
 	//cout << "PostUpdate Game Over" << endl;*/
 	return true;
 }
-
 
 void SceneGameOver::DrawGameOverScore()
 {	

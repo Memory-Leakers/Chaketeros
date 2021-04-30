@@ -26,8 +26,6 @@ Application* App = nullptr;
 
 int main(int argc, char* argv[])
 {
-	
-
 	int main_result = EXIT_FAILURE;
 	MainState state = MainState::MAIN_CREATION;
 

@@ -13,13 +13,11 @@ ModuleScene::ModuleScene()
 		SDL_Log("TTF Intitialized");
 	}
 
-	//text = new Text();
-
-	//scenes[0] = new SceneIntro();
-	//scenes[1] = new SceneMainTitle();
-	//scenes[2] = new SceneSelectArea();
-	//scenes[3] = new SceneSelectStage();
-	//scenes[4] = new SceneLevel1();
+	scenes[0] = new SceneIntro();
+	scenes[1] = new SceneMainTitle();
+	scenes[2] = new SceneSelectArea();
+	scenes[3] = new SceneSelectStage();
+	scenes[4] = new SceneLevel1();
 	scenes[5] = new SceneGameOver();
 
 	currentScore = 0;

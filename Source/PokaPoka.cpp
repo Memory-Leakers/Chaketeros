@@ -4,6 +4,7 @@
 using namespace std;
 
 PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
+	
 	this->level1Tile = level1Tile;
 	this->playerPos = playerPos;
 	position.x = x;

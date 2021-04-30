@@ -43,7 +43,6 @@ public:
 	SDL_Rect gameOverPointerRec;
 	SDL_Rect numRec[10];
 
-
 	Animation gameOverAnim, gameOverContinueAnim;
 
 	iPoint pointerPos[2];
@@ -51,10 +50,7 @@ public:
 
 	int totalDigits;
 
-	
-
 	bool pressedContinue;
-	
 };
 
 #endif // !_SCENEGAMEOVER_H_

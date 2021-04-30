@@ -314,9 +314,9 @@ bool SceneLevel1::Start()
 
 	CreateScene();
 
-	//enemy[0] = new PokaPoka( 200, 160, &bomberman->position, tileMap);
+	enemy[3] = new PokaPoka( 200, 160, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, &bomberman->position, tileMap);
-	//enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
+	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
 	enemy[0] = new Mover({ 72,160 }, &bomberman->position, tileMap);
 
 	isExtraPointsActive = false;
@@ -330,7 +330,7 @@ bool SceneLevel1::Start()
 
 	//Start Enemy
 
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		enemy[i]->Start();
 	}
