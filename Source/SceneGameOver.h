@@ -13,6 +13,30 @@ using namespace std;
 
 class SceneGameOver : public Scene
 {
+
+private:
+
+	//Textures
+	SDL_Texture* texGameOver = nullptr;
+	SDL_Texture* texGameOverMisc = nullptr;
+	SDL_Texture* texGameOverContinue = nullptr;
+
+	//Textures rectangles
+	SDL_Rect gameOverBackgroundRec;
+	SDL_Rect gameOverPointerRec;
+	//Rectangles for numbers Texture
+	SDL_Rect numRec[10];
+
+	Animation gameOverAnim, gameOverContinueAnim;
+
+	
+	iPoint pointerPos[2];	//Position of the Pointer on Screen
+	iPoint* currentPointerPos;	//Current position of the pointer
+
+	int totalDigits;	//Total digits of the Score number
+
+	bool pressedContinue;	//Boolean to control the changing scenes logic
+
 public:
 	SceneGameOver();
 
@@ -35,22 +59,6 @@ public:
 
 	void DrawGameOverScore();
 
-	SDL_Texture* texGameOver = nullptr;
-	SDL_Texture* texGameOverMisc = nullptr;
-	SDL_Texture* texGameOverContinue = nullptr;
-
-	SDL_Rect gameOverBackgroundRec;
-	SDL_Rect gameOverPointerRec;
-	SDL_Rect numRec[10];
-
-	Animation gameOverAnim, gameOverContinueAnim;
-
-	iPoint pointerPos[2];
-	iPoint* currentPointerPos;
-
-	int totalDigits;
-
-	bool pressedContinue;
 };
 
 #endif // !_SCENEGAMEOVER_H_

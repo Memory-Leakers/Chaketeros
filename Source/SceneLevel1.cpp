@@ -13,68 +13,28 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-#include "Timer.h"
+
 
 
 #include <time.h>
 #include <iostream>
 #include <vector>
 #include <cstring>
-using namespace std;
 
 #include "External/SDL_mixer/include/SDL_mixer.h"
-
-// Texture
-SDL_Texture* texMap = nullptr;
-SDL_Texture* texFG = nullptr;
-SDL_Texture* texUI = nullptr;
-SDL_Texture* texBomb = nullptr;
-SDL_Texture* texStone = nullptr;
-SDL_Texture* texGlassCapsule = nullptr;
-SDL_Texture* texYellowFlower = nullptr;
-SDL_Texture* texEnemies = nullptr;
-SDL_Texture* texItemDestroyed = nullptr;
-SDL_Texture* texCoin = nullptr;
-SDL_Texture* texPowerUpDestroyed = nullptr;
-SDL_Texture* texCoreMecha = nullptr;
-SDL_Texture* texPowerUps = nullptr;
 
 // Player
 Player* bomberman = nullptr;
 
-// Particle
-// Template particle for an center of explosion
-Particle* explosionCenter = nullptr;
-
-// Template particle for an middle of explosion
-Particle* explosionMiddle = nullptr;
-
-// Template particle for an end of explosion
-Particle* explosionEnd = nullptr;
-
-// Template particle for an end of powerUp
-Particle* powerUpDestroyed = nullptr;
-
-// Template particle for an end of red flower
-Particle* redFlowerDestroyed = nullptr;
-
-// Template particle for an end of yellow flower
-Particle* yellowFlowerDestroyed = nullptr;
-
-// Template particle for an end of mover
-Particle* moverDestroyed = nullptr;
-
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+
 vector<iPoint> emptySpaces;
-int yellowFlowersNum;
-Tile* tileMap;
-int renderExceptionPos[3];
-int redFlowerIndex[4];
 
-int glassCapsuleIndex;
-
-int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
+string strLife;
+string strScore;
+string strSeconds;
+string strMinutes;
 
 PowerUp* powerUps[MAX_POWERUPS];
 
@@ -82,26 +42,9 @@ Stone* stones[MAX_STONE];
 
 ModuleEnemy* enemy[MAX_ENEMY];
 
-bool isLevelCompleted;
-
 iPoint winPosition = { 120, 96 };
 
-bool isExtraPointsActive;
 
-//Timer variables
-
-Timer timer;
-int totalSeconds;
-int minutes;
-int currentSecond = 0;
-int secondsXOffset = 100;
-bool isTimeOut;
-bool isChangingScene;
-
-string strLife;
-string strScore;
-string strSeconds;
-string strMinutes;
 
 float BGFX_CoinsCounter = 0;
 

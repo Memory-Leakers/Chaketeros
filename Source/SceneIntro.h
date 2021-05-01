@@ -7,6 +7,14 @@
 
 class SceneIntro : public Scene
 {
+private:
+
+	int currentImage;	//int to control changing picture logic
+
+	//Textures
+	SDL_Texture* image1;
+	SDL_Texture* image2;
+
 public:
 	SceneIntro();
 
@@ -27,10 +35,6 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
-	int currentImage;
-
-	SDL_Texture* image1;
-	SDL_Texture* image2;
 };
 
 

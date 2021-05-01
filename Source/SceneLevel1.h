@@ -10,8 +10,13 @@
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
 #include "Player.h"
+#include "Timer.h"
 
 #include "ModuleEnemy.h"
+
+
+
+using namespace std;
 
 struct SDL_Texture;
 
@@ -23,6 +28,81 @@ struct SDL_Texture;
 
 class SceneLevel1 : public Scene
 {
+private:
+	// Texture
+	SDL_Texture* texMap = nullptr;
+	SDL_Texture* texFG = nullptr;
+	SDL_Texture* texUI = nullptr;
+	SDL_Texture* texBomb = nullptr;
+	SDL_Texture* texStone = nullptr;
+	SDL_Texture* texGlassCapsule = nullptr;
+	SDL_Texture* texYellowFlower = nullptr;
+	SDL_Texture* texEnemies = nullptr;
+	SDL_Texture* texItemDestroyed = nullptr;
+	SDL_Texture* texCoin = nullptr;
+	SDL_Texture* texPowerUpDestroyed = nullptr;
+	SDL_Texture* texCoreMecha = nullptr;
+	SDL_Texture* texPowerUps = nullptr;
+
+	// Particle
+	// Template particle for an center of explosion
+	Particle* explosionCenter = nullptr;
+
+	// Template particle for an middle of explosion
+	Particle* explosionMiddle = nullptr;
+
+	// Template particle for an end of explosion
+	Particle* explosionEnd = nullptr;
+
+	// Template particle for an end of powerUp
+	Particle* powerUpDestroyed = nullptr;
+
+	// Template particle for an end of red flower
+	Particle* redFlowerDestroyed = nullptr;
+
+	// Template particle for an end of yellow flower
+	Particle* yellowFlowerDestroyed = nullptr;
+
+	// Template particle for an end of mover
+	Particle* moverDestroyed = nullptr;
+
+	
+
+	//	Number of yellow flowers
+	int yellowFlowersNum;
+	//	Position of render Exceptions
+	int renderExceptionPos[3];
+	//	Index on the sceneObstacle array of redFlower
+	int redFlowerIndex[4];
+	//	Index on the sceneObstacle array of the Glass Capsule
+	int glassCapsuleIndex;
+	//	Number of total seconds
+	int totalSeconds;
+	//	Number of total minutes
+	int minutes;
+	// Current second shown on screen
+	int currentSecond = 0;
+	//Offset for the seconds timer
+	int secondsXOffset = 100;
+	//Player lifes
+	int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
+
+	//	Boolean to check if both CoreMecha have been destroyed
+	bool isLevelCompleted;
+	//	Boolean to check if the player has activated the Extra Points event (appear Coins when player completes level and goes to the Glass Capsule)
+	bool isExtraPointsActive;
+	//	Boolean to check if the time counter has run out of time
+	bool isTimeOut;
+	//	Boolean to check if there is a change of scene currently
+	bool isChangingScene;
+
+	//	Timer
+	Timer timer;
+
+	//	TileMap
+	Tile* tileMap;
+
+
 public:
 
 	SceneLevel1();
