@@ -15,9 +15,11 @@ SceneMainTitle::~SceneMainTitle()
 
 bool SceneMainTitle::Start()
 {
+	//	Music Setup
 	Mix_VolumeMusic(15);
 	App->audio->PlayMusic("Assets/Audio/Music/TitleScreen.ogg", 1.5f);
 
+	#pragma region Textures Setup
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texMenuArrow = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenuArrow.png");
 	menuBackgroundRect = { 768, 0, 256, 224 };
@@ -25,14 +27,15 @@ bool SceneMainTitle::Start()
 	menuOptionsRect = { 263, 0, 256, 216 };
 	menuTitleRect = { 0,0,256, 200 };
 	menuBottomRect = { 48, 200, 144, 8 };
+	#pragma endregion
 
+	#pragma region Arrow Positions Setup
 	arrowPosition[0] = { 63, 151 };
 	arrowPosition[1] = { 63, 167 };
 	arrowPosition[2] = { 63, 182 };
 
 	currentArrowPos = &arrowPosition[0];
-
-	cout << "Start Main Title" << endl;
+	#pragma endregion
 
 	return true;
 }
@@ -40,6 +43,8 @@ bool SceneMainTitle::Start()
 bool SceneMainTitle::Update()
 {
 
+	#pragma region Input Arrow Position Logic
+	//Check Input to change Arrow Position
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
 		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
@@ -64,7 +69,10 @@ bool SceneMainTitle::Update()
 			currentArrowPos--;
 		}
 	}
+	#pragma endregion
 
+	#pragma region Select Option Logic
+	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
 		
@@ -75,14 +83,14 @@ bool SceneMainTitle::Update()
 			
 		}
 	}
+	#pragma endregion
 
-	cout << "Update Main Title" << endl;
 	return true;
 }
 
 bool SceneMainTitle::PostUpdate()
 {
-
+	//Drawing Textures
 	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuBackgroundRect);
 	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuStarsBackgroundRect);
 	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuTitleRect);
@@ -90,7 +98,6 @@ bool SceneMainTitle::PostUpdate()
 	App->render->DrawTexture(texMainMenu, { 56,200 }, &menuBottomRect);
 	App->render->DrawTexture(texMenuArrow, *currentArrowPos);
 
-	cout << "PostUpdate Main Title" << endl;
 	return true;
 }
 

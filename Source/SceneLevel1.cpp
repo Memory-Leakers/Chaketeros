@@ -13,8 +13,7 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-
-
+#include "NumText.h"
 
 #include <time.h>
 #include <iostream>
@@ -28,13 +27,9 @@ Player* bomberman = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+NumText sceneUI;
 
 vector<iPoint> emptySpaces;
-
-string strLife;
-string strScore;
-string strSeconds;
-string strMinutes;
 
 PowerUp* powerUps[MAX_POWERUPS];
 
@@ -43,10 +38,6 @@ Stone* stones[MAX_STONE];
 ModuleEnemy* enemy[MAX_ENEMY];
 
 iPoint winPosition = { 120, 96 };
-
-
-
-float BGFX_CoinsCounter = 0;
 
 SceneLevel1::SceneLevel1()
 {
@@ -146,8 +137,7 @@ void SceneLevel1::LoadAsset()
 
 void SceneLevel1::CreateScene()
 {
-	//Check TileMap y axis
-	//sceneObstacles[0] = new Bomb({ 100,100 }, texBomb, explosionCenter, explosionMiddle, explosionEnd);
+	#pragma region Generate Obstacles
 
 	for (int i = 0, k = 0, l = 0, m = 0, n= 0; i < 13; ++i)
 	{
@@ -180,10 +170,13 @@ void SceneLevel1::CreateScene()
 		}
 	}
 
+	#pragma endregion
+
 	cout << endl;
 
 	CreateYellowFlowers();
 
+	#pragma region Draw Map in Console
 	// Check Map in Console
 	for (int i = 0, k = 0; i < 13; ++i)
 	{
@@ -193,6 +186,8 @@ void SceneLevel1::CreateScene()
 		}
 		cout << endl;
 	}
+	#pragma endregion
+
 }
 
 void SceneLevel1::CreateYellowFlowers()
@@ -234,50 +229,57 @@ void SceneLevel1::CreateYellowFlowers()
 
 bool SceneLevel1::Start()
 {
-	tileMap = new Tile();
-
-	isLevelCompleted = false;
-
-	LOG("Loading background assets");
+	LOG("Starting Level 1 Scene");
 
 	bool ret = true;
 
+	#pragma region Reset Data
+	//Reset tileMap
+	tileMap = new Tile();
+
+	//Reset variables
+	isLevelCompleted = false;
 	*sceneObstacles = { nullptr };
-
-	// Inicializar jugador
-	bomberman = new Player(tileMap);
-	bomberman->Start();
-
-	LoadAsset();
-
-	// Create music
-	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
-	Mix_VolumeMusic(10);
-
-	//testFont = App->scene->text->getFonts(36);
-
-	CreateScene();
-
-	enemy[3] = new PokaPoka( 200, 160, &bomberman->position, tileMap);
-	enemy[1] = new Mover({ 168,64 }, &bomberman->position, tileMap);
-	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
-	enemy[0] = new Mover({ 72,160 }, &bomberman->position, tileMap);
-
 	isExtraPointsActive = false;
 
-	//Timer Init
+	//	Timer Reset
 	timer.Reset();
 	isTimeOut = false;
 	isChangingScene = false;
 	minutes = 4;
 	totalSeconds = 59;
+	#pragma endregion
+
+	#pragma region Init Player and Enemies
+	// Inicializar jugador
+	bomberman = new Player(tileMap);
+	bomberman->Start();
+
+	//	Spawn enemies
+	enemy[3] = new PokaPoka(200, 160, &bomberman->position, tileMap);
+	enemy[1] = new Mover({ 168,64 }, &bomberman->position, tileMap);
+	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
+	enemy[0] = new Mover({ 72,160 }, &bomberman->position, tileMap);
 
 	//Start Enemy
-
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		enemy[i]->Start();
 	}
+
+#pragma endregion
+
+
+	LoadAsset();
+
+	sceneUI.Start();
+
+	// Create music
+	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	Mix_VolumeMusic(10);
+
+	//	Create Scene
+	CreateScene();
 
 	return ret;
 }
@@ -320,6 +322,7 @@ bool SceneLevel1::PreUpdate()
 	}
 	#pragma endregion
 
+	//One minute left SFX condition
 	if (minutes == 0 && currentSecond == 59)
 	{
 		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
@@ -359,8 +362,10 @@ bool SceneLevel1::PreUpdate()
 	}
 	#pragma endregion
 
-	bool anyCoreMecha = false;
 	#pragma region Clean obstacles
+
+	bool anyCoreMecha = false;
+	
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
@@ -419,23 +424,22 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
-	BGFX_CoinsCounter += timer.Update();
+	
 
-	//cout << timer->getDeltaTime() << endl;	//contador de tiempo
-
-	// Go to next Scene
+	#pragma region Special Keys (Debugging)
+	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 	}
 
-	// Cout Score in console
+	// Cout Score in console with C
 	if (App->input->keys[SDL_SCANCODE_C] == KEY_DOWN)
 	{
 		cout << "Score: " << score << endl;
 	}
 
-	// Draw debug tileMap
+	// Draw debug tileMap with Q
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
 		system("cls");
@@ -458,8 +462,9 @@ bool SceneLevel1::Update()
 		}
 		//sceneObstacles[glassCapsuleIndex]->Die();
 	}
+	#pragma endregion
 
-	// Update bomebrman
+	#pragma region Bomberman Update
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
@@ -512,8 +517,12 @@ bool SceneLevel1::Update()
 			}
 		}
 	}
+	#pragma endregion
 
-	// If level's complete
+	#pragma region SFX Coins Background 
+	// Backgorund sound for Extra points condition
+	BGFX_CoinsCounter += timer.Update();
+
 	if (isExtraPointsActive) 
 	{
 		// Check 0.6s
@@ -525,7 +534,9 @@ bool SceneLevel1::Update()
 			BGFX_CoinsCounter = 0;
 		}
 	}
+	#pragma endregion
 
+	#pragma region Update Obstacles and Enemies
 	// Update obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -535,9 +546,6 @@ bool SceneLevel1::Update()
 		}
 	}
 
-	// Draw Map
-	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
-
 	//Update Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
@@ -546,6 +554,10 @@ bool SceneLevel1::Update()
 			enemy[i]->Update();
 		}
 	}
+	#pragma endregion
+
+	// Draw Map
+	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
 
 	return true;
 
@@ -553,7 +565,7 @@ bool SceneLevel1::Update()
 
 bool SceneLevel1::PostUpdate()
 {
-	SDL_Rect rectUI = { 0,0,256,23 };
+	#pragma region Drawing
 
 	//Draw Stone
 	for (int i = 0; i < MAX_STONE; ++i)
@@ -581,6 +593,8 @@ bool SceneLevel1::PostUpdate()
 			enemy[i]->PostUpdate();
 		}
 	}
+
+	#pragma endregion
 
 	#pragma region RenderExeption
 	// Get renderExpion
@@ -660,14 +674,18 @@ bool SceneLevel1::PostUpdate()
 	}
 	#pragma endregion
 
+	#pragma region DrawUI and Foreground
+
+	SDL_Rect rectUI = { 0,0,256,23 };
 	// Draw FrontGround
 	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
 
 	// Draw UI
 	App->render->DrawTexture(texUI, 0, 0, &rectUI);
 
-	//Draw UI text
-	//Timer Logic-------
+	#pragma endregion
+
+	#pragma region Timer Logic
 	if (!isTimeOut)
 	{
 		currentSecond = totalSeconds - (int)timer.getDeltaTime();
@@ -687,34 +705,43 @@ bool SceneLevel1::PostUpdate()
 
 	if (currentSecond < 10)
 	{
-		secondsXOffset = 123;
+		secondsXOffset = 40;
 	}
 	else
 	{
-		secondsXOffset = 100;
+		secondsXOffset = 32;
 	}
 
+	#pragma endregion
 
-	if (bomberman != nullptr) { strLife = to_string(playerLifes); }
-	strScore = to_string(score);
-	strSeconds = to_string(currentSecond);
-	strMinutes = to_string(minutes);
+	#pragma region Text Drawing
 
+	sceneUI.DrawNum(minutes, { 16,8 });
+	sceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
+	sceneUI.DrawNum(score, { 160, 8 });
+	sceneUI.DrawNum(playerLifes, { 232, 8 });
+
+	sceneUI.DrawChar(0, { 25,8 });
+	sceneUI.DrawChar(1, { 123,8 });
 	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
 	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
 	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
 	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
+	#pragma endregion
 
 	return true;
 }
 
 void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 {
+	#pragma region Bomberman Collision
 	if (bomberman != nullptr && bomberman->col == c1)
 	{
 		bomberman->OnCollision(c2);
 	}
+	#pragma endregion
 
+	#pragma region PowerUps Collision
 	for (int i = 0; i < 3; ++i)
 	{
 		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
@@ -722,7 +749,9 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			powerUps[i]->OnCollision(c2);
 		}
 	}
+	#pragma endregion
 
+	#pragma region Obstacle Collision
 	//Obstacle Collision ----------------------
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -732,7 +761,9 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			sceneObstacles[i]->OnCollision(c2);
 		}
 	}
-	
+	#pragma endregion
+
+	#pragma region Enemy Collision
 	//Enemy Collision with bomb
 	for (int i = 0; i < MAX_ENEMY; ++i) {
 		// cuando se choca algo
@@ -741,6 +772,8 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 			enemy[i]->OnCollision(c2);
 		}
 	}
+	#pragma endregion
+
 }
 
 void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
@@ -792,6 +825,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 {
 	LOG("Freeing all test");
 
+	#pragma region FinalCleanUp
 	// Clean Scene if not close the game
 	if (!finalCleanUp)
 	{
@@ -804,7 +838,9 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	{
 		delete text;
 	}
+	#pragma endregion
 
+	#pragma region Delete Stones, Obstacles and PowerUps
 	for (int i = 0; i < MAX_STONE; ++i)
 	{
 		if (stones[i] != nullptr)
@@ -813,6 +849,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 			stones[i] = nullptr;
 		}
 	}
+	
 
 	// Delete obstacles
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
@@ -832,6 +869,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 			powerUps[i] = nullptr;
 		}
 	}
+	#pragma endregion
 
 	Mix_HaltMusic();
 
@@ -861,6 +899,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	moverDestroyed = nullptr;
 	#pragma endregion
 
+	#pragma region Delete Player and Enemy
 	// Delete player
 	delete bomberman;
 	bomberman = nullptr;
@@ -875,5 +914,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 			enemy[i] = nullptr;
 		}	
 	}
+	#pragma endregion
+
 	return true;
 }

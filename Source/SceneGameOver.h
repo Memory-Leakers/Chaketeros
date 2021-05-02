@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Application.h"
 #include "Animation.h"
+#include "NumText.h"
 
 #include <iostream>
 #include <vector>
@@ -29,7 +30,6 @@ private:
 
 	Animation gameOverAnim, gameOverContinueAnim;
 
-	
 	iPoint pointerPos[2];	//Position of the Pointer on Screen
 	iPoint* currentPointerPos;	//Current position of the pointer
 
