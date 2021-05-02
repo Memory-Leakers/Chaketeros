@@ -66,8 +66,6 @@ private:
 	// Template particle for an end of mover
 	Particle* moverDestroyed = nullptr;
 
-	
-
 	//	Number of yellow flowers
 	int yellowFlowersNum;
 	//	Position of render Exceptions
@@ -101,7 +99,6 @@ private:
 
 	//	TileMap
 	Tile* tileMap;
-
 
 public:
 

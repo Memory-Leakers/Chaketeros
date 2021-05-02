@@ -9,6 +9,11 @@
 struct SDL_Texture;
 struct SDL_Renderer;
 
+struct RenderObject
+{
+
+};
+
 class ModuleRender : public Module
 {
 private:
@@ -18,6 +23,7 @@ private:
 	bool debugCamera = false;
 
 public:
+
 	//Constructor
 	ModuleRender();
 

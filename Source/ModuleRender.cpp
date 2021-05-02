@@ -9,6 +9,8 @@
 #include "External/SDL/include/SDL_render.h"
 #include "External/SDL/include/SDL_scancode.h"
 
+vector<vector<RenderObject>> layers;
+
 ModuleRender::ModuleRender() : Module()
 {
 
@@ -36,6 +38,8 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
+	layers.resize(3);
+
 	return ret;
 }
 
@@ -61,7 +65,6 @@ UpdateResult ModuleRender::Update()
 			camera.x = 0;
 		}
 	}
-
 
 	if (debugCamera) {
 		// Handle positive vertical movement
@@ -99,6 +102,7 @@ bool ModuleRender::CleanUp()
 // Draw to screen
 bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed)
 {
+
 	bool ret = true;
 
 	SDL_Rect rect = {

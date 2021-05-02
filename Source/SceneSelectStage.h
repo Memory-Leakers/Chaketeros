@@ -24,7 +24,6 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
-
 };
 
 #endif

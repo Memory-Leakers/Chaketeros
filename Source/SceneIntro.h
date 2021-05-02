@@ -37,8 +37,6 @@ public:
 
 };
 
-
-
 #endif // !_SCENEINTRO_H_
 
 

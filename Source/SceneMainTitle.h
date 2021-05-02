@@ -36,7 +36,6 @@ public:
 	SDL_Rect menuTitleRect;
 	iPoint arrowPosition[3];
 	iPoint* currentArrowPos;
-
 };
 
 #endif
