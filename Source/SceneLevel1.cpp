@@ -13,6 +13,7 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
+#include "NumText.h"
 
 #include <time.h>
 #include <iostream>
@@ -26,13 +27,9 @@ Player* bomberman = nullptr;
 
 Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+NumText sceneUI;
 
 vector<iPoint> emptySpaces;
-
-string strLife;	//Putting these varaibles on the header file produces memory leaks
-string strScore;
-string strSeconds;
-string strMinutes;
 
 PowerUp* powerUps[MAX_POWERUPS];
 
@@ -274,6 +271,8 @@ bool SceneLevel1::Start()
 
 
 	LoadAsset();
+
+	sceneUI.Start();
 
 	// Create music
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
@@ -706,21 +705,24 @@ bool SceneLevel1::PostUpdate()
 
 	if (currentSecond < 10)
 	{
-		secondsXOffset = 123;
+		secondsXOffset = 40;
 	}
 	else
 	{
-		secondsXOffset = 100;
+		secondsXOffset = 32;
 	}
 
-
-	if (bomberman != nullptr) { strLife = to_string(playerLifes); }
-	strScore = to_string(score);
-	strSeconds = to_string(currentSecond);
-	strMinutes = to_string(minutes);
 	#pragma endregion
 
 	#pragma region Text Drawing
+
+	sceneUI.DrawNum(minutes, { 16,8 });
+	sceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
+	sceneUI.DrawNum(score, { 160, 8 });
+	sceneUI.DrawNum(playerLifes, { 232, 8 });
+
+	sceneUI.DrawChar(0, { 25,8 });
+	sceneUI.DrawChar(1, { 123,8 });
 	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
 	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
 	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points

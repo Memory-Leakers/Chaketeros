@@ -4,6 +4,8 @@ using namespace std;
 
 vector <int> digitVec;
 
+NumText gameOverScore;
+
 SceneGameOver::SceneGameOver()
 {
 }
@@ -26,7 +28,7 @@ bool SceneGameOver::Start()
 
 	#pragma region Textures and Animations Setup
 	texGameOver = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOver.png");
-	texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
+	//texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 	texGameOverContinue = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOverContinue.png");
 
 	gameOverBackgroundRec = {256, 0, 256, 224};
@@ -59,7 +61,8 @@ bool SceneGameOver::Start()
 	//Reset variables
 	pressedContinue = false;
 	//Convert current score to Textures
-	DrawGameOverScore();
+	
+	gameOverScore.Start();
 	
 	return true;
 }
@@ -131,36 +134,7 @@ bool SceneGameOver::PostUpdate()
 	#pragma endregion
 
 	#pragma region Display Game Over Score Logic
-	bool isOneBefore = false;
-	int xOffset = 15;
-	int xPos = 130;
-
-	for (int i = 0; i < totalDigits; i++)
-	{
-		if (isOneBefore)
-		{
-			if (!digitVec.at(i) == 1)
-			{
-				xOffset = 12;				
-			}
-			else 
-			{
-				xOffset = 11;
-			}
-			isOneBefore = false;
-		}	
-
-		if (digitVec.at(i) == 1)
-		{
-			if (xOffset == 15) 
-			{
-				 xOffset = 12;
-			}
-			isOneBefore = true;
-		}
-				
-		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
-	}
+	gameOverScore.DrawNum(score, { 130, 152 }, 1);
 	#pragma endregion
 
 	return true;
