@@ -21,9 +21,11 @@ private:
 	Tile* currentTileMap;
 
 public:
-
+	//Constructors
 	CoreMecha();
 	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile);
+	
+	//Methods
 
 	void Die() override;
 

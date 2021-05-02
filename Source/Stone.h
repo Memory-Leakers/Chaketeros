@@ -8,6 +8,7 @@ class Stone : public Obstacle
 private:
 	SDL_Rect renderRect;
 public:
+	//Constructor
 
 	Stone();
 	Stone(iPoint pos, SDL_Texture* tex);

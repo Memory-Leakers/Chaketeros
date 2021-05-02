@@ -6,32 +6,29 @@
 
 class GlassCapsule :public Obstacle {
 public:
-
+    //Constructors
     GlassCapsule();
     GlassCapsule(iPoint pos, SDL_Texture* tex);
+    //Desconstructor
     ~GlassCapsule();
-
-    //void OnCollision(Collider* c1,Collider* c2) override;
-    iPoint position;
-    //animation variables
-    Animation idleAnim;
-    Animation withoutglassAnim;
-    Animation withoutfragments;
-
-    bool isDead = false;
     
-    int dieCount = 0;
-
-    Collider* auxCol[6] = { nullptr };
-
-public:
-
     void Update() override;
     void PostUpdate() override;
     void Die() override;
   
 
 private:
+    
+    iPoint position;
+    //animation variables
+    Animation idleAnim;
     Animation* currentAnim = nullptr;
+    Animation withoutglassAnim;
+    Animation withoutfragments;
+    //Collision variables
+    Collider* auxCol[6] = { nullptr };
+    bool isDead = false;
+
+    int dieCount = 0;
 };
 #endif // __GLASSCAPSULE_H_

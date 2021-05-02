@@ -17,8 +17,9 @@ private:
 	bool hasPowerUp = false; // Luego se cambia por int ya que habra mas tipos de power ups
 
 public: 
-
+	//Constructor
 	YellowFlower();
+
 	YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle, Tile* tile, bool hasPowerUp = false);
 
 	void Die() override;

@@ -35,7 +35,10 @@ bool ModuleScene::Start()
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
-	currentScene = scenes[LEVEL1_SCENE];
+
+
+	currentScene = scenes[INTRO_SCENE];
+
 
 	if(currentScene == nullptr)
 	{
