@@ -75,7 +75,7 @@ bool Mover::Start()
 	// Init destroyed particle
 	dieParticle = new Particle(500.0f, 0.05f, texture);
 	dieParticle->anim.PushBack({ 232,166,23,30 });
-	dieParticle->anim.speed = 0.1f;
+	dieParticle->anim.speed = 0.08f;
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
@@ -90,7 +90,7 @@ UpdateResult Mover::PreUpdate()
 	// Deteci if mover is center of grid
 	if (position == centerTile)
 	{
-		moveDirIndex = AStar();
+		AStarMoveDirIndex = AStar();
 
 		randomMoveDirIndex = RandomMov();
 	}
@@ -116,10 +116,10 @@ UpdateResult Mover::Update()
 
 void Mover::FixedUpdate()
 {
-	if (moveDirIndex != -1)
+	if (AStarMoveDirIndex != -1)
 	{
-		position += moveDir[moveDirIndex];
-		currentDir = moveDirIndex;
+		position += moveDir[AStarMoveDirIndex];
+		currentDir = AStarMoveDirIndex;
 	}
 	else if(randomMoveDirIndex != -1)
 	{
@@ -180,6 +180,15 @@ UpdateResult Mover::PostUpdate() {
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
+}
+
+void Mover::OnCollision(Collider* col)
+{
+	if (col->type == Type::EXPLOSION)
+	{
+		die();
+		App->scene->currentScene->score += 800;
+	}
 }
 
 int Mover::RandomMov()
@@ -314,11 +323,15 @@ int Mover::AStar()
 		
 			vector <int> instruction;
 
+			// closeGrid[i].lastIndex apunta hacia el grid anterior del que esta ahora para evitar las bifurcacion
 			for (int i = closeGrid.size() -1 ; i >= 0; i = closeGrid[i].lastIndex)
 			{
 				instruction.push_back(closeGrid[i].dir);
 			}
 
+			// instruction.size() -> out range
+			// instruction.size()-1 -> current grid
+			// instruction.size()-2 -> good direction
 			return instruction[instruction.size() - 2];
 		}
 		
@@ -386,15 +399,6 @@ int Mover::AStar()
 
 	// si no ha encontrado ningun camino, devolvemos un -1
 	return { -1 };
-}
-
-void Mover::OnCollision(Collider* col) 
-{
-	if (col->type == Type::EXPLOSION) 
-	{
-		die();
-		App->scene->currentScene->score += 800;
-	}
 }
 
 void Mover::die()

@@ -13,7 +13,7 @@
 
 class Particle;
 
-#define defaultPlayerSpeed 0.1f //Animation only
+#define defaultPlayerSpeed 0.15f //Animation only
 struct SDL_Texture;
 
 class Tile;

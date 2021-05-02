@@ -17,8 +17,7 @@ struct SDL_Texture;
 
 class ModuleEnemy : public Module{
 
-	private:
-	protected:
+protected:
 		bool isFlip = false;;
 
 		int points = 0; //Score points

@@ -9,86 +9,80 @@ using namespace std;
 
 struct PathNode
 {
-	int lastIndex;
-	iPoint pos;
+	iPoint pos; // grid position
 
-	int dir;
-
-	int h_cost;
-	int g_cost;
-	int total_cost;
+	int lastIndex; // last path index
+	int dir; // Direction when coming
+	int h_cost; // Current price
+	int g_cost; // Estimated price
+	int total_cost; //  Current price + Estimated price
 };
 
 class Mover : public ModuleEnemy
 {
 private:
-	// private variable
 
 	Particle* dieParticle = nullptr;
-
-	iPoint* playerPos = nullptr;
 
 	Animation upAnim;
 	Animation downAnim;
 	Animation rightAnim;
 	Animation leftAnim;
 
-	bool hasPathToPlayer = false;
-
-	int randomDir = 0;
-
-	vector <int> movePath;
-
 	Timer moverTimer;
 
-	iPoint moveDir[4]{ 
+	iPoint* playerPos = nullptr; // get player position for A star
+
+	iPoint moveDir[4] = {
 	 { 1, 0 },
 	 {-1, 0 },
 	 { 0,-1 },
 	 { 0, 1 } };
 
-	int moveDirContrary[4]{
-	 {1 },
-	 {0 },
-	 {3 },
-	 {2} };
+	bool hasPathToPlayer = false;
 
-	int moveDirIndex = 0;
+	int currentDir = 0; // Current direccion that we will move
 
-	int randomMoveDirIndex = 0;
+	int speed = 1; //Movement onlys
 
-	int currentDir = 0;
+	// A Star variable
+	int moveDirContrary[4]{ 1,0,3,2 }; // push back direccion A star
+	int AStarMoveDirIndex = 0; // get A star result
 
+	// Random Mov variable
+	int randomMoveDirIndex = 0; // get RandomMos result
+
+private:
 	// private metod
 	void die() override;
 
+	// When no detect player
 	int RandomMov();
 
+	// Automatic wayfinding
 	int AStar();
-
-	friend class Tile;
 
 public:
 
+	// Constructor
 	Mover(iPoint spawnPos, iPoint* playerPos, Tile* levelMap);
 
+	// Destructor
 	~Mover();
+
+	// Update for x second 
+	// call in Update
+	void FixedUpdate();
 
 	bool Start() override;
 
-	void FixedUpdate();
+	void OnCollision(Collider* col) override;
 
 	UpdateResult PreUpdate() override;
 
 	UpdateResult Update() override;
 
-	UpdateResult PostUpdate() override;
-
-	void OnCollision(Collider* col) override;
-
-	iPoint position;
-	
-	int speed = 1; //Movement only
+	UpdateResult PostUpdate() override;	
 };
 
 #endif // !_MOVER_H_
