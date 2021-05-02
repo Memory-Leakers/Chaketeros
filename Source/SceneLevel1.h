@@ -87,6 +87,9 @@ private:
 	//Player lifes
 	int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
 
+	//	Counter for Sound Effects
+	float BGFX_CoinsCounter = 0;
+
 	//	Boolean to check if both CoreMecha have been destroyed
 	bool isLevelCompleted;
 	//	Boolean to check if the player has activated the Extra Points event (appear Coins when player completes level and goes to the Glass Capsule)

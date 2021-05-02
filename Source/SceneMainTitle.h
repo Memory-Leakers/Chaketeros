@@ -7,7 +7,24 @@
 
 class SceneMainTitle : public Scene
 {
+private:
+	//	Textures
+	SDL_Texture* texMainMenu;
+	SDL_Texture* texMenuArrow;
+
+	//	Textures Rectangles
+	SDL_Rect menuBackgroundRect;
+	SDL_Rect menuStarsBackgroundRect;
+	SDL_Rect menuOptionsRect;
+	SDL_Rect menuBottomRect;
+	SDL_Rect menuTitleRect;
+
+	// Arrow Position and current Arrow
+	iPoint arrowPosition[3];
+	iPoint* currentArrowPos;
+
 public:
+
 	SceneMainTitle();
 
 	// Destructor
@@ -26,17 +43,6 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
-
-	SDL_Texture* texMainMenu;
-	SDL_Texture* texMenuArrow;
-	SDL_Rect menuBackgroundRect;
-	SDL_Rect menuStarsBackgroundRect;
-	SDL_Rect menuOptionsRect;
-	SDL_Rect menuBottomRect;
-	SDL_Rect menuTitleRect;
-	iPoint arrowPosition[3];
-	iPoint* currentArrowPos;
-
 };
 
 #endif

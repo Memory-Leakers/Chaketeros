@@ -18,10 +18,13 @@ bool SceneGameOver::Start()
 
 	cout << "Score: " << this->score << endl;
 
+	#pragma region Music Setup
 	Mix_HaltMusic();
 
 	App->audio->PlayMusic("Assets/Audio/Music/GameOverMusic.ogg", 1.5f);
+	#pragma endregion
 
+	#pragma region Textures and Animations Setup
 	texGameOver = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOver.png");
 	texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 	texGameOverContinue = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOverContinue.png");
@@ -44,14 +47,18 @@ bool SceneGameOver::Start()
 	gameOverContinueAnim.speed = 0.05f;
 	gameOverContinueAnim.hasIdle = false;
 	gameOverContinueAnim.loop = false;
+	#pragma endregion
 
+	#pragma region Pointer Setup
 	pointerPos[0] = { 63,78 };
 	pointerPos[1] = { 63,110 };
 
 	currentPointerPos = &pointerPos[0];
+	#pragma endregion
 
+	//Reset variables
 	pressedContinue = false;
-
+	//Convert current score to Textures
 	DrawGameOverScore();
 	
 	return true;
@@ -59,10 +66,11 @@ bool SceneGameOver::Start()
 
 bool SceneGameOver::Update()
 {
-	//cout << "Update Game Over" << endl;
+	//Animation Logic
 	gameOverAnim.Update();
 	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
+	#pragma region Input Pointer Position Logic
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
 		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
@@ -87,7 +95,9 @@ bool SceneGameOver::Update()
 			currentPointerPos--;
 		}
 	}
+	#pragma endregion
 
+	#pragma region Select Option Logic
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
 		App->audio->PlaySound(SFX::SELECT_SFX, 0);
@@ -103,11 +113,14 @@ bool SceneGameOver::Update()
 		}
 
 	}
+	#pragma endregion
+
 	return true;
 }
 
 bool SceneGameOver::PostUpdate()
 {
+	#pragma region Drawing Textures 
 	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
 	
 	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
@@ -115,7 +128,9 @@ bool SceneGameOver::PostUpdate()
 	else { App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame()); }
 	
 	App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
+	#pragma endregion
 
+	#pragma region Display Game Over Score Logic
 	bool isOneBefore = false;
 	int xOffset = 15;
 	int xPos = 130;
@@ -146,8 +161,8 @@ bool SceneGameOver::PostUpdate()
 				
 		App->render->DrawTexture(texGameOverMisc, { xPos +(xOffset * i), 152 }, &numRec[digitVec.at(i)]);
 	}
+	#pragma endregion
 
-	//cout << "PostUpdate Game Over" << endl;*/
 	return true;
 }
 
@@ -161,7 +176,6 @@ void SceneGameOver::DrawGameOverScore()
 	stack<int> digits;
 
 	int currentScore = score;
-	int decimals = 0;
 
 	while (currentScore > 0)
 	{
@@ -188,12 +202,6 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 		delete text;
 	}
 
-	//currentPointerPos = nullptr;
-
-	
-	//vector<int>().swap(digitVec);
-
-	//cout << digitVec.capacity() << endl;	//Aqu?se genera un memory leak pero todo se limpia correctamente. Creemos que se llama a
 	digitVec.clear();
 	digitVec.shrink_to_fit();
 
