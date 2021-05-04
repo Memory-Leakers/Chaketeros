@@ -10,13 +10,12 @@
 
 class Tile
 {
-
-public:
-
-	SDL_Rect r = {0,0,16,16};
+private:
+	SDL_Rect r = { 0,0,16,16 };
 
 	iPoint pivotPoint = { r.w / 2, r.h / 2 };
 
+public:
 	// 0 = EMPTY; 1 = INVISIBLE_WALL; 2 = STONE; 3 = RED FLOWER; 4 = NON EMPTY SPACE; 5 = YELLOW FLOWER	; 6 = CORE MECHA; 7 = GLASS CAPSULE BODY; 10 = GLASS CAPSULE
 
 	int Level1TileMap[13][15]

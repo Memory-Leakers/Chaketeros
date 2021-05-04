@@ -11,7 +11,9 @@ struct SDL_Renderer;
 
 struct RenderObject
 {
-
+	SDL_Texture* texture;
+	SDL_Rect* renderRect;
+	iPoint* pos;
 };
 
 class ModuleRender : public Module

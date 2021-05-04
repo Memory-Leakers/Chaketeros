@@ -10,10 +10,10 @@ class Animation
 public:
 	bool loop = true;
 	float speed = 1.0f;
-	SDL_Rect frames[MAX_FRAMES];
 	bool hasIdle = true;
 
 private:
+	SDL_Rect frames[MAX_FRAMES];
 	int loopCount = 0;
 	float current_frame = 0.0f;
 	int last_frame = 0;

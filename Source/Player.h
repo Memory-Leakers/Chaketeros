@@ -58,6 +58,21 @@ private:
 	// Template particle for an end of player
 	Particle* playerDestroyed = nullptr;
 
+
+	// The pointer to the current player animation
+	// It will be switched depending on the player's movement direction
+	Animation* currentAnimation = nullptr;
+
+	// A set of animations
+	Animation idleAnim;
+	Animation upAnim;
+	Animation downAnim;
+	Animation leftAnim;
+	Animation rightAnim;
+
+	// The player spritesheet loaded into an SDL_Texture
+	SDL_Texture* texture = nullptr;
+
 protected:
 
 public:
@@ -106,20 +121,6 @@ public:
 	// The speed in which we move the player (pixels per frame)
 	int speed = 1; //Movement only
 
-	// The player spritesheet loaded into an SDL_Texture
-	SDL_Texture* texture = nullptr;
-
-	// The pointer to the current player animation
-	// It will be switched depending on the player's movement direction
-	Animation* currentAnimation = nullptr;
-
-	// A set of animations
-	Animation idleAnim;
-	Animation upAnim;
-	Animation downAnim;
-	Animation leftAnim;
-	Animation rightAnim;
-
 	int pUpFlame = 0;
 
 	int maxBombs = 1;
@@ -129,6 +130,8 @@ public:
 	bool pendingToDelete = false;
 
 	bool ExtraPoints = false;
+
+
 	//GETTERS AND SETTERS
 	int getScore() {
 		return score;
