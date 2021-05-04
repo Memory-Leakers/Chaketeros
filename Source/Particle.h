@@ -26,12 +26,16 @@ public:
 	// Returns false when the particle reaches its lifetime
 	bool Update();
 
+private:
+	// Defines the speed at which the particle will move (pixels per second)
+	iPoint speed;
+
+	// Defines the total amount of time during which the particle will be active (in miliseconds)
+	Uint32 lifetime = 0;
+
 public:
 	// Defines the position in the screen
 	iPoint position;
-
-	// Defines the speed at which the particle will move (pixels per second)
-	iPoint speed;
 
 	// A set of rectangle sprites
 	Animation anim;
@@ -48,9 +52,6 @@ public:
 
 	// Defines the time when the particle will be spawned
 	int frameCount = 0;
-
-	// Defines the total amount of time during which the particle will be active (in miliseconds)
-	Uint32 lifetime = 0;
 
 	// The particle's 
 	Collider* col  = nullptr;
