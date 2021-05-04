@@ -91,12 +91,19 @@ bool SceneMainTitle::Update()
 bool SceneMainTitle::PostUpdate()
 {
 	//Drawing Textures
-	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuBackgroundRect);
+	/*App->render->DrawTexture(texMainMenu, { 0,0 }, &menuBackgroundRect);
 	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuStarsBackgroundRect);
 	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuTitleRect);
 	App->render->DrawTexture(texMainMenu, { 0,8 }, &menuOptionsRect);
 	App->render->DrawTexture(texMainMenu, { 56,200 }, &menuBottomRect);
-	App->render->DrawTexture(texMenuArrow, *currentArrowPos);
+	App->render->DrawTexture(texMenuArrow, *currentArrowPos);*/
+
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuBackgroundRect, 2);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuStarsBackgroundRect, 2);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuTitleRect, 2);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,8 }, &menuOptionsRect, 2);
+	App->render->AddTextureRenderQueue(texMainMenu, { 56,200 }, &menuBottomRect, 2);
+	App->render->AddTextureRenderQueue(texMenuArrow, *currentArrowPos, nullptr, 2);
 
 	return true;
 }

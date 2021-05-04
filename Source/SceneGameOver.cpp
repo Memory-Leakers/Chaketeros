@@ -124,13 +124,22 @@ bool SceneGameOver::Update()
 bool SceneGameOver::PostUpdate()
 {
 	#pragma region Drawing Textures 
-	App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
+	//App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverBackgroundRec);
+	App->render->AddTextureRenderQueue(texGameOver, { 0,0 }, &gameOverBackgroundRec, 2);
 	
-	if (pressedContinue) { App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); }
-
-	else { App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame()); }
+	if (pressedContinue) 
+	{
+		//App->render->DrawTexture(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame()); 
+		App->render->AddTextureRenderQueue(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame(),2);
+	}
+	else 
+	{
+		//App->render->DrawTexture(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame());
+		App->render->AddTextureRenderQueue(texGameOver, { 0,0 }, &gameOverAnim.GetCurrentFrame(), 2);
+	}
 	
-	App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
+	//App->render->DrawTexture(texGameOverMisc, *currentPointerPos, &gameOverPointerRec);
+	App->render->AddTextureRenderQueue(texGameOverMisc, *currentPointerPos, &gameOverPointerRec, 2);
 	#pragma endregion
 
 	#pragma region Display Game Over Score Logic

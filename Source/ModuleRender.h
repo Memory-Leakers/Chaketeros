@@ -12,8 +12,17 @@ struct SDL_Renderer;
 struct RenderObject
 {
 	SDL_Texture* texture;
-	SDL_Rect* renderRect;
-	iPoint* pos;
+	SDL_Rect* section;
+	SDL_Rect renderRect;
+	SDL_RendererFlip flip;
+	float rotation;
+};
+
+struct RenderRect
+{
+	SDL_Rect rect;
+	SDL_Color color;
+	float speed;
 };
 
 class ModuleRender : public Module
@@ -52,6 +61,10 @@ public:
 	// Called on application exit.
 	// Destroys the rendering context
 	bool CleanUp() override;
+
+	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 1.0f);
+
+	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 
 	// Draws a texture to the screen
 	// Param texture	- A valid SDL Texture, validation checks are not performed

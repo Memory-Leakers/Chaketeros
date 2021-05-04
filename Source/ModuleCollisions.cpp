@@ -180,28 +180,36 @@ void ModuleCollisions::DebugDraw()
 		switch(colliders[i]->type)
 		{
 			case Type::NONE: // white
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 255, 255, alpha });
 			break;
 			case Type::WALL: // blue
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 255, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 255, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 0, 255, alpha });
 			break;
 			case Type::PLAYER: // green
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 0, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 0, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 255, 0, alpha });
 			break;
 			case Type::ENEMY: // red
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 0, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 0, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 0, 0, alpha });
 			break;
 			case Type::BOMB: // yellow
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 0, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 255, 0, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 255, 0, alpha });
 			break;
 			case Type::EXPLOSION: // cyan
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 255, 255, alpha });
 			break;
 			case Type::DESTRUCTABLE_WALL: // magenta
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
 			break;
 			case Type::FIREPOWER: // black
-			App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
+			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
+			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
 			break;
 		}
 	}

@@ -14,8 +14,6 @@
 
 #include "ModuleEnemy.h"
 
-
-
 using namespace std;
 
 struct SDL_Texture;

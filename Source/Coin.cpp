@@ -27,7 +27,8 @@ void Coin::Update()
 
 void Coin::PostUpdate()
 {
-	App->render->DrawTexture(texture, this->getPosition(), &currentAnim->GetCurrentFrame());
+	//App->render->DrawTexture(texture, this->getPosition(), &currentAnim->GetCurrentFrame());
+	App->render->AddTextureRenderQueue(texture, this->getPosition(), &currentAnim->GetCurrentFrame(), 1);
 }
 
 void Coin::OnCollision(Collider* c1)

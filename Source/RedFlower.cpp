@@ -17,7 +17,8 @@ void RedFlower::PostUpdate()
 {
 	if(!pendingToDelete)
 	{	
-		App->render->DrawTexture(texture, getPosition(), &renderRect);
+		//App->render->DrawTexture(texture, getPosition(), &renderRect);
+		App->render->AddTextureRenderQueue(texture, getPosition(), &renderRect, 1);
 	}
 }
 

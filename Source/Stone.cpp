@@ -13,5 +13,6 @@ Stone::Stone(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos.y, 16, 16 }, 
 
 void Stone::PostUpdate()
 {
-	App->render->DrawTexture(texture, this->getPosition(), &renderRect);
+	//App->render->DrawTexture(texture, this->getPosition(), &renderRect);
+	App->render->AddTextureRenderQueue(texture, this->getPosition(), &renderRect, 1);
 }

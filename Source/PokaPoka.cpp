@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+SDL_Rect* rectPoka;
+
 PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	
 	this->level1Tile = level1Tile;
@@ -116,18 +118,20 @@ UpdateResult PokaPoka::Update() {
 
 UpdateResult PokaPoka::PostUpdate() {
 
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	rectPoka = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
 	tempPos.y -= 14;
 
 	if (isFlip)
 	{
-		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, false, 180);
 	}
 	else
 	{
-		App->render->DrawTexture(texture, tempPos, &rect);
+		//App->render->DrawTexture(texture, tempPos, &rect);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1);
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;

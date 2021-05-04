@@ -11,6 +11,8 @@
 
 vector<vector<RenderObject>> layers;
 
+vector<RenderRect> rects;
+
 ModuleRender::ModuleRender() : Module()
 {
 
@@ -83,8 +85,41 @@ UpdateResult ModuleRender::Update()
 
 UpdateResult ModuleRender::PostUpdate()
 {
+	for each (auto renderObj in layers[0])
+	{
+		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
+	}
+	for each (auto renderObj in layers[1])
+	{
+		if (renderObj.rotation == 0)
+		{
+			SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
+		}
+		else
+		{
+			SDL_RenderCopyEx(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect, renderObj.rotation, NULL, renderObj.flip);
+		}
+	}
+	for each (auto renderObj in layers[2])
+	{
+		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
+	}
+	for each (auto renderRect in rects)
+	{
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+		SDL_SetRenderDrawColor(renderer, renderRect.color.r, renderRect.color.g, renderRect.color.b, renderRect.color.a);
+		SDL_RenderFillRect(renderer, &renderRect.rect);
+	}
+
 	// Update the screen
 	SDL_RenderPresent(renderer);
+
+	for (int i = 0; i < 3; i++)
+	{
+		layers[i].clear();
+	}
+
+	rects.clear();
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -99,10 +134,61 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
+void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, bool isFlipH, float rotation, float scale, float speed)
+{
+	RenderObject renderObject;
+
+	renderObject.texture = texture;
+	renderObject.rotation = rotation;
+	renderObject.section = section;
+
+	renderObject.renderRect.x = (int)(-camera.x * speed) + pos.x * scale;
+	renderObject.renderRect.y = (int)(-camera.y * speed) + pos.y * scale;
+
+	if (section != nullptr)
+	{
+		renderObject.renderRect.w = section->w;
+		renderObject.renderRect.h = section->h;
+	}
+	else
+	{
+		// Collect the texture size into rect.w and rect.h variables
+		SDL_QueryTexture(texture, nullptr, nullptr, &renderObject.renderRect.w, &renderObject.renderRect.h);
+	}
+
+	renderObject.renderRect.w *= scale;
+	renderObject.renderRect.h *= scale;
+
+	if (isFlipH)
+	{
+		renderObject.flip = SDL_FLIP_HORIZONTAL;
+	}
+	else
+	{
+		renderObject.flip = SDL_FLIP_VERTICAL;
+	}
+	
+	layers[layer].push_back(renderObject);
+}
+
+void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed)
+{
+	RenderRect rec;
+
+	rec.color = color;
+	rec.rect.x = (int)(-camera.x * speed) + rect.x * SCREEN_SIZE;
+	rec.rect.y = (int)(-camera.y * speed) + rect.y * SCREEN_SIZE;
+	rec.rect.w = rect.w * SCREEN_SIZE;
+	rec.rect.h = rect.h * SCREEN_SIZE;
+
+	rects.push_back(rec);
+}
+
+
+
 // Draw to screen
 bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed)
 {
-
 	bool ret = true;
 
 	SDL_Rect rect = {

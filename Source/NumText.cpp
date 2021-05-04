@@ -67,8 +67,8 @@ void NumText::DrawNum(int num, iPoint pos, int font)
 		{
 			iPoint tempPos = pos;
 			tempPos.x += (9 * i);						//Offset from num to num
-			App->render->DrawTexture(texFonts, tempPos, &fonts[font][digitVec.at(i)]); //digitVec returns the number that must be shown
-		
+			//App->render->DrawTexture(texFonts, tempPos, &fonts[font][digitVec.at(i)]); //digitVec returns the number that must be shown
+			App->render->AddTextureRenderQueue(texFonts, tempPos, &fonts[font][digitVec.at(i)], 2);
 		}
 		break;
 	case 1:
@@ -103,7 +103,8 @@ void NumText::DrawNum(int num, iPoint pos, int font)
 				isOneBefore = true;
 			}
 
-			App->render->DrawTexture(texFonts, { xPos + (xOffset * i), 152 }, &fonts[1][digitVec.at(i)]);	//	Drawing Num
+			//App->render->DrawTexture(texFonts, { xPos + (xOffset * i), 152 }, &fonts[1][digitVec.at(i)]);	//	Drawing Num
+			App->render->AddTextureRenderQueue(texFonts, { xPos + (xOffset * i), 152 }, &fonts[1][digitVec.at(i)], 2);
 		}
 	}
 
@@ -121,10 +122,12 @@ void NumText::DrawChar(int character, iPoint pos)
 	switch (character)
 	{
 	case 0:
-		App->render->DrawTexture(texFonts, pos, &chars[0]);
+		//App->render->DrawTexture(texFonts, pos, &chars[0]);
+		App->render->AddTextureRenderQueue(texFonts, pos, &chars[0], 2);
 		break;
 	case 1:
-		App->render->DrawTexture(texFonts, pos, &chars[1]);
+		//App->render->DrawTexture(texFonts, pos, &chars[1]);
+		App->render->AddTextureRenderQueue(texFonts, pos, &chars[1], 2);
 		break;
 	}
 }

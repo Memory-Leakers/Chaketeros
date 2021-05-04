@@ -35,8 +35,6 @@ bool ModuleScene::Start()
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
-
-
 	currentScene = scenes[INTRO_SCENE];
 
 
@@ -109,8 +107,10 @@ UpdateResult ModuleScene::PostUpdate()
 	{
 		float fadeRatio = (float)currentFrame / (float)maxFrames;
 
-		SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
-		SDL_RenderFillRect(App->render->renderer, &screenRect);
+		App->render->AddRectRenderQueue(screenRect, { 0,0,0,(Uint8)(fadeRatio * 255.0f) });
+
+		//SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
+		//SDL_RenderFillRect(App->render->renderer, &screenRect);
 	}
 	
 	return UpdateResult::UPDATE_CONTINUE;

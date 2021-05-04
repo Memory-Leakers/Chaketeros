@@ -48,7 +48,6 @@ private:
 	bool godMode = false;
 
 	bool posMode = false;
-
 	
 
 	Tile* level1Tile = nullptr;

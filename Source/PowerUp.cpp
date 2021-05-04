@@ -19,7 +19,8 @@ PowerUp::~PowerUp()
 
 void PowerUp::PostUpdate()
 {
-    App->render->DrawTexture(texture, position, &renderRect);
+    //App->render->DrawTexture(texture, position, &renderRect);
+    App->render->AddTextureRenderQueue(texture, position, &renderRect, 1);
 }
 
 

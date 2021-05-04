@@ -1,5 +1,7 @@
 #include "Mover.h"
 
+SDL_Rect* rectMover;
+
 Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 {
 	position.x = spawnPos.x;
@@ -157,7 +159,7 @@ UpdateResult Mover::PostUpdate() {
 
 	currentAnimation->Update();
 
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	rectMover = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
 	tempPos += {-4, -14};
@@ -172,11 +174,13 @@ UpdateResult Mover::PostUpdate() {
 
 	if (isFlip)
 	{
-		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, false, 180);
 	}
 	else
 	{
-		App->render->DrawTexture(texture, tempPos, &rect);
+		//App->render->DrawTexture(texture, tempPos, &rect);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1);
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;

@@ -53,19 +53,18 @@ void GlassCapsule::Update()
 
 void GlassCapsule::PostUpdate()
 {  
-   
-    if (!isDead) {
-        iPoint tempPos = getPosition();
+    iPoint tempPos = getPosition();;
+    if (!isDead)
+    {
         tempPos.y -= 16;
-        App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
+        //App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());   
     }
     else 
     {
-        iPoint tempPos = getPosition();
         tempPos.y -= 6;
-        App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
+       //App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
     }
-    
+    App->render->AddTextureRenderQueue(texture, tempPos, &currentAnim->GetCurrentFrame(), 1);
 }
 
 void GlassCapsule::Die()

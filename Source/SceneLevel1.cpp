@@ -39,6 +39,8 @@ ModuleEnemy* enemy[MAX_ENEMY];
 
 iPoint winPosition = { 120, 96 };
 
+SDL_Rect rectUI = { 0,0,256,23 };
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
@@ -424,8 +426,6 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
-	
-
 	#pragma region Special Keys (Debugging)
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
@@ -557,7 +557,8 @@ bool SceneLevel1::Update()
 	#pragma endregion
 
 	// Draw Map
-	App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+	//App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
+
 
 	return true;
 
@@ -565,6 +566,8 @@ bool SceneLevel1::Update()
 
 bool SceneLevel1::PostUpdate()
 {
+	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0);
+
 	#pragma region Drawing
 
 	//Draw Stone
@@ -675,13 +678,14 @@ bool SceneLevel1::PostUpdate()
 	#pragma endregion
 
 	#pragma region DrawUI and Foreground
-
-	SDL_Rect rectUI = { 0,0,256,23 };
+	
 	// Draw FrontGround
-	App->render->DrawTexture(texFG, { 0,20 }, nullptr);
+	//App->render->DrawTexture(texFG, { 0,20 }, nullptr);
+	App->render->AddTextureRenderQueue(texFG, { 0,0 }, nullptr, 2);
 
 	// Draw UI
-	App->render->DrawTexture(texUI, 0, 0, &rectUI);
+	//App->render->DrawTexture(texUI, 0, 0, &rectUI);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &rectUI, 2);
 
 	#pragma endregion
 

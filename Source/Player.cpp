@@ -3,6 +3,8 @@
 #include <iostream>;
 using namespace std;
 
+SDL_Rect* rect;
+
 Player::Player(Tile* level1Tile)
 {
 	this->level1Tile = level1Tile;
@@ -350,18 +352,20 @@ UpdateResult Player::Update()
 
 UpdateResult Player::PostUpdate()
 {
-	SDL_Rect rect = currentAnimation->GetCurrentFrame();
+	rect = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
 	tempPos.y -= 6;
 
 	if(isFlip)
 	{
-		App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rect, 1, false, 180);
 	}
 	else
 	{
-		App->render->DrawTexture(texture, tempPos, &rect);
+		//App->render->DrawTexture(texture, tempPos, &rect);
+		App->render->AddTextureRenderQueue(texture, tempPos, rect, 1);
 	}
 
 

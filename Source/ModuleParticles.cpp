@@ -113,11 +113,13 @@ UpdateResult ModuleParticles::PostUpdate()
 		{
 			if (particle->rotation != 0)
 			{
-				App->render->DrawRotateTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), particle->flipHor, particle->rotation);
+				//App->render->DrawRotateTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), particle->flipHor, particle->rotation);
+				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1, particle->flipHor, particle->rotation);
 			}
 			else
 			{
-				App->render->DrawTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()));
+				//App->render->DrawTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()));
+				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1);
 			}
 		}
 	}
