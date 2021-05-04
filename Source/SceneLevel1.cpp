@@ -832,7 +832,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
-
 	}
 	else
 	{

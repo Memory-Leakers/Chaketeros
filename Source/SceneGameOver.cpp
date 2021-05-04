@@ -28,7 +28,7 @@ bool SceneGameOver::Start()
 
 	#pragma region Textures and Animations Setup
 	texGameOver = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOver.png");
-	//texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
+	texGameOverMisc = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 	texGameOverContinue = App->textures->Load("Assets/Images/Sprites/UI_Sprites/GameOverContinue.png");
 
 	gameOverBackgroundRec = {256, 0, 256, 224};
