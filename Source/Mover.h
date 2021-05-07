@@ -45,7 +45,7 @@ private:
 
 	int speed = 1; //Movement onlys
 
-	// A Star variable
+	// A* variable
 	int moveDirContrary[4]{ 1,0,3,2 }; // push back direccion A star
 	int AStarMoveDirIndex = 0; // get A star result
 

@@ -15,6 +15,27 @@ PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
+}
+
+PokaPoka::~PokaPoka() {
+	if (dieParticle != nullptr)
+	{
+		delete dieParticle;
+		dieParticle = nullptr;
+	}
+}
+
+bool PokaPoka::Start() {
+
+	LOG("LOADING ENEMY POKAPOKA");
+
+	bool ret = true;
+
+	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
+	
+	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
+
+	#pragma region Init anim
 
 	//Animation DOWN
 	downAnim.PushBack({ 2,1,15, 28 });//IDLE
@@ -50,7 +71,6 @@ PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	//leftAnim.PushBack({ 33,26,16,22 });
 	leftAnim.speed = defaultEnemySpeed;
 
-
 	//Animation Attack
 	attackAnim.PushBack({ 121,1,15,28 });
 	attackAnim.PushBack({ 139,1,15,28 });
@@ -60,24 +80,10 @@ PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	attackAnim.speed = 0.08f;
 
 	currentAnimation = &downAnim;
-}
 
-PokaPoka::~PokaPoka() {
-	if (dieParticle != nullptr)
-	{
-		delete dieParticle;
-		dieParticle = nullptr;
-	}
-}
+#pragma endregion
 
-bool PokaPoka::Start() {
-	LOG("LOADING ENEMY POKAPOKA");
-	bool ret = true;
-	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
-
-	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
-
-	//Die Particle(Animation)
+	#pragma region Init destroy particle
 	dieParticle = new Particle(500.0f, 0.05f, texture);
 
 	dieParticle->anim.PushBack({ 206,1,15,28 });
@@ -89,6 +95,9 @@ bool PokaPoka::Start() {
 	dieParticle->anim.PushBack({ 71,29,15,28 });
 
 	dieParticle->anim.speed = 0.06f;
+
+	#pragma endregion
+
 	//lastTilePos = getCurrentTilePos();
 
 	return ret;
@@ -260,21 +269,19 @@ void PokaPoka::movement() {
 			default:
 				moveRand = rand() % 10;
 				break;
-
 		}
-	
-
 }
 
 void PokaPoka::OnCollision(Collider* col) {
-	if (col->type == Type::EXPLOSION) {
+	if (col->type == Type::EXPLOSION) 
+	{
 		die();
-
 	}
 }
 
 
 void PokaPoka::die() {
+
 	if (pendingToDelete) return;
 
 	App->scene->currentScene->score += 200;
@@ -287,12 +294,12 @@ void PokaPoka::die() {
 
 	pendingToDelete = true;
 
-
 	delete dieParticle;
 	dieParticle = nullptr;
 }
 
 void PokaPoka::attack() {
+
 	currentAnimation = &attackAnim;
 	currentAnimation->hasIdle = false;
 	if (attacking == 1) {

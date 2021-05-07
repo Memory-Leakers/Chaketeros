@@ -9,6 +9,18 @@
 
 class PowerUp
 {
+private:
+
+    Collider* col = nullptr;
+    SDL_Texture* texture = nullptr;
+    SDL_Rect renderRect;
+
+public:
+
+    bool pendingToDelete = false;
+    Particle* powerUpDestroyed = nullptr;
+    iPoint position;
+
 public:
     PowerUp(iPoint position, SDL_Texture* tex , Particle* dieParticle);
 
@@ -16,23 +28,11 @@ public:
 
     void PostUpdate();
 
-    Collider* getCollider();
-
     void Die();
 
-    void OnCollision(Collider* col) ;
+    void OnCollision(Collider* col);
 
-private:
-
-    Collider* col = nullptr;
-    SDL_Texture* texture = nullptr;
-    SDL_Rect renderRect;
-  
-public:
-    
-    bool pendingToDelete = false;
-    Particle* powerUpDestroyed = nullptr;
-    iPoint position;
+    Collider* getCollider() { return col; }
 };
 
 #endif

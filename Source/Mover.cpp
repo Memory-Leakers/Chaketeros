@@ -4,59 +4,14 @@ SDL_Rect* rectMover;
 
 Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 {
+	this->playerPos = playerPos; // Player pivot
+	this->level1Tile = level1Tile;
 	position.x = spawnPos.x;
 	position.y = spawnPos.y;
 	bounds.x = position.x;
 	bounds.y = position.y;
 	bounds.w = 16;
-	bounds.h = 16;
-	this->playerPos = playerPos;
-	this->level1Tile = level1Tile;
-
-	#pragma region Init Anim
-
-	// Anim Down
-	downAnim.PushBack({ 5,166,23,30 });//IDLE
-	downAnim.PushBack({ 37,166,23,30 });
-	downAnim.PushBack({ 5,166,23,30 });//IDLE
-	downAnim.PushBack({ 37,166,23,30 });
-	downAnim.speed = 0.08f;
-	downAnim.loop = true;
-	downAnim.hasIdle = false;
-
-	//Animation UP
-	upAnim.PushBack({ 69,166,23,30 });//IDLE
-	upAnim.PushBack({ 101,166,23,30 });
-	upAnim.PushBack({ 69,166,23,30 });//IDLE
-	upAnim.PushBack({ 101,166,23,30 });
-	upAnim.speed = 0.08f;
-	upAnim.loop = true;
-	upAnim.hasIdle = false;
-
-	//Animation RIGHT
-	rightAnim.PushBack({ 135,166,23,30 });//IDLE
-	rightAnim.PushBack({ 168,166,23,30 });
-	rightAnim.PushBack({ 135,166,23,30 });//IDLE
-	rightAnim.PushBack({ 201,166,23,30 });
-	rightAnim.speed = 0.08f;
-	rightAnim.loop = true;
-	rightAnim.hasIdle = false;
-
-	//Animation LEFT
-	leftAnim.PushBack({ 135,166,23,30 });//IDLE
-	leftAnim.PushBack({ 168,166,23,30 });
-	leftAnim.PushBack({ 135,166,23,30 });//IDLE
-	leftAnim.PushBack({ 201,166,23,30 });
-	leftAnim.speed = 0.08f;
-	leftAnim.loop = true;
-	leftAnim.hasIdle = false;
-
-	#pragma endregion
-
-	currentAnimation = &downAnim;
-	currentAnimation->loop = true;
-	currentAnimation->hasIdle = false;
-	currentAnimation->speed = 0.08f;
+	bounds.h = 16;	
 }
 
 Mover::~Mover() 
@@ -74,12 +29,59 @@ bool Mover::Start()
 
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 
-	// Init destroyed particle
+	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
+
+	#pragma region Init Anim
+
+	// Anim DOWN
+	downAnim.PushBack({ 5,166,23,30 });//IDLE
+	downAnim.PushBack({ 37,166,23,30 });
+	downAnim.PushBack({ 5,166,23,30 });//IDLE
+	downAnim.PushBack({ 37,166,23,30 });
+	downAnim.speed = 0.08f;
+	downAnim.loop = true;
+	downAnim.hasIdle = false;
+
+	// Animation UP
+	upAnim.PushBack({ 69,166,23,30 });//IDLE
+	upAnim.PushBack({ 101,166,23,30 });
+	upAnim.PushBack({ 69,166,23,30 });//IDLE
+	upAnim.PushBack({ 101,166,23,30 });
+	upAnim.speed = 0.08f;
+	upAnim.loop = true;
+	upAnim.hasIdle = false;
+
+	// Animation RIGHT
+	rightAnim.PushBack({ 135,166,23,30 });//IDLE
+	rightAnim.PushBack({ 168,166,23,30 });
+	rightAnim.PushBack({ 135,166,23,30 });//IDLE
+	rightAnim.PushBack({ 201,166,23,30 });
+	rightAnim.speed = 0.08f;
+	rightAnim.loop = true;
+	rightAnim.hasIdle = false;
+
+	//Animation LEFT
+	leftAnim.PushBack({ 135,166,23,30 });//IDLE
+	leftAnim.PushBack({ 168,166,23,30 });
+	leftAnim.PushBack({ 135,166,23,30 });//IDLE
+	leftAnim.PushBack({ 201,166,23,30 });
+	leftAnim.speed = 0.08f;
+	leftAnim.loop = true;
+	leftAnim.hasIdle = false;
+
+	// Current anim
+	currentAnimation = &downAnim;
+	currentAnimation->loop = true;
+	currentAnimation->hasIdle = false;
+	currentAnimation->speed = 0.08f;
+
+#pragma endregion
+
+	#pragma region Init destroy particle
 	dieParticle = new Particle(500.0f, 0.05f, texture);
 	dieParticle->anim.PushBack({ 232,166,23,30 });
 	dieParticle->anim.speed = 0.02f;
-
-	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
+	#pragma endregion
 
 	return true;
 }
@@ -330,8 +332,10 @@ int Mover::AStar()
 			// closeGrid[i].lastIndex apunta hacia el grid anterior del que esta ahora para evitar las bifurcacion
 			for (int i = closeGrid.size() -1 ; i >= 0; i = closeGrid[i].lastIndex)
 			{
+				// Draw path
 				iPoint tempPos = closeGrid[i].pos;
-				App->render->AddRectRenderQueue({ tempPos.x * 16 + 12,tempPos.y * 16 + 16,10,10 }, { 255, 0, 0, 255 });
+				App->render->AddRectRenderQueue({ tempPos.x * 16 + 12,tempPos.y * 16 + 18,10,10 }, { 255, 0, 0, 255 });
+				
 				instruction.push_back(closeGrid[i].dir);
 			}
 

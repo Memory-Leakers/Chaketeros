@@ -80,11 +80,11 @@ private:
 		FADE_IN
 	};
 
+	SDL_Rect screenRect;
+
 	FadeSteps currentStep = FADE_NONE;
 
 	int currentFrame = 0, maxFrames = 0;
-
-	SDL_Rect screenRect;
 
 	int newScene;
 };

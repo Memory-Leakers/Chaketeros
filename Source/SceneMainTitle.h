@@ -4,7 +4,6 @@
 #include "Scene.h"
 #include "External/SDL_image/include/SDL_image.h"
 
-
 class SceneMainTitle : public Scene
 {
 private:

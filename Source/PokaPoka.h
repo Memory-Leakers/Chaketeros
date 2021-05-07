@@ -3,53 +3,55 @@
 
 #include "ModuleEnemy.h"
 #include "Timer.h"
+
 class PokaPoka : public ModuleEnemy
 {
-	private:
-		int moveRand = rand() % 4;
-		int pC = 0;
-		iPoint nPoint;
-		Particle* dieParticle = nullptr;
-		iPoint* playerPos = nullptr;
-		void attack();
-		Timer attackTimer;
-		Timer moveTimer;
-		int attacking = 3;
-	protected:
-		
-		void die();
+private:
+	int moveRand = rand() % 4;
+	int pC = 0;
+	iPoint nPoint;
+	Particle* dieParticle = nullptr;
+	iPoint* playerPos = nullptr;
 
-		void movement();
+	Timer attackTimer;
+	Timer moveTimer;
+	int attacking = 3;
+
+private:
+
+	void attack();
+	void movement();
+	void die();
 	
-	public:
+public:
 		
-		PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile);
+	iPoint position;
 
-		~PokaPoka();
-		
-		bool Start();
+	SDL_Texture* texture = nullptr;
 
-		UpdateResult Update();
-		UpdateResult PostUpdate();
+	Animation* currentAnimation = nullptr;
 
-		void OnCollision(Collider* col);
+	Animation idleAnim;
+	Animation upAnim;
+	Animation downAnim;
+	Animation rightAnim;
+	Animation leftAnim;
+	Animation attackAnim;
 
-		iPoint position;
-		
-		int speed = 1; //Movement only
+	int speed = 1; //Movement only
 
-		SDL_Texture* texture = nullptr;
+public:
+	PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile);
 
-		Animation* currentAnimation = nullptr;
+	~PokaPoka();
 
-		Animation idleAnim;
+	bool Start();
 
-		Animation upAnim;
-		Animation downAnim;
-		Animation rightAnim;
-		Animation leftAnim;
+	UpdateResult Update();
+	UpdateResult PostUpdate();
 
-		Animation attackAnim;
+	void OnCollision(Collider* col);
+
 };
 
 #endif // !_POLAPOLA_H_

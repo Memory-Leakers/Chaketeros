@@ -4,7 +4,6 @@
 
 ModuleScene::ModuleScene()
 {
-
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
 	scenes[2] = new SceneSelectArea();
@@ -120,6 +119,7 @@ void ModuleScene::WillCollision(Collider* c1, Collider* c2)
 void ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//CleanUp current scene, change current scene (index), Start current Scene
 {
 	if (currentStep != FADE_NONE) return;
+
 	currentStep = FADE_IN;
 	maxFrames = frames;
 	currentFrame = 0;

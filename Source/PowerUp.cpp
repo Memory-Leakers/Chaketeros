@@ -10,6 +10,7 @@ PowerUp::PowerUp(iPoint position, SDL_Texture* tex, Particle* dieParticle) {
 
     this->position.x = position.x;
     this->position.y = position.y;
+
     col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::FIREPOWER, App->scene);
 }
 
@@ -21,12 +22,6 @@ void PowerUp::PostUpdate()
 {
     //App->render->DrawTexture(texture, position, &renderRect);
     App->render->AddTextureRenderQueue(texture, position, &renderRect, 1, position.y);
-}
-
-
-Collider* PowerUp::getCollider()
-{
-    return col;
 }
 
 void PowerUp::Die()
