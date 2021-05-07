@@ -126,12 +126,12 @@ UpdateResult PokaPoka::PostUpdate() {
 	if (isFlip)
 	{
 		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y, false, 180);
 	}
 	else
 	{
 		//App->render->DrawTexture(texture, tempPos, &rect);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y);
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;

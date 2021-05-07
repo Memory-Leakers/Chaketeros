@@ -64,7 +64,7 @@ void GlassCapsule::PostUpdate()
         tempPos.y -= 6;
        //App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
     }
-    App->render->AddTextureRenderQueue(texture, tempPos, &currentAnim->GetCurrentFrame(), 1);
+    App->render->AddTextureRenderQueue(texture, tempPos, &currentAnim->GetCurrentFrame(), 1, getPosition().y);
 }
 
 void GlassCapsule::Die()

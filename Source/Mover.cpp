@@ -77,7 +77,7 @@ bool Mover::Start()
 	// Init destroyed particle
 	dieParticle = new Particle(500.0f, 0.05f, texture);
 	dieParticle->anim.PushBack({ 232,166,23,30 });
-	dieParticle->anim.speed = 0.08f;
+	dieParticle->anim.speed = 0.02f;
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
@@ -175,12 +175,12 @@ UpdateResult Mover::PostUpdate() {
 	if (isFlip)
 	{
 		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, position.y, false, 180);
 	}
 	else
 	{
 		//App->render->DrawTexture(texture, tempPos, &rect);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, position.y);
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -330,6 +330,8 @@ int Mover::AStar()
 			// closeGrid[i].lastIndex apunta hacia el grid anterior del que esta ahora para evitar las bifurcacion
 			for (int i = closeGrid.size() -1 ; i >= 0; i = closeGrid[i].lastIndex)
 			{
+				iPoint tempPos = closeGrid[i].pos;
+				App->render->AddRectRenderQueue({ tempPos.x * 16 + 12,tempPos.y * 16 + 16,10,10 }, { 255, 0, 0, 255 });
 				instruction.push_back(closeGrid[i].dir);
 			}
 

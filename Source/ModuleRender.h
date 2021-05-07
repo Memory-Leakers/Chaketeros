@@ -5,6 +5,8 @@
 #include "Module.h"
 #include "External/SDL/include/SDL_Rect.h"
 #include "Point.h"
+#include <vector>
+using namespace std;
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -16,6 +18,7 @@ struct RenderObject
 	SDL_Rect renderRect;
 	SDL_RendererFlip flip;
 	float rotation;
+	int orderInLayer;
 };
 
 struct RenderRect
@@ -62,10 +65,13 @@ public:
 	// Destroys the rendering context
 	bool CleanUp() override;
 
-	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 1.0f);
+	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, int orderInlayer = 0, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 1.0f);
 
 	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 
+	void SortRenderObjects(vector<RenderObject>& obj);
+
+	#pragma region Obsolete
 	// Draws a texture to the screen
 	// Param texture	- A valid SDL Texture, validation checks are not performed
 	// Param x, y		- Position x,y in the screen (upper left axis)
@@ -88,6 +94,7 @@ public:
 	bool DrawRotateTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section = nullptr, bool flipHor = false, float rotation = 0, float speed = 1.0f);
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
+	#pragma endregion
 
 public:
 	// Rendering context used for any rendering action

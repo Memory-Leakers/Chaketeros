@@ -6,11 +6,13 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 
+#include <algorithm>
+
 #include "External/SDL/include/SDL_render.h"
 #include "External/SDL/include/SDL_scancode.h"
 
+// objects to render
 vector<vector<RenderObject>> layers;
-
 vector<RenderRect> rects;
 
 ModuleRender::ModuleRender() : Module()
@@ -40,6 +42,7 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
+	// init layers size
 	layers.resize(3);
 
 	return ret;
@@ -85,6 +88,12 @@ UpdateResult ModuleRender::Update()
 
 UpdateResult ModuleRender::PostUpdate()
 {
+	for (int i = 0; i < layers.size(); i++)
+	{
+		SortRenderObjects(layers[i]);
+	}
+
+	// Draw layers
 	for each (auto renderObj in layers[0])
 	{
 		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
@@ -97,6 +106,7 @@ UpdateResult ModuleRender::PostUpdate()
 		}
 		else
 		{
+			// Flips
 			SDL_RenderCopyEx(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect, renderObj.rotation, NULL, renderObj.flip);
 		}
 	}
@@ -104,6 +114,7 @@ UpdateResult ModuleRender::PostUpdate()
 	{
 		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
 	}
+	// Draw rects
 	for each (auto renderRect in rects)
 	{
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -114,11 +125,13 @@ UpdateResult ModuleRender::PostUpdate()
 	// Update the screen
 	SDL_RenderPresent(renderer);
 
+	// Clear layers
 	for (int i = 0; i < 3; i++)
 	{
 		layers[i].clear();
 	}
 
+	// Clear rects
 	rects.clear();
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -134,13 +147,14 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, bool isFlipH, float rotation, float scale, float speed)
+void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, int orderInlayer, bool isFlipH, float rotation, float scale, float speed)
 {
 	RenderObject renderObject;
 
 	renderObject.texture = texture;
 	renderObject.rotation = rotation;
 	renderObject.section = section;
+	renderObject.orderInLayer = orderInlayer;
 
 	renderObject.renderRect.x = (int)(-camera.x * speed) + pos.x * scale;
 	renderObject.renderRect.y = (int)(-camera.y * speed) + pos.y * scale;
@@ -184,7 +198,27 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, flo
 	rects.push_back(rec);
 }
 
+void ModuleRender::SortRenderObjects(vector<RenderObject>& obj)
+{
+	//sort(obj.begin(), obj.end(), CompareRenderObj);
 
+	int less = 0;
+	int objSize = obj.size();
+
+	for (int i = 0; i < objSize; ++i)
+	{
+		less = i;
+		for (int j = i; j < objSize; ++j)
+		{
+			if (obj[j].orderInLayer < obj[less].orderInLayer)
+			{
+				swap(obj[j], obj[less]);
+			}
+		}
+	}
+}
+
+#pragma region Obsolete
 
 // Draw to screen
 bool ModuleRender::DrawTexture(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed)
@@ -346,3 +380,5 @@ bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float sp
 
 	return ret;
 }
+
+#pragma endregion

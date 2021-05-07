@@ -99,7 +99,7 @@ void Bomb::PostUpdate()
 	if(!pendingToDelete)
 	{
 		//App->render->DrawTexture(texture, getPosition(), &currentAnim->GetCurrentFrame());
-		App->render->AddTextureRenderQueue(texture, getPosition(), &currentAnim->GetCurrentFrame(), 1);
+		App->render->AddTextureRenderQueue(texture, getPosition(), &currentAnim->GetCurrentFrame(), 1, getPosition().y);
 	}
 }
 

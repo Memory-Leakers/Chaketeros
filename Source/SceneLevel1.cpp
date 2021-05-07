@@ -158,11 +158,11 @@ void SceneLevel1::CreateScene()
 				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, tileMap);
 				break;
 			case 6:
-				renderExceptionPos[l++] = k;
+				//renderExceptionPos[l++] = k;
 				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap);
 				break;
 			case 10:
-				renderExceptionPos[l++] = k;
+				//renderExceptionPos[l++] = k;
 				glassCapsuleIndex = k;
 				sceneObstacles[k++] = new GlassCapsule(tileMap->getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
@@ -259,9 +259,9 @@ bool SceneLevel1::Start()
 
 	//	Spawn enemies
 	enemy[3] = new PokaPoka(200, 160, &bomberman->position, tileMap);
-	enemy[1] = new Mover({ 168,64 }, &bomberman->position, tileMap);
+	enemy[1] = new Mover({ 168,64 }, &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
-	enemy[0] = new Mover({ 72,160 }, &bomberman->position, tileMap);
+	enemy[0] = new Mover({ 72,160 }, &bomberman->pivotPoint, tileMap);
 
 	//Start Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)
@@ -566,9 +566,11 @@ bool SceneLevel1::Update()
 
 bool SceneLevel1::PostUpdate()
 {
-	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0);
-
+	
 	#pragma region Drawing
+
+	// Draw Map
+	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
 
 	//Draw Stone
 	for (int i = 0; i < MAX_STONE; ++i)
@@ -597,95 +599,22 @@ bool SceneLevel1::PostUpdate()
 		}
 	}
 
-	#pragma endregion
-
-	#pragma region RenderExeption
-	// Get renderExpion
-	int ExeptionRenderOrder[4][2];
-
-	for (int i = 0; i < 3; ++i)
-	{
-		if (sceneObstacles[renderExceptionPos[i]] != nullptr)
-		{
-			ExeptionRenderOrder[i][0] = i;
-			ExeptionRenderOrder[i][1] = sceneObstacles[renderExceptionPos[i]]->getPosition().y;
-		}
-		else
-		{
-			ExeptionRenderOrder[i][0] = -1;
-		}
-	}
-
-	// Sort render exeption
-	ExeptionRenderOrder[3][0] = 3;
 	if (bomberman != nullptr)
 	{
-		ExeptionRenderOrder[3][1] = bomberman->position.y;
+		bomberman->PostUpdate();
 	}
 
-	int temp = 0;
-	int tempArr[] = { ExeptionRenderOrder[0][0],ExeptionRenderOrder[0][1] };
-
-	for (int j = 0; j < 3; ++j)
-	{
-		memcpy(tempArr, ExeptionRenderOrder[j], sizeof(ExeptionRenderOrder[j]));
-		temp = j;
-		for (int i = j; i < 4; ++i)
-		{
-			if (ExeptionRenderOrder[i][1] < tempArr[1])
-			{
-				memcpy(ExeptionRenderOrder[temp], ExeptionRenderOrder[i], sizeof(ExeptionRenderOrder[i]));
-				memcpy(ExeptionRenderOrder[i], tempArr, sizeof(tempArr));
-				memcpy(tempArr, ExeptionRenderOrder[temp], sizeof(ExeptionRenderOrder[temp]));
-				temp = i;
-			}
-		}
-	}
-
-
-	//Render exeptions
-	for (int i = 0; i < 4; ++i)
-	{
-		if (ExeptionRenderOrder[i][0] != -1)
-		{
-			if (ExeptionRenderOrder[i][0] == 3)
-			{
-				if (bomberman != nullptr)
-				{
-					bomberman->PostUpdate();
-				}
-			}
-			else
-			{
-				if (sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]] != nullptr)
-				{
-					sceneObstacles[renderExceptionPos[ExeptionRenderOrder[i][0]]]->PostUpdate();
-				}
-			}
-		}
-	}
-
-	// Render PowerUp
-	for (int i = 0; i < 3; ++i)
-	{
-
-		if (powerUps[i] != nullptr)
-		{
-			powerUps[i]->PostUpdate();
-		}
-
-	}
 	#pragma endregion
 
 	#pragma region DrawUI and Foreground
 	
 	// Draw FrontGround
 	//App->render->DrawTexture(texFG, { 0,20 }, nullptr);
-	App->render->AddTextureRenderQueue(texFG, { 0,0 }, nullptr, 2);
+	App->render->AddTextureRenderQueue(texFG, { 0,0 }, nullptr, 1, 100);
 
 	// Draw UI
 	//App->render->DrawTexture(texUI, 0, 0, &rectUI);
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &rectUI, 2);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, & rectUI, 2, 0);
 
 	#pragma endregion
 

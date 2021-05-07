@@ -98,12 +98,12 @@ bool SceneMainTitle::PostUpdate()
 	App->render->DrawTexture(texMainMenu, { 56,200 }, &menuBottomRect);
 	App->render->DrawTexture(texMenuArrow, *currentArrowPos);*/
 
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuBackgroundRect, 2);
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuStarsBackgroundRect, 2);
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuTitleRect, 2);
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,8 }, &menuOptionsRect, 2);
-	App->render->AddTextureRenderQueue(texMainMenu, { 56,200 }, &menuBottomRect, 2);
-	App->render->AddTextureRenderQueue(texMenuArrow, *currentArrowPos, nullptr, 2);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuBackgroundRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuStarsBackgroundRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuTitleRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,8 }, &menuOptionsRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMainMenu, { 56,200 }, &menuBottomRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMenuArrow, *currentArrowPos, nullptr, 2, 0);
 
 	return true;
 }

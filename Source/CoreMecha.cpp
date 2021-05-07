@@ -34,11 +34,11 @@ void CoreMecha::Die()
 
 void CoreMecha::PostUpdate()
 {
-	iPoint temp = this->getPosition();
+	iPoint temp = getPosition();
 	temp.y -= 10;
 
 	//App->render->DrawTexture(texture, temp, &renderRect);
-	App->render->AddTextureRenderQueue(texture, temp, &renderRect, 1);
+	App->render->AddTextureRenderQueue(texture, temp, &renderRect, 1, getPosition().y);
 }
 
 void CoreMecha::OnCollision(Collider* col)

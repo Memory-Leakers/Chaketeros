@@ -55,12 +55,12 @@ bool SceneIntro::PostUpdate()
 	{
 		SDL_Rect temp = { 0,0,512,512 };
 		//App->render->DrawTextureFreeScaled(image1, { 0,-100 }, 1.5f);
-		App->render->AddTextureRenderQueue(image1, { 0,-100 }, nullptr, 2, false, 0, 1.5f);
+		App->render->AddTextureRenderQueue(image1, { 0,-100 }, nullptr, 2, 0, false, 0, 1.5f);
 	}
 	else 
 	{
 		//App->render->DrawTextureFreeScaled(image2, { 55,20 }, 1.2f);
-		App->render->AddTextureRenderQueue(image2, { 55,20 }, nullptr, 2, false, 0, 1.2f);
+		App->render->AddTextureRenderQueue(image2, { 55,20 }, nullptr, 2, 0, false, 0, 1.2f);
 	}
 
 	//text->showText(App->render->renderer, 50, 50, "Hello world", text->getFonts(80), text->getColors(2));
