@@ -5,14 +5,6 @@
 ModuleScene::ModuleScene()
 {
 
-	if (TTF_Init() != 0)
-	{
-		SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
-	}
-	else {
-		SDL_Log("TTF Intitialized");
-	}
-
 	scenes[0] = new SceneIntro();
 	scenes[1] = new SceneMainTitle();
 	scenes[2] = new SceneSelectArea();
@@ -108,7 +100,6 @@ UpdateResult ModuleScene::PostUpdate()
 		float fadeRatio = (float)currentFrame / (float)maxFrames;
 
 		App->render->AddRectRenderQueue(screenRect, { 0,0,0,(Uint8)(fadeRatio * 255.0f) });
-
 		//SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
 		//SDL_RenderFillRect(App->render->renderer, &screenRect);
 	}
@@ -147,8 +138,6 @@ bool ModuleScene::CleanUp()
 			scenes[i] = nullptr;
 		}
 	}
-
-	TTF_Quit();
 
 	return true;
 }

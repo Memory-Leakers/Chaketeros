@@ -32,8 +32,6 @@ enum SCENE_NUM
 	GAME_OVER_SCENE
 };
 
-
-
 class ModuleScene : public Module
 {
 public:
@@ -88,8 +86,7 @@ private:
 
 	SDL_Rect screenRect;
 
-	uint newScene;
-
+	int newScene;
 };
 
 #endif // __MODULESCENE_H__

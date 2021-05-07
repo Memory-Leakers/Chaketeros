@@ -180,11 +180,6 @@ void SceneGameOver::DrawGameOverScore()
 
 bool SceneGameOver::CleanUp(bool finalCleanUp)
 {
-	if (finalCleanUp)
-	{
-		delete text;
-	}
-
 	digitVec.clear();
 	digitVec.shrink_to_fit();
 

@@ -118,9 +118,6 @@
     <ClInclude Include="SceneLevel1.h">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>Source Files\Util\Obstacle</Filter>
     </ClInclude>
@@ -245,9 +242,6 @@
     </ClCompile>
     <ClCompile Include="SceneLevel1.cpp">
       <Filter>Source Files\Util\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Util\Obstacle</Filter>

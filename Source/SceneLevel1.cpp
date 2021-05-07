@@ -766,10 +766,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
 	}
-	else
-	{
-		delete text;
-	}
 	#pragma endregion
 
 	#pragma region Delete Stones, Obstacles and PowerUps

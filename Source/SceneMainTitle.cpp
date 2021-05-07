@@ -110,11 +110,6 @@ bool SceneMainTitle::PostUpdate()
 
 bool SceneMainTitle::CleanUp(bool finalCleanUp)
 {
-	if (finalCleanUp)
-	{
-		delete text;
-	}
-
 	Mix_HaltMusic();
 
 	if (currentArrowPos != nullptr)

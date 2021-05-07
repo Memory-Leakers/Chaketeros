@@ -128,7 +128,6 @@
     <ClInclude Include="SceneSelectArea.h" />
     <ClInclude Include="SceneSelectStage.h" />
     <ClInclude Include="Stone.h" />
-    <ClInclude Include="Text.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="YellowFlower.h" />
@@ -169,7 +168,6 @@
     <ClCompile Include="SceneSelectArea.cpp" />
     <ClCompile Include="SceneSelectStage.cpp" />
     <ClCompile Include="Stone.cpp" />
-    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="YellowFlower.cpp" />

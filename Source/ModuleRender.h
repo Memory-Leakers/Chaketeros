@@ -1,11 +1,13 @@
 #ifndef __MODULERENDER_H__
 #define __MODULERENDER_H__
 
-#include "Text.h"
 #include "Module.h"
 #include "External/SDL/include/SDL_Rect.h"
+#include "External/SDL_image/include/SDL_image.h"
 #include "Point.h"
 #include <vector>
+
+
 using namespace std;
 
 struct SDL_Texture;
