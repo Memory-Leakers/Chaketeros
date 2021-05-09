@@ -1,3 +1,5 @@
+#pragma region Includes
+
 #include "SceneLevel1.h"
 
 #include "Collider.h"
@@ -20,7 +22,11 @@
 #include <vector>
 #include <cstring>
 
-#include "External/SDL_mixer/include/SDL_mixer.h"
+#include "External/SDL_mixer/include/SDL_mixer.h";
+
+#pragma endregion
+
+#pragma region Variables
 
 // Player
 Player* bomberman = nullptr;
@@ -41,12 +47,13 @@ iPoint winPosition = { 120, 96 };
 
 SDL_Rect rectUI = { 0,0,256,23 };
 
+#pragma endregion
+
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
 	srand(time(NULL));
 	score = 0;
-
 }
 
 SceneLevel1::~SceneLevel1()
@@ -276,7 +283,6 @@ bool SceneLevel1::Start()
 	}
 
 #pragma endregion
-
 
 	LoadAsset();
 

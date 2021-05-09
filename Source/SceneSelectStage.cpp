@@ -13,7 +13,13 @@ SceneSelectStage::~SceneSelectStage()
 
 bool SceneSelectStage::Start()
 {
-	//cout << "Start Select Stage" << endl;
+	LOG("Load SceneSelectStage");
+
+	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/StageMap.png");
+	texStages = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Stages.png");
+	texUISelect = App->textures->Load("Assets/Images/Sprites/UI_Sprites/StageSelectUI.png");
+	texStoneCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/FragmentsWithoutTheMachine.png");
+
 	return true;
 }
 
@@ -31,6 +37,6 @@ bool SceneSelectStage::PostUpdate()
 
 bool SceneSelectStage::CleanUp(bool finalCleanUp)
 {
-	//cout << "CleanUp Select Stage" << endl;
+	LOG("Clean Up SceneSelectStage");
 	return true;
 }

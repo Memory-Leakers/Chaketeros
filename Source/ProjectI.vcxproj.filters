@@ -133,9 +133,6 @@
     <ClInclude Include="Mover.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="StageScene.h">
-      <Filter>Source Files\Util\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
@@ -263,9 +260,6 @@
     </ClCompile>
     <ClCompile Include="Mover.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="StageScene.cpp">
-      <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
       <Filter>Source Files\Util\Other</Filter>

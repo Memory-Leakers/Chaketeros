@@ -2,9 +2,36 @@
 #define _SCENESELECTSTAGE_H_
 
 #include "Scene.h"
+#include "Application.h"
+#include "SDL_image/include/SDL_image.h"
 
 class SceneSelectStage : public Scene
 {
+private:
+	SDL_Texture* texMap = nullptr;
+	SDL_Texture* texUISelect = nullptr;
+	SDL_Texture* texStages = nullptr;
+	SDL_Texture* texStoneCoin = nullptr;
+
+	SDL_Rect stagesRect[4]
+	{
+		{0, 0, 77,   63}, //Stage1
+		{0, 64, 77,  63}, //Stage2
+		{0, 128, 77, 63}, //Sage3
+		{0, 192, 77, 63}  //Exit
+	};
+
+	SDL_Rect stageSelect[2] = 
+	{
+		{118, 3, 112, 81}, //SelectMap
+		{3, 88, 30,   20}, //SelectUI
+
+		//Respect pos
+		//select1(arriba iz) : 130,34
+		//select2(abajo dr) : 181,58
+		//select3(abajo iz) : 138,54
+	};
+
 public:
 	SceneSelectStage();
 
