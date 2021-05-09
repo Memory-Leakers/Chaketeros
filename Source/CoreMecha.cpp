@@ -13,6 +13,8 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle
 	this->dieParticle = *destroyed;
 
 	renderRect = { 0, 0, 16, 26 };
+
+	coreMechaDestroyedSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_OrbsDestroyedSound.wav");
 }
 
 void CoreMecha::Die()
@@ -45,7 +47,7 @@ void CoreMecha::OnCollision(Collider* col)
 {
 	if (col->type == Type::EXPLOSION)
 	{
-		App->audio->PlaySound(SFX::ORBS_DESTROYED_SFX, 0);
+		App->audio->PlaySound(coreMechaDestroyedSFX, 0);
 		Die();
 	}
 }

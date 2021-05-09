@@ -12,6 +12,8 @@ PowerUp::PowerUp(iPoint position, SDL_Texture* tex, Particle* dieParticle) {
     this->position.y = position.y;
 
     col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::FIREPOWER, App->scene);
+
+    pickPowerUpSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Objects_and_PowerUps_Sounds/G_PickPowerUpSound.wav");
 }
 
 PowerUp::~PowerUp()
@@ -35,7 +37,7 @@ void PowerUp::OnCollision(Collider* col)
 {
     if (col->type == Type::PLAYER)
     {
-        App->audio->PlaySound(SFX::PICK_POWERUP_SFX, 0);
+        App->audio->PlaySound(pickPowerUpSFX, 0);
         pendingToDelete = true;
         this->col->pendingToDelete = true;
     }

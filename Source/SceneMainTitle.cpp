@@ -37,6 +37,10 @@ bool SceneMainTitle::Start()
 	currentArrowPos = &arrowPosition[0];
 	#pragma endregion
 
+
+	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
+	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
+
 	return true;
 }
 
@@ -47,7 +51,7 @@ bool SceneMainTitle::Update()
 	//Check Input to change Arrow Position
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
+		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentArrowPos == &arrowPosition[2])
 		{
 			currentArrowPos = &arrowPosition[0];
@@ -59,7 +63,7 @@ bool SceneMainTitle::Update()
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
+		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentArrowPos == &arrowPosition[0])
 		{
 			currentArrowPos = &arrowPosition[2];
@@ -78,7 +82,7 @@ bool SceneMainTitle::Update()
 		
 		if (currentArrowPos == &arrowPosition[0])
 		{
-			App->audio->PlaySound(SFX::SELECT_SFX, 0);
+			App->audio->PlaySound(selectSFX, 0);
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
 			
 		}
@@ -91,13 +95,6 @@ bool SceneMainTitle::Update()
 bool SceneMainTitle::PostUpdate()
 {
 	//Drawing Textures
-	/*App->render->DrawTexture(texMainMenu, { 0,0 }, &menuBackgroundRect);
-	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuStarsBackgroundRect);
-	App->render->DrawTexture(texMainMenu, { 0,0 }, &menuTitleRect);
-	App->render->DrawTexture(texMainMenu, { 0,8 }, &menuOptionsRect);
-	App->render->DrawTexture(texMainMenu, { 56,200 }, &menuBottomRect);
-	App->render->DrawTexture(texMenuArrow, *currentArrowPos);*/
-
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuBackgroundRect, 2, 0);
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuStarsBackgroundRect, 2, 0);
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &menuTitleRect, 2, 0);
@@ -112,11 +109,16 @@ bool SceneMainTitle::CleanUp(bool finalCleanUp)
 {
 	Mix_HaltMusic();
 
+	if (!finalCleanUp)
+	{
+		App->textures->CleanUpScene();
+		App->audio->CleanUpScene();
+	}
+
 	if (currentArrowPos != nullptr)
 	{
 		currentArrowPos = nullptr;
 	}
-
 
 	cout << "CleanUp Main Title" << endl;
 	return true;

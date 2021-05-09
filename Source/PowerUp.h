@@ -14,7 +14,7 @@ private:
     Collider* col = nullptr;
     SDL_Texture* texture = nullptr;
     SDL_Rect renderRect;
-
+    uint pickPowerUpSFX;
 public:
 
     bool pendingToDelete = false;

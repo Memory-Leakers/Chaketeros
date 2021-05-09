@@ -35,6 +35,8 @@ private:
 	int pUpKick = 0;
 	int pUpVest = 0;
 
+	uint extraCoinsStepSFX, deathSFX, gameOverSFX;
+
 	SDL_Rect bounds;
 
 	bool isFlip = false;

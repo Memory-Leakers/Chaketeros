@@ -22,6 +22,8 @@ private:
 	iPoint arrowPosition[3];
 	iPoint* currentArrowPos;
 
+	uint changeSelectSFX, selectSFX;
+
 public:
 
 	SceneMainTitle();
