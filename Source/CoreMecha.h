@@ -20,6 +20,8 @@ private:
 
 	Tile* currentTileMap;
 
+	uint coreMechaDestroyedSFX;
+
 public:
 	//Constructors
 	CoreMecha();

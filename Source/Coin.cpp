@@ -17,6 +17,8 @@ Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, posit
 	idle.loop = true;
 	#pragma endregion
 
+	pickCoinSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_PickCoinSound.wav");
+
 	currentAnim = &idle;
 }
 
@@ -35,7 +37,7 @@ void Coin::OnCollision(Collider* c1)
 {
 	if (c1->type == Type::PLAYER)
 	{
-		App->audio->PlaySound(SFX::PICK_COIN_SFX, 0);
+		App->audio->PlaySound(pickCoinSFX, 0);
 
 		App->scene->currentScene->score += 100;
 

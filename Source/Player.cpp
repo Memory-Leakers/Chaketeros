@@ -87,7 +87,9 @@ bool Player::Start()
 	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
 
-	
+	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
+	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
+	gameOverSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_GameOverSound.wav");
 
 	return ret;
 }
@@ -137,7 +139,7 @@ UpdateResult Player::Update()
 		if (playerTimer.getDeltaTime() >= 0.5f) {
 
 			if (ExtraPoints == true) {
-				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+				App->audio->PlaySound(extraCoinsStepSFX, 0);
 
 			}
 			playerTimer.Reset();
@@ -185,7 +187,7 @@ UpdateResult Player::Update()
 		if (playerTimer.getDeltaTime() >= 0.5f) {
 
 			if (ExtraPoints == true) {
-				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+				App->audio->PlaySound(extraCoinsStepSFX, 0);
 
 			}
 			playerTimer.Reset();
@@ -234,7 +236,7 @@ UpdateResult Player::Update()
 		if (playerTimer.getDeltaTime() >= 0.5f) {
 
 			if (ExtraPoints == true) {
-				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+				App->audio->PlaySound(extraCoinsStepSFX, 0);
 
 			}
 			playerTimer.Reset();
@@ -281,7 +283,7 @@ UpdateResult Player::Update()
 		if (playerTimer.getDeltaTime() >= 0.5f) {
 
 			if (ExtraPoints == true) {
-				App->audio->PlaySound(SFX::EXTRA_COINS_STEP_SFX, 0);
+				App->audio->PlaySound(extraCoinsStepSFX, 0);
 
 			}
 			playerTimer.Reset();
@@ -390,8 +392,8 @@ void Player::OnCollision(Collider* col)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
 		{
-			App->audio->PlaySound(SFX::DEATH_SFX, 0);
-			App->audio->PlaySound(SFX::GAME_OVER_SFX, 0);
+			App->audio->PlaySound(deathSFX, 0);
+			App->audio->PlaySound(gameOverSFX, 0);
 			pendingToDelete = true;
 
 			// Create die particle

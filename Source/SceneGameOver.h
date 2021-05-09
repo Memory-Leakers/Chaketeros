@@ -35,6 +35,8 @@ private:
 
 	int totalDigits;	//Total digits of the Score number
 
+	uint changeSelectSFX, selectSFX;
+
 	bool pressedContinue;	//Boolean to control the changing scenes logic
 
 public:
@@ -56,8 +58,6 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
-
-	void DrawGameOverScore();
 
 };
 

@@ -33,28 +33,6 @@ bool ModuleAudio::Init() {	//Default Initialization of the audio libraries. used
 		ret = false;
 	}
 
-
-	LOG("Loading SFX");
-
-	sounds[0] = Mix_LoadWAV("Assets/Audio/SFX/Intro_Sounds/INT_SFX.wav");
-	sounds[1] = Mix_LoadWAV("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
-	sounds[2] = Mix_LoadWAV("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
-	sounds[3] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
-	sounds[4] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
-	sounds[5] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
-	sounds[6] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_GameOverSound.wav");
-	sounds[7] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_LevelCompleteSound.wav");
-	sounds[8] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraCoinsBackgroundSound.wav");
-	sounds[9] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
-	sounds[10] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_PickCoinSound.wav");
-	sounds[11] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Objects_and_PowerUps_Sounds/G_PickPowerUpSound.wav");
-	sounds[12] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_CollisionWithBombInSound.wav");
-	sounds[13] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_RunFromBombSound.wav");
-	sounds[14] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_OneMinuteLeft.wav");
-	sounds[15] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_RanOutOfTime.wav");
-	sounds[16] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_OrbsDestroyedSound.wav");
-	sounds[17] = Mix_LoadWAV("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_WhistlingEndSound.wav");
-
 	return ret;
 
 }
@@ -153,8 +131,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time) {	//Loads and ret
 	return ret;
 }
 
-uint ModuleAudio::LoadSound(const char* path)
-{
+uint ModuleAudio::LoadSound(const char* path){
 	uint ret = 0;
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
 

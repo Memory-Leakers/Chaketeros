@@ -83,6 +83,8 @@ private:
 	//Player lifes
 	int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
 
+	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
+
 	//	Counter for Sound Effects
 	float BGFX_CoinsCounter = 0;
 

@@ -19,6 +19,8 @@ private:
 
 	int attack = 1;
 
+	uint explosionSFX, putBombSFX;
+
 	// Animacion actual de la bomba
 	Animation* currentAnim = nullptr;
 

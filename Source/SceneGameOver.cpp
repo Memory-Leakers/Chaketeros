@@ -63,6 +63,9 @@ bool SceneGameOver::Start()
 	//Convert current score to Textures
 	
 	gameOverScore.Start();
+
+	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
+	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
 	
 	return true;
 }
@@ -76,7 +79,7 @@ bool SceneGameOver::Update()
 	#pragma region Input Pointer Position Logic
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
+		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentPointerPos == &pointerPos[1])
 		{
 			currentPointerPos = &pointerPos[0];
@@ -88,7 +91,7 @@ bool SceneGameOver::Update()
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::CHANGE_SELECT_SFX, 0);
+		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentPointerPos == &pointerPos[0])
 		{
 			currentPointerPos = &pointerPos[1];
@@ -103,7 +106,7 @@ bool SceneGameOver::Update()
 	#pragma region Select Option Logic
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-		App->audio->PlaySound(SFX::SELECT_SFX, 0);
+		App->audio->PlaySound(selectSFX, 0);
 
 		if (currentPointerPos == &pointerPos[0])
 		{
@@ -149,37 +152,13 @@ bool SceneGameOver::PostUpdate()
 	return true;
 }
 
-void SceneGameOver::DrawGameOverScore()
-{	
-	for (int i = 0; i < 10; i++)
-	{
-		numRec[i] = { 14 * i, 64, 14, 15 };
-	}
-
-	stack<int> digits;
-
-	int currentScore = score;
-
-	while (currentScore > 0)
-	{
-		int digit = currentScore % 10;
-		currentScore /= 10;
-		digits.push(digit);
-	}
-
-	totalDigits = digits.size();
-
-	while (!digits.empty())
-	{
-		int digit = digits.top();
-		digitVec.push_back(digit);
-		digits.pop();
-		cout << digit << endl;
-	}	
-}
-
 bool SceneGameOver::CleanUp(bool finalCleanUp)
 {
+	if (!finalCleanUp)
+	{
+		App->textures->CleanUpScene();
+		App->audio->CleanUpScene();
+	}
 	digitVec.clear();
 	digitVec.shrink_to_fit();
 

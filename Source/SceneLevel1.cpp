@@ -134,6 +134,12 @@ void SceneLevel1::LoadAsset()
 	moverDestroyed = new Particle(500.0f, 0.1f, texEnemies);
 	moverDestroyed->anim.PushBack({ 232,166,23,30 });
 
+	//Load Sounds
+	whistlingSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_WhistlingEndSound.wav");
+	oneMinuteSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_OneMinuteLeft.wav");
+	levelCompleteSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_LevelCompleteSound.wav");
+	extraCoinsBckgSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraCoinsBackgroundSound.wav");
+
 	#pragma endregion
 }
 
@@ -327,7 +333,7 @@ bool SceneLevel1::PreUpdate()
 	//One minute left SFX condition
 	if (minutes == 0 && currentSecond == 59)
 	{
-		App->audio->PlaySound(SFX::ONE_MINUTE_LEFT_SFX, 0);
+		App->audio->PlaySound(oneMinuteSFX, 0);
 	}
 
 	#pragma region Runs out of time Condition
@@ -335,7 +341,7 @@ bool SceneLevel1::PreUpdate()
 	{
 		if (isExtraPointsActive && !isChangingScene)
 		{
-			App->audio->PlaySound(SFX::END_WHISTLING_SFX, 0);
+			App->audio->PlaySound(whistlingSFX, 0);
 			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120, score);
 			isChangingScene = true;
 		}
@@ -488,7 +494,7 @@ bool SceneLevel1::Update()
 		if (bomberman->position == winPosition && isLevelCompleted && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
-			App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
+			App->audio->PlaySound(levelCompleteSFX, 0);
 			minutes = 0;
 			if (currentSecond > 15)
 			{
@@ -513,7 +519,7 @@ bool SceneLevel1::Update()
 				}
 			}
 			if (currentSecond == 0) {
-				App->audio->PlaySound(SFX::LEVEL_COMPLETE_SFX, 0);
+				App->audio->PlaySound(levelCompleteSFX, 0);
 			}
 		}
 	}
@@ -529,7 +535,7 @@ bool SceneLevel1::Update()
 		if (BGFX_CoinsCounter >= 0.6f)
 		{
 			// Play BG_SFX
-			App->audio->PlaySound(SFX::EXTRA_COINS_BCKGR_SFX, 0);
+			App->audio->PlaySound(extraCoinsBckgSFX, 0);
 			// Reset counter
 			BGFX_CoinsCounter = 0;
 		}
@@ -765,6 +771,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		App->collisions->CleanUpScene();
 		App->textures->CleanUpScene();
 		App->particle->CleanUpScene();
+		App->audio->CleanUpScene();
 	}
 	#pragma endregion
 

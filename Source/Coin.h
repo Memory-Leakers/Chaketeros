@@ -8,6 +8,7 @@ class Coin : public Obstacle
 private:
 	Animation idle;
 	Animation* currentAnim = nullptr;
+	uint pickCoinSFX;
 public:
 
 	~Coin();

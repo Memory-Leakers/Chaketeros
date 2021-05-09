@@ -29,8 +29,11 @@ Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
 
+	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
+	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
+
 	// SFX Put bomb
-	App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
+	App->audio->PlaySound(putBombSFX, 0);
 }
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
@@ -65,8 +68,11 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
 
+	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
+	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
+
 	// SFX Put bomb
-	App->audio->PlaySound(SFX::PUT_BOMB_SFX, 0);
+	App->audio->PlaySound(putBombSFX, 0);
 }
 
 Bomb::~Bomb()
@@ -88,7 +94,7 @@ void Bomb::Update()
 
 		if (((currentCountTime - startCountTime) / timeOffset) >= explotionTime)
 		{
-			App->audio->PlaySound(SFX::EXPLOSION_BOMB_SFX, 0);
+			App->audio->PlaySound(explosionSFX, 0);
 			Die();
 		}
 	}
