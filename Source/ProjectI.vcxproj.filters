@@ -29,6 +29,9 @@
     <Filter Include="ExternalCode">
       <UniqueIdentifier>{9e4615fd-c3c7-45fe-98aa-51c57e9ebab0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util\Other">
+      <UniqueIdentifier>{e20bc77c-0c24-4c71-8cdb-eccbcb0a3900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -55,20 +58,8 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleAudio.h">
       <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="ModuleCollisions.h">
       <Filter>Source Files\Modules</Filter>
@@ -84,15 +75,6 @@
     </ClInclude>
     <ClInclude Include="ModuleEnemyPool.h">
       <Filter>Source Files\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="MemLeaks.h">
       <Filter>Source Files\Application</Filter>
@@ -145,20 +127,41 @@
     <ClInclude Include="PowerUp.h">
       <Filter>Source Files\Util\PowerUp</Filter>
     </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="PokaPoka.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Mover.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Source Files\Util</Filter>
+    <ClInclude Include="StageScene.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
     <ClInclude Include="NumText.h">
-      <Filter>Source Files\Util</Filter>
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,14 +192,8 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleAudio.cpp">
       <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCollisions.cpp">
       <Filter>Source Files\Modules</Filter>
@@ -212,15 +209,6 @@
     </ClCompile>
     <ClCompile Include="ModuleEnemyPool.cpp">
       <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Util\Scenes</Filter>
@@ -270,20 +258,35 @@
     <ClCompile Include="PowerUp.cpp">
       <Filter>Source Files\Util\PowerUp</Filter>
     </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
     <ClCompile Include="PokaPoka.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Mover.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files\Util</Filter>
+    <ClCompile Include="StageScene.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
     <ClCompile Include="NumText.cpp">
-      <Filter>Source Files\Util</Filter>
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -57,18 +57,18 @@ void SceneLevel1::LoadAsset()
 {
 	#pragma region Load Sprites
 
-	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/map.png");
-	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/mapEnv.png");
+	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Map.png");
+	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/MapEnv.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texStone = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Stone.png");
-	texGlassCapsule = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Fragments_with_machine.png");
-	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Yellow_Flower.png");
+	texGlassCapsule = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/FragmentsWithMachine.png");
+	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/YellowFlower.png");
 	texEnemies = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 	texItemDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Coins.png");
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
-	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Core_Mecha.png");
+	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/CoreMecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
 	#pragma endregion

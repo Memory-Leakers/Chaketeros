@@ -1,15 +1,14 @@
-#ifndef _SCENESELECTAREA_H_
-#define _SCENESELECTAREA_H_
+#ifndef _STAGESCENE_H_
+#define _STAGESCENE_H_
 
 #include "Scene.h"
 
-class SceneSelectArea : public Scene
+class StageScene : public Scene
 {
-public:
-	SceneSelectArea();
+	StageScene();
 
 	// Destructor
-	~SceneSelectArea();
+	~StageScene();
 
 	// Called when the module is activated
 	// Loads the necessary textures for the map background
@@ -26,7 +25,5 @@ public:
 	bool CleanUp(bool finalCleanUp = true) override;
 };
 
-
-#endif // !_SCENESELECTAREA_H_
-
+#endif // !_STAGESCENE_H_
 

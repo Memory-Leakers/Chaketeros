@@ -17,7 +17,6 @@
 #include "ModuleAudio.h"
 #include "Player.h"
 
-
 #define SCENES_NUM 6
 
 struct SDL_Texture;

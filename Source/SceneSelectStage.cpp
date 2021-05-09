@@ -13,24 +13,24 @@ SceneSelectStage::~SceneSelectStage()
 
 bool SceneSelectStage::Start()
 {
-	cout << "Start Select Stage" << endl;
+	//cout << "Start Select Stage" << endl;
 	return true;
 }
 
 bool SceneSelectStage::Update()
 {
-	cout << "Update Select Stage" << endl;
+	//cout << "Update Select Stage" << endl;
 	return true;
 }
 
 bool SceneSelectStage::PostUpdate()
 {
-	cout << "PostUpdate Select Stage" << endl;
+	//cout << "PostUpdate Select Stage" << endl;
 	return true;
 }
 
 bool SceneSelectStage::CleanUp(bool finalCleanUp)
 {
-	cout << "CleanUp Select Stage" << endl;
+	//cout << "CleanUp Select Stage" << endl;
 	return true;
 }
