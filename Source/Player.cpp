@@ -92,7 +92,6 @@ bool Player::Start()
 	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
 
-
 	return ret;
 }
 
@@ -101,7 +100,7 @@ UpdateResult Player::Update()
 	int speedX = 0;
 	int speedY = 0;
 
-	
+	#pragma region Movements
 
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
@@ -136,6 +135,8 @@ UpdateResult Player::Update()
 				position.x += speed;
 			}
 		}
+
+		// Special SFX
 		playerTimer.Update();
 
 		if (playerTimer.getDeltaTime() >= 0.5f) {
@@ -293,7 +294,18 @@ UpdateResult Player::Update()
 		}
 	}
 
+#pragma endregion
 
+<<<<<<< Updated upstream
+=======
+	// Debug key
+	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) 
+	{
+		score += 100;
+	}
+
+	// Resets speed
+>>>>>>> Stashed changes
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
 	{
 		speedY = 0;
@@ -303,17 +315,20 @@ UpdateResult Player::Update()
 		speedX = 0;
 	}
 
+	// Move
 	position += {speedX, speedY};
 
-	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE &&
-		App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
-		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE &&
-		App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+	// Player Idle or walk
+	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 	{
 		currentAnimation->hasIdle = true;
 	}
 
+	// Update coliision
 	col->SetPos(position);
+
+	// Update animation
 	currentAnimation->Update();
 
 	// Update Pivot Point
@@ -340,7 +355,7 @@ UpdateResult Player::Update()
 	}
 	#pragma endregion
 
-	// Reset Move
+	// Reset Movemenet
 	for (int i = 0; i < 4; i++)
 	{
 		canMoveDir[i] = true;

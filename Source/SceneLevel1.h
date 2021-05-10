@@ -137,7 +137,7 @@ public:
 
 	void CreateCoins();
 
-	void LoadAsset();
+	void InitAssets();
 
 };
 

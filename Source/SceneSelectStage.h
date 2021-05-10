@@ -12,6 +12,8 @@ private:
 	SDL_Texture* texUISelect = nullptr;
 	SDL_Texture* texStages = nullptr;
 	SDL_Texture* texStoneCoin = nullptr;
+	SDL_Texture* texInGameUI = nullptr;
+	SDL_Texture* texBigStoneCoins = nullptr;
 
 	SDL_Rect stagesRect[4]
 	{
@@ -21,7 +23,7 @@ private:
 		{0, 192, 77, 63}  //Exit
 	};
 
-	SDL_Rect stageSelect[2] = 
+	SDL_Rect stageSelect[2]
 	{
 		{118, 3, 112, 81}, //SelectMap
 		{3, 88, 30,   20}, //SelectUI
@@ -32,11 +34,21 @@ private:
 		//select3(abajo iz) : 138,54
 	};
 
+	struct StoneCoin
+	{
+		iPoint position;
+		Animation* animation;
+	};
+
+	StoneCoin stoneCoins[3];
+
 public:
 	SceneSelectStage();
 
 	// Destructor
 	~SceneSelectStage();
+
+	void InitAssets();
 
 	// Called when the module is activated
 	// Loads the necessary textures for the map background

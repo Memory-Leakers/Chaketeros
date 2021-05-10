@@ -60,7 +60,7 @@ SceneLevel1::~SceneLevel1()
 {
 }
 
-void SceneLevel1::LoadAsset()
+void SceneLevel1::InitAssets()
 {
 	#pragma region Load Sprites
 
@@ -205,7 +205,6 @@ void SceneLevel1::CreateScene()
 		cout << endl;
 	}
 	#pragma endregion
-
 }
 
 void SceneLevel1::CreateYellowFlowers()
@@ -287,7 +286,7 @@ bool SceneLevel1::Start()
 
 #pragma endregion
 
-	LoadAsset();
+	InitAssets();
 
 	sceneUI.Start();
 
