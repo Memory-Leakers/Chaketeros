@@ -25,10 +25,10 @@ private:
     Animation* currentAnim = nullptr;
     Animation withoutglassAnim;
     Animation withoutfragments;
+    int dieCount = 0;
     //Collision variables
     Collider* auxCol[6] = { nullptr };
-    bool isDead = false;
-
-    int dieCount = 0;
+    
+    bool isDead = false; 
 };
 #endif // __GLASSCAPSULE_H_

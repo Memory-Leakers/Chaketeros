@@ -32,7 +32,7 @@ public:
 	Obstacle(const Obstacle& Obs);
 	//Destructor
 	~Obstacle();
-	// Actualizar la posicion de la colision para que encaje con la posicion de la textura +
+	
 	virtual void OnCollision(Collider* col);
 
 	virtual void Update();
@@ -42,7 +42,7 @@ public:
 	virtual void Die();
 
 	virtual void CleanUp();
-
+	// Actualizar la posicion de la colision para que encaje con la posicion de la textura +
 	void ColUpdate();
 protected:
 	// Set Position of an obstacle

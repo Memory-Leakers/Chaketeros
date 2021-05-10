@@ -296,16 +296,14 @@ UpdateResult Player::Update()
 
 #pragma endregion
 
-<<<<<<< Updated upstream
-=======
+
 	// Debug key
-	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) 
-	{
-		score += 100;
-	}
+	
+		
+	
 
 	// Resets speed
->>>>>>> Stashed changes
+
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
 	{
 		speedY = 0;
