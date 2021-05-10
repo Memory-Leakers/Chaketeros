@@ -160,6 +160,9 @@
     <ClInclude Include="Timer.h">
       <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerSettings.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -280,6 +283,9 @@
       <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSettings.cpp">
       <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
   </ItemGroup>

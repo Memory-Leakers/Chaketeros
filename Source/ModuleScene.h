@@ -16,6 +16,7 @@
 #include "ModuleRender.h"
 #include "ModuleAudio.h"
 #include "Player.h"
+#include "PlayerSettings.h"
 
 #define SCENES_NUM 6
 
@@ -68,7 +69,7 @@ public:
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
 
-	int currentScore;
+	PlayerSettings* playerSettings = nullptr;
 
 private:
 

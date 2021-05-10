@@ -39,22 +39,31 @@ void NumText::DrawNum(int num, iPoint pos, int font)
 	vector<int> digitVec;
 	int totalDigits;
 
+	
+
 	#pragma region Digit Order Logic
 	//Getting digits from number in order Logic
-	while (num > 0)
-	{
-		int digit = num % 10;
-		num /= 10;
-		digits.push(digit);
+	if (num != 0) {
+		while (num > 0)
+		{
+			int digit = num % 10;
+			num /= 10;
+			digits.push(digit);
+		}
+
+		totalDigits = digits.size();
+
+		while (!digits.empty())
+		{
+			int digit = digits.top();
+			digitVec.push_back(digit);
+			digits.pop();
+		}
 	}
-
-	totalDigits = digits.size();
-
-	while (!digits.empty())
+	else 
 	{
-		int digit = digits.top();
-		digitVec.push_back(digit);
-		digits.pop();
+		digitVec.push_back(0);
+		totalDigits = 1;
 	}
 	#pragma endregion
 

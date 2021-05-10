@@ -1,6 +1,6 @@
 #include "ModuleScene.h"
 
-
+PlayerSettings* playerSettings = nullptr;
 
 ModuleScene::ModuleScene()
 {
@@ -11,7 +11,7 @@ ModuleScene::ModuleScene()
 	scenes[4] = new SceneLevel1();
 	scenes[5] = new SceneGameOver();
 
-	currentScore = 0;
+	playerSettings = PlayerSettings::Instance();
 }
 
 ModuleScene::~ModuleScene()
@@ -68,7 +68,7 @@ UpdateResult ModuleScene::Update()
 		{
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
-			currentScene->score = currentScore;
+			currentScene->score = playerSettings->playerScore;
 			currentScene->Start();
 			currentStep = FADE_OUT;
 			return UpdateResult::UPDATE_CONTINUE;
@@ -99,8 +99,6 @@ UpdateResult ModuleScene::PostUpdate()
 		float fadeRatio = (float)currentFrame / (float)maxFrames;
 
 		App->render->AddRectRenderQueue(screenRect, { 0,0,0,(Uint8)(fadeRatio * 255.0f) });
-		//SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(fadeRatio * 255.0f));
-		//SDL_RenderFillRect(App->render->renderer, &screenRect);
 	}
 	
 	return UpdateResult::UPDATE_CONTINUE;
@@ -124,7 +122,7 @@ void ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//C
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
-	currentScore = sceneScore;
+	playerSettings->playerScore = sceneScore;
 }
 
 bool ModuleScene::CleanUp()
@@ -138,6 +136,8 @@ bool ModuleScene::CleanUp()
 			scenes[i] = nullptr;
 		}
 	}
+
+	playerSettings->Release();
 
 	return true;
 }

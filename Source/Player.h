@@ -29,7 +29,7 @@ enum Dir
 class Player {
 
 private:
-	int lives = 2;
+	int lifes = 2;
 	int score = 0;
 
 	int pUpKick = 0;
@@ -139,7 +139,7 @@ public:
 	}
 
 	int getLives() {
-		return lives;
+		return lifes;
 	}
 };
 #endif // __PLAYER_H__

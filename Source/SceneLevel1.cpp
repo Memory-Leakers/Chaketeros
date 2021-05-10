@@ -323,15 +323,14 @@ bool SceneLevel1::PreUpdate()
 	{
 		delete bomberman;
 		bomberman = nullptr;
-		if (playerLifes > 0)
+		if (App->scene->playerSettings->playerLifes > 0)
 		{
-			playerLifes--;
+			App->scene->playerSettings->playerLifes--;
 			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 		}
 		else
 		{
 			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
-			playerLifes = 3;
 		}
 	}
 	#pragma endregion
@@ -355,10 +354,10 @@ bool SceneLevel1::PreUpdate()
 		{
 
 			bomberman->speed = 0;
-			if (playerLifes > 0 && !isChangingScene)
+			if (App->scene->playerSettings->playerLifes > 0 && !isChangingScene)
 			{
 				isChangingScene = true;
-				playerLifes--;
+				App->scene->playerSettings->playerLifes--;
 				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
 			}
 
@@ -368,7 +367,6 @@ bool SceneLevel1::PreUpdate()
 				{
 					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
 					isChangingScene = true;
-					playerLifes = 3;
 				}
 
 			}
@@ -664,7 +662,7 @@ bool SceneLevel1::PostUpdate()
 	sceneUI.DrawNum(minutes, { 16,8 });
 	sceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
 	sceneUI.DrawNum(score, { 160, 8 });
-	sceneUI.DrawNum(playerLifes, { 232, 8 });
+	sceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
 
 	sceneUI.DrawChar(0, { 25,8 });
 	sceneUI.DrawChar(1, { 123,8 });

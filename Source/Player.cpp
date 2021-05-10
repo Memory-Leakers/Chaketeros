@@ -46,6 +46,11 @@ Player::Player(Tile* level1Tile)
 	leftAnim.speed = defaultPlayerSpeed;
 
 	currentAnimation = &downAnim;
+
+	//Load Sound
+	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
+	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
+	gameOverSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_GameOverSound.wav");
 }
 
 Player::~Player()
@@ -87,9 +92,6 @@ bool Player::Start()
 	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
 
-	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
-	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
-	gameOverSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_GameOverSound.wav");
 
 	return ret;
 }
