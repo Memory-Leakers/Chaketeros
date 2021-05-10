@@ -29,11 +29,6 @@ enum Dir
 class Player {
 
 private:
-	int lifes = 2;
-	int score = 0;
-
-	int pUpKick = 0;
-	int pUpVest = 0;
 
 	uint extraCoinsStepSFX, deathSFX, gameOverSFX;
 
@@ -133,14 +128,7 @@ public:
 	bool ExtraPoints = false;
 
 
-	//GETTERS AND SETTERS
-	int getScore() {
-		return score;
-	}
-
-	int getLives() {
-		return lifes;
-	}
+	
 };
 #endif // __PLAYER_H__
 

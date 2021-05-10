@@ -51,7 +51,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 	explosionMiddle = *e2;
 	explosionEnd = *e3;
 
-	explotionRange += player->pUpFlame;
+	explotionRange += App->scene->playerSettings->powerUpFlame;
 
 	// Inicializar animacion prestablecida de la bomba
 	defaultAnim.hasIdle = false;
@@ -68,6 +68,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
 
+	//TODO: Poner en forma de struct en la escena	//	o pasar como argumento por el constructor
 	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
 	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
 

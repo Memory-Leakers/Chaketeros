@@ -21,6 +21,15 @@ void PlayerSettings::Reset()
 {
     playerLifes = 3;
     playerScore = 0;
+    powerUpBomb = 0;
+    powerUpFlame = 0;
+    powerUpKick = false;
+    powerUpVest = false;
+
+    for (int i = 0; i < 4; i++)
+    {
+        powerUpKangaroo[i] = false;
+    }
 }
 
 PlayerSettings::PlayerSettings()

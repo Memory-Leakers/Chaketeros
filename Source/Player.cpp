@@ -294,11 +294,6 @@ UpdateResult Player::Update()
 	}
 
 
-
-	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) {
-		score += 100;
-	}
-
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
 	{
 		speedY = 0;
@@ -406,7 +401,7 @@ void Player::OnCollision(Collider* col)
 
 		if (col->type == Type::FIREPOWER)
 		{
-			pUpFlame++;
+			App->scene->playerSettings->powerUpFlame++;
 		}
 	}
 }

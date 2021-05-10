@@ -609,6 +609,15 @@ bool SceneLevel1::PostUpdate()
 		}
 	}
 
+	//Draw PowerUps
+	for (int i = 0; i < MAX_POWERUPS; ++i)
+	{
+		if (powerUps[i] != nullptr)
+		{
+			powerUps[i]->PostUpdate();
+		}
+	}
+
 	if (bomberman != nullptr)
 	{
 		bomberman->PostUpdate();

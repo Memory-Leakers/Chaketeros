@@ -131,7 +131,9 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time) {	//Loads and ret
 	return ret;
 }
 
-uint ModuleAudio::LoadSound(const char* path){
+uint ModuleAudio::LoadSound(const char* path)
+{
+
 	uint ret = 0;
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
 
