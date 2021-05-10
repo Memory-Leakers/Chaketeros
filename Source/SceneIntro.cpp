@@ -35,7 +35,7 @@ bool SceneIntro::Update()
 	{
 		if (currentImage == 1)
 		{
-			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120);
+			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 90);
 		}
 		else
 		{

@@ -55,7 +55,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 
 	// Inicializar animacion prestablecida de la bomba
 	defaultAnim.hasIdle = false;
-	defaultAnim.speed = 0.02f;
+	defaultAnim.speed = 0.07f;
 	defaultAnim.loop = true;
 	defaultAnim.PushBack({ 1,1,16,16 });  //small
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle

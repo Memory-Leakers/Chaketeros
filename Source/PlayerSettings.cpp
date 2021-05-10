@@ -28,7 +28,7 @@ void PlayerSettings::Reset()
 
     for (int i = 0; i < 4; i++)
     {
-        powerUpKangaroo[i] = false;
+        powerUpLouies[i] = false;
     }
 }
 

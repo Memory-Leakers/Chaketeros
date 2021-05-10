@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _PLAYERSETTINGS_H_
+#define _PLAYERSETTINGS_H_
 class PlayerSettings
 {
 private:
@@ -35,8 +36,7 @@ public:
 
 	 bool powerUpVest, powerUpKick;
 
-	 bool powerUpKangaroo[5];
-
+	 bool powerUpLouies[5];
 
 };
-
+#endif

@@ -113,11 +113,11 @@ bool SceneGameOver::Update()
 		if (currentPointerPos == &pointerPos[0])
 		{
 			pressedContinue = true;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90);
 		}
 		else if (currentPointerPos == &pointerPos[1])
 		{
-			App->scene->ChangeCurrentScene(INTRO_SCENE, 120);
+			App->scene->ChangeCurrentScene(INTRO_SCENE, 90);
 		}
 
 	}

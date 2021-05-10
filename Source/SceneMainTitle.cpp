@@ -83,7 +83,7 @@ bool SceneMainTitle::Update()
 		if (currentArrowPos == &arrowPosition[0])
 		{
 			App->audio->PlaySound(selectSFX, 0);
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90);
 			
 		}
 	}

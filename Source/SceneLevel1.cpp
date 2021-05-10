@@ -83,9 +83,9 @@ void SceneLevel1::LoadAsset()
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.1f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.1f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.1f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.2f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.2f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.2f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
@@ -94,12 +94,14 @@ void SceneLevel1::LoadAsset()
 	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 
+
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
+
 
 	// ExplosionEnd particle
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
@@ -109,7 +111,7 @@ void SceneLevel1::LoadAsset()
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
 
 	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.05f, texPowerUpDestroyed);
+	powerUpDestroyed = new Particle(500.0f, 0.15f, texPowerUpDestroyed);
 	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,2,26,27 });
@@ -118,8 +120,9 @@ void SceneLevel1::LoadAsset()
 	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
 	powerUpDestroyed->anim.hasIdle = false;
 
+
 	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.1f, texEnemies);
+	redFlowerDestroyed = new Particle(500.0f, 0.15f, texEnemies);
 	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
 	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
@@ -128,7 +131,7 @@ void SceneLevel1::LoadAsset()
 	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
 
 	// Yellow Flower destroyed particle
-	yellowFlowerDestroyed = new Particle(500.0f, 0.1f, texYellowFlower);
+	yellowFlowerDestroyed = new Particle(500.0f, 0.15f, texYellowFlower);
 	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
 	yellowFlowerDestroyed->anim.PushBack({ 49,0,16,16 });
@@ -326,11 +329,11 @@ bool SceneLevel1::PreUpdate()
 		if (App->scene->playerSettings->playerLifes > 0)
 		{
 			App->scene->playerSettings->playerLifes--;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
+			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
 		}
 		else
 		{
-			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
 		}
 	}
 	#pragma endregion
@@ -347,7 +350,7 @@ bool SceneLevel1::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 120, score);
+			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 90, score);
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
@@ -358,14 +361,14 @@ bool SceneLevel1::PreUpdate()
 			{
 				isChangingScene = true;
 				App->scene->playerSettings->playerLifes--;
-				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120, score);
+				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
 			}
 
 			else
 			{
 				if (!isChangingScene)
 				{
-					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
 					isChangingScene = true;
 				}
 
@@ -440,7 +443,7 @@ bool SceneLevel1::Update()
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 120, score);
+		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
 	}
 
 	// Cout Score in console with C
