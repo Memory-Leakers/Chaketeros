@@ -435,6 +435,7 @@ bool SceneLevel1::PreUpdate()
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 				isLevelCompleted = true;
+				
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
