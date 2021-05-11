@@ -34,6 +34,7 @@ void CoreMecha::Die()
 }
 
 
+
 void CoreMecha::PostUpdate()
 {
 	iPoint temp = getPosition();

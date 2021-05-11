@@ -52,6 +52,8 @@ private:
 	// Random Mov variable
 	int randomMoveDirIndex = 0; // get RandomMos result
 
+	bool debugAStarPath = false;
+
 private:
 	// private metod
 	void die() override;

@@ -296,16 +296,8 @@ UpdateResult Player::Update()
 
 #pragma endregion
 
-<<<<<<< Updated upstream
-=======
-	// Debug key
-	if (App->input->keys[SDL_SCANCODE_P] == KEY_DOWN) 
-	{
-		score += 100;
-	}
-
 	// Resets speed
->>>>>>> Stashed changes
+
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
 	{
 		speedY = 0;
@@ -346,7 +338,7 @@ UpdateResult Player::Update()
 
 		if(posMode)
 		{
-			lastTilePos = tilePos;
+			lastTilePos = getCurrentTilePos();
 		}
 		else
 		{
@@ -366,6 +358,8 @@ UpdateResult Player::Update()
 
 UpdateResult Player::PostUpdate()
 {
+	if(pendingToDelete) return UpdateResult::UPDATE_CONTINUE;
+
 	rect = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
@@ -404,14 +398,18 @@ void Player::OnCollision(Collider* col)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
 		{
-			App->audio->PlaySound(deathSFX, 0);
-			App->audio->PlaySound(gameOverSFX, 0);
-			pendingToDelete = true;
+			if(InGrid(col))
+			{
+				App->audio->PlaySound(deathSFX, 0);
+				App->audio->PlaySound(gameOverSFX, 0);
+				pendingToDelete = true;
+				posMode = false;
 
-			// Create die particle
-			iPoint tempPos = position;
-			tempPos -= {3, 5};
-			App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+				// Create die particle
+				iPoint tempPos = position;
+				tempPos -= {3, 5};
+				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+			}		
 		}
 
 		if (col->type == Type::FIREPOWER)
@@ -426,7 +424,7 @@ void Player::WillCollision(Collider* col)
 	if (!godMode)
 	{
 		// Choc
-		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
+		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL || col->type == Type::BOMB && !InGrid(col))
 		{
 			//get col position x
 			int bx = col->getPos().x;
@@ -452,7 +450,6 @@ void Player::WillCollision(Collider* col)
 					canMoveDir[LEFT] = false;
 				}
 			}
-
 			// case 3
 			if ((py + 1 + bounds.h) >= by && (py + 1) <= by)
 			{
@@ -472,6 +469,18 @@ void Player::WillCollision(Collider* col)
 			}
 		}
 	}
+}
+
+bool Player::InGrid(Collider* col)
+{
+	iPoint colGrid = level1Tile->getTilePos(col->getPos());
+	
+	if(colGrid == getCurrentTilePos())
+	{
+		return true;
+	}
+
+	return false;
 }
 
 iPoint Player::getCurrentTilePos()

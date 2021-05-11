@@ -98,6 +98,8 @@ private:
 	//	Boolean to check if there is a change of scene currently
 	bool isChangingScene;
 
+	bool debugPowerUp = false;
+
 	//	Timer
 	Timer timer;
 
@@ -138,6 +140,8 @@ public:
 	void CreateCoins();
 
 	void InitAssets();
+
+	void PrintDebugInstruction();
 
 };
 

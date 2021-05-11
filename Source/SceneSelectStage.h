@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Application.h"
+#include "Animation.h"
 #include "SDL_image/include/SDL_image.h"
 
 class SceneSelectStage : public Scene

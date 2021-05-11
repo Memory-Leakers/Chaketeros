@@ -47,6 +47,8 @@ iPoint winPosition = { 120, 96 };
 
 SDL_Rect rectUI = { 0,0,256,23 };
 
+iPoint powerUpPos[2];
+
 #pragma endregion
 
 SceneLevel1::SceneLevel1()
@@ -153,6 +155,20 @@ void SceneLevel1::InitAssets()
 	#pragma endregion
 }
 
+void SceneLevel1::PrintDebugInstruction()
+{
+	// Manual
+	cout << endl;
+	cout << "F1: On/Off GodMod" << endl;
+	cout << "F2: On/Off Collision box" << endl;
+	cout << "F3: Instante lose" << endl;
+	cout << "F4: On/Off Camera (move with dirArrown)" << endl;
+	cout << "F5: On/Off PowerUp position" << endl;
+	cout << "F6: On/Off Mover A* path" << endl;
+	cout << "F10: On/Off Draw player pos in console map" << endl;
+	cout << "Q: Draw console tileMap" << endl;
+}
+
 void SceneLevel1::CreateScene()
 {
 	#pragma region Generate Obstacles
@@ -232,10 +248,11 @@ void SceneLevel1::CreateYellowFlowers()
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
-				if(hasPowerUp)
+				if (hasPowerUp)
 				{
 					cout << "PowerUp Pos" << endl;
 					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
+					powerUpPos[i] = sceneObstacles[j]->getPosition();
 				}
 
 				break;
@@ -296,6 +313,9 @@ bool SceneLevel1::Start()
 
 	//	Create Scene
 	CreateScene();
+
+	// Debug instrucion;
+	PrintDebugInstruction();
 
 	return ret;
 }
@@ -445,12 +465,6 @@ bool SceneLevel1::Update()
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
 	}
 
-	// Cout Score in console with C
-	if (App->input->keys[SDL_SCANCODE_C] == KEY_DOWN)
-	{
-		cout << "Score: " << score << endl;
-	}
-
 	// Draw debug tileMap with Q
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
@@ -472,7 +486,13 @@ bool SceneLevel1::Update()
 			}
 			cout << endl;
 		}
-		//sceneObstacles[glassCapsuleIndex]->Die();
+		// Debug instruction
+		PrintDebugInstruction();
+	}
+
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		debugPowerUp = !debugPowerUp;
 	}
 	#pragma endregion
 
@@ -683,6 +703,15 @@ bool SceneLevel1::PostUpdate()
 	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
 	#pragma endregion
 
+	// Draw powerUpPos
+	for (int i = 0; i < 2; i++)
+	{
+		if(debugPowerUp && sceneObstacles[7+i]!=nullptr)
+		{
+			App->render->AddRectRenderQueue({ powerUpPos[i].x + 2,powerUpPos[i].y + 2,12,12 }, { 0,0,255,255 });
+		}		
+	}
+
 	return true;
 }
 
@@ -823,9 +852,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	Mix_HaltMusic();
 
-	delete tileMap;
-	tileMap = nullptr;
-
 	//Delete Vector
 	emptySpaces.clear();
 	emptySpaces.shrink_to_fit();
@@ -854,7 +880,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	delete bomberman;
 	bomberman = nullptr;
 
-	//Delete Enemy
+	// Delete Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		if(enemy[i]!=nullptr)
@@ -865,6 +891,13 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		}	
 	}
 	#pragma endregion
+
+	// Delete TileMap
+	if (tileMap != nullptr)
+	{
+		delete tileMap;
+		tileMap = nullptr;
+	}
 
 	return true;
 }
