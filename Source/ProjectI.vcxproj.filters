@@ -163,6 +163,9 @@
     <ClInclude Include="PlayerSettings.h">
       <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
+    <ClInclude Include="FadeInOut.h">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -286,6 +289,9 @@
       <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
     <ClCompile Include="PlayerSettings.cpp">
+      <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInOut.cpp">
       <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
   </ItemGroup>

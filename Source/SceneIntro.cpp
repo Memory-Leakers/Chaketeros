@@ -5,6 +5,9 @@
 #include <iostream>
 using namespace std;
 
+FadeInOut* fadeInOut = nullptr;
+Timer introTimer;
+
 SceneIntro::SceneIntro()
 {
 
@@ -16,61 +19,76 @@ SceneIntro::~SceneIntro()
 
 bool SceneIntro::Start()
 {
-	//cout << "Start Scene Intro" << endl;
-	//App->audio->PlayMusic("Assets/Audio/Music/INT_MUSIC.ogg", 1.5f);
-	//Mix_VolumeMusic(10);
 
-	image1 = App->textures->Load("Assets/Images/Sprites/IntroSprite/Intro_Image1.png");
-	image2 = App->textures->Load("Assets/Images/Sprites/IntroSprite/Intro_Image2.png");
+	#pragma region Load Images
 
+	introImages[0] = App->textures->Load("Assets/Images/Sprites/IntroSprite/Intro_Image1.png");
+	introImages[1] = App->textures->Load("Assets/Images/Sprites/IntroSprite/Intro_Image2.png");
+
+	introImages[2] = App->textures->Load("Assets/Images/Sprites/IntroSprite/GameIntro/IntroSegaLogo.png");
+	introImages[3] = App->textures->Load("Assets/Images/Sprites/IntroSprite/GameIntro/IntroSegaLogo2.png");
+
+
+	#pragma endregion
 	currentImage = 0;	//Current image displayed
+	isChangingScene = false;
+
+	fadeInOut = FadeInOut::Instance();
 
 	return true;
 }
 
 bool SceneIntro::Update()
 {
+	fadeInOut->Update();
 
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-		if (currentImage == 1)
+
+		if (currentImage == 3)
 		{
-			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 90);
+			isChangingScene = true;
+			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 60);
 		}
 		else
 		{
-			currentImage++;
-		}	
+			fadeInOut->FadeIn(30);
+		}
+		
 	}
 
-	//cout << "Update Scene Intro" << endl;
+	if (fadeInOut->isFadeInDone == true)
+	{
+		currentImage++;
+
+		if(!isChangingScene) fadeInOut->FadeOut(30);
+	}
+
 	return true;
 }
 
 bool SceneIntro::PostUpdate()
 {
-	//cout << "PostUpdate Scene Intro" << endl;
+
 
 	if (currentImage == 0)
 	{
-		SDL_Rect temp = { 0,0,512,512 };
-		//App->render->DrawTextureFreeScaled(image1, { 0,-100 }, 1.5f);
-		App->render->AddTextureRenderQueue(image1, { 0,-100 }, nullptr, 2, 0, false, 0, 1.5f);
+		App->render->AddTextureRenderQueue(introImages[0], { 0,-100 }, nullptr, 2, 0, false, 0, 1.5f);
+	}
+	else if (currentImage == 1)
+	{
+		App->render->AddTextureRenderQueue(introImages[1], { 55,20 }, nullptr, 2, 0, false, 0, 1.2f);
 	}
 	else 
 	{
-		//App->render->DrawTextureFreeScaled(image2, { 55,20 }, 1.2f);
-		App->render->AddTextureRenderQueue(image2, { 55,20 }, nullptr, 2, 0, false, 0, 1.2f);
+		App->render->AddTextureRenderQueue(introImages[currentImage], { 0,0 }, nullptr, 2);
 	}
-
-	//text->showText(App->render->renderer, 50, 50, "Hello world", text->getFonts(80), text->getColors(2));
-	//cout << "PostUpdate Scene Intro" << endl;
 
 	return true;
 }
 
 bool SceneIntro::CleanUp(bool finalCleanUp)
 {
-	cout << "CleanUp Scene Intro" << endl;
+	fadeInOut->Release();
 	return true;
 }

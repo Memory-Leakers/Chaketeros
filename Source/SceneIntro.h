@@ -3,7 +3,8 @@
 
 #include "Scene.h"
 #include "Application.h"
-
+#include "FadeInOut.h"
+#include "Timer.h"
 
 class SceneIntro : public Scene
 {
@@ -11,9 +12,10 @@ private:
 
 	int currentImage;	//int to control changing picture logic
 
+	bool isChangingScene;
+
 	//Textures
-	SDL_Texture* image1;
-	SDL_Texture* image2;
+	SDL_Texture* introImages[4];
 
 public:
 	SceneIntro();
