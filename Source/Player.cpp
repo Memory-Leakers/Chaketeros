@@ -326,7 +326,7 @@ UpdateResult Player::Update()
 	// Update Pivot Point
 	pivotPoint = { position.x + 8, position.y + 8 };
 
-	#pragma region Debug Mods
+	#pragma region Debug keys
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -339,6 +339,7 @@ UpdateResult Player::Update()
 		if(posMode)
 		{
 			lastTilePos = getCurrentTilePos();
+			level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = -1;
 		}
 		else
 		{

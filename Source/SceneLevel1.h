@@ -141,7 +141,7 @@ public:
 
 	void InitAssets();
 
-	void PrintDebugInstruction();
+	void PrintDebugInformation();
 
 };
 

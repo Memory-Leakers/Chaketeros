@@ -155,9 +155,27 @@ void SceneLevel1::InitAssets()
 	#pragma endregion
 }
 
-void SceneLevel1::PrintDebugInstruction()
+void SceneLevel1::PrintDebugInformation()
 {
-	// Manual
+	#pragma region Draw Map in Console
+	// Check Map in Console
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)
+		{
+			switch (tileMap->Level1TileMap[i][j])
+			{
+			case -1: cout << "P,"; break;
+			case 10: cout << "G,"; break;
+			default: cout << tileMap->Level1TileMap[i][j] << ","; break;
+			}
+		}
+		cout << endl;
+	}
+	#pragma endregion
+
+	#pragma region Manual
+
 	cout << endl;
 	cout << "F1: On/Off GodMod" << endl;
 	cout << "F2: On/Off Collision box" << endl;
@@ -165,8 +183,10 @@ void SceneLevel1::PrintDebugInstruction()
 	cout << "F4: On/Off Camera (move with dirArrown)" << endl;
 	cout << "F5: On/Off PowerUp position" << endl;
 	cout << "F6: On/Off Mover A* path" << endl;
-	cout << "F10: On/Off Draw player pos in console map" << endl;
-	cout << "Q: Draw console tileMap" << endl;
+	cout << "F10: On/Off Draw player pos in console map (use with Q)" << endl;
+	cout << "Q: Update console tileMap" << endl;
+
+	#pragma endregion
 }
 
 void SceneLevel1::CreateScene()
@@ -209,18 +229,6 @@ void SceneLevel1::CreateScene()
 	cout << endl;
 
 	CreateYellowFlowers();
-
-	#pragma region Draw Map in Console
-	// Check Map in Console
-	for (int i = 0, k = 0; i < 13; ++i)
-	{
-		for (int j = 0; j < 15; ++j)
-		{
-			cout << tileMap->Level1TileMap[i][j] << ",";
-		}
-		cout << endl;
-	}
-	#pragma endregion
 }
 
 void SceneLevel1::CreateYellowFlowers()
@@ -250,8 +258,6 @@ void SceneLevel1::CreateYellowFlowers()
 
 				if (hasPowerUp)
 				{
-					cout << "PowerUp Pos" << endl;
-					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
 					powerUpPos[i] = sceneObstacles[j]->getPosition();
 				}
 
@@ -285,23 +291,24 @@ bool SceneLevel1::Start()
 	#pragma endregion
 
 	#pragma region Init Player and Enemies
-	// Inicializar jugador
+
+	// Init player
 	bomberman = new Player(tileMap);
 	bomberman->Start();
 
-	//	Spawn enemies
+	// Spawn enemies
 	enemy[3] = new PokaPoka(200, 160, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
 	enemy[0] = new Mover({ 72,160 }, &bomberman->pivotPoint, tileMap);
 
-	//Start Enemy
+	// Init enemies
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		enemy[i]->Start();
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	InitAssets();
 
@@ -314,8 +321,9 @@ bool SceneLevel1::Start()
 	//	Create Scene
 	CreateScene();
 
-	// Debug instrucion;
-	PrintDebugInstruction();
+	system("cls");
+	// Debug information;
+	PrintDebugInformation();
 
 	return ret;
 }
@@ -471,24 +479,9 @@ bool SceneLevel1::Update()
 	{
 		system("cls");
 		cout << endl;
-		// Check Map in Console
-		for (int i = 0, k = 0; i < 13; ++i)
-		{
-			for (int j = 0; j < 15; ++j)
-			{
-				if (tileMap->Level1TileMap[i][j] == -1)
-				{
-					cout << "P,";
-				}
-				else
-				{
-					cout << tileMap->Level1TileMap[i][j] << ",";
-				}
-			}
-			cout << endl;
-		}
-		// Debug instruction
-		PrintDebugInstruction();
+		
+		// Debug information
+		PrintDebugInformation();
 	}
 
 	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
@@ -501,7 +494,6 @@ bool SceneLevel1::Update()
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
-		
 
 		// Drop bomb
 		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
@@ -589,12 +581,7 @@ bool SceneLevel1::Update()
 	}
 	#pragma endregion
 
-	// Draw Map
-	//App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
-
-
 	return true;
-
 }
 
 bool SceneLevel1::PostUpdate()
