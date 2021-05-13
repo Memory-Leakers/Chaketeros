@@ -155,7 +155,7 @@ bool SceneSelectStage::PostUpdate()
 	App->render->AddTextureRenderQueue(texMap, { 0, 0}, nullptr, 0, 0);
 
 	// Bomberman
-	App->render->AddTextureRenderQueue(texBomberman, { 119 + debugOffset.x, 145 + debugOffset.y }, &recBomberman, 1, 0);
+	App->render->AddTextureRenderQueue(texBomberman, { 119, 145}, &recBomberman, 1, 0);
 
 	// StageSelectMap
 	App->render->AddTextureRenderQueue(texUISelect, { 31, 23}, &recStageSelect[0], 2, 0);
