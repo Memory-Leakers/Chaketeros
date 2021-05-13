@@ -62,7 +62,7 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
-	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN) {
+	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN) {
 		debugCamera = !debugCamera;
 		startCountTime = SDL_GetPerformanceCounter();
 		if (!debugCamera) {

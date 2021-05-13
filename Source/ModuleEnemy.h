@@ -31,7 +31,7 @@ protected:
 
 		virtual void movement() {};
 
-		virtual void die() {};
+		
 
 public:
 	ModuleEnemy();
@@ -43,6 +43,7 @@ public:
 	virtual UpdateResult Update();
 	virtual UpdateResult PostUpdate();
 	virtual void OnCollision(Collider* col);
+	virtual void die() {};
 
 	iPoint position;
 

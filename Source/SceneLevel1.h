@@ -106,6 +106,8 @@ private:
 
 	bool debugPowerUp = false;
 
+	bool pressedInstantWin;
+
 	//	Timer
 	Timer timer;
 
