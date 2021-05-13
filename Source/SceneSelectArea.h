@@ -5,6 +5,7 @@
 #include "External/SDL_image/include/SDL_image.h"
 #include "Animation.h"
 
+
 class SceneSelectArea : public Scene
 {
 private:
@@ -18,6 +19,7 @@ private:
 	SDL_Rect UIStageLevel1Rect;
 	SDL_Rect UIStageLevel2Rect;
 	SDL_Rect StageCheeseandStarsRect;
+	SDL_Rect StageCheese1Completed;
 	// Animation
 	Animation texLevel1CheeseAnim, texLevel2CheeseAnim, texLevel3CheeseAnim, texLevel4CheeseAnim, texLevel5CheeseAnim;
 	// Arrow Position and current Arrow
@@ -25,6 +27,10 @@ private:
 	iPoint* currentArrowLevelPos = nullptr;
 
 	uint changeSelectSFX, selectSFX;
+
+	
+
+	
 public:
 	
 
@@ -47,6 +53,8 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
+	void Completed();
 };
 
 

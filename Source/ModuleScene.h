@@ -71,6 +71,8 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
+	bool isLevelCompleted;
+
 private:
 
 	enum FadeSteps
