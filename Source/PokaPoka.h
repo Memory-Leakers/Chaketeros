@@ -21,8 +21,7 @@ private:
 
 	void attack();
 	void movement();
-	void die();
-	
+
 public:
 		
 	iPoint position;
@@ -51,6 +50,9 @@ public:
 	UpdateResult PostUpdate();
 
 	void OnCollision(Collider* col);
+
+	void die() override;
+
 
 };
 
