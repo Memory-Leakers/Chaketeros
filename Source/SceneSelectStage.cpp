@@ -4,10 +4,20 @@
 using namespace std;
 
 // Debug variable
-//iPoint debugOffset = { 0,0 };
+iPoint debugOffset = { 0,0 };
 
 SceneSelectStage::SceneSelectStage()
 {
+	stoneCoinAnim.PushBack({ 2,2,15,16 });
+	stoneCoinAnim.PushBack({ 20,2,15,16 });
+	stoneCoinAnim.PushBack({ 37,2,15,16 });
+	stoneCoinAnim.PushBack({ 56,2,15,16 });
+	stoneCoinAnim.PushBack({ 20,23,15,16 });
+	stoneCoinAnim.PushBack({ 37,23,15,16 });
+	stoneCoinAnim.PushBack({ 56,23,15,16 });
+	stoneCoinAnim.speed = 0.15f;
+	stoneCoinAnim.loop = true;
+	stoneCoinAnim.hasIdle = false;
 }
 
 SceneSelectStage::~SceneSelectStage()
@@ -24,6 +34,7 @@ void SceneSelectStage::InitAssets()
 	texStoneCoin = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/FragmentsWithoutTheMachine.png");
 	texInGameUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
 	texBigStoneCoins = App->textures->Load("Assets/Images/Sprites/UI_Sprites/BigMoney.png");
+	texBomberman = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 
 	#pragma endregion
 
@@ -35,17 +46,6 @@ void SceneSelectStage::InitAssets()
 	stageSelectPos[1] = { 94, 78 };
 	stageSelectPos[2] = { 51, 74 };
 	stageSelectPos[3] = { 500, 500 };
-	
-	stoneCoinAnim.PushBack({ 2,2,15,16 });
-	stoneCoinAnim.PushBack({ 20,2,15,16 });
-	stoneCoinAnim.PushBack({ 37,2,15,16 });
-	stoneCoinAnim.PushBack({ 56,2,15,16 });
-	stoneCoinAnim.PushBack({ 20,23,15,16 });
-	stoneCoinAnim.PushBack({ 37,23,15,16 });
-	stoneCoinAnim.PushBack({ 56,23,15,16 });
-	stoneCoinAnim.speed = 0.15f;
-	stoneCoinAnim.loop = true;
-	stoneCoinAnim.hasIdle = false;
 }
 
 bool SceneSelectStage::Start()
@@ -53,6 +53,9 @@ bool SceneSelectStage::Start()
 	LOG("Load SceneSelectStage");
 
 	InitAssets();
+
+	// reset anim
+	stoneCoinAnim.Reset();
 
 	return true;
 }
@@ -93,7 +96,7 @@ bool SceneSelectStage::Update()
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 80);
 	}
 	#pragma endregion
 
@@ -115,7 +118,7 @@ bool SceneSelectStage::Update()
 	}
 
 	#pragma region Debug Code
-	/*
+	
 	if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
 	{
 		debugOffset.y--;
@@ -140,7 +143,7 @@ bool SceneSelectStage::Update()
 		system("cls");
 		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
 	}
-	*/
+	
 	#pragma endregion
 
 	return true;
@@ -150,6 +153,9 @@ bool SceneSelectStage::PostUpdate()
 {
 	// BG
 	App->render->AddTextureRenderQueue(texMap, { 0, 0}, nullptr, 0, 0);
+
+	// Bomberman
+	App->render->AddTextureRenderQueue(texBomberman, { 119 + debugOffset.x, 145 + debugOffset.y }, &recBomberman, 1, 0);
 
 	// StageSelectMap
 	App->render->AddTextureRenderQueue(texUISelect, { 31, 23}, &recStageSelect[0], 2, 0);
@@ -175,6 +181,11 @@ bool SceneSelectStage::PostUpdate()
 
 bool SceneSelectStage::CleanUp(bool finalCleanUp)
 {
+	if(!finalCleanUp)
+	{
+		App->textures->CleanUpScene();
+	}
+	
 	LOG("Clean Up SceneSelectStage");
 	return true;
 }

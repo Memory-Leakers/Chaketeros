@@ -33,11 +33,9 @@ private:
 	iPoint pointerPos[2];	//Position of the Pointer on Screen
 	iPoint* currentPointerPos;	//Current position of the pointer
 
-	int totalDigits;	//Total digits of the Score number
-
 	uint changeSelectSFX, selectSFX;
 
-	bool pressedContinue;	//Boolean to control the changing scenes logic
+	bool pressedContinue = false;	//Boolean to control the changing scenes logic
 
 public:
 	SceneGameOver();

@@ -15,6 +15,7 @@ private:
 	SDL_Texture* texStoneCoin = nullptr;
 	SDL_Texture* texInGameUI = nullptr;
 	SDL_Texture* texBigStoneCoins = nullptr;
+	SDL_Texture* texBomberman = nullptr;
 
 	SDL_Rect recStages[4]
 	{
@@ -36,6 +37,8 @@ private:
 	};
 
 	SDL_Rect recInGameUI = { 0, 0, 256, 24 };
+
+	SDL_Rect recBomberman = { 65,2,16,22 };
 
 	Animation stoneCoinAnim;
 

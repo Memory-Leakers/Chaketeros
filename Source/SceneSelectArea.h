@@ -27,8 +27,6 @@ private:
 	uint changeSelectSFX, selectSFX;
 public:
 	
-
-
 	SceneSelectArea();
 
 	// Destructor
