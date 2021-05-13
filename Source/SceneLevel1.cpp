@@ -45,11 +45,11 @@ ModuleEnemy* enemy[MAX_ENEMY];
 
 iPoint winPosition = { 120, 96 };
 
-SDL_Rect rectUI = { 0,0,256,23 };
-
 iPoint powerUpPos[2];
 
 #pragma endregion
+
+//iPoint debugOffset = { 0,0 };
 
 SceneLevel1::SceneLevel1()
 {
@@ -79,6 +79,7 @@ void SceneLevel1::InitAssets()
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/CoreMecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 
 	#pragma endregion
 
@@ -96,14 +97,12 @@ void SceneLevel1::InitAssets()
 	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 
-
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
-
 
 	// ExplosionEnd particle
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
@@ -121,7 +120,6 @@ void SceneLevel1::InitAssets()
 	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
 	powerUpDestroyed->anim.hasIdle = false;
-
 
 	// Red Flower destroyed particle
 	redFlowerDestroyed = new Particle(500.0f, 0.15f, texEnemies);
@@ -211,7 +209,7 @@ void SceneLevel1::CreateScene()
 				break;
 			case 6:
 				//renderExceptionPos[l++] = k;
-				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap);
+				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap, &coreMechaNum);
 				break;
 			case 10:
 				//renderExceptionPos[l++] = k;
@@ -281,6 +279,7 @@ bool SceneLevel1::Start()
 	isLevelCompleted = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
+	coreMechaNum = 2;
 
 	//	Timer Reset
 	timer.Reset();
@@ -468,6 +467,34 @@ bool SceneLevel1::PreUpdate()
 bool SceneLevel1::Update()
 {
 	#pragma region Special Keys (Debugging)
+
+	#pragma region UI offset debug
+	/*if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
+	{
+		debugOffset.y--;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if(App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	{
+		debugOffset.y++;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+	{
+		debugOffset.x--;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	{
+		debugOffset.x++;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}*/
+	#pragma endregion
+
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
@@ -586,7 +613,6 @@ bool SceneLevel1::Update()
 
 bool SceneLevel1::PostUpdate()
 {
-	
 	#pragma region Drawing
 
 	// Draw Map
@@ -643,8 +669,26 @@ bool SceneLevel1::PostUpdate()
 
 	// Draw UI
 	//App->render->DrawTexture(texUI, 0, 0, &rectUI);
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, & rectUI, 2, 0);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
+	// Draw CoreMechaUI
+	if(coreMechaNum > 0)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	if (coreMechaNum > 1)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	
 	#pragma endregion
 
 	#pragma region Timer Logic

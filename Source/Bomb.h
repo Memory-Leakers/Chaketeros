@@ -3,6 +3,7 @@
 
 #include "Obstacle.h"
 #include "Animation.h"
+#include "Particle.h"
 
 class Obstacle;
 

@@ -18,7 +18,7 @@ bool SceneSelectArea::Start()
 	//Music
 	Mix_VolumeMusic(15);
 	App->audio->PlayMusic("Assets/Audio/Music/AreaSelect.ogg", 1.5f);
-#pragma region Textures and Animations Setup
+	#pragma region Textures and Animations Setup
 	texSelectArea = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Area.png");
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texLevels = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Levels.png");
@@ -58,9 +58,9 @@ bool SceneSelectArea::Start()
 	texLevel5CheeseAnim.hasIdle = false;
 	texLevel5CheeseAnim.loop = true;
 
-#pragma endregion
+	#pragma endregion
 
-#pragma region Arrow Positions Setup
+	#pragma region Arrow Positions Setup
 	arrowLevelPosition[0] = { 129, 77 };
 	arrowLevelPosition[1] = { 130, 108 };
 	arrowLevelPosition[2] = { 127, 124 };
@@ -76,7 +76,6 @@ bool SceneSelectArea::Start()
 
 bool SceneSelectArea::Update()
 {
-
 	cout << "Update Select Area" << endl;
 	// Animations Update
 	texLevel1CheeseAnim.Update();
@@ -85,7 +84,7 @@ bool SceneSelectArea::Update()
 	texLevel4CheeseAnim.Update();
 	texLevel5CheeseAnim.Update();
 
-#pragma region Input Arrow Position Logic
+	#pragma region Input Arrow Position Logic
 	//Check Input to change Arrow Position
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
@@ -111,9 +110,9 @@ bool SceneSelectArea::Update()
 			currentArrowLevelPos--;
 		}
 	}
-#pragma endregion
+	#pragma endregion
 
-#pragma region Select Option Logic
+	#pragma region Select Option Logic
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
@@ -121,11 +120,11 @@ bool SceneSelectArea::Update()
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			App->audio->PlaySound(selectSFX, 0);
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
+			App->scene->ChangeCurrentScene(STAGE_SCENE, 120);
 
 		}
 	}
-#pragma endregion
+	#pragma endregion
 	return true;
 }
 

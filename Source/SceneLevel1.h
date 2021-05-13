@@ -42,6 +42,11 @@ private:
 	SDL_Texture* texPowerUpDestroyed = nullptr;
 	SDL_Texture* texCoreMecha = nullptr;
 	SDL_Texture* texPowerUps = nullptr;
+	SDL_Texture* texMiscUI = nullptr;
+
+	SDL_Rect recCoreMehcaUI[2] = { {0, 0, 7, 14},{8, 0, 7, 14} };
+
+	SDL_Rect recUIbar = { 0,0,256,24 };
 
 	// Particle
 	// Template particle for an center of explosion
@@ -79,10 +84,12 @@ private:
 	int minutes;
 	// Current second shown on screen
 	int currentSecond = 0;
-	//Offset for the seconds timer
+	// Offset for the seconds timer
 	int secondsXOffset = 100;
-	//Player lifes
+	// Player lifes
 	int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
+	// CoreMecha's number
+	int coreMechaNum = 2;
 
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
@@ -142,7 +149,6 @@ public:
 	void InitAssets();
 
 	void PrintDebugInformation();
-
 };
 
 #endif
