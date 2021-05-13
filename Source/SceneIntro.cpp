@@ -42,7 +42,7 @@ bool SceneIntro::Update()
 {
 	fadeInOut->Update();
 
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
 	{
 
 		if (currentImage == 3)
@@ -69,8 +69,6 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
-
-
 	if (currentImage == 0)
 	{
 		App->render->AddTextureRenderQueue(introImages[0], { 0,-100 }, nullptr, 2, 0, false, 0, 1.5f);

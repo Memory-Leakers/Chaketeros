@@ -376,7 +376,7 @@ bool SceneLevel1::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(STAGE_SCENE, 90, score);
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
