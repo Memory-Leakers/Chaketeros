@@ -4,10 +4,12 @@
 using namespace std;
 #include "Application.h"
 
+Timer particleTime;
+
 SceneSelectArea::SceneSelectArea()
 {
 	// Animation should be init in constructor!!!!
-#pragma region Init Anim
+	#pragma region Init Anim
 
 // Level 1 Cheese Animation
 	texLevel1CheeseAnim.PushBack({ 0,0,39,48 });
@@ -47,9 +49,6 @@ SceneSelectArea::~SceneSelectArea()
 {
 }
 
-
-
-
 bool SceneSelectArea::Start()
 {
 	cout << "Start Select Area" << endl;
@@ -88,11 +87,32 @@ bool SceneSelectArea::Start()
 	texLevel5CheeseAnim.Reset();
 	#pragma endregion
 
+	starParticle = new Particle(200.0f, 0.2f, texMainMenu);
+
+	starParticle->anim.PushBack({ 608, 200, 1, 1 });
+	starParticle->anim.PushBack({ 608, 201, 1, 1 });
+	starParticle->anim.loop = true;
+
 	return true;
 }
 
 bool SceneSelectArea::Update()
 {
+	
+	particleTime.Update();
+
+	if(particleTime.getDeltaTime() > 0.15f)
+	{
+		particleTime.Reset();
+		int sig[2] = { 1,-1 };
+
+		for (int i = 0; i < 3; i++)
+		{
+			starParticle->setSpeed({ (rand() % 3 + 1) * sig[rand() % 2], (rand() % 3 + 1) * sig[rand() % 2] });
+			App->particle->AddParticle(*starParticle, 128, 120, Type::NONE);
+		}
+	}
+
 	cout << "Update Select Area" << endl;
 	// Animations Update
 	texLevel1CheeseAnim.Update();
@@ -141,10 +161,9 @@ bool SceneSelectArea::Update()
 	}
 	#pragma endregion
 
-	if (App->scene->isLevelCompleted == true) {
-		
+	if (App->scene->isLevelCompleted == true) 
+	{	
 		Completed();
-
 	}
 
 	
@@ -156,7 +175,7 @@ bool SceneSelectArea::PostUpdate()
 {
 	cout << "PostUpdate Select Area" << endl;
 
-	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 2,0);
+	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 0,0);
 
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
 
@@ -190,15 +209,19 @@ bool SceneSelectArea::CleanUp(bool finalCleanUp)
 	{
 		App->textures->CleanUpScene();
 		App->audio->CleanUpScene();
+		App->particle->CleanUpScene();
 	}
+
+	if (starParticle != nullptr)
+	{
+		delete starParticle;
+		starParticle = nullptr;
+	}
+
 	return true;
 }
 
 void SceneSelectArea::Completed()
 {
-	
-	
 	App->render->AddTextureRenderQueue(texLevels, { 127, 73 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
-		
-	
 }

@@ -1,5 +1,6 @@
 #include "ModuleParticles.h"
 
+Timer particleMoveTime;
 
 ModuleParticles::ModuleParticles()
 {
@@ -57,7 +58,6 @@ void ModuleParticles::OnCollision(Collider* c1, Collider* c2)
 		// Always destroy particles that collide
 		if (particles[i] != nullptr && particles[i]->col == c1)
 		{
-
 			delete particles[i];
 			particles[i] = nullptr;
 			break;
@@ -85,18 +85,24 @@ UpdateResult ModuleParticles::PreUpdate()
 
 UpdateResult ModuleParticles::Update()
 {
-	for(uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
+	particleMoveTime.Update();
+
+	if(particleMoveTime.getDeltaTime() > 0.025f)
 	{
-		Particle* particle = particles[i];
-
-		if(particle == nullptr)	continue;
-
-		// Call particle Update. If it has reached its lifetime, destroy it
-		if(particle->Update() == false)
+		for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 		{
-			delete particle;
-			particles[i] = nullptr;
+			Particle* particle = particles[i];
+
+			if (particle == nullptr)	continue;
+
+			// Call particle Update. If it has reached its lifetime, destroy it
+			if (particle->Update() == false)
+			{
+				delete particle;
+				particles[i] = nullptr;
+			}
 		}
+		particleMoveTime.Reset();
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;

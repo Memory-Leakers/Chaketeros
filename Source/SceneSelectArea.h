@@ -4,7 +4,8 @@
 #include "Scene.h"
 #include "External/SDL_image/include/SDL_image.h"
 #include "Animation.h"
-
+#include "Particle.h"
+#include "Timer.h"
 
 class SceneSelectArea : public Scene
 {
@@ -28,8 +29,7 @@ private:
 
 	uint changeSelectSFX, selectSFX;
 
-	
-
+	Particle* starParticle;
 	
 public:
 	
