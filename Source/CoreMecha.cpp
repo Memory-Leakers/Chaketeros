@@ -20,11 +20,13 @@ CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle
 
 void CoreMecha::Die()
 {
+	pendingToDelete = true;
+	getCollider()->pendingToDelete = true;
+
+	// Offset dieParticle
 	iPoint tempPos = getPosition();
 	tempPos -= {5, 11};
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE);
-	pendingToDelete = true;
-	getCollider()->pendingToDelete = true;
 
 	App->scene->currentScene->score += 800;
 

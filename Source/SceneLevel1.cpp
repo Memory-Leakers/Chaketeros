@@ -441,8 +441,7 @@ bool SceneLevel1::PreUpdate()
 			if (!anyCoreMecha && !isLevelCompleted)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
-				isLevelCompleted = true;
-				
+				isLevelCompleted = true;		
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -454,11 +453,15 @@ bool SceneLevel1::PreUpdate()
 	#pragma endregion
 
 	#pragma region CleanUp & destroy powerUp
-	if (powerUps[0] != nullptr && powerUps[0]->pendingToDelete)
+	for (int i = 0; i < MAX_POWERUPS; i++)
 	{
-		delete powerUps[0];
-		powerUps[0] = nullptr;
+		if (powerUps[i] != nullptr && powerUps[i]->pendingToDelete)
+		{
+			delete powerUps[i];
+			powerUps[i] = nullptr;
+		}
 	}
+	
 	#pragma endregion	
 
 	return true;
@@ -738,7 +741,8 @@ bool SceneLevel1::PostUpdate()
 	// Draw powerUpPos
 	for (int i = 0; i < 2; i++)
 	{
-		if(debugPowerUp && sceneObstacles[7+i]!=nullptr)
+		Obstacle* temp = sceneObstacles[7 + i];
+		if (debugPowerUp && temp != nullptr && temp->getCollider()->type != Type::BOMB)
 		{
 			App->render->AddRectRenderQueue({ powerUpPos[i].x + 2,powerUpPos[i].y + 2,12,12 }, { 0,0,255,255 });
 		}		

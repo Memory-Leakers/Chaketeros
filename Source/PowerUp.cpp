@@ -30,7 +30,11 @@ void PowerUp::Die()
 {
     pendingToDelete = true;
     this->col->pendingToDelete = true;
-    App->particle->AddParticle(*powerUpDestroyed, position, Type::NONE);
+
+    // Offset dieParticle
+    iPoint tempPos = position;
+    tempPos -= {5, 11};
+    App->particle->AddParticle(*powerUpDestroyed, tempPos, Type::NONE);
 }
 
 void PowerUp::OnCollision(Collider* col)
