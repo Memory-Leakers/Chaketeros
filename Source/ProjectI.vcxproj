@@ -97,6 +97,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CoreMecha.h" />
+    <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="GlassCapsule.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
     <ClInclude Include="Mover.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CoreMecha.cpp" />
+    <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="GlassCapsule.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />

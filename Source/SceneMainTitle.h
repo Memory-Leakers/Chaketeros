@@ -2,6 +2,7 @@
 #define _SCENEMAINTITLE_H_
 
 #include "Scene.h"
+#include "Timer.h"
 #include "External/SDL_image/include/SDL_image.h"
 
 class SceneMainTitle : public Scene
@@ -10,6 +11,7 @@ private:
 	//	Textures
 	SDL_Texture* texMainMenu;
 	SDL_Texture* texMenuArrow;
+	SDL_Texture* introImages[10];
 
 	//	Textures Rectangles
 	SDL_Rect menuBackgroundRect;
@@ -22,7 +24,11 @@ private:
 	iPoint arrowPosition[3];
 	iPoint* currentArrowPos;
 
-	uint changeSelectSFX, selectSFX;
+	uint changeSelectSFX, selectSFX, introSFX;
+
+	int currentImage;
+
+	bool skipIntro;
 
 public:
 
