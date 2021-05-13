@@ -6,29 +6,10 @@ using namespace std;
 
 SceneSelectArea::SceneSelectArea()
 {
-}
+	// Animation should be init in constructor!!!!
+#pragma region Init Anim
 
-SceneSelectArea::~SceneSelectArea()
-{
-}
-
-bool SceneSelectArea::Start()
-{
-	cout << "Start Select Area" << endl;
-	
-	//Music
-	Mix_VolumeMusic(15);
-	App->audio->PlayMusic("Assets/Audio/Music/AreaSelect.ogg", 1.5f);
-#pragma region Textures and Animations Setup
-	texSelectArea = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Area.png");
-	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
-	texLevels = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Levels.png");
-	SelectStageBackgroundRect = { 256, 0, 256, 224 };
-	StageCheeseandStarsRect = { 512,6,256,224 };
-	UIStageLevel1Rect = { 0, 0, 256, 224 };
-	UIStageLevel2Rect = { 0, 224, 256, 224 };
-	StageCheese1Completed = { 513 ,223,256,224 };
-	// Level 1 Cheese Animation
+// Level 1 Cheese Animation
 	texLevel1CheeseAnim.PushBack({ 0,0,39,48 });
 	texLevel1CheeseAnim.PushBack({ 64,0,39,48 });
 	texLevel1CheeseAnim.PushBack({ 128,0,39,48 });
@@ -59,10 +40,34 @@ bool SceneSelectArea::Start()
 	texLevel5CheeseAnim.speed = 0.05f;
 	texLevel5CheeseAnim.hasIdle = false;
 	texLevel5CheeseAnim.loop = true;
-
 #pragma endregion
+}
 
-#pragma region Arrow Positions Setup
+SceneSelectArea::~SceneSelectArea()
+{
+}
+
+
+
+
+bool SceneSelectArea::Start()
+{
+	cout << "Start Select Area" << endl;
+	//Music
+	Mix_VolumeMusic(15);
+	App->audio->PlayMusic("Assets/Audio/Music/AreaSelect.ogg", 1.5f);
+
+	#pragma region Textures and Animations Setup
+	texSelectArea = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Area.png");
+	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
+	texLevels = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Levels.png");
+	SelectStageBackgroundRect = { 256, 0, 256, 224 };
+	StageCheeseandStarsRect = { 512,6,256,224 };
+	UIStageLevel1Rect = { 0, 0, 256, 224 };
+	UIStageLevel2Rect = { 0, 224, 256, 224 };
+	#pragma endregion
+
+	#pragma region Arrow Positions Setup
 	arrowLevelPosition[0] = { 129, 77 };
 	arrowLevelPosition[1] = { 130, 108 };
 	arrowLevelPosition[2] = { 127, 124 };
@@ -70,15 +75,24 @@ bool SceneSelectArea::Start()
 	arrowLevelPosition[4] = { 92, 76 };
 
 	currentArrowLevelPos = &arrowLevelPosition[0];
-#pragma endregion
+	#pragma endregion
+
 	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
 	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
+
+	#pragma region reset anim
+	texLevel1CheeseAnim.Reset();
+	texLevel2CheeseAnim.Reset();
+	texLevel3CheeseAnim.Reset();
+	texLevel4CheeseAnim.Reset();
+	texLevel5CheeseAnim.Reset();
+	#pragma endregion
+
 	return true;
 }
 
 bool SceneSelectArea::Update()
 {
-	
 	cout << "Update Select Area" << endl;
 	// Animations Update
 	texLevel1CheeseAnim.Update();
@@ -87,7 +101,7 @@ bool SceneSelectArea::Update()
 	texLevel4CheeseAnim.Update();
 	texLevel5CheeseAnim.Update();
 
-#pragma region Input Arrow Position Logic
+	#pragma region Input Arrow Position Logic
 	//Check Input to change Arrow Position
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
@@ -113,27 +127,28 @@ bool SceneSelectArea::Update()
 			currentArrowLevelPos--;
 		}
 	}
-#pragma endregion
+	#pragma endregion
 
-#pragma region Select Option Logic
+	#pragma region Select Option Logic
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			App->audio->PlaySound(selectSFX, 0);
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 120);
-
+			App->scene->ChangeCurrentScene(STAGE_SCENE, 80);
 		}
 	}
-#pragma endregion
+	#pragma endregion
 
 	if (App->scene->isLevelCompleted == true) {
 		
 		Completed();
 
 	}
+
+	
+
 	return true;
 }
 

@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Application.h"
+#include "Animation.h"
 #include "SDL_image/include/SDL_image.h"
 
 class SceneSelectStage : public Scene
@@ -14,8 +15,9 @@ private:
 	SDL_Texture* texStoneCoin = nullptr;
 	SDL_Texture* texInGameUI = nullptr;
 	SDL_Texture* texBigStoneCoins = nullptr;
+	SDL_Texture* texBomberman = nullptr;
 
-	SDL_Rect stagesRect[4]
+	SDL_Rect recStages[4]
 	{
 		{0, 0, 77,   63}, //Stage1
 		{0, 64, 77,  63}, //Stage2
@@ -23,7 +25,7 @@ private:
 		{0, 192, 77, 63}  //Exit
 	};
 
-	SDL_Rect stageSelect[2]
+	SDL_Rect recStageSelect[2]
 	{
 		{118, 3, 112, 81}, //SelectMap
 		{3, 88, 30,   20}, //SelectUI
@@ -34,19 +36,25 @@ private:
 		//select3(abajo iz) : 138,54
 	};
 
-	struct StoneCoin
-	{
-		iPoint position;
-		Animation* animation;
-	};
+	SDL_Rect recInGameUI = { 0, 0, 256, 24 };
 
-	StoneCoin stoneCoins[3];
+	SDL_Rect recBomberman = { 65,2,16,22 };
+
+	Animation stoneCoinAnim;
+
+	iPoint stoneCoinsPos[3];
+
+	iPoint stageSelectPos[4];
+
+	int stageSelectPointer = 0;
 
 public:
 	SceneSelectStage();
 
 	// Destructor
 	~SceneSelectStage();
+
+	void ModifyStagePointer(int mod);
 
 	void InitAssets();
 

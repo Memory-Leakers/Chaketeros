@@ -74,7 +74,7 @@ bool Player::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
-	playerDestroyed = new Particle(500.0f, 0.05f, texture);
+	playerDestroyed = new Particle(500.0f, 0.1f, texture);
 
 	playerDestroyed->anim.PushBack({ 4, 71, 22, 21});
 	playerDestroyed->anim.PushBack({ 26, 71, 22, 21});
@@ -296,12 +296,6 @@ UpdateResult Player::Update()
 
 #pragma endregion
 
-
-	// Debug key
-	
-		
-	
-
 	// Resets speed
 
 	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
@@ -332,7 +326,7 @@ UpdateResult Player::Update()
 	// Update Pivot Point
 	pivotPoint = { position.x + 8, position.y + 8 };
 
-	#pragma region Debug Mods
+	#pragma region Debug keys
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -344,7 +338,8 @@ UpdateResult Player::Update()
 
 		if(posMode)
 		{
-			lastTilePos = tilePos;
+			lastTilePos = getCurrentTilePos();
+			level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = -1;
 		}
 		else
 		{
@@ -364,6 +359,8 @@ UpdateResult Player::Update()
 
 UpdateResult Player::PostUpdate()
 {
+	if(pendingToDelete) return UpdateResult::UPDATE_CONTINUE;
+
 	rect = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
@@ -402,14 +399,18 @@ void Player::OnCollision(Collider* col)
 	{
 		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
 		{
-			App->audio->PlaySound(deathSFX, 0);
-			App->audio->PlaySound(gameOverSFX, 0);
-			pendingToDelete = true;
+			if(InGrid(col))
+			{
+				App->audio->PlaySound(deathSFX, 0);
+				App->audio->PlaySound(gameOverSFX, 0);
+				pendingToDelete = true;
+				posMode = false;
 
-			// Create die particle
-			iPoint tempPos = position;
-			tempPos -= {3, 5};
-			App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+				// Create die particle
+				iPoint tempPos = position;
+				tempPos -= {3, 5};
+				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+			}		
 		}
 
 		if (col->type == Type::FIREPOWER)
@@ -424,7 +425,7 @@ void Player::WillCollision(Collider* col)
 	if (!godMode)
 	{
 		// Choc
-		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL)
+		if (col->type == Type::WALL || col->type == Type::DESTRUCTABLE_WALL || col->type == Type::BOMB && !InGrid(col))
 		{
 			//get col position x
 			int bx = col->getPos().x;
@@ -450,7 +451,6 @@ void Player::WillCollision(Collider* col)
 					canMoveDir[LEFT] = false;
 				}
 			}
-
 			// case 3
 			if ((py + 1 + bounds.h) >= by && (py + 1) <= by)
 			{
@@ -470,6 +470,18 @@ void Player::WillCollision(Collider* col)
 			}
 		}
 	}
+}
+
+bool Player::InGrid(Collider* col)
+{
+	iPoint colGrid = level1Tile->getTilePos(col->getPos());
+	
+	if(colGrid == getCurrentTilePos())
+	{
+		return true;
+	}
+
+	return false;
 }
 
 iPoint Player::getCurrentTilePos()

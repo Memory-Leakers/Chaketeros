@@ -95,6 +95,8 @@ public:
 
 	// Callback if will be collision, called when the player intersects with another
 	void WillCollision(Collider* col);
+	
+	bool InGrid(Collider* col);
 
 	// pos for debug
 	iPoint getCurrentTilePos();
@@ -125,10 +127,7 @@ public:
 
 	bool pendingToDelete = false;
 
-	bool ExtraPoints = false;
-
-
-	
+	bool ExtraPoints = false;	
 };
 #endif // __PLAYER_H__
 

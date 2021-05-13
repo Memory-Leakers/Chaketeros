@@ -59,7 +59,7 @@ public:
 
 	void WillCollision(Collider* c1, Collider* c2) override;
 
-	void ChangeCurrentScene(uint index, int frames, int sceneScore = 0);
+	bool ChangeCurrentScene(uint index, int frames, int sceneScore = 0);
 
 	bool CleanUp() override;
 

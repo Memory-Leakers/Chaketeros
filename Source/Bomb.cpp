@@ -132,7 +132,8 @@ void Bomb::Die()
 		for (int j = 1; j <= explotionRange; j++)
 		{
 			if (lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j ] == 0||
-				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4)
+				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4 ||
+				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == -1)
 			{
 				explotionNum[i]++;
 			}

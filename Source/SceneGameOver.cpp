@@ -2,12 +2,28 @@
 
 using namespace std;
 
-vector <int> digitVec;
-
 NumText gameOverScore;
+
+SDL_Rect debugRect;
 
 SceneGameOver::SceneGameOver()
 {
+	#pragma region Init Anim
+	gameOverAnim.PushBack({ 0,0,256,224 });
+	gameOverAnim.PushBack({ 0,224,256,224 });
+	gameOverAnim.speed = 0.05f;
+	gameOverAnim.hasIdle = false;
+
+	gameOverContinueAnim.PushBack({ 0,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 512,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 768,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1024,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1280,0, 256, 224 });
+	gameOverContinueAnim.PushBack({ 1536,0, 256, 224 });
+	gameOverContinueAnim.speed = 0.05f;
+	gameOverContinueAnim.hasIdle = false;
+	gameOverContinueAnim.loop = false;
+	#pragma endregion
 }
 
 SceneGameOver::~SceneGameOver()
@@ -34,21 +50,6 @@ bool SceneGameOver::Start()
 	gameOverBackgroundRec = {256, 0, 256, 224};
 
 	gameOverPointerRec = { 0,48,15,15 };
-
-	gameOverAnim.PushBack({ 0,0,256,224 });
-	gameOverAnim.PushBack({ 0,224,256,224 });
-	gameOverAnim.speed = 0.05f;
-	gameOverAnim.hasIdle = false;
-
-	gameOverContinueAnim.PushBack({ 0,0, 256, 224 });
-	gameOverContinueAnim.PushBack({ 512,0, 256, 224 });
-	gameOverContinueAnim.PushBack({ 768,0, 256, 224 });
-	gameOverContinueAnim.PushBack({ 1024,0, 256, 224 });
-	gameOverContinueAnim.PushBack({ 1280,0, 256, 224 });
-	gameOverContinueAnim.PushBack({ 1536,0, 256, 224 });
-	gameOverContinueAnim.speed = 0.05f;
-	gameOverContinueAnim.hasIdle = false;
-	gameOverContinueAnim.loop = false;
 	#pragma endregion
 
 	#pragma region Pointer Setup
@@ -58,9 +59,12 @@ bool SceneGameOver::Start()
 	currentPointerPos = &pointerPos[0];
 	#pragma endregion
 
+	// Reset anim
+	gameOverAnim.Reset();
+	gameOverContinueAnim.Reset();
+
 	//Reset variables
 	pressedContinue = false;
-	//Convert current score to Textures
 	
 	gameOverScore.Start();
 
@@ -110,16 +114,17 @@ bool SceneGameOver::Update()
 
 		App->scene->playerSettings->Reset();
 
-		if (currentPointerPos == &pointerPos[0])
-		{
-			pressedContinue = true;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90);
+		if (currentPointerPos == &pointerPos[0] && !pressedContinue)
+		{		
+			if(App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90))
+			{
+				pressedContinue = true;
+			}
 		}
 		else if (currentPointerPos == &pointerPos[1])
 		{
 			App->scene->ChangeCurrentScene(INTRO_SCENE, 90);
 		}
-
 	}
 	#pragma endregion
 
@@ -134,8 +139,8 @@ bool SceneGameOver::PostUpdate()
 	
 	if (pressedContinue) 
 	{
-		
-		App->render->AddTextureRenderQueue(texGameOverContinue, { 0,0 }, &gameOverContinueAnim.GetCurrentFrame(),2);
+		debugRect = gameOverContinueAnim.GetCurrentFrame();
+		App->render->AddTextureRenderQueue(texGameOverContinue, { 0,0 }, &debugRect,2);
 	}
 	else 
 	{
@@ -159,8 +164,6 @@ bool SceneGameOver::CleanUp(bool finalCleanUp)
 		App->textures->CleanUpScene();
 		App->audio->CleanUpScene();
 	}
-	digitVec.clear();
-	digitVec.shrink_to_fit();
 
 	return true;
 }

@@ -45,9 +45,11 @@ ModuleEnemy* enemy[MAX_ENEMY];
 
 iPoint winPosition = { 120, 96 };
 
-SDL_Rect rectUI = { 0,0,256,23 };
+iPoint powerUpPos[2];
 
 #pragma endregion
+
+//iPoint debugOffset = { 0,0 };
 
 SceneLevel1::SceneLevel1()
 {
@@ -77,6 +79,7 @@ void SceneLevel1::InitAssets()
 	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/CoreMecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 
 	#pragma endregion
 
@@ -94,14 +97,12 @@ void SceneLevel1::InitAssets()
 	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
 
-
 	// ExplosionMiddle particle
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
 	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
-
 
 	// ExplosionEnd particle
 	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
@@ -119,7 +120,6 @@ void SceneLevel1::InitAssets()
 	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
 	powerUpDestroyed->anim.hasIdle = false;
-
 
 	// Red Flower destroyed particle
 	redFlowerDestroyed = new Particle(500.0f, 0.15f, texEnemies);
@@ -153,6 +153,40 @@ void SceneLevel1::InitAssets()
 	#pragma endregion
 }
 
+void SceneLevel1::PrintDebugInformation()
+{
+	#pragma region Draw Map in Console
+	// Check Map in Console
+	for (int i = 0, k = 0; i < 13; ++i)
+	{
+		for (int j = 0; j < 15; ++j)
+		{
+			switch (tileMap->Level1TileMap[i][j])
+			{
+			case -1: cout << "P,"; break;
+			case 10: cout << "G,"; break;
+			default: cout << tileMap->Level1TileMap[i][j] << ","; break;
+			}
+		}
+		cout << endl;
+	}
+	#pragma endregion
+
+	#pragma region Manual
+
+	cout << endl;
+	cout << "F1: On/Off GodMod" << endl;
+	cout << "F2: On/Off Collision box" << endl;
+	cout << "F3: Instante lose" << endl;
+	cout << "F4: On/Off Camera (move with dirArrown)" << endl;
+	cout << "F5: On/Off PowerUp position" << endl;
+	cout << "F6: On/Off Mover A* path" << endl;
+	cout << "F10: On/Off Draw player pos in console map (use with Q)" << endl;
+	cout << "Q: Update console tileMap" << endl;
+
+	#pragma endregion
+}
+
 void SceneLevel1::CreateScene()
 {
 	#pragma region Generate Obstacles
@@ -175,7 +209,7 @@ void SceneLevel1::CreateScene()
 				break;
 			case 6:
 				//renderExceptionPos[l++] = k;
-				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap);
+				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap, &coreMechaNum);
 				break;
 			case 10:
 				//renderExceptionPos[l++] = k;
@@ -193,18 +227,6 @@ void SceneLevel1::CreateScene()
 	cout << endl;
 
 	CreateYellowFlowers();
-
-	#pragma region Draw Map in Console
-	// Check Map in Console
-	for (int i = 0, k = 0; i < 13; ++i)
-	{
-		for (int j = 0; j < 15; ++j)
-		{
-			cout << tileMap->Level1TileMap[i][j] << ",";
-		}
-		cout << endl;
-	}
-	#pragma endregion
 }
 
 void SceneLevel1::CreateYellowFlowers()
@@ -232,10 +254,9 @@ void SceneLevel1::CreateYellowFlowers()
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
-				if(hasPowerUp)
+				if (hasPowerUp)
 				{
-					cout << "PowerUp Pos" << endl;
-					cout << "x: " << sceneObstacles[j]->getPosition().x << ", y: " << sceneObstacles[j]->getPosition().y << endl;
+					powerUpPos[i] = sceneObstacles[j]->getPosition();
 				}
 
 				break;
@@ -258,6 +279,7 @@ bool SceneLevel1::Start()
 	App->scene->isLevelCompleted = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
+	coreMechaNum = 2;
 
 	//	Timer Reset
 	timer.Reset();
@@ -268,23 +290,24 @@ bool SceneLevel1::Start()
 	#pragma endregion
 
 	#pragma region Init Player and Enemies
-	// Inicializar jugador
+
+	// Init player
 	bomberman = new Player(tileMap);
 	bomberman->Start();
 
-	//	Spawn enemies
+	// Spawn enemies
 	enemy[3] = new PokaPoka(200, 160, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(200, 160, &bomberman->position, tileMap);
 	enemy[0] = new Mover({ 72,160 }, &bomberman->pivotPoint, tileMap);
 
-	//Start Enemy
+	// Init enemies
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		enemy[i]->Start();
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	InitAssets();
 
@@ -296,6 +319,10 @@ bool SceneLevel1::Start()
 
 	//	Create Scene
 	CreateScene();
+
+	system("cls");
+	// Debug information;
+	PrintDebugInformation();
 
 	return ret;
 }
@@ -414,8 +441,10 @@ bool SceneLevel1::PreUpdate()
 			if (!anyCoreMecha && !App->scene->isLevelCompleted)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
+
 				App->scene->isLevelCompleted = true;
 				
+
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -427,11 +456,15 @@ bool SceneLevel1::PreUpdate()
 	#pragma endregion
 
 	#pragma region CleanUp & destroy powerUp
-	if (powerUps[0] != nullptr && powerUps[0]->pendingToDelete)
+	for (int i = 0; i < MAX_POWERUPS; i++)
 	{
-		delete powerUps[0];
-		powerUps[0] = nullptr;
+		if (powerUps[i] != nullptr && powerUps[i]->pendingToDelete)
+		{
+			delete powerUps[i];
+			powerUps[i] = nullptr;
+		}
 	}
+	
 	#pragma endregion	
 
 	return true;
@@ -440,16 +473,38 @@ bool SceneLevel1::PreUpdate()
 bool SceneLevel1::Update()
 {
 	#pragma region Special Keys (Debugging)
+
+	#pragma region UI offset debug
+	/*if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
+	{
+		debugOffset.y--;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if(App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	{
+		debugOffset.y++;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+	{
+		debugOffset.x--;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}
+	else if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	{
+		debugOffset.x++;
+		system("cls");
+		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
+	}*/
+	#pragma endregion
+
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
-	}
-
-	// Cout Score in console with C
-	if (App->input->keys[SDL_SCANCODE_C] == KEY_DOWN)
-	{
-		cout << "Score: " << score << endl;
 	}
 
 	// Draw debug tileMap with Q
@@ -457,23 +512,14 @@ bool SceneLevel1::Update()
 	{
 		system("cls");
 		cout << endl;
-		// Check Map in Console
-		for (int i = 0, k = 0; i < 13; ++i)
-		{
-			for (int j = 0; j < 15; ++j)
-			{
-				if (tileMap->Level1TileMap[i][j] == -1)
-				{
-					cout << "P,";
-				}
-				else
-				{
-					cout << tileMap->Level1TileMap[i][j] << ",";
-				}
-			}
-			cout << endl;
-		}
-		//sceneObstacles[glassCapsuleIndex]->Die();
+		
+		// Debug information
+		PrintDebugInformation();
+	}
+
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		debugPowerUp = !debugPowerUp;
 	}
 	#pragma endregion
 
@@ -481,7 +527,6 @@ bool SceneLevel1::Update()
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
-		
 
 		// Drop bomb
 		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
@@ -569,17 +614,11 @@ bool SceneLevel1::Update()
 	}
 	#pragma endregion
 
-	// Draw Map
-	//App->render->DrawTexture(texMap, { 0, 16 }, nullptr);
-
-
 	return true;
-
 }
 
 bool SceneLevel1::PostUpdate()
 {
-	
 	#pragma region Drawing
 
 	// Draw Map
@@ -636,8 +675,26 @@ bool SceneLevel1::PostUpdate()
 
 	// Draw UI
 	//App->render->DrawTexture(texUI, 0, 0, &rectUI);
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, & rectUI, 2, 0);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
+	// Draw CoreMechaUI
+	if(coreMechaNum > 0)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	if (coreMechaNum > 1)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	
 	#pragma endregion
 
 	#pragma region Timer Logic
@@ -683,6 +740,16 @@ bool SceneLevel1::PostUpdate()
 	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
 	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
 	#pragma endregion
+
+	// Draw powerUpPos
+	for (int i = 0; i < 2; i++)
+	{
+		Obstacle* temp = sceneObstacles[7 + i];
+		if (debugPowerUp && temp != nullptr && temp->getCollider()->type != Type::BOMB)
+		{
+			App->render->AddRectRenderQueue({ powerUpPos[i].x + 2,powerUpPos[i].y + 2,12,12 }, { 0,0,255,255 });
+		}		
+	}
 
 	return true;
 }
@@ -824,9 +891,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 
 	Mix_HaltMusic();
 
-	delete tileMap;
-	tileMap = nullptr;
-
 	//Delete Vector
 	emptySpaces.clear();
 	emptySpaces.shrink_to_fit();
@@ -855,7 +919,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	delete bomberman;
 	bomberman = nullptr;
 
-	//Delete Enemy
+	// Delete Enemy
 	for (int i = 0; i < MAX_ENEMY; ++i)
 	{
 		if(enemy[i]!=nullptr)
@@ -866,6 +930,13 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		}	
 	}
 	#pragma endregion
+
+	// Delete TileMap
+	if (tileMap != nullptr)
+	{
+		delete tileMap;
+		tileMap = nullptr;
+	}
 
 	return true;
 }

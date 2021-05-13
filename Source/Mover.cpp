@@ -115,6 +115,11 @@ UpdateResult Mover::Update()
 		moverTimer.Reset();	
 	}
 
+	if(App->input->keys[SDL_SCANCODE_F6] == KEY_DOWN)
+	{
+		debugAStarPath = !debugAStarPath;
+	}
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -332,10 +337,13 @@ int Mover::AStar()
 			// closeGrid[i].lastIndex apunta hacia el grid anterior del que esta ahora para evitar las bifurcacion
 			for (int i = closeGrid.size() -1 ; i >= 0; i = closeGrid[i].lastIndex)
 			{
-				// Draw path
-				iPoint tempPos = closeGrid[i].pos;
-				App->render->AddRectRenderQueue({ tempPos.x * 16 + 12,tempPos.y * 16 + 18,10,10 }, { 255, 0, 0, 255 });
-				
+				if(debugAStarPath)
+				{
+					// Draw path
+					iPoint tempPos = closeGrid[i].pos;
+					App->render->AddRectRenderQueue({ tempPos.x * 16 + 12,tempPos.y * 16 + 18,10,10 }, { 255, 0, 0, 255 });
+				}
+						
 				instruction.push_back(closeGrid[i].dir);
 			}
 

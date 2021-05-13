@@ -136,7 +136,7 @@ Idle: {20,20,16,16}
 
 <<Time & Score & Life>>
 
-Default: {0,0,256,23}
+Default: {0,0,256,24}
 
 min: 16,18
 second: 32,8

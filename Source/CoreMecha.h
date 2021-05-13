@@ -22,10 +22,12 @@ private:
 
 	uint coreMechaDestroyedSFX;
 
+	int* coreMechaNum = nullptr;
+
 public:
 	//Constructors
 	CoreMecha();
-	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile);
+	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile, int* coreMechaNum);
 	
 	//Methods
 

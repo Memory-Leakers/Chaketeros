@@ -36,8 +36,7 @@ public:
 	}
 
 	void Update()
-	{
-		
+	{	
 		if (hasIdle) {
 			current_frame = 0;
 		}

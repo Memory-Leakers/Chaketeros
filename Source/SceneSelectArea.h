@@ -33,8 +33,6 @@ private:
 	
 public:
 	
-
-
 	SceneSelectArea();
 
 	// Destructor

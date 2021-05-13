@@ -114,15 +114,16 @@ void ModuleScene::WillCollision(Collider* c1, Collider* c2)
 	currentScene->WillCollision(c1, c2);
 }
 
-void ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//CleanUp current scene, change current scene (index), Start current Scene
+bool ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//CleanUp current scene, change current scene (index), Start current Scene
 {
-	if (currentStep != FADE_NONE) return;
-
+	if (currentStep != FADE_NONE) return false;
+	
 	currentStep = FADE_IN;
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
 	playerSettings->playerScore = sceneScore;
+	return true;
 }
 
 bool ModuleScene::CleanUp()
