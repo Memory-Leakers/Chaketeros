@@ -276,7 +276,7 @@ bool SceneLevel1::Start()
 	tileMap = new Tile();
 
 	//Reset variables
-	isLevelCompleted = false;
+	App->scene->isLevelCompleted = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
@@ -438,10 +438,13 @@ bool SceneLevel1::PreUpdate()
 			#pragma endregion
 
 			// Detect if level is complete
-			if (!anyCoreMecha && !isLevelCompleted)
+			if (!anyCoreMecha && !App->scene->isLevelCompleted)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
-				isLevelCompleted = true;		
+
+				App->scene->isLevelCompleted = true;
+				
+
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -540,7 +543,7 @@ bool SceneLevel1::Update()
 		}
 
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && isLevelCompleted && !isExtraPointsActive)
+		if (bomberman->position == winPosition && App->scene->isLevelCompleted && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(levelCompleteSFX, 0);
