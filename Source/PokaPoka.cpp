@@ -343,5 +343,4 @@ void PokaPoka::attack() {
 		attacking = 3;
 		attackTimer.Reset();
 	}
-	cout << attacking << " | Time->" << attackTimer.getDeltaTime() << endl;
 }
