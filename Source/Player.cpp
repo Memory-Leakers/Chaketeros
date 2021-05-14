@@ -390,6 +390,9 @@ UpdateResult Player::PostUpdate()
 		}
 	}
 
+	// Draw player pivot point
+	// App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -482,8 +485,6 @@ bool Player::InGrid(Collider* col)
 		tempPos += {8, 8};
 		colGrid = level1Tile->getTilePos(tempPos);
 	}
-
-	App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
 	
 	if(colGrid == getCurrentTilePos())
 	{
