@@ -512,9 +512,12 @@ bool SceneLevel1::Update()
 
 			for (int i = 0; i < MAX_ENEMY; ++i)
 			{
-				enemy[i]->col->pendingToDelete = true;
-				delete enemy[i];
-				enemy[i] = nullptr;
+				if (enemy[i] != nullptr)
+				{
+					enemy[i]->col->pendingToDelete = true;
+					delete enemy[i];
+					enemy[i] = nullptr;
+				}
 			}
 			
 			for (int i = 0; i < 4; ++i)
@@ -683,7 +686,7 @@ bool SceneLevel1::PostUpdate()
 
 	sceneUI.DrawNum(minutes, { 16,8 });
 	sceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
-	sceneUI.DrawNum(score, { 160, 8 });
+	sceneUI.DrawNum(score, { 144, 8 });
 	sceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
 
 	sceneUI.DrawChar(0, { 25,8 });
