@@ -110,7 +110,7 @@ UpdateResult Player::Update()
 		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
 		{
 			//position.y -= speed;
-			speedY = -1;
+			speedY = -1*speed;
 		}
 		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
 		{
@@ -160,7 +160,7 @@ UpdateResult Player::Update()
 		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			//position.y += speed;
-			speedY = 1;
+			speedY = 1 * speed;
 		}
 		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
 		{
@@ -208,7 +208,7 @@ UpdateResult Player::Update()
 			if (position.x < 216) // Limiitar movimiento en la mapa
 			{
 				//position.x += speed;
-				speedX = 1;
+				speedX = 1 * speed;
 			}
 		}
 		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
@@ -256,7 +256,7 @@ UpdateResult Player::Update()
 		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;
-			speedX = -1;
+			speedX = -1 * speed;
 		}
 		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 		{

@@ -14,19 +14,19 @@ private:
 	FadeInOut();
 	~FadeInOut();
 
+	int currentFrame, maxFrames;
+
+	SDL_Rect screenRect;
+
+public:
+
 	enum FadeSteps {
 		FADE_NONE,
 		FADE_IN,
 		FADE_OUT
 	};
 
-	int currentFrame, maxFrames;
-
 	FadeSteps currentStep;
-
-	SDL_Rect screenRect;
-
-public:
 
 	bool isFadeInDone, isFadeOutDone;
 

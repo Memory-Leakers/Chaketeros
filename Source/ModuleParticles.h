@@ -3,12 +3,13 @@
 
 #include "Particle.h"
 #include "Collider.h"
+#include "Timer.h"
 
 #include "Application.h"
 
 #include "External/SDL/include/SDL_timer.h"
 
-#define MAX_ACTIVE_PARTICLES 100
+#define MAX_ACTIVE_PARTICLES 500
 
 struct SDL_Texture;
 struct Collision;

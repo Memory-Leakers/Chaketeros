@@ -4,11 +4,14 @@
 using namespace std;
 #include "Application.h"
 
+Timer particleTime;
+
 SceneSelectArea::SceneSelectArea()
 {
 	// Animation should be init in constructor!!!!
 	#pragma region Init Anim
-	// Level 1 Cheese Animation
+
+// Level 1 Cheese Animation
 	texLevel1CheeseAnim.PushBack({ 0,0,39,48 });
 	texLevel1CheeseAnim.PushBack({ 64,0,39,48 });
 	texLevel1CheeseAnim.PushBack({ 128,0,39,48 });
@@ -39,12 +42,11 @@ SceneSelectArea::SceneSelectArea()
 	texLevel5CheeseAnim.speed = 0.05f;
 	texLevel5CheeseAnim.hasIdle = false;
 	texLevel5CheeseAnim.loop = true;
-	#pragma endregion
+#pragma endregion
 }
 
 SceneSelectArea::~SceneSelectArea()
 {
-
 }
 
 bool SceneSelectArea::Start()
@@ -58,6 +60,8 @@ bool SceneSelectArea::Start()
 	texSelectArea = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Area.png");
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texLevels = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Levels.png");
+	texbombermaninArea = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
+	BombermaninAreaRect = { 49,50, 15 ,20 };
 	SelectStageBackgroundRect = { 256, 0, 256, 224 };
 	StageCheeseandStarsRect = { 512,6,256,224 };
 	UIStageLevel1Rect = { 0, 0, 256, 224 };
@@ -85,11 +89,32 @@ bool SceneSelectArea::Start()
 	texLevel5CheeseAnim.Reset();
 	#pragma endregion
 
+	starParticle = new Particle(200.0f, 0.2f, texMainMenu);
+
+	starParticle->anim.PushBack({ 608, 200, 1, 1 });
+	starParticle->anim.PushBack({ 608, 201, 1, 1 });
+	starParticle->anim.loop = true;
+
 	return true;
 }
 
 bool SceneSelectArea::Update()
 {
+	
+	particleTime.Update();
+
+	if(particleTime.getDeltaTime() > 0.15f)
+	{
+		particleTime.Reset();
+		int sig[2] = { 1,-1 };
+
+		for (int i = 0; i < 3; i++)
+		{
+			starParticle->setSpeed({ (rand() % 3 + 1) * sig[rand() % 2], (rand() % 3 + 1) * sig[rand() % 2] });
+			App->particle->AddParticle(*starParticle, 128, 120, Type::NONE);
+		}
+	}
+
 	cout << "Update Select Area" << endl;
 	// Animations Update
 	texLevel1CheeseAnim.Update();
@@ -137,6 +162,14 @@ bool SceneSelectArea::Update()
 		}
 	}
 	#pragma endregion
+
+	if (App->scene->isLevelCompleted == true) 
+	{	
+		Completed();
+	}
+
+	
+
 	return true;
 }
 
@@ -144,22 +177,25 @@ bool SceneSelectArea::PostUpdate()
 {
 	cout << "PostUpdate Select Area" << endl;
 
-	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 2,0);
+	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 0,0);
 
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,0 }, &StageCheeseandStarsRect, 2, 0);
+	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
 
+	App->render->AddTextureRenderQueue(texbombermaninArea, { 165, 52 }, &BombermaninAreaRect, 2, 1);
 	if (currentArrowLevelPos == &arrowLevelPosition[0]) {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel1Rect, 2, 2);
 	}
 	else {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel2Rect, 2, 2);
 	}
-
-	App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
+	if (App->scene->isLevelCompleted == false) 
+	{
+		App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
+	}
 	App->render->AddTextureRenderQueue(texLevels, { 141, 108 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2, 4);
-	App->render->AddTextureRenderQueue(texLevels, { 104, 134 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2, 7);
+	App->render->AddTextureRenderQueue(texLevels, { 103, 134 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2, 7);
 	App->render->AddTextureRenderQueue(texLevels, { 73, 107 }, &texLevel4CheeseAnim.GetCurrentFrame(), 2, 6);
-	App->render->AddTextureRenderQueue(texLevels, { 79, 59 }, &texLevel5CheeseAnim.GetCurrentFrame(), 2, 5);
+	App->render->AddTextureRenderQueue(texLevels, { 79, 60 }, &texLevel5CheeseAnim.GetCurrentFrame(), 2, 5);
 
 	/*App->render->AddTextureRenderQueue(texLevels, { 127, 73 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2,3);
 	App->render->AddTextureRenderQueue(texLevels, { 128, 105 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2,4);
@@ -176,6 +212,19 @@ bool SceneSelectArea::CleanUp(bool finalCleanUp)
 	{
 		App->textures->CleanUpScene();
 		App->audio->CleanUpScene();
+		App->particle->CleanUpScene();
 	}
+
+	if (starParticle != nullptr)
+	{
+		delete starParticle;
+		starParticle = nullptr;
+	}
+
 	return true;
+}
+
+void SceneSelectArea::Completed()
+{
+	App->render->AddTextureRenderQueue(texLevels, { 127, 73 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
 }

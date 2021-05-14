@@ -57,6 +57,11 @@ public:
 	Collider* col  = nullptr;
 
 	SDL_Texture* renderTex = nullptr;
+
+	void setSpeed(iPoint speed)
+	{
+		this->speed = speed;
+	}
 };
 
 #endif //__PARTICLE_H__

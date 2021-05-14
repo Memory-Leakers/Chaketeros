@@ -9,6 +9,8 @@ using namespace std;
 
 Timer mainMenuTimer;
 
+FadeInOut* fade;
+
 SceneMainTitle::SceneMainTitle()
 {
 }
@@ -60,13 +62,17 @@ bool SceneMainTitle::Start()
 	skipIntro = false;
 	mainMenuTimer.Reset();
 
+	fade = FadeInOut::Instance();
+
 	return true;
 }
 
 bool SceneMainTitle::Update()
 {
+	//Update timer and FadeInOut
 	mainMenuTimer.Update();
-	
+	fade->Update();
+
 	if ((currentImage == 8 && mainMenuTimer.getDeltaTime() >= 1.0f) || skipIntro) 
 	{
 		if (Mix_PlayingMusic() == 0)
@@ -119,10 +125,14 @@ bool SceneMainTitle::Update()
 	}
 	else 
 	{
-		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN && mainMenuTimer.getDeltaTime() >= 1.0f && fade->currentStep == FadeInOut::FadeSteps::FADE_NONE) 
+		{fade->FadeIn(45);}
+
+		if (fade->isFadeInDone == true)
 		{
 			skipIntro = true;
 			Mix_HaltChannel(-1);
+			fade->FadeOut(45);
 		}
 
 		if (mainMenuTimer.getDeltaTime() >= (4.5f - ((float)currentImage/7.5f)) && currentImage!= 8)
@@ -158,6 +168,7 @@ bool SceneMainTitle::PostUpdate()
 bool SceneMainTitle::CleanUp(bool finalCleanUp)
 {
 	Mix_HaltMusic();
+	fade->Release();
 
 	if (!finalCleanUp)
 	{

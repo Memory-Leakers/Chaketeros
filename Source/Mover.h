@@ -56,7 +56,7 @@ private:
 
 private:
 	// private metod
-	void die() override;
+	
 
 	// When no detect player
 	int RandomMov();
@@ -85,6 +85,8 @@ public:
 	UpdateResult Update() override;
 
 	UpdateResult PostUpdate() override;	
+
+	void die() override;
 };
 
 #endif // !_MOVER_H_

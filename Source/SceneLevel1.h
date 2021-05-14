@@ -96,8 +96,7 @@ private:
 	//	Counter for Sound Effects
 	float BGFX_CoinsCounter = 0;
 
-	//	Boolean to check if both CoreMecha have been destroyed
-	bool isLevelCompleted;
+	
 	//	Boolean to check if the player has activated the Extra Points event (appear Coins when player completes level and goes to the Glass Capsule)
 	bool isExtraPointsActive;
 	//	Boolean to check if the time counter has run out of time
@@ -106,6 +105,8 @@ private:
 	bool isChangingScene;
 
 	bool debugPowerUp = false;
+
+	bool pressedInstantWin;
 
 	//	Timer
 	Timer timer;

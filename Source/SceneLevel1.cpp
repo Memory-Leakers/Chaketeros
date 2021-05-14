@@ -177,10 +177,11 @@ void SceneLevel1::PrintDebugInformation()
 	cout << endl;
 	cout << "F1: On/Off GodMod" << endl;
 	cout << "F2: On/Off Collision box" << endl;
-	cout << "F3: Instante lose" << endl;
-	cout << "F4: On/Off Camera (move with dirArrown)" << endl;
+	cout << "F3: Instant lose" << endl;
+	cout << "F4: Instant win" << endl;
 	cout << "F5: On/Off PowerUp position" << endl;
 	cout << "F6: On/Off Mover A* path" << endl;
+	cout << "F7: On/Off Camera (move with dirArrown)" << endl;
 	cout << "F10: On/Off Draw player pos in console map (use with Q)" << endl;
 	cout << "Q: Update console tileMap" << endl;
 
@@ -276,7 +277,7 @@ bool SceneLevel1::Start()
 	tileMap = new Tile();
 
 	//Reset variables
-	isLevelCompleted = false;
+	App->scene->isLevelCompleted = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
@@ -373,16 +374,16 @@ bool SceneLevel1::PreUpdate()
 	#pragma region Runs out of time Condition
 	if (bomberman != nullptr && isTimeOut)
 	{
+		bomberman->speed = 0;
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(MAIN_MENU_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(STAGE_SCENE, 90, score);
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
 		{
 
-			bomberman->speed = 0;
 			if (App->scene->playerSettings->playerLifes > 0 && !isChangingScene)
 			{
 				isChangingScene = true;
@@ -438,10 +439,11 @@ bool SceneLevel1::PreUpdate()
 			#pragma endregion
 
 			// Detect if level is complete
-			if (!anyCoreMecha && !isLevelCompleted)
+			if (!anyCoreMecha && !App->scene->isLevelCompleted)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
-				isLevelCompleted = true;		
+
+				App->scene->isLevelCompleted = true;
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -504,6 +506,17 @@ bool SceneLevel1::Update()
 		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
 	}
 
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!App->scene->isLevelCompleted)
+		{
+			sceneObstacles[2]->Die();
+			sceneObstacles[4]->Die();
+			bomberman->position = winPosition;
+		}
+	}
+
+
 	// Draw debug tileMap with Q
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
@@ -540,7 +553,7 @@ bool SceneLevel1::Update()
 		}
 
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && isLevelCompleted && !isExtraPointsActive)
+		if (bomberman->position == winPosition && App->scene->isLevelCompleted && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(levelCompleteSFX, 0);
@@ -553,11 +566,16 @@ bool SceneLevel1::Update()
 			}
 			isExtraPointsActive = true;
 			bomberman->ExtraPoints = true;
-			
+
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
 
-			
+			for (int i = 0; i < MAX_ENEMY; ++i)
+			{
+				enemy[i]->col->pendingToDelete = true;
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
 			
 			for (int i = 0; i < 4; ++i)
 			{
@@ -567,9 +585,7 @@ bool SceneLevel1::Update()
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
 				}
 			}
-			if (currentSecond == 0) {
-				App->audio->PlaySound(levelCompleteSFX, 0);
-			}
+			
 		}
 	}
 	#pragma endregion
