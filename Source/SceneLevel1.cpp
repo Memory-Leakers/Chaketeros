@@ -86,9 +86,9 @@ void SceneLevel1::InitAssets()
 	#pragma region Init Particle
 
 	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.2f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.2f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.2f, texBomb);
+	explosionCenter = new Particle(500.0f, 0.3f, texBomb);
+	explosionMiddle = new Particle(500.0f, 0.3f, texBomb);
+	explosionEnd = new Particle(500.0f, 0.3f, texBomb);
 
 	// ExplosionCenter particle
 	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
@@ -120,25 +120,6 @@ void SceneLevel1::InitAssets()
 	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
 	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
 	powerUpDestroyed->anim.hasIdle = false;
-
-	// Red Flower destroyed particle
-	redFlowerDestroyed = new Particle(500.0f, 0.15f, texEnemies);
-	redFlowerDestroyed->anim.PushBack({ 2,133,16,16 });
-	redFlowerDestroyed->anim.PushBack({ 19,133,16,16 });
-	redFlowerDestroyed->anim.PushBack({ 36,133,16,16 });
-	redFlowerDestroyed->anim.PushBack({ 52,133,16,16 });
-	redFlowerDestroyed->anim.PushBack({ 69,133,16,16 });
-	redFlowerDestroyed->anim.PushBack({ 86,133,16,16 });
-
-	// Yellow Flower destroyed particle
-	yellowFlowerDestroyed = new Particle(500.0f, 0.15f, texYellowFlower);
-	yellowFlowerDestroyed->anim.PushBack({ 17,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 33,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 49,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 65,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 81,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 97,0,16,16 });
-	yellowFlowerDestroyed->anim.PushBack({ 113,0,16,16 });
 
 	// Mover destroyed particle
 	moverDestroyed = new Particle(500.0f, 0.1f, texEnemies);
@@ -206,7 +187,7 @@ void SceneLevel1::CreateScene()
 				break;
 			case 3:
 				redFlowerIndex[n++] = k;
-				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, redFlowerDestroyed, tileMap);
+				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, tileMap);
 				break;
 			case 6:
 				//renderExceptionPos[l++] = k;
@@ -248,7 +229,7 @@ void SceneLevel1::CreateYellowFlowers()
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, yellowFlowerDestroyed, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap->Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -918,11 +899,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	explosionEnd = nullptr;
 	delete powerUpDestroyed;
 	powerUpDestroyed = nullptr;
-	delete redFlowerDestroyed;
-	redFlowerDestroyed = nullptr;
-	delete yellowFlowerDestroyed;
-	yellowFlowerDestroyed = nullptr;
-	delete yellowFlowerDestroyed;
 	delete moverDestroyed;
 	moverDestroyed = nullptr;
 	#pragma endregion

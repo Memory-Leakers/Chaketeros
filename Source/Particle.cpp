@@ -14,16 +14,16 @@ Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), spee
 
 }
 
-Particle::Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor, float rotation)
+Particle::Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor, float rotation, iPoint speed)
 {
 	position.SetToZero();
-	speed.SetToZero();
 	anim.loop = false;
 	anim.hasIdle = false;
 	isAlive = true;
 
 	anim.speed = animSpeed;
 	renderTex = tex;
+	this->speed = speed;
 	this->lifetime = lifetime;
 	this->flipHor = flipHor;
 	this->rotation = rotation;
@@ -71,4 +71,19 @@ bool Particle::Update()
 	}
 
 	return ret;
+}
+
+void Particle::InitParticle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor, float rotation, iPoint speed)
+{
+	position.SetToZero();
+	anim.loop = false;
+	anim.hasIdle = false;
+	isAlive = true;
+
+	anim.speed = animSpeed;
+	renderTex = tex;
+	this->speed = speed;
+	this->lifetime = lifetime;
+	this->flipHor = flipHor;
+	this->rotation = rotation;
 }

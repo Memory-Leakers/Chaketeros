@@ -10,7 +10,7 @@ private:
 
 	SDL_Rect renderRect;
 
-	Particle* dieParticle = nullptr;
+	Particle dieParticle;
 
 	Tile* currentTileMap;
 
@@ -20,7 +20,7 @@ public:
 	//Constructor
 	YellowFlower();
 
-	YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParticle, Tile* tile, bool hasPowerUp = false);
+	YellowFlower(iPoint pos, SDL_Texture* tex, Tile* tile, bool hasPowerUp = false);
 
 	void Die() override;
 

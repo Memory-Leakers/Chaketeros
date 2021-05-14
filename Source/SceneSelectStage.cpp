@@ -37,15 +37,6 @@ void SceneSelectStage::InitAssets()
 	texBomberman = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 
 	#pragma endregion
-
-	stoneCoinsPos[0] = { 50, 56 };
-	stoneCoinsPos[1] = { 58, 76 };
-	stoneCoinsPos[2] = { 101, 81};
-
-	stageSelectPos[0] = { 43, 54 };
-	stageSelectPos[1] = { 94, 78 };
-	stageSelectPos[2] = { 51, 74 };
-	stageSelectPos[3] = { 500, 500 };
 }
 
 bool SceneSelectStage::Start()
@@ -56,6 +47,8 @@ bool SceneSelectStage::Start()
 
 	// reset anim
 	stoneCoinAnim.Reset();
+
+	bigMoneyPointer = 1;
 
 	return true;
 }
@@ -96,7 +89,18 @@ bool SceneSelectStage::Update()
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 80);
+		switch (stageSelectPointer)
+		{
+		case 0: App->scene->ChangeCurrentScene(LEVEL1_SCENE, 80); break;
+
+		case 1: break;
+
+		case 2: break;
+
+		case 3: App->scene->ChangeCurrentScene(AREA_SCENE, 80); break;
+
+		default: break;
+		}
 	}
 	#pragma endregion
 
@@ -154,6 +158,9 @@ bool SceneSelectStage::PostUpdate()
 	// BG
 	App->render->AddTextureRenderQueue(texMap, { 0, 0}, nullptr, 0, 0);
 
+	// BigMoney
+	App->render->AddTextureRenderQueue(texBigStoneCoins, { 88, 80 }, &recBigMoney[bigMoneyPointer], 0, 1);
+
 	// Bomberman
 	App->render->AddTextureRenderQueue(texBomberman, { 119, 145}, &recBomberman, 1, 0);
 
@@ -161,7 +168,7 @@ bool SceneSelectStage::PostUpdate()
 	App->render->AddTextureRenderQueue(texUISelect, { 31, 23}, &recStageSelect[0], 2, 0);
 
 	// StageSelect
-	App->render->AddTextureRenderQueue(texUISelect, stageSelectPos[stageSelectPointer], &recStageSelect[1], 2, 0);
+	App->render->AddTextureRenderQueue(texUISelect, posStageSelect[stageSelectPointer], &recStageSelect[1], 2, 0);
 
 	// Stage
 	App->render->AddTextureRenderQueue(texStages, { 153, 32}, &recStages[stageSelectPointer], 2, 0);
@@ -173,7 +180,7 @@ bool SceneSelectStage::PostUpdate()
 	for (int i = 0; i < 3; i++)
 	{
 		//renderRect = stoneCoins[i].animation.GetCurrentFrame();
-		App->render->AddTextureRenderQueue(texStoneCoin, stoneCoinsPos[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
+		App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
 	}
 
 	return true;

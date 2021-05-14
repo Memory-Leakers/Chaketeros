@@ -61,12 +61,6 @@ private:
 	// Template particle for an end of powerUp
 	Particle* powerUpDestroyed = nullptr;
 
-	// Template particle for an end of red flower
-	Particle* redFlowerDestroyed = nullptr;
-
-	// Template particle for an end of yellow flower
-	Particle* yellowFlowerDestroyed = nullptr;
-
 	// Template particle for an end of mover
 	Particle* moverDestroyed = nullptr;
 

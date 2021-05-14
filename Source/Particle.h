@@ -17,7 +17,7 @@ public:
 	// Copy constructor
 	Particle(const Particle& p);
 
-	Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor = true, float rotation = 0);
+	Particle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor = true, float rotation = 0, iPoint speed = { 0,0 });
 	// Destructor
 	~Particle();
 
@@ -58,9 +58,16 @@ public:
 
 	SDL_Texture* renderTex = nullptr;
 
+	void InitParticle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor = true, float rotation = 0, iPoint speed = { 0,0 });
+
 	void setSpeed(iPoint speed)
 	{
 		this->speed = speed;
+	}
+
+	void setLifeTime(float lifeTime)
+	{
+		this->lifetime = lifeTime;
 	}
 };
 

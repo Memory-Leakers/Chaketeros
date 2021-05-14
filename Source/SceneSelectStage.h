@@ -29,11 +29,14 @@ private:
 	{
 		{118, 3, 112, 81}, //SelectMap
 		{3, 88, 30,   20}, //SelectUI
+	};
 
-		//Respect pos
-		//select1(arriba iz) : 130,34
-		//select2(abajo dr) : 181,58
-		//select3(abajo iz) : 138,54
+	SDL_Rect recBigMoney[4]
+	{
+		{2,85,79,80}, // 0 money
+		{166,2,79,80}, // 1 money
+		{84,2,79,80}, // 2 money
+		{2,2,79,80} // 3 money
 	};
 
 	SDL_Rect recInGameUI = { 0, 0, 256, 24 };
@@ -42,11 +45,24 @@ private:
 
 	Animation stoneCoinAnim;
 
-	iPoint stoneCoinsPos[3];
+	iPoint posStoneCoins[3]
+	{	
+		{ 58, 76 }, // lv3
+		{ 101, 81 }, // lv2
+		{ 50, 56 }, // lv1
+	};
 
-	iPoint stageSelectPos[4];
+	iPoint posStageSelect[4]
+	{
+		{ 43, 54 }, // lv1
+		{ 94, 78 }, // lv2
+		{ 51, 74 }, // lv3
+		{ 500, 500 } // exit
+	};
 
 	int stageSelectPointer = 0;
+
+	int bigMoneyPointer = 0;
 
 public:
 	SceneSelectStage();

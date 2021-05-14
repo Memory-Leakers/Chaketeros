@@ -6,12 +6,21 @@ YellowFlower::YellowFlower()
 	LOG("Constructor yellowFlower");
 }
 
-YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParicle,Tile* tile, bool hasPowerUp) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
+YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex,Tile* tile, bool hasPowerUp) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->currentTileMap = tile;
-	this->dieParticle = dieParicle;
 	this->hasPowerUp = hasPowerUp;
+
+	//Init Particle
+	this->dieParticle.InitParticle(500.0f, 0.3f, tex);
+	this->dieParticle.anim.PushBack({ 17,0,16,16 });
+	this->dieParticle.anim.PushBack({ 33,0,16,16 });
+	this->dieParticle.anim.PushBack({ 49,0,16,16 });
+	this->dieParticle.anim.PushBack({ 65,0,16,16 });
+	this->dieParticle.anim.PushBack({ 81,0,16,16 });
+	this->dieParticle.anim.PushBack({ 97,0,16,16 });
+	this->dieParticle.anim.PushBack({ 113,0,16,16 });
 
 	renderRect = { 0,0,16,16 };
 }
@@ -19,7 +28,7 @@ YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex, Particle* dieParicle,Ti
 void YellowFlower::Die()
 {
 	//Create destroyed particle;
-	App->particle->AddParticle(*dieParticle, (getPosition()), Type::NONE);
+	App->particle->AddParticle(dieParticle, (getPosition()), Type::NONE);
 	pendingToDelete = true;
 	getCollider()->pendingToDelete = true;
 

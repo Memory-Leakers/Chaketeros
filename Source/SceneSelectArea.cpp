@@ -51,7 +51,6 @@ SceneSelectArea::~SceneSelectArea()
 
 bool SceneSelectArea::Start()
 {
-	cout << "Start Select Area" << endl;
 	//Music
 	Mix_VolumeMusic(15);
 	App->audio->PlayMusic("Assets/Audio/Music/AreaSelect.ogg", 1.5f);
@@ -99,8 +98,7 @@ bool SceneSelectArea::Start()
 }
 
 bool SceneSelectArea::Update()
-{
-	
+{	
 	particleTime.Update();
 
 	if(particleTime.getDeltaTime() > 0.15f)
@@ -115,7 +113,6 @@ bool SceneSelectArea::Update()
 		}
 	}
 
-	cout << "Update Select Area" << endl;
 	// Animations Update
 	texLevel1CheeseAnim.Update();
 	texLevel2CheeseAnim.Update();
@@ -175,8 +172,6 @@ bool SceneSelectArea::Update()
 
 bool SceneSelectArea::PostUpdate()
 {
-	cout << "PostUpdate Select Area" << endl;
-
 	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 0,0);
 
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
