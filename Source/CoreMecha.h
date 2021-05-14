@@ -1,4 +1,4 @@
-#ifndef  _COREMECHA_H
+#ifndef _COREMECHA_H
 #define _COREMECHA_H
 
 #include "Obstacle.h"

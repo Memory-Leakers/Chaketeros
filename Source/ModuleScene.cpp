@@ -9,7 +9,9 @@ ModuleScene::ModuleScene()
 	scenes[2] = new SceneSelectArea();
 	scenes[3] = new SceneSelectStage();
 	scenes[4] = new SceneLevel1();
-	scenes[5] = new SceneGameOver();
+	scenes[5] = new SceneLevel2();
+	scenes[6] = new SceneLevelBoss();
+	scenes[7] = new SceneGameOver();
 
 	playerSettings = PlayerSettings::Instance();
 }
@@ -26,7 +28,7 @@ bool ModuleScene::Start()
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
-	currentScene = scenes[INTRO_SCENE];
+	currentScene = scenes[LEVEL2_SCENE];
 
 
 	if(currentScene == nullptr)

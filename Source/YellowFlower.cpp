@@ -39,11 +39,11 @@ void YellowFlower::Die()
 
 	if (hasPowerUp)
 	{
-		currentTileMap->Level1TileMap[tileY - 1][tileX] = 8;
+		currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 8;
 	}
 	else
 	{
-		currentTileMap->Level1TileMap[tileY - 1][tileX] = 0;
+		currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
 	}
 }
 

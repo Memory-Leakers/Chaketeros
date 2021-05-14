@@ -166,6 +166,12 @@
     <ClInclude Include="FadeInOut.h">
       <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
+    <ClInclude Include="SceneLevel2.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLevelBoss.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -293,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="FadeInOut.cpp">
       <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLevel2.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLevelBoss.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

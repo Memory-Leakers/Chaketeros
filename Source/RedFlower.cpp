@@ -34,7 +34,7 @@ void RedFlower::Die()
 	int tileX, tileY;
 	tileX = currentTileMap->getTilePos(getPosition()).x;
 	tileY = currentTileMap->getTilePos(getPosition()).y;
-	currentTileMap->Level1TileMap[tileY - 1][tileX] = 0;
+	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
 
 	App->particle->AddParticle(dieParticle, (getPosition()), Type::NONE);
 	pendingToDelete = true;

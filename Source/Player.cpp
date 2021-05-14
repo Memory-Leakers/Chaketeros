@@ -339,11 +339,11 @@ UpdateResult Player::Update()
 		if(posMode)
 		{
 			lastTilePos = getCurrentTilePos();
-			level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = -1;
+			level1Tile->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
 		}
 		else
 		{
-			level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = 0;
+			level1Tile->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
 		}
 	}
 	#pragma endregion
@@ -384,8 +384,8 @@ UpdateResult Player::PostUpdate()
 		tilePos = getCurrentTilePos();
 		if (tilePos != lastTilePos)
 		{
-			level1Tile->Level1TileMap[lastTilePos.y - 1][lastTilePos.x] = 0;
-			level1Tile->Level1TileMap[tilePos.y - 1][tilePos.x] = -1;
+			level1Tile->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = 0;
+			level1Tile->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = -1;
 			lastTilePos = tilePos;
 		}
 	}

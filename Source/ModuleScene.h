@@ -9,6 +9,8 @@
 #include "SceneSelectArea.h"
 #include "SceneSelectStage.h"
 #include "SceneLevel1.h"
+#include "SceneLevel2.h"
+#include "SceneLevelBoss.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -18,7 +20,7 @@
 #include "Player.h"
 #include "PlayerSettings.h"
 
-#define SCENES_NUM 6
+#define SCENES_NUM 8
 
 struct SDL_Texture;
 
@@ -29,6 +31,8 @@ enum SCENE_NUM
 	AREA_SCENE,
 	STAGE_SCENE,
 	LEVEL1_SCENE,
+	LEVEL2_SCENE,
+	LEVELBOSS_SCENE,
 	GAME_OVER_SCENE
 };
 
@@ -72,6 +76,8 @@ public:
 	PlayerSettings* playerSettings = nullptr;
 
 	bool isLevelCompleted;
+
+	int currentLevel = 0;
 
 private:
 

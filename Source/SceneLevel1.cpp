@@ -8,7 +8,6 @@
 #include "GlassCapsule.h"
 #include "Stone.h"
 #include "Bomb.h"
-#include "Tile.h"
 #include "RedFlower.h"
 #include "Coin.h"
 #include "CoreMecha.h"
@@ -102,11 +101,11 @@ void SceneLevel1::PrintDebugInformation()
 	{
 		for (int j = 0; j < 15; ++j)
 		{
-			switch (tileMap->Level1TileMap[i][j])
+			switch (tileMap->LevelsTileMaps[App->scene->currentLevel][i][j])
 			{
 			case -1: cout << "P,"; break;
 			case 10: cout << "G,"; break;
-			default: cout << tileMap->Level1TileMap[i][j] << ","; break;
+			default: cout << tileMap->LevelsTileMaps[App->scene->currentLevel][i][j] << ","; break;
 			}
 		}
 		cout << endl;
@@ -137,7 +136,7 @@ void SceneLevel1::CreateScene()
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
-			switch (tileMap->Level1TileMap[i][j])
+			switch (tileMap->LevelsTileMaps[App->scene->currentLevel][i][j])
 			{
 			case 0:
 				emptySpaces.push_back(tileMap->getWorldPos({ j,i }) -= {0, -16});
@@ -192,7 +191,7 @@ void SceneLevel1::CreateYellowFlowers()
 				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				tileMap->Level1TileMap[temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
+				tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
@@ -222,6 +221,7 @@ bool SceneLevel1::Start()
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
+	App->scene->currentLevel = 0;
 
 	//	Timer Reset
 	timer.Reset();
@@ -358,20 +358,20 @@ bool SceneLevel1::PreUpdate()
 			{
 				for (int j = 0; j < 15; ++j)
 				{
-					if (tileMap->Level1TileMap[l][j] == 8) // if reserved powerUp in this grid
+					if (tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 8) // if reserved powerUp in this grid
 					{
 						for (int k = 0; k < MAX_POWERUPS; ++k)
 						{
 							if (powerUps[k] == nullptr)
 							{
 								powerUps[k] = new PowerUp(tileMap->getWorldPos({ j,l + 1 }), texPowerUps, texPowerUpDestroyed);
-								tileMap->Level1TileMap[l][j] = 0;
+								tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] = 0;
 								break;
 							}
 
 						}
 					}
-					if (tileMap->Level1TileMap[l][j] == 6)
+					if (tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 6)
 					{
 						anyCoreMecha = true;
 					}
@@ -451,8 +451,11 @@ bool SceneLevel1::Update()
 	{
 		if (!App->scene->isLevelCompleted)
 		{
-			sceneObstacles[2]->Die();
-			sceneObstacles[4]->Die();
+			if (sceneObstacles[2] != nullptr && sceneObstacles[4])
+			{
+				sceneObstacles[2]->Die();
+				sceneObstacles[4]->Die();
+			}
 			bomberman->position = winPosition;
 		}
 	}
@@ -768,7 +771,7 @@ void SceneLevel1::CreateCoins()
 	{
 		for (int j = 0; j < 15; ++j)
 		{
-			if (tileMap->Level1TileMap[i][j] == 5)
+			if (tileMap->LevelsTileMaps[App->scene->currentLevel][i][j] == 5)
 			{
 				for (int k = 0; k < yellowFlowersNum; k++)
 				{
@@ -793,7 +796,7 @@ void SceneLevel1::CreateCoins()
 						l++;
 					}
 				}
-				tileMap->Level1TileMap[i][j] = 0;
+				tileMap->LevelsTileMaps[App->scene->currentLevel][i][j] = 0;
 			}
 		}
 	}

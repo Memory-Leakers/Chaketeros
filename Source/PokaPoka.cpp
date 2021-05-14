@@ -216,8 +216,8 @@ void PokaPoka::movement() {
 	else {
 		switch (moveRand) {
 			case 0://DOWN
-				if (level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 0 ||
-					level1Tile->Level1TileMap[nPoint.y + 1][nPoint.x] == 4) { // 0 i 4 son l'id de la tile
+				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 0 ||
+					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 4) { // 0 i 4 son l'id de la tile
 					isFlip = false;
 					currentAnimation = &downAnim;
 					currentAnimation->hasIdle = false;
@@ -235,8 +235,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 1://UP
-				if (level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 0 ||
-					level1Tile->Level1TileMap[nPoint.y - 1][nPoint.x] == 4) {
+				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
+					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4) {
 					isFlip = false;
 					currentAnimation = &upAnim;
 					currentAnimation->hasIdle = false;
@@ -254,8 +254,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 2://RIGHT
-				if (level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 0 ||
-					level1Tile->Level1TileMap[nPoint.y][nPoint.x + 1] == 4) {
+				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
+					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4) {
 					isFlip = true;
 					currentAnimation = &rightAnim;
 					currentAnimation->hasIdle = false;
@@ -273,8 +273,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 3://LEFT
-				if (level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 0 ||
-					level1Tile->Level1TileMap[nPoint.y][nPoint.x - 1] == 4) {
+				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 0 ||
+					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 4) {
 					isFlip = false;
 					currentAnimation = &leftAnim;
 					currentAnimation->hasIdle = false;

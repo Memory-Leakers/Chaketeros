@@ -17,7 +17,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 	myTilePos = lv1Tile->getTilePos(getPosition());
 	myTilePos.y--;
 
-	lv1Tile->Level1TileMap[myTilePos.y][myTilePos.x] = 11;
+	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 11;
 
 	#pragma region Init explotionparticle
 
@@ -125,24 +125,24 @@ void Bomb::Die()
 	tileY = (lv1Tile->getTilePos(getPosition()).y) - 1;
 	iPoint dirSpawn[4] = { {1,0},{0,1},{-1,0},{0,-1} };
 
-	lv1Tile->Level1TileMap[myTilePos.y][myTilePos.x] = 0;	//Cambiar el numero en tileMap al morir
+	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 0;	//Cambiar el numero en tileMap al morir
 
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 1; j <= explotionRange; j++)
 		{
-			if (lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j ] == 0||
-				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4 ||
-				lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == -1)
+			if (lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j ] == 0||
+				lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4 ||
+				lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == -1)
 			{
 				explotionNum[i]++;
 			}
 			else
 			{
-				if(lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] !=1
-					&&lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 2
-					&& lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 7
-					&& lv1Tile->Level1TileMap[tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 9)
+				if(lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] !=1
+					&&lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 2
+					&& lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 7
+					&& lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 9)
 				{
 					explotionNum[i]++;
 				}

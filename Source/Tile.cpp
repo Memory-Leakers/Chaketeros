@@ -1,6 +1,5 @@
 #include "Tile.h"
 
-
 Tile::Tile()
 {
 
@@ -41,7 +40,7 @@ iPoint Tile::getTilePos(iPoint pos)	//EXAMPLE :31, 87
 	pos.x -= pos.x % r.w;	//Calculamos el resto de cada eje	16
 	pos.y -= pos.y % r.w;	// 80
 
-	pos.x /= r.w;	//Encontrar el indice de Level1TileMap 1
+	pos.x /= r.w;	//Encontrar el indice de LevelsTileMaps[App->scene->currentLevel] 1
 	pos.y /= r.w;	// 5
 
 	return {pos.x, pos.y};
@@ -54,7 +53,7 @@ iPoint Tile::getTilePos(int x, int y)
 	x -= (x % r.w);	//Calculamos el resto de cada eje	16
 	y -= (y % r.w);	// 80
 
-	x /= r.w;	//Encontrar el indice de Level1TileMap 1
+	x /= r.w;	//Encontrar el indice de LevelsTileMaps[App->scene->currentLevel] 1
 	y /= r.w;	// 5
 
 	return { x, y};
@@ -62,13 +61,13 @@ iPoint Tile::getTilePos(int x, int y)
 
 void Tile::setTile(iPoint tile, int num)
 {
-	Level1TileMap[tile.x][tile.y] = num;
+	LevelsTileMaps[App->scene->currentLevel][tile.x][tile.y] = num;
 
 }
 
 void Tile::setTile(int tileX, int tileY, int num)
 {
-	Level1TileMap[tileX][tileY] = num;
+	LevelsTileMaps[App->scene->currentLevel][tileX][tileY] = num;
 }
 
 void Tile::Reset()
@@ -77,9 +76,9 @@ void Tile::Reset()
 	{
 		for (int j = 0; j < 15; ++j)
 		{
-			if (Level1TileMap[i][j] == 5)
+			if (LevelsTileMaps[App->scene->currentLevel][i][j] == 5)
 			{
-				Level1TileMap[i][j] = 0;
+				LevelsTileMaps[App->scene->currentLevel][i][j] = 0;
 			}
 		}
 	}
