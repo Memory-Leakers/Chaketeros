@@ -107,7 +107,7 @@ bool PokaPoka::Start() {
 #pragma endregion
 
 	#pragma region Init destroy particle
-	dieParticle = new Particle(500.0f, 0.05f, texture);
+	dieParticle = new Particle(500.0f, 0.3f, texture);
 
 	dieParticle->anim.PushBack({ 206,1,15,28 });
 	dieParticle->anim.PushBack({ 223,1,15,28 });
@@ -116,8 +116,6 @@ bool PokaPoka::Start() {
 	dieParticle->anim.PushBack({ 19,29,15,28 });
 	dieParticle->anim.PushBack({ 37,29,15,28 });
 	dieParticle->anim.PushBack({ 71,29,15,28 });
-
-	dieParticle->anim.speed = 0.06f;
 
 	#pragma endregion
 

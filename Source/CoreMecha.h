@@ -27,7 +27,7 @@ private:
 public:
 	//Constructors
 	CoreMecha();
-	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile, int* coreMechaNum);
+	CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Tile* tile, int* coreMechaNum);
 	
 	//Methods
 

@@ -5,15 +5,23 @@ CoreMecha::CoreMecha()
 
 }
 
-CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Particle* destroyed, Tile* tile,int* coreMechaNum): Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
+CoreMecha::CoreMecha(iPoint pos, SDL_Texture* tex, SDL_Texture* texDie, Tile* tile,int* coreMechaNum): Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->texDie = texDie;
 	this->currentTileMap = tile;
-	this->dieParticle = *destroyed;
 	this->coreMechaNum = coreMechaNum;
 
 	renderRect = { 0, 0, 16, 26 };
+
+	dieParticle.InitParticle(500.0f, 0.30f, texDie);
+	dieParticle.anim.PushBack({ 3,2,26,27 });
+	dieParticle.anim.PushBack({ 35,2,26,27 });
+	dieParticle.anim.PushBack({ 67,2,26,27 });
+	dieParticle.anim.PushBack({ 3,34,26,27 });
+	dieParticle.anim.PushBack({ 35,34,26,27 });
+	dieParticle.anim.PushBack({ 67,34,26,27 });
+	dieParticle.anim.hasIdle = false;
 
 	coreMechaDestroyedSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_OrbsDestroyedSound.wav");
 }

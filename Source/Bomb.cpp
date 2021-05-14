@@ -8,35 +8,7 @@ Bomb::Bomb()
 	LOG("Bomb constructor");
 }
 
-Bomb::Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3) :Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::BOMB, App->scene), tex)
-{
-	explosionCenter = *e1;
-	explosionMiddle = *e2;
-	explosionEnd = *e3;
-
-	// Inicializar animacion prestablecida de la bomba
-	defaultAnim.hasIdle = false;
-	defaultAnim.speed = 0.1f;
-	defaultAnim.loop = true;
-	defaultAnim.PushBack({ 1,1,16,16 });  //small
-	defaultAnim.PushBack({ 1,21,16,16 }); //midle
-	defaultAnim.PushBack({ 1,39,16,16 }); //big
-	defaultAnim.PushBack({ 1,21,16,16 }); //midle
-
-	// Assignar anamacion prestablecida a currentAnim
-	currentAnim = &defaultAnim;
-
-	// Init TimeCount
-	startCountTime = SDL_GetPerformanceCounter();
-
-	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
-	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
-
-	// SFX Put bomb
-	App->audio->PlaySound(putBombSFX, 0);
-}
-
-Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile)
+Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 :Obstacle({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
  	this->player = player;
@@ -47,13 +19,40 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 
 	lv1Tile->Level1TileMap[myTilePos.y][myTilePos.x] = 11;
 
-	explosionCenter = *e1;
-	explosionMiddle = *e2;
-	explosionEnd = *e3;
+	#pragma region Init explotionparticle
 
+	explosionCenter.InitParticle(500.0f, 0.3f, tex);
+	explosionMiddle.InitParticle(500.0f, 0.3f, tex);
+	explosionEnd.InitParticle(500.0f, 0.3f, tex);
+
+	// ExplosionCenter particle
+	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 40, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 21, 16, 16 });
+	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
+
+	// ExplosionMiddle particle
+	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 40, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 21, 16, 16 });
+	explosionMiddle.anim.PushBack({ 42, 2, 16, 16 });
+
+	// ExplosionEnd particle
+	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 40, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 21, 16, 16 });
+	explosionEnd.anim.PushBack({ 62, 2, 16, 16 });
+
+	#pragma endregion
+
+	// Init explotionRange
 	explotionRange += App->scene->playerSettings->powerUpFlame;
 
 	// Inicializar animacion prestablecida de la bomba
+	#pragma region Init bomb anim
 	defaultAnim.hasIdle = false;
 	defaultAnim.speed = 0.07f;
 	defaultAnim.loop = true;
@@ -61,6 +60,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Particle* e1, Particle* e2, Particl
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 	defaultAnim.PushBack({ 1,39,16,16 }); //big
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+	#pragma endregion
 
 	// Assignar anamacion prestablecida a currentAnim
 	currentAnim = &defaultAnim;

@@ -1,12 +1,19 @@
 #include "PowerUp.h"
 
-PowerUp::PowerUp(iPoint position, SDL_Texture* tex, Particle* dieParticle) {
+PowerUp::PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex) {
 
     renderRect = { 2,2,16,16 };
 
     texture = tex;
 
-    powerUpDestroyed = dieParticle;
+    powerUpDestroyed.InitParticle(500.0f, 0.3f, dieTex);
+    powerUpDestroyed.anim.PushBack({ 3,2,26,27 });
+    powerUpDestroyed.anim.PushBack({ 35,2,26,27 });
+    powerUpDestroyed.anim.PushBack({ 67,2,26,27 });
+    powerUpDestroyed.anim.PushBack({ 3,34,26,27 });
+    powerUpDestroyed.anim.PushBack({ 35,34,26,27 });
+    powerUpDestroyed.anim.PushBack({ 67,34,26,27 });
+    powerUpDestroyed.anim.hasIdle = false;
 
     this->position.x = position.x;
     this->position.y = position.y;
@@ -34,7 +41,7 @@ void PowerUp::Die()
     // Offset dieParticle
     iPoint tempPos = position;
     tempPos -= {5, 11};
-    App->particle->AddParticle(*powerUpDestroyed, tempPos, Type::NONE);
+    App->particle->AddParticle(powerUpDestroyed, tempPos, Type::NONE);
 }
 
 void PowerUp::OnCollision(Collider* col)

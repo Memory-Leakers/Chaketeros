@@ -83,47 +83,7 @@ void SceneLevel1::InitAssets()
 
 	#pragma endregion
 
-	#pragma region Init Particle
-
-	// Explisions General parameter
-	explosionCenter = new Particle(500.0f, 0.3f, texBomb);
-	explosionMiddle = new Particle(500.0f, 0.3f, texBomb);
-	explosionEnd = new Particle(500.0f, 0.3f, texBomb);
-
-	// ExplosionCenter particle
-	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
-	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
-	explosionCenter->anim.PushBack({ 21, 40, 16, 16 });
-	explosionCenter->anim.PushBack({ 21, 21, 16, 16 });
-	explosionCenter->anim.PushBack({ 21, 2, 16, 16 });
-
-	// ExplosionMiddle particle
-	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
-	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
-	explosionMiddle->anim.PushBack({ 42, 40, 16, 16 });
-	explosionMiddle->anim.PushBack({ 42, 21, 16, 16 });
-	explosionMiddle->anim.PushBack({ 42, 2, 16, 16 });
-
-	// ExplosionEnd particle
-	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
-	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
-	explosionEnd->anim.PushBack({ 62, 40, 16, 16 });
-	explosionEnd->anim.PushBack({ 62, 21, 16, 16 });
-	explosionEnd->anim.PushBack({ 62, 2, 16, 16 });
-
-	// PowerUps destroyed particle
-	powerUpDestroyed = new Particle(500.0f, 0.15f, texPowerUpDestroyed);
-	powerUpDestroyed->anim.PushBack({ 3,2,26,27 });
-	powerUpDestroyed->anim.PushBack({ 35,2,26,27 });
-	powerUpDestroyed->anim.PushBack({ 67,2,26,27 });
-	powerUpDestroyed->anim.PushBack({ 3,34,26,27 });
-	powerUpDestroyed->anim.PushBack({ 35,34,26,27 });
-	powerUpDestroyed->anim.PushBack({ 67,34,26,27 });
-	powerUpDestroyed->anim.hasIdle = false;
-
-	// Mover destroyed particle
-	moverDestroyed = new Particle(500.0f, 0.1f, texEnemies);
-	moverDestroyed->anim.PushBack({ 232,166,23,30 });
+	#pragma region Init audios
 
 	//Load Sounds
 	whistlingSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_WhistlingEndSound.wav");
@@ -191,7 +151,7 @@ void SceneLevel1::CreateScene()
 				break;
 			case 6:
 				//renderExceptionPos[l++] = k;
-				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, powerUpDestroyed, tileMap, &coreMechaNum);
+				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, tileMap, &coreMechaNum);
 				break;
 			case 10:
 				//renderExceptionPos[l++] = k;
@@ -271,6 +231,8 @@ bool SceneLevel1::Start()
 	totalSeconds = 59;
 	#pragma endregion
 
+	InitAssets();
+
 	#pragma region Init Player and Enemies
 
 	// Init player
@@ -279,9 +241,9 @@ bool SceneLevel1::Start()
 
 	// Spawn enemies
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
-	enemy[1] = new Mover({ 168,64 }, &bomberman->pivotPoint, tileMap);
+	enemy[1] = new Mover({ 168,64 }, texEnemies , &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);
-	enemy[0] = new Mover({ 72,160 }, &bomberman->pivotPoint, tileMap);
+	enemy[0] = new Mover({ 72,160 }, texEnemies , &bomberman->pivotPoint, tileMap);
 
 	// Init enemies
 	for (int i = 0; i < MAX_ENEMY; ++i)
@@ -290,8 +252,6 @@ bool SceneLevel1::Start()
 	}
 
 	#pragma endregion
-
-	InitAssets();
 
 	sceneUI.Start();
 
@@ -404,7 +364,7 @@ bool SceneLevel1::PreUpdate()
 						{
 							if (powerUps[k] == nullptr)
 							{
-								powerUps[k] = new PowerUp(tileMap->getWorldPos({ j,l + 1 }), texPowerUps, powerUpDestroyed);
+								powerUps[k] = new PowerUp(tileMap->getWorldPos({ j,l + 1 }), texPowerUps, texPowerUpDestroyed);
 								tileMap->Level1TileMap[l][j] = 0;
 								break;
 							}
@@ -497,7 +457,6 @@ bool SceneLevel1::Update()
 		}
 	}
 
-
 	// Draw debug tileMap with Q
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
@@ -526,7 +485,7 @@ bool SceneLevel1::Update()
 			{
 				if (sceneObstacles[i] == nullptr)
 				{
-					sceneObstacles[i] = new Bomb(bomberman, texBomb, explosionCenter, explosionMiddle, explosionEnd, tileMap);
+					sceneObstacles[i] = new Bomb(bomberman, texBomb, tileMap);
 					bomberman->maxBombs--;
 					break;
 				}
@@ -888,20 +847,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	//Delete Vector
 	emptySpaces.clear();
 	emptySpaces.shrink_to_fit();
-
-	#pragma region Delete Particles
-	// Delete particles
-	delete explosionCenter;
-	explosionCenter = nullptr;
-	delete explosionMiddle;
-	explosionMiddle = nullptr;
-	delete explosionEnd;
-	explosionEnd = nullptr;
-	delete powerUpDestroyed;
-	powerUpDestroyed = nullptr;
-	delete moverDestroyed;
-	moverDestroyed = nullptr;
-	#pragma endregion
 
 	#pragma region Delete Player and Enemy
 	// Delete player

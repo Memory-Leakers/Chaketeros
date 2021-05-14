@@ -2,10 +2,11 @@
 
 SDL_Rect* rectMover;
 
-Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
+Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* level1Tile)
 {
 	this->playerPos = playerPos; // Player pivot
 	this->level1Tile = level1Tile;
+	texture = tex;
 	position.x = spawnPos.x;
 	position.y = spawnPos.y;
 	bounds.x = position.x;
@@ -16,18 +17,13 @@ Mover::Mover(iPoint spawnPos, iPoint* playerPos, Tile* level1Tile)
 
 Mover::~Mover() 
 {
-	if(dieParticle!=nullptr)
-	{
-		delete dieParticle;
-		dieParticle = nullptr;
-	}
 }
 
 bool Mover::Start() 
 {
 	LOG("LOADING ENEMY MOVER");
 
-	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
+	//texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
@@ -78,9 +74,9 @@ bool Mover::Start()
 #pragma endregion
 
 	#pragma region Init destroy particle
-	dieParticle = new Particle(500.0f, 0.05f, texture);
-	dieParticle->anim.PushBack({ 232,166,23,30 });
-	dieParticle->anim.speed = 0.02f;
+	dieParticle.InitParticle(500.0f, 0.1f, texture);
+	dieParticle.anim.PushBack({ 232,166,23,30 });
+	dieParticle.anim.speed = 0.02f;
 	#pragma endregion
 
 	return true;
@@ -427,10 +423,7 @@ void Mover::die()
 
 	iPoint tempPos = position;
 	tempPos += {-4, -14};
-	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
+	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 0);
 
 	pendingToDelete = true;
-
-	delete dieParticle;
-	dieParticle = nullptr;
 }

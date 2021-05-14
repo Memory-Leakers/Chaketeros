@@ -164,9 +164,6 @@ bool SceneSelectArea::Update()
 	{	
 		Completed();
 	}
-
-	
-
 	return true;
 }
 

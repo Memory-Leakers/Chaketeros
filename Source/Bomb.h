@@ -40,8 +40,7 @@ private:
 
 public:
 	Bomb();
-	Bomb(iPoint pos, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3);
-	Bomb(Player* p, SDL_Texture* tex, Particle* e1, Particle* e2, Particle* e3, Tile* tile);
+	Bomb(Player* p, SDL_Texture* tex, Tile* tile);
 
 	~Bomb();
 

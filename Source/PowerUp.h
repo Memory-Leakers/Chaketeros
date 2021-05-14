@@ -18,11 +18,11 @@ private:
 public:
 
     bool pendingToDelete = false;
-    Particle* powerUpDestroyed = nullptr;
+    Particle powerUpDestroyed;
     iPoint position;
 
 public:
-    PowerUp(iPoint position, SDL_Texture* tex , Particle* dieParticle);
+    PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex);
 
     ~PowerUp();
 

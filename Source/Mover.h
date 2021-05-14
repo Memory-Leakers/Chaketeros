@@ -22,7 +22,7 @@ class Mover : public ModuleEnemy
 {
 private:
 
-	Particle* dieParticle = nullptr;
+	Particle dieParticle;
 
 	Animation upAnim;
 	Animation downAnim;
@@ -55,9 +55,6 @@ private:
 	bool debugAStarPath = false;
 
 private:
-	// private metod
-	
-
 	// When no detect player
 	int RandomMov();
 
@@ -67,7 +64,7 @@ private:
 public:
 
 	// Constructor
-	Mover(iPoint spawnPos, iPoint* playerPos, Tile* levelMap);
+	Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* levelMap);
 
 	// Destructor
 	~Mover();

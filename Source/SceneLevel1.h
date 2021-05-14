@@ -44,25 +44,9 @@ private:
 	SDL_Texture* texPowerUps = nullptr;
 	SDL_Texture* texMiscUI = nullptr;
 
-	SDL_Rect recCoreMehcaUI[2] = { {0, 0, 7, 14},{8, 0, 7, 14} };
+	SDL_Rect recCoreMehcaUI[2] = { {0, 0, 7, 14}, {8, 0, 7, 14} };
 
 	SDL_Rect recUIbar = { 0,0,256,24 };
-
-	// Particle
-	// Template particle for an center of explosion
-	Particle* explosionCenter = nullptr;
-
-	// Template particle for an middle of explosion
-	Particle* explosionMiddle = nullptr;
-
-	// Template particle for an end of explosion
-	Particle* explosionEnd = nullptr;
-
-	// Template particle for an end of powerUp
-	Particle* powerUpDestroyed = nullptr;
-
-	// Template particle for an end of mover
-	Particle* moverDestroyed = nullptr;
 
 	//	Number of yellow flowers
 	int yellowFlowersNum;
@@ -89,7 +73,6 @@ private:
 
 	//	Counter for Sound Effects
 	float BGFX_CoinsCounter = 0;
-
 	
 	//	Boolean to check if the player has activated the Extra Points event (appear Coins when player completes level and goes to the Glass Capsule)
 	bool isExtraPointsActive;
