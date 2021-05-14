@@ -1,14 +1,18 @@
 #ifndef _POKAPOKA_H_
 #define _POKAPOKA_H_
 
+#include <math.h>
+
 #include "ModuleEnemy.h"
 #include "Timer.h"
+
+#define attackRange 40
 
 class PokaPoka : public ModuleEnemy
 {
 private:
 	int moveRand = rand() % 4;
-	int pC = 0;
+	int pC = 0; //Counter
 	iPoint nPoint;
 	Particle* dieParticle = nullptr;
 	iPoint* playerPos = nullptr;
@@ -16,6 +20,8 @@ private:
 	Timer attackTimer;
 	Timer moveTimer;
 	int attacking = 3;
+
+	void moveRandom(int i);
 
 private:
 
