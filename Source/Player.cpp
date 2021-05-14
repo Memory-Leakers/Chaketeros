@@ -475,6 +475,15 @@ void Player::WillCollision(Collider* col)
 bool Player::InGrid(Collider* col)
 {
 	iPoint colGrid = level1Tile->getTilePos(col->getPos());
+
+	if(col->type==Type::ENEMY) // Detect enemy pivot point
+	{
+		iPoint tempPos = col->getPos();
+		tempPos += {8, 8};
+		colGrid = level1Tile->getTilePos(tempPos);
+	}
+
+	App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
 	
 	if(colGrid == getCurrentTilePos())
 	{
