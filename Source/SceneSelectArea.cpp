@@ -60,6 +60,8 @@ bool SceneSelectArea::Start()
 	texSelectArea = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Area.png");
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texLevels = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Levels.png");
+	texbombermaninArea = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
+	BombermaninAreaRect = { 49,50, 15 ,20 };
 	SelectStageBackgroundRect = { 256, 0, 256, 224 };
 	StageCheeseandStarsRect = { 512,6,256,224 };
 	UIStageLevel1Rect = { 0, 0, 256, 224 };
@@ -179,6 +181,7 @@ bool SceneSelectArea::PostUpdate()
 
 	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
 
+	App->render->AddTextureRenderQueue(texbombermaninArea, { 165, 52 }, &BombermaninAreaRect, 2, 1);
 	if (currentArrowLevelPos == &arrowLevelPosition[0]) {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel1Rect, 2, 2);
 	}
