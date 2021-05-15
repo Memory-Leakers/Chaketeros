@@ -110,47 +110,36 @@ UpdateResult Player::Update()
 		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
 		{
 			//position.y -= speed;
-			speedY = -1*speed;
+			speedY = -speed;
 		}
+		// movemenet fix
 		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
 		{
-			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+			iPoint tempTilePos = getCurrentTilePos();
 
-			if (pivotPoint.x <= (tileX + 4))
+			int tileX = getCurrentTileWorldPos().x;
+
+			tempTilePos.y--; // offset
+
+			int playerAbove = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
+
+			//if target grid don't have obstacle
+			if (playerAbove == 4 || playerAbove == 0)
 			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x > (tileX + 4) &&
-				pivotPoint.x < (tileX + 8))
-			{
-				position.x += speed;
-			}
-			else if (pivotPoint.x < (tileX + 10) &&
-				pivotPoint.x >(tileX + 8))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x >= (tileX + 10))
-			{
-				position.x += speed;
+				// optimize movemente
+				if (pivotPoint.x > (tileX + 8))
+				{
+					position.x -= speed;
+				}
+				else if (pivotPoint.x < (tileX + 8))
+				{
+					position.x += speed;
+				}
 			}
 		}
 
-		// Special SFX
-		playerTimer.Update();
-
-		if (playerTimer.getDeltaTime() >= 0.5f) {
-
-			if (ExtraPoints == true) {
-				App->audio->PlaySound(extraCoinsStepSFX, 0);
-
-			}
-			playerTimer.Reset();
-
-		}
+		SpecialSound();
 	}
-
-	
 
 	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
 	{
@@ -160,42 +149,35 @@ UpdateResult Player::Update()
 		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			//position.y += speed;
-			speedY = 1 * speed;
+			speedY = speed;
 		}
+		// movement fix
 		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
 		{
-			int tileX = level1Tile->getWorldPos(level1Tile->getTilePos(position)).x;
+			iPoint tempTilePos = getCurrentTilePos();
 
-			if (pivotPoint.x <= (tileX + 4))
+			tempTilePos.y--; // offset
+
+			int tileX = getCurrentTileWorldPos().x;
+
+			int playerBelow = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y + 1][tempTilePos.x];
+
+			//if target grid don't have obstacle
+			if (playerBelow == 4 || playerBelow == 0)
 			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x > (tileX + 4) &&
-				pivotPoint.x < (tileX + 8))
-			{
-				position.x += speed;
-			}
-			else if (pivotPoint.x < (tileX + 10) &&
-				pivotPoint.x >(tileX + 8))
-			{
-				position.x -= speed;
-			}
-			else if (pivotPoint.x >= (tileX + 10))
-			{
-				position.x += speed;
+				// optimize movement
+				if (pivotPoint.x > (tileX + 8))
+				{
+					position.x -= speed;
+				}
+				else if (pivotPoint.x < (tileX + 8))
+				{
+					position.x += speed;
+				}
 			}
 		}
-		playerTimer.Update();
 
-		if (playerTimer.getDeltaTime() >= 0.5f) {
-
-			if (ExtraPoints == true) {
-				App->audio->PlaySound(extraCoinsStepSFX, 0);
-
-			}
-			playerTimer.Reset();
-
-		}
+		SpecialSound();
 	}
 
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT)
@@ -207,44 +189,36 @@ UpdateResult Player::Update()
 		{
 			if (position.x < 216) // Limiitar movimiento en la mapa
 			{
-				//position.x += speed;
-				speedX = 1 * speed;
+				speedX = speed;
 			}
 		}
+		// movement fix
 		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 		{
-			int tileY = level1Tile->getWorldPos(level1Tile->getTilePos(position)).y;
+			iPoint tempTilePos = getCurrentTilePos();
 
-			if (pivotPoint.y <= (tileY + 4))
+			int tileY = getCurrentTileWorldPos().y;
+
+			tempTilePos.y--; // offset
+
+			int playerRight = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
+
+			//if target grid don't have obstacle
+			if(playerRight == 4 || playerRight == 0)
 			{
-				position.y -= speed;
-			}
-			else if (pivotPoint.y > (tileY + 4) &&
-				pivotPoint.y < (tileY + 8))
-			{
-				position.y += speed;
-			}
-			else if (pivotPoint.y < (tileY + 10) &&
-				pivotPoint.y >(tileY + 8))
-			{
-				position.y -= speed;
-			}
-			else if (pivotPoint.y >= (tileY + 10))
-			{
-				position.y += speed;
+				// optimize movement
+				if (pivotPoint.y > (tileY + 8))
+				{
+					position.y -= speed;
+				}
+				else if(pivotPoint.y < (tileY + 8))
+				{
+					position.y += speed;
+				}
 			}
 		}
-		playerTimer.Update();
 
-		if (playerTimer.getDeltaTime() >= 0.5f) {
-
-			if (ExtraPoints == true) {
-				App->audio->PlaySound(extraCoinsStepSFX, 0);
-
-			}
-			playerTimer.Reset();
-
-		}
+		SpecialSound();
 	}
 
 	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
@@ -256,42 +230,35 @@ UpdateResult Player::Update()
 		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;
-			speedX = -1 * speed;
+			speedX = -speed;
 		}
+		// movement fix
 		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 		{
-			int tileY = level1Tile->getWorldPos(level1Tile->getTilePos(position)).y;
+			iPoint tempTilePos = getCurrentTilePos();		
 
-			if (pivotPoint.y <= (tileY + 4))
+			int tileY = getCurrentTileWorldPos().y;
+
+			tempTilePos.y--; // offset
+
+			int playerRight = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
+
+			//if target grid don't have obstacle
+			if (playerRight == 4 || playerRight == 0)
 			{
-				position.y -= speed;
-			}
-			else if (pivotPoint.y > (tileY + 4) &&
-				pivotPoint.y < (tileY + 8))
-			{
-				position.y += speed;
-			}
-			else if (pivotPoint.y < (tileY + 10) &&
-				pivotPoint.y >(tileY + 8))
-			{
-				position.y -= speed;
-			}
-			else if (pivotPoint.y >= (tileY + 10))
-			{
-				position.y += speed;
+				// optimize movement
+				if (pivotPoint.y > (tileY + 8))
+				{
+					position.y -= speed;
+				}
+				else if(pivotPoint.y < (tileY + 8))
+				{
+					position.y += speed;
+				}
 			}
 		}
-		playerTimer.Update();
 
-		if (playerTimer.getDeltaTime() >= 0.5f) {
-
-			if (ExtraPoints == true) {
-				App->audio->PlaySound(extraCoinsStepSFX, 0);
-
-			}
-			playerTimer.Reset();
-
-		}
+		SpecialSound();
 	}
 
 #pragma endregion
@@ -475,6 +442,21 @@ void Player::WillCollision(Collider* col)
 	}
 }
 
+void Player::SpecialSound()
+{
+	// Special SFX
+	playerTimer.Update();
+
+	if (playerTimer.getDeltaTime() >= 0.5f) {
+
+		if (ExtraPoints == true) {
+			App->audio->PlaySound(extraCoinsStepSFX, 0);
+
+		}
+		playerTimer.Reset();
+	}
+}
+
 bool Player::InGrid(Collider* col)
 {
 	iPoint colGrid = level1Tile->getTilePos(col->getPos());
@@ -503,7 +485,7 @@ iPoint Player::getCurrentTilePos()
 	return ret;
 }
 
-iPoint Player::getCurrentTilewWorldPos()
+iPoint Player::getCurrentTileWorldPos()
 {
 	iPoint ret = pivotPoint;
 

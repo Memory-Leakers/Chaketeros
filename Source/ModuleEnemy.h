@@ -11,7 +11,7 @@
 
 
 
-#define defaultEnemySpeed 0.1f //Animation only
+#define defaultEnemySpeed 0.13f //Animation only
 
 struct SDL_Texture;
 

@@ -44,7 +44,6 @@ bool SceneIntro::Update()
 
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
 	{
-
 		if (currentImage == 3)
 		{
 			isChangingScene = true;
@@ -53,10 +52,13 @@ bool SceneIntro::Update()
 		else
 		{
 			fadeInOut->FadeIn(30);
-		}
-		
+		}		
 	}
-
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
+	{
+		isChangingScene = true;
+		App->scene->ChangeCurrentScene(LEVEL1_SCENE, 60);
+	}
 	if (fadeInOut->isFadeInDone == true)
 	{
 		currentImage++;

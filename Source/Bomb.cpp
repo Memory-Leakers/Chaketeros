@@ -9,7 +9,7 @@ Bomb::Bomb()
 }
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
-:Obstacle({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTilewWorldPos().x, player->getCurrentTilewWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
+:Obstacle({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
  	this->player = player;
 	lv1Tile = tile;

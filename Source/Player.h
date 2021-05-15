@@ -46,14 +46,12 @@ private:
 
 	bool posMode = false;
 	
-
 	Tile* level1Tile = nullptr;
 
 	Timer playerTimer;
 
 	// Template particle for an end of player
 	Particle* playerDestroyed = nullptr;
-
 
 	// The pointer to the current player animation
 	// It will be switched depending on the player's movement direction
@@ -69,7 +67,9 @@ private:
 	// The player spritesheet loaded into an SDL_Texture
 	SDL_Texture* texture = nullptr;
 
-protected:
+private:
+
+	void SpecialSound();
 
 public:
 	// Constructor
@@ -102,7 +102,7 @@ public:
 	iPoint getCurrentTilePos();
 
 	// pos for bomb
-	iPoint getCurrentTilewWorldPos();
+	iPoint getCurrentTileWorldPos();
 
 	// Position of the player in the map
 	iPoint position;
