@@ -1,5 +1,7 @@
 #include "SceneLevelBoss.h"
 
+Player* bombermanBoss = nullptr;
+
 SceneLevelBoss::SceneLevelBoss()
 {
 }
@@ -13,14 +15,18 @@ void SceneLevelBoss::CreateScene()
 	// Create new tileMap
 	tileMap = new Tile();
 
+	// Create new player
+	bombermanBoss = new Player(tileMap);
+	bombermanBoss->Start();
+
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
 		{
-			if (tileMap->LevelsTileMaps[App->scene->currentLevel][i][j] == 2)
+			if (tileMap->LevelsTileMaps[2][i][j] == 2)
 			{
 				iPoint tmpPos = tileMap->getWorldPos({ j,i });
-				tmpPos.y -= 16; // offset
+				tmpPos.y += 16; // offset
 
 				App->collisions->AddCollider({ tmpPos.x,tmpPos.y,16,16 }, Type::WALL, App->scene);
 			}
@@ -40,6 +46,9 @@ void SceneLevelBoss::InitAssets()
 
 bool SceneLevelBoss::Start()
 {
+	// Change current scene
+	App->scene->currentLevel = 2;
+
 	InitAssets();
 
 	CreateScene();
@@ -54,6 +63,8 @@ bool SceneLevelBoss::PreUpdate()
 
 bool SceneLevelBoss::Update()
 {
+	bombermanBoss->Update();
+
 	return false;
 }
 
@@ -65,15 +76,19 @@ bool SceneLevelBoss::PostUpdate()
 	// Drawu UI bar
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
+	bombermanBoss->PostUpdate();
+
 	return false;
 }
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
+	bombermanBoss->OnCollision(c2);
 }
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
 {
+	bombermanBoss->WillCollision(c2);
 }
 
 bool SceneLevelBoss::CleanUp(bool finalCleanUp)
@@ -90,6 +105,12 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	{
 		delete tileMap;
 		tileMap = nullptr;
+	}
+
+	if (bombermanBoss != nullptr)
+	{
+		delete bombermanBoss;
+		bombermanBoss = nullptr;
 	}
 
 	return false;

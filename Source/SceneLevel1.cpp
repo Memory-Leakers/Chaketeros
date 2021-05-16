@@ -208,8 +208,6 @@ void SceneLevel1::CreateYellowFlowers()
 
 bool SceneLevel1::Start()
 {
-	LOG("Starting Level 1 Scene");
-
 	bool ret = true;
 
 	#pragma region Reset Data
