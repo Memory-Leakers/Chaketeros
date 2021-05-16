@@ -21,7 +21,6 @@ public:
 
 	void DrawNum(int num, iPoint pos, int font = 0);
 	void DrawChar(int character, iPoint pos);
-
 };
 
 #endif

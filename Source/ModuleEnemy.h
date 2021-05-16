@@ -9,8 +9,6 @@
 #include "PowerUp.h"
 #include "Tile.h"
 
-
-
 #define defaultEnemySpeed 0.13f //Animation only
 
 struct SDL_Texture;
@@ -30,8 +28,6 @@ protected:
 		Tile* level1Tile = nullptr;
 
 		virtual void movement() {};
-
-		
 
 public:
 	ModuleEnemy();

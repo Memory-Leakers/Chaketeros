@@ -5,7 +5,6 @@ using namespace std;
 
 Bomb::Bomb()
 {
-	LOG("Bomb constructor");
 }
 
 Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
@@ -48,9 +47,6 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 	#pragma endregion
 
-	// Init explotionRange
-	explotionRange += App->scene->playerSettings->powerUpFlame;
-
 	// Inicializar animacion prestablecida de la bomba
 	#pragma region Init bomb anim
 	defaultAnim.hasIdle = false;
@@ -64,6 +60,9 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 	// Assignar anamacion prestablecida a currentAnim
 	currentAnim = &defaultAnim;
+
+	// Init explotionRange
+	explotionRange += App->scene->playerSettings->powerUpFlame;
 
 	// Init TimeCount
 	startCountTime = SDL_GetPerformanceCounter();
@@ -112,7 +111,6 @@ void Bomb::PostUpdate()
 
 void Bomb::Die()
 {
-	LOG("BombDie");
 	pendingToDelete = true;
 
 	// Centro de la explocion

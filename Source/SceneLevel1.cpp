@@ -694,10 +694,6 @@ bool SceneLevel1::PostUpdate()
 
 	sceneUI.DrawChar(0, { 25,8 });
 	sceneUI.DrawChar(1, { 123,8 });
-	//text->showText(App->render->renderer, 52, 15, strMinutes , text->getFonts(40), text->getColors((int)textColour::WHITE));
-	//text->showText(App->render->renderer, secondsXOffset, 15, strSeconds, text->getFonts(40), text->getColors((int) textColour::WHITE));  //Timer
-	//text->showText(App->render->renderer, 360, 15, "SC                    " + strScore, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Points
-	//text->showText(App->render->renderer, 695, 15, strLife, text->getFonts(40), text->getColors((int)textColour::WHITE)); //Lifes
 	#pragma endregion
 
 	// Draw powerUpPos
@@ -827,7 +823,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 		}
 	}
 	
-
 	// Delete obstacles
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
