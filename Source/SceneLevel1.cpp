@@ -627,11 +627,9 @@ bool SceneLevel1::PostUpdate()
 	#pragma region DrawUI and Foreground
 	
 	// Draw FrontGround
-	//App->render->DrawTexture(texFG, { 0,20 }, nullptr);
 	App->render->AddTextureRenderQueue(texFG, { 0,0 }, nullptr, 1, 100);
 
 	// Draw UI
-	//App->render->DrawTexture(texUI, 0, 0, &rectUI);
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
 	// Draw CoreMechaUI

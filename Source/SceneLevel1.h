@@ -63,8 +63,6 @@ private:
 	int currentSecond = 0;
 	// Offset for the seconds timer
 	int secondsXOffset = 100;
-	// Player lifes
-	int playerLifes = 3;	//HA DE CAMBIARSE DE SITIO. AL VOLVER DESDE GAME OVER NO SE RESETEA
 	// CoreMecha's number
 	int coreMechaNum = 2;
 

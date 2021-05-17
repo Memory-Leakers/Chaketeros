@@ -1,15 +1,44 @@
-#pragma once
+#ifndef _SCENELEVEL2_H_
+#define _SCENELEVEL2_H_
 #include "Scene.h"
 
 #include "Application.h"
 #include "Tile.h"
+
+#define LEVEL2_POWERUPS_NUM 5
 
 class SceneLevel2 : public Scene
 {
 private:
 
 	Tile* level2TileMap;
+
+	SDL_Rect recUIbar = { 0,0,256,24 };
+
 	SDL_Texture* texMap;
+	SDL_Texture* texFG = nullptr;
+	SDL_Texture* texUI = nullptr;
+	SDL_Texture* texBomb = nullptr;
+	SDL_Texture* texStone = nullptr;
+	SDL_Texture* texGlassCapsule = nullptr;
+	SDL_Texture* texYellowFlower = nullptr;
+	SDL_Texture* texEnemies = nullptr;
+	SDL_Texture* texItemDestroyed = nullptr;
+	SDL_Texture* texCoin = nullptr;
+	SDL_Texture* texPowerUpDestroyed = nullptr;
+	SDL_Texture* texCoreMecha = nullptr;
+	SDL_Texture* texPowerUps = nullptr;
+	SDL_Texture* texMiscUI = nullptr;
+
+	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
+
+	int redFlowerIndex, glassCapsuleIndex;
+
+	int coreMechaNum = 3;
+
+	int yellowFlowersNum;
+
+	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 public:
 
@@ -47,3 +76,4 @@ public:
 	void InitAssets();
 };
 
+#endif
