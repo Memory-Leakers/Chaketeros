@@ -13,7 +13,9 @@ FadeInOut* fade;
 
 SceneMainTitle::SceneMainTitle()
 {
+	ID = 1;
 }
+
 
 SceneMainTitle::~SceneMainTitle()
 {

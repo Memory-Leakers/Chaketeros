@@ -56,6 +56,7 @@ SceneLevel1::SceneLevel1()
 	// Init random system
 	srand(time(NULL));
 	score = 0;
+	ID = 4;
 }
 
 SceneLevel1::~SceneLevel1()

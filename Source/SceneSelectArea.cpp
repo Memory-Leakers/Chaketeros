@@ -8,6 +8,8 @@ Timer particleTime;
 
 SceneSelectArea::SceneSelectArea()
 {
+	ID = 2;
+
 	// Animation should be init in constructor!!!!
 	#pragma region Init Anim
 

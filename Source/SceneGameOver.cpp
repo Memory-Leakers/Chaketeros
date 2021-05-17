@@ -8,6 +8,7 @@ SDL_Rect debugRect;
 
 SceneGameOver::SceneGameOver()
 {
+	ID = 7;
 	#pragma region Init Anim
 	gameOverAnim.PushBack({ 0,0,256,224 });
 	gameOverAnim.PushBack({ 0,224,256,224 });

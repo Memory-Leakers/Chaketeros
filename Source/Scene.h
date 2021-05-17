@@ -5,6 +5,9 @@
 
 class Scene
 {
+protected:
+
+	int ID;
 
 public:
 	// Constructor
@@ -25,9 +28,16 @@ public:
 
 	virtual void WillCollision(Collider* c1, Collider* c2);
 
+	int getID()
+	{
+		return ID;
+	}
+
 	virtual bool CleanUp(bool finalCleanUp = true);
 
 	int score;
+
+
 };
 
 

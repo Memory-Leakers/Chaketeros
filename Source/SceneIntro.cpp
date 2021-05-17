@@ -10,7 +10,7 @@ Timer introTimer;
 
 SceneIntro::SceneIntro()
 {
-
+	ID = 0;
 }
 
 SceneIntro::~SceneIntro()

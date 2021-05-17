@@ -23,7 +23,7 @@ Obstacle* sceneLevel2Obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 SceneLevel2::SceneLevel2()
 {
-
+	ID = 5;
 }
 
 SceneLevel2::~SceneLevel2()

@@ -8,6 +8,8 @@ iPoint debugOffset = { 0,0 };
 
 SceneSelectStage::SceneSelectStage()
 {
+	ID = 3;
+
 	stoneCoinAnim.PushBack({ 2,2,15,16 });
 	stoneCoinAnim.PushBack({ 20,2,15,16 });
 	stoneCoinAnim.PushBack({ 37,2,15,16 });
