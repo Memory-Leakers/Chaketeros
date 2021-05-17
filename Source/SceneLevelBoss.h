@@ -1,11 +1,14 @@
-#ifndef _SCENELEVEL2_H_
-#define _SCENELEVEL2_H_
+#ifndef _SCENELEVELBOSS_H_
+#define _SCENELEVELBOSS_H_
 
 #include "Scene.h"
 #include "ModuleTextures.h"
 #include "Application.h"
 #include "Tile.h"
+#include "Obstacle.h"
 #include "ModuleCollisions.h"
+
+#define SCENE_OBSTACLES_NUM 256
 
 class SceneLevelBoss : public Scene
 {
@@ -18,6 +21,8 @@ private:
 	SDL_Texture* texMiscUI = nullptr;
 
 	SDL_Rect recUIbar = { 0,0,256,24 };
+
+	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
 public:
 	Tile* tileMap = nullptr;

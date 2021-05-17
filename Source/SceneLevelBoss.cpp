@@ -16,7 +16,7 @@ void SceneLevelBoss::CreateScene()
 	tileMap = new Tile();
 
 	// Create new player
-	bombermanBoss = new Player(tileMap);
+	bombermanBoss = new Player(tileMap, obstacles);
 	bombermanBoss->Start();
 
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
@@ -58,6 +58,15 @@ bool SceneLevelBoss::Start()
 
 bool SceneLevelBoss::PreUpdate()
 {
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (obstacles[i] != nullptr && obstacles[i]->pendingToDelete)
+		{
+			delete obstacles[i];
+			obstacles[i] = nullptr;
+		}
+	}
+
 	return false;
 }
 
@@ -65,17 +74,35 @@ bool SceneLevelBoss::Update()
 {
 	bombermanBoss->Update();
 
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (obstacles[i] != nullptr)
+		{
+			obstacles[i]->Update();
+		}
+	}
+
 	return false;
 }
 
 bool SceneLevelBoss::PostUpdate()
 {
+	// Draw obstacle
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (obstacles[i] != nullptr)
+		{
+			obstacles[i]->PostUpdate();
+		}
+	}
+
 	// Draw BG
 	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, 0);
 
-	// Drawu UI bar
+	// Draw UI bar
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
+	// Draw player
 	bombermanBoss->PostUpdate();
 
 	return false;
@@ -83,12 +110,27 @@ bool SceneLevelBoss::PostUpdate()
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
-	bombermanBoss->OnCollision(c2);
+	if(bombermanBoss->col == c1)
+	{
+		bombermanBoss->OnCollision(c2);
+	}
+
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+		{
+			obstacles[i]->OnCollision(c2);
+		}
+	}
+
 }
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
 {
-	bombermanBoss->WillCollision(c2);
+	if(bombermanBoss->col == c1)
+	{
+		bombermanBoss->WillCollision(c2);
+	}
 }
 
 bool SceneLevelBoss::CleanUp(bool finalCleanUp)
@@ -111,6 +153,15 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	{
 		delete bombermanBoss;
 		bombermanBoss = nullptr;
+	}
+
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (obstacles[i] != nullptr)
+		{
+			delete obstacles[i];
+			obstacles[i] = nullptr;
+		}
 	}
 
 	return false;

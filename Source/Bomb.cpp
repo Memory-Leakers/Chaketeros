@@ -112,6 +112,8 @@ void Bomb::PostUpdate()
 void Bomb::Die()
 {
 	pendingToDelete = true;
+	player->maxBombs++;
+	getCollider()->pendingToDelete = true;
 
 	// Centro de la explocion
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
@@ -188,10 +190,4 @@ void Bomb::Die()
 			}			
 		}
 	}
-}
-
-void Bomb::CleanUp()
-{
-	player->maxBombs++;
-	getCollider()->pendingToDelete = true;
 }

@@ -31,7 +31,6 @@ private:
 	SDL_Texture* texMap = nullptr;
 	SDL_Texture* texFG = nullptr;
 	SDL_Texture* texUI = nullptr;
-	SDL_Texture* texBomb = nullptr;
 	SDL_Texture* texStone = nullptr;
 	SDL_Texture* texGlassCapsule = nullptr;
 	SDL_Texture* texYellowFlower = nullptr;

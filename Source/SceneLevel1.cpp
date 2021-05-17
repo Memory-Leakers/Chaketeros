@@ -68,7 +68,6 @@ void SceneLevel1::InitAssets()
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Map.png");
 	texFG = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/MapEnv.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
-	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texStone = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Stone.png");
 	texGlassCapsule = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/FragmentsWithMachine.png");
 	texYellowFlower = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/YellowFlower.png");
@@ -234,7 +233,7 @@ bool SceneLevel1::Start()
 	#pragma region Init Player and Enemies
 
 	// Init player
-	bomberman = new Player(tileMap);
+	bomberman = new Player(tileMap, sceneObstacles);
 	bomberman->Start();
 
 	// Spawn enemies
@@ -386,7 +385,6 @@ bool SceneLevel1::PreUpdate()
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
-			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}
@@ -478,20 +476,6 @@ bool SceneLevel1::Update()
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
-
-		// Drop bomb
-		if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && bomberman->maxBombs > 0)
-		{
-			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
-			{
-				if (sceneObstacles[i] == nullptr)
-				{
-					sceneObstacles[i] = new Bomb(bomberman, texBomb, tileMap);
-					bomberman->maxBombs--;
-					break;
-				}
-			}
-		}
 
 		//Check if Player is on the Glass Capsule after completing the level
 		if (bomberman->position == winPosition && App->scene->isLevelCompleted && !isExtraPointsActive)

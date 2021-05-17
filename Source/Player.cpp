@@ -1,13 +1,16 @@
 #include "Player.h";
 
+#include "Bomb.h"
+
 #include <iostream>;
 using namespace std;
 
 SDL_Rect* rect;
 
-Player::Player(Tile* level1Tile)
+Player::Player(Tile* level1Tile, Obstacle** obs)
 {
 	this->level1Tile = level1Tile;
+	obstacles = obs;
 
 	position.x = 40;
 	position.y = 32;
@@ -70,7 +73,8 @@ bool Player::Start()
 
 	bool ret = true;
 
-	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png"); // arcade version
+	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
+	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
@@ -261,17 +265,19 @@ UpdateResult Player::Update()
 		SpecialSound();
 	}
 
-#pragma endregion
+	#pragma endregion
 
-	// Resets speed
-
-	if(App->input->keys[SDL_SCANCODE_S] == KEY_UP || App->input->keys[SDL_SCANCODE_W] == KEY_UP)
+	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && maxBombs > 0)
 	{
-		speedY = 0;
-	}
-	if (App->input->keys[SDL_SCANCODE_A] == KEY_UP || App->input->keys[SDL_SCANCODE_D] == KEY_UP)
-	{
-		speedX = 0;
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		{
+			if (obstacles[i] == nullptr)
+			{
+				obstacles[i] = new Bomb(this, texBomb, level1Tile);
+				maxBombs--;
+				break;
+			}
+		}
 	}
 
 	// Move

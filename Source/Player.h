@@ -17,6 +17,8 @@ struct SDL_Texture;
 
 class Particle;
 
+class Obstacle;
+
 class Tile;
 
 enum Dir
@@ -51,6 +53,8 @@ private:
 
 	Timer playerTimer;
 
+	Obstacle** obstacles = nullptr;
+
 	// Template particle for an end of player
 	Particle* playerDestroyed = nullptr;
 
@@ -65,8 +69,10 @@ private:
 	Animation leftAnim;
 	Animation rightAnim;
 
-	// The player spritesheet loaded into an SDL_Texture
+	// Player texture
 	SDL_Texture* texture = nullptr;
+	// Bomb texture
+	SDL_Texture* texBomb = nullptr;
 
 private:
 
@@ -101,7 +107,7 @@ public:
 
 public:
 	// Constructor
-	Player(Tile* level1Tile);
+	Player(Tile* level1Tile, Obstacle** obs);
 
 	// Destructor
 	~Player();

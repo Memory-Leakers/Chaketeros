@@ -47,7 +47,6 @@ public:
  	void PostUpdate() override;
 	void Update() override;
 	void Die() override;
-	void CleanUp() override;
 };
 
 #endif // !__BOMB_H__
