@@ -15,6 +15,7 @@
 #include "PokaPoka.h"
 #include "Mover.h"
 #include "NumText.h"
+#include "Snail.h"
 
 #include <time.h>
 #include <iostream>
@@ -237,6 +238,7 @@ bool SceneLevel1::Start()
 	bomberman->Start();
 
 	// Spawn enemies
+	enemy[4] = new Snail({ 112,64 }, texEnemies, tileMap);
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, texEnemies , &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);

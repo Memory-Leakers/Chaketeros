@@ -131,6 +131,7 @@
     <ClInclude Include="SceneMainTitle.h" />
     <ClInclude Include="SceneSelectArea.h" />
     <ClInclude Include="SceneSelectStage.h" />
+    <ClInclude Include="Snail.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="SceneMainTitle.cpp" />
     <ClCompile Include="SceneSelectArea.cpp" />
     <ClCompile Include="SceneSelectStage.cpp" />
+    <ClCompile Include="Snail.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
