@@ -155,7 +155,7 @@ bool SceneSelectArea::Update()
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			App->audio->PlaySound(selectSFX, 0);
-			App->scene->ChangeCurrentScene(STAGE_SCENE, 80);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 80);
 		}
 	}
 	#pragma endregion

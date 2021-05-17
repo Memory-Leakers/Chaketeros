@@ -40,6 +40,8 @@ private:
 
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
+	iPoint colisionBoxPos;
+
 public:
 
 	SceneLevel2();

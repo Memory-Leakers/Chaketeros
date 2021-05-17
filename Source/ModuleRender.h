@@ -67,7 +67,7 @@ public:
 	// Destroys the rendering context
 	bool CleanUp() override;
 
-	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, int orderInlayer = 0, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 2.0f);
+	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, int orderInlayer = 0, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 1.0f);
 
 	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 

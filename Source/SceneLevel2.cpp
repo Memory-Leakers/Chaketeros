@@ -44,7 +44,11 @@ void SceneLevel2::CreateScene()
 				level2EmptySpaces.push_back(level2TileMap->getWorldPos({ j,i }) -= {0, -16});
 				break;
 			case 2:
-			
+				colisionBoxPos = level2TileMap->getWorldPos({ j,i });
+				colisionBoxPos.y += 16; // offset
+
+				App->collisions->AddCollider({ colisionBoxPos.x,colisionBoxPos.y,16,16 }, Type::WALL, App->scene);
+
 				break;
 			case 3:
 				redFlowerIndex = k;
@@ -199,6 +203,22 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 		App->particle->CleanUpScene();
 		App->audio->CleanUpScene();
 	}
+
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (sceneLevel2Obstacles[i] != nullptr)
+		{
+			delete sceneLevel2Obstacles[i];
+			sceneLevel2Obstacles[i] = nullptr;
+		}
+	}
+
+	if (level2TileMap != nullptr)
+	{
+		delete level2TileMap;
+		level2TileMap = nullptr;
+	}
+
 	return false;
 }
 

@@ -156,6 +156,8 @@ void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_R
 	renderObject.section = section;
 	renderObject.orderInLayer = orderInlayer;
 
+	if (layer == 2) speed = 0;	//If texture in UI layer, it moves alongside the camera. Therefor, speed = 0;
+
 	renderObject.renderRect.x = (int)(-camera.x * speed) + pos.x * scale;
 	renderObject.renderRect.y = (int)(-camera.y * speed) + pos.y * scale;
 

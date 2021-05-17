@@ -296,11 +296,11 @@ bool SceneLevel1::PreUpdate()
 		if (App->scene->playerSettings->playerLifes > 0)
 		{
 			App->scene->playerSettings->playerLifes--;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
 		}
 		else
 		{
-			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 		}
 	}
 	#pragma endregion
@@ -318,7 +318,7 @@ bool SceneLevel1::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(STAGE_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
@@ -328,14 +328,14 @@ bool SceneLevel1::PreUpdate()
 			{
 				isChangingScene = true;
 				App->scene->playerSettings->playerLifes--;
-				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
+				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
 			}
 
 			else
 			{
 				if (!isChangingScene)
 				{
-					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+					App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 					isChangingScene = true;
 				}
 
@@ -442,7 +442,7 @@ bool SceneLevel1::Update()
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+		App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 	}
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
