@@ -6,7 +6,7 @@ YellowFlower::YellowFlower()
 	LOG("Constructor yellowFlower");
 }
 
-YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex,Tile* tile, bool hasPowerUp) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
+YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex,Tile* tile, int hasPowerUp) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::DESTRUCTABLE_WALL, App->scene), tex)
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->currentTileMap = tile;
@@ -37,7 +37,7 @@ void YellowFlower::Die()
 	tileX = currentTileMap->getTilePos(getPosition()).x;
 	tileY = (currentTileMap->getTilePos(getPosition()).y);
 
-	if (hasPowerUp)
+	if (hasPowerUp == 1)
 	{
 		currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 8;
 	}

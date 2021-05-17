@@ -175,30 +175,30 @@ void SceneLevel1::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
 	yellowFlowersNum = rand() % 6 + 43;
-	bool hasPowerUp = true;
+	int hasPowerUp = 2;
+	int powerType = 1;
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
 	{
-		if (i >= 2) // Create 2 powerUps
-		{
-			hasPowerUp = false;
-		}
-
 		int randomNum = rand() % emptySpaces.size();
 		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, powerType);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
-				if (hasPowerUp)
+				if (hasPowerUp > 0)
 				{
-					powerUpPos[i] = sceneObstacles[j]->getPosition();
+					powerUpPos[i] = sceneObstacles[j]->getPosition();				
+					if(--hasPowerUp)
+					{
+						powerType = 0;
+					}
 				}
 
 				break;
@@ -677,6 +677,7 @@ bool SceneLevel1::PostUpdate()
 
 	sceneUI.DrawChar(0, { 25,8 });
 	sceneUI.DrawChar(1, { 123,8 });
+
 	#pragma endregion
 
 	// Draw powerUpPos

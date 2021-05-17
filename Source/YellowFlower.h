@@ -14,13 +14,13 @@ private:
 
 	Tile* currentTileMap;
 
-	bool hasPowerUp = false; // Luego se cambia por int ya que habra mas tipos de power ups
+	int hasPowerUp = 0; // Luego se cambia por int ya que habra mas tipos de power ups
 
 public: 
 	//Constructor
 	YellowFlower();
 
-	YellowFlower(iPoint pos, SDL_Texture* tex, Tile* tile, bool hasPowerUp = false);
+	YellowFlower(iPoint pos, SDL_Texture* tex, Tile* tile, int hasPowerUp = 0);
 
 	void Die() override;
 
