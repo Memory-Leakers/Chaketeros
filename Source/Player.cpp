@@ -78,7 +78,7 @@ bool Player::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
-	playerDestroyed = new Particle(500.0f, 0.1f, texture);
+	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 
 	playerDestroyed->anim.PushBack({ 4, 71, 22, 21});
 	playerDestroyed->anim.PushBack({ 26, 71, 22, 21});
@@ -385,7 +385,7 @@ void Player::OnCollision(Collider* col)
 				// Create die particle
 				iPoint tempPos = position;
 				tempPos -= {3, 5};
-				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 5.1f);
 			}		
 		}
 

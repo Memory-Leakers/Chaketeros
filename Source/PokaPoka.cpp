@@ -300,14 +300,12 @@ void PokaPoka::moveRandom(int i) {
 	}
 }
 
-
 void PokaPoka::OnCollision(Collider* col) {
 	if (col->type == Type::EXPLOSION) 
 	{
 		die();
 	}
 }
-
 
 void PokaPoka::die() {
 
@@ -319,7 +317,7 @@ void PokaPoka::die() {
 	col->pendingToDelete = true;
 	iPoint tempPos = position;
 	tempPos += {0, -14};
-	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 0);
+	App->particle->AddParticle(*dieParticle, tempPos, Type::NONE, true, 0, 14.1f);
 
 	pendingToDelete = true;
 

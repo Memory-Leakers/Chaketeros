@@ -195,7 +195,7 @@ void SceneLevel1::CreateYellowFlowers()
 				if (hasPowerUp > 0)
 				{
 					powerUpPos[i] = sceneObstacles[j]->getPosition();				
-					if(--hasPowerUp)
+					if(--hasPowerUp <= 0)
 					{
 						powerType = 0;
 					}
