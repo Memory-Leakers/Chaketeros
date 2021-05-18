@@ -1,7 +1,6 @@
 #ifndef _SCENELEVEL1_H_
 #define _SCENELEVEL1_H_
 
-
 #include "Scene.h"
 #include "Point.h"
 #include "Tile.h"
@@ -23,8 +22,8 @@ class ModuleEnemy;
 
 class Tile;
 
-
 struct SDL_Texture;
+
 struct SDL_Rect;
 
 #define SCENE_OBSTACLES_NUM 256
