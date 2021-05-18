@@ -66,9 +66,9 @@ public:
 	// Destroys the rendering context
 	bool CleanUp() override;
 
-	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer = 0.0f, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 1.0f);
+	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer = 0.0f, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 3.0f);
 
-	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
+	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 3.0f);
 
 	void SortRenderObjects(vector<RenderObject>& obj);
 
@@ -95,6 +95,8 @@ public:
 	bool DrawRotateTexture(SDL_Texture* texture, iPoint pos, SDL_Rect* section = nullptr, bool flipHor = false, float rotation = 0, float speed = 1.0f);
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
+
+	void CameraMove(iPoint pos);
 	#pragma endregion
 
 public:

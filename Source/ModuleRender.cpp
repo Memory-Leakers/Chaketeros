@@ -122,6 +122,11 @@ UpdateResult ModuleRender::PostUpdate()
 		SDL_RenderFillRect(renderer, &renderRect.rect);
 	}
 
+
+
+	
+
+
 	// Update the screen
 	SDL_RenderPresent(renderer);
 
@@ -383,4 +388,12 @@ bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float sp
 	return ret;
 }
 
+void ModuleRender::CameraMove(iPoint pos)
+{
+	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
+	{
+		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
+		camera.y = pos.y;
+	}
+}
 #pragma endregion
