@@ -76,9 +76,14 @@ UpdateResult ModuleScene::Update()
 		currentScene->Update();
 		if (currentFrame >= maxFrames)	//Si el rect�ngulo negro tiene opacidad m�xima, cambiamos de escena e incializamos la siguiente
 		{
+			lastSceneID = currentScene->getID();
+
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+
 			currentScene->score = playerSettings->playerScore;
+			currentScene->lastID = lastSceneID;
+
 			currentScene->Start();
 			currentStep = FADE_OUT;
 			return UpdateResult::UPDATE_CONTINUE;

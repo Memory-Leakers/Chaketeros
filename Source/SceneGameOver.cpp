@@ -69,6 +69,19 @@ bool SceneGameOver::Start()
 	
 	gameOverScore.Start();
 
+	switch (lastID)
+	{
+	case 4:
+		score = 2200;
+		break;
+	case 5:
+		score = 6800;
+		break;
+	case 6:
+		score = 7420;
+		break;
+	}
+
 	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
 	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
 	
@@ -117,7 +130,7 @@ bool SceneGameOver::Update()
 
 		if (currentPointerPos == &pointerPos[0] && !pressedContinue)
 		{		
-			if(App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90))
+			if(App->scene->ChangeCurrentScene(lastID, 90))
 			{
 				pressedContinue = true;
 			}

@@ -37,6 +37,8 @@ public:
 
 	int score;
 
+	int lastID;
+
 
 };
 

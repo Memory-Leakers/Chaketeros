@@ -79,6 +79,8 @@ public:
 
 	int currentLevel = 0;
 
+	int lastSceneID;
+
 private:
 
 	enum FadeSteps
