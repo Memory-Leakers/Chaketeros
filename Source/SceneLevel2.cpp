@@ -17,12 +17,14 @@
 #include "PokaPoka.h"
 #include "Mover.h"
 #include "NumText.h"
+#include "Timer.h"
 
 
 vector<iPoint> level2EmptySpaces;
 
 SceneLevel2::SceneLevel2()
 {
+	srand(time(NULL));
 	ID = 5;
 }
 
@@ -148,6 +150,13 @@ bool SceneLevel2::Start()
 	bomberman = new Player(level2TileMap, sceneObstacles);
 	bomberman->Start();
 
+	//	Timer Reset
+	timer.Reset();
+	isTimeOut = false;
+	isChangingScene = false;
+	minutes = 4;
+	totalSeconds = 59;
+
 
 	InitAssets();
 
@@ -157,7 +166,7 @@ bool SceneLevel2::Start()
 
 bool SceneLevel2::PreUpdate()
 {
-#pragma region Bomberman dies Condition
+	#pragma region Bomberman dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 		delete bomberman;
@@ -172,6 +181,41 @@ bool SceneLevel2::PreUpdate()
 			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 		}
 	}
+#pragma endregion
+
+	#pragma region Runs out of time Condition
+	if (bomberman != nullptr && isTimeOut)
+	{
+		bomberman->speed = 0;
+		if (isExtraPointsActive && !isChangingScene)
+		{
+			App->audio->PlaySound(whistlingSFX, 0);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
+			isChangingScene = true;
+		}
+		else if (!isExtraPointsActive)
+		{
+
+			if (App->scene->playerSettings->playerLifes > 0 && !isChangingScene)
+			{
+				isChangingScene = true;
+				App->scene->playerSettings->playerLifes--;
+				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
+			}
+
+			else
+			{
+				if (!isChangingScene)
+				{
+					App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+					isChangingScene = true;
+				}
+
+			}
+		}
+	}
+#pragma endregion
+
 	return false;
 }
 

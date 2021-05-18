@@ -7,6 +7,7 @@
 
 #define LEVEL2_POWERUPS_NUM 5
 #define LEVEL2_OBSTACLES 256
+#define LEVEL2_MAP_WIDTH 512
 
 class Player;
 
@@ -14,9 +15,9 @@ class Obstacle;
 
 class Tile;
 
+class Timer;
+
 struct SDL_Texture;
-
-
 
 class SceneLevel2 : public Scene
 {
@@ -49,6 +50,19 @@ private:
 
 	int yellowFlowersNum;
 
+	int totalSeconds;
+	//	Number of total minutes
+	int minutes;
+	// Current second shown on screen
+	int currentSecond = 0;
+	// Offset for the seconds timer
+
+	bool isTimeOut;
+
+	bool isChangingScene;
+
+	bool isExtraPointsActive;
+
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 	iPoint colisionBoxPos;
@@ -56,6 +70,8 @@ private:
 	Obstacle* sceneObstacles[LEVEL2_OBSTACLES] = { nullptr };
 
 	Player* bomberman;
+	//	Timer
+	Timer timer;
 
 
 
