@@ -3,20 +3,29 @@
 
 
 #include "Scene.h"
-
-#include "Animation.h"
-#include "Application.h"
-#include "ModuleTextures.h"
-#include "ModuleRender.h"
-#include "ModuleAudio.h"
-#include "Player.h"
-#include "Timer.h"
-
-#include "ModuleEnemy.h"
+#include "Point.h"
+#include "Tile.h"
+#include "NumText.h"
 
 using namespace std;
 
+class Timer;
+
+class Player;
+
+class Obstacle;
+
+class PowerUp;
+
+class Stone;
+
+class ModuleEnemy;
+
+class Tile;
+
+
 struct SDL_Texture;
+struct SDL_Rect;
 
 #define SCENE_OBSTACLES_NUM 256
 #define MAX_EMPTY_SPACES 104
@@ -86,6 +95,21 @@ private:
 
 	//	TileMap
 	Tile* tileMap;
+
+	Player* bomberman = nullptr;
+
+	Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+
+	PowerUp* powerUps[MAX_POWERUPS];
+
+	Stone* stones[MAX_STONE];
+
+	ModuleEnemy* enemy[MAX_ENEMY];
+
+	iPoint winPosition = { 120, 96 };
+
+	iPoint powerUpPos[2];
+
 
 public:
 

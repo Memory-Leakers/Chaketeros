@@ -1,7 +1,8 @@
 #include "SceneLevel2.h"
 
+#include "Application.h"
+
 #include <iostream>
-#include <vector>
 
 #include "Collider.h"
 #include "ModuleScene.h"
@@ -17,9 +18,8 @@
 #include "Mover.h"
 #include "NumText.h"
 
-vector<iPoint> level2EmptySpaces;
 
-Obstacle* sceneLevel2Obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+vector<iPoint> level2EmptySpaces;
 
 SceneLevel2::SceneLevel2()
 {
@@ -52,16 +52,14 @@ void SceneLevel2::CreateScene()
 				break;
 			case 3:
 				redFlowerIndex = k;
-				sceneLevel2Obstacles[k++] = new RedFlower(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, level2TileMap);
+				sceneObstacles[k++] = new RedFlower(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, level2TileMap);
 				break;
 			case 6:
-				//renderExceptionPos[l++] = k;
-				sceneLevel2Obstacles[k++] = new CoreMecha(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, level2TileMap, &coreMechaNum);
+				sceneObstacles[k++] = new CoreMecha(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, level2TileMap, &coreMechaNum);
 				break;
 			case 10:
-				//renderExceptionPos[l++] = k;
 				glassCapsuleIndex = k;
-				sceneLevel2Obstacles[k++] = new GlassCapsule(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
+				sceneObstacles[k++] = new GlassCapsule(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texGlassCapsule);
 				break;
 			default:
 				break;
@@ -90,9 +88,9 @@ void SceneLevel2::CreateYellowFlowers()
 		int randomNum = rand() % level2EmptySpaces.size();
 		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
-			if (sceneLevel2Obstacles[j] == nullptr)
+			if (sceneObstacles[j] == nullptr)
 			{
-				sceneLevel2Obstacles[j] = new YellowFlower(level2EmptySpaces.at(randomNum), texYellowFlower, level2TileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(level2EmptySpaces.at(randomNum), texYellowFlower, level2TileMap, hasPowerUp);	//emptySpaces.at = return value at index
 
 				iPoint temp = level2TileMap->getTilePos(level2EmptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				level2TileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
@@ -101,7 +99,7 @@ void SceneLevel2::CreateYellowFlowers()
 
 				if (hasPowerUp)
 				{
-					powerUpPos[i] = sceneLevel2Obstacles[j]->getPosition();
+					powerUpPos[i] = sceneObstacles[j]->getPosition();
 				}
 
 				break;
@@ -146,6 +144,11 @@ bool SceneLevel2::Start()
 
 	App->scene->currentLevel = 1;
 
+	// Init player
+	bomberman = new Player(level2TileMap, sceneObstacles);
+	bomberman->Start();
+
+
 	InitAssets();
 
 	
@@ -154,11 +157,30 @@ bool SceneLevel2::Start()
 
 bool SceneLevel2::PreUpdate()
 {
+#pragma region Bomberman dies Condition
+	if (bomberman != nullptr && bomberman->pendingToDelete)
+	{
+		delete bomberman;
+		bomberman = nullptr;
+		if (App->scene->playerSettings->playerLifes > 0)
+		{
+			App->scene->playerSettings->playerLifes--;
+			App->scene->ChangeCurrentScene(SCENE_LEVEL2, 90, score);
+		}
+		else
+		{
+			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+		}
+	}
 	return false;
 }
 
 bool SceneLevel2::Update()
 {
+	if (bomberman != nullptr)
+	{
+		bomberman->Update();
+	}
 	return false;
 }
 
@@ -172,10 +194,16 @@ bool SceneLevel2::PostUpdate()
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
-		if (sceneLevel2Obstacles[i] != nullptr)
+		if (sceneObstacles[i] != nullptr)
 		{
-			sceneLevel2Obstacles[i]->PostUpdate();
+			sceneObstacles[i]->PostUpdate();
 		}
+	}
+
+	//	Draw Player
+	if (bomberman != nullptr)
+	{
+		bomberman->PostUpdate();
 	}
 
 	// Draw FrontGround
@@ -188,10 +216,33 @@ bool SceneLevel2::PostUpdate()
 
 void SceneLevel2::OnCollision(Collider* c1, Collider* c2)
 {
+	#pragma region Bomberman Collision
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->OnCollision(c2);
+	}
+#pragma endregion
+
+	#pragma region Obstacle Collision
+		//Obstacle Collision ----------------------
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		{
+			// cuando se choca algo
+			if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
+			{
+				sceneObstacles[i]->OnCollision(c2);
+			}
+		}
+	#pragma endregion
+
 }
 
 void SceneLevel2::WillCollision(Collider* c1, Collider* c2)
 {
+	if (bomberman != nullptr && bomberman->col == c1)
+	{
+		bomberman->WillCollision(c2);
+	}
 }
 
 bool SceneLevel2::CleanUp(bool finalCleanUp)
@@ -206,11 +257,17 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
-		if (sceneLevel2Obstacles[i] != nullptr)
+		if (sceneObstacles[i] != nullptr)
 		{
-			delete sceneLevel2Obstacles[i];
-			sceneLevel2Obstacles[i] = nullptr;
+			delete sceneObstacles[i];
+			sceneObstacles[i] = nullptr;
 		}
+	}
+
+	if (bomberman != nullptr)
+	{
+		delete bomberman;
+		bomberman = nullptr;
 	}
 
 	if (level2TileMap != nullptr)

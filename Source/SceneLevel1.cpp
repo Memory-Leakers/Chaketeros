@@ -14,8 +14,17 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-#include "NumText.h"
 #include "Snail.h"
+
+#include "Animation.h"
+#include "Application.h"
+#include "ModuleTextures.h"
+#include "ModuleRender.h"
+#include "ModuleAudio.h"
+#include "Player.h"
+#include "Timer.h"
+
+#include "ModuleEnemy.h"
 
 #include <time.h>
 #include <iostream>
@@ -28,28 +37,10 @@
 
 #pragma region Variables
 
-// Player
-Player* bomberman = nullptr;
-
-Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
-
-NumText sceneUI;
-
 vector<iPoint> emptySpaces;
 
-PowerUp* powerUps[MAX_POWERUPS];
-
-Stone* stones[MAX_STONE];
-
-ModuleEnemy* enemy[MAX_ENEMY];
-
-iPoint winPosition = { 120, 96 };
-
-iPoint powerUpPos[2];
-
+NumText sceneUI;
 #pragma endregion
-
-//iPoint debugOffset = { 0,0 };
 
 SceneLevel1::SceneLevel1()
 {

@@ -1,11 +1,22 @@
 #ifndef _SCENELEVEL2_H_
 #define _SCENELEVEL2_H_
-#include "Scene.h"
 
-#include "Application.h"
+#include "Scene.h"
+#include "Point.h"
 #include "Tile.h"
 
 #define LEVEL2_POWERUPS_NUM 5
+#define LEVEL2_OBSTACLES 256
+
+class Player;
+
+class Obstacle;
+
+class Tile;
+
+struct SDL_Texture;
+
+
 
 class SceneLevel2 : public Scene
 {
@@ -41,6 +52,12 @@ private:
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 	iPoint colisionBoxPos;
+
+	Obstacle* sceneObstacles[LEVEL2_OBSTACLES] = { nullptr };
+
+	Player* bomberman;
+
+
 
 public:
 

@@ -67,7 +67,6 @@ public:
 
 	bool CleanUp() override;
 
-	//Text* text = nullptr;
 
 	Scene* currentScene = nullptr;
 
