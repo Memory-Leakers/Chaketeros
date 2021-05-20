@@ -60,8 +60,7 @@ public:
 
 	UpdateResult PostUpdate() override;
 
-	void die() override;
-
+	void Die() override;
 
 };
 #endif // !_SNAIL_H_

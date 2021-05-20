@@ -10,7 +10,7 @@ Mouse::Mouse(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
-	level1Tile = levelMap;
+	tileMap = levelMap;
 }
 
 Mouse::~Mouse() {
@@ -71,8 +71,8 @@ bool Mouse::Start() {
 
 UpdateResult Mouse::PreUpdate()
 {
-	iPoint tilePos = level1Tile->getTilePos(position);
-	iPoint centerTile = level1Tile->getWorldPos(tilePos);
+	iPoint tilePos = tileMap->getTilePos(position);
+	iPoint centerTile = tileMap->getWorldPos(tilePos);
 
 	// Deteci if mover is center of grid
 	if (position == centerTile)
@@ -135,12 +135,12 @@ void Mouse::OnCollision(Collider* col)
 {
 	if (col->type == Type::EXPLOSION)
 	{
-		die();
+		Die();
 		App->scene->currentScene->score += 400;
 	}
 }
 
-void Mouse::die()
+void Mouse::Die()
 {
 	if (pendingToDelete) return;
 
@@ -156,7 +156,7 @@ void Mouse::die()
 int Mouse::RandomMov()
 {
 	// Get Mouse tile posiion
-	iPoint myTilePos = level1Tile->getTilePos(position);
+	iPoint myTilePos = tileMap->getTilePos(position);
 	// offset
 	myTilePos.y--;
 
@@ -170,7 +170,7 @@ int Mouse::RandomMov()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		int thisGrid = level1Tile->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
+		int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
 		if (thisGrid == 0 || thisGrid == 4)
 		{
 			// Save usable direccion

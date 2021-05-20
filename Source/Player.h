@@ -51,7 +51,7 @@ private:
 
 	iPoint mapLimits[3][2] = { {{24, 32}, {216, 192}}, {{24,32}, {472,192}}, {{24, 32}, {216, 192}} };
 	
-	Tile* level1Tile = nullptr;
+	Tile* tileMap = nullptr;
 
 	Timer playerTimer;
 
@@ -109,7 +109,7 @@ public:
 
 public:
 	// Constructor
-	Player(Tile* level1Tile, Obstacle** obs);
+	Player(Tile* tileMap, Obstacle** obs);
 
 	// Destructor
 	~Player();
