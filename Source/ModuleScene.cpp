@@ -1,5 +1,5 @@
 #include "ModuleScene.h"
-
+#include <time.h>
 PlayerSettings* playerSettings = nullptr;
 
 ModuleScene::ModuleScene()
@@ -13,6 +13,7 @@ ModuleScene::ModuleScene()
 	scenes[6] = new SceneLevelBoss();
 	scenes[7] = new SceneGameOver();
 
+	srand(time(NULL));
 	playerSettings = PlayerSettings::Instance();
 }
 
