@@ -25,7 +25,7 @@ protected:
 
 		SDL_Rect bounds;
 
-		Tile* level1Tile = nullptr;
+		Tile* tileMap = nullptr;
 
 		virtual void movement() {};
 
@@ -39,7 +39,7 @@ public:
 	virtual UpdateResult Update();
 	virtual UpdateResult PostUpdate();
 	virtual void OnCollision(Collider* col);
-	virtual void die() {};
+	virtual void Die() {};
 
 	iPoint position;
 

@@ -27,7 +27,7 @@ vector<iPoint> level2EmptySpaces;
 
 SceneLevel2::SceneLevel2()
 {
-	srand(time(NULL));
+	
 	ID = 5;
 }
 

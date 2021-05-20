@@ -1,15 +1,15 @@
 #include "SceneSelectArea.h"
 
+#include "Timer.h"
+#include "Particle.h"
+#include "External/SDL_image/include/SDL_image.h"
+
 #include <iostream>
 using namespace std;
-#include "Application.h"
-
-Timer particleTime;
 
 SceneSelectArea::SceneSelectArea()
 {
 	ID = 2;
-
 	// Animation should be init in constructor!!!!
 	#pragma region Init Anim
 
@@ -127,6 +127,7 @@ bool SceneSelectArea::Update()
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
 		if (currentArrowLevelPos == &arrowLevelPosition[5])
 		{
 			currentArrowLevelPos = &arrowLevelPosition[0];
@@ -135,10 +136,12 @@ bool SceneSelectArea::Update()
 		{
 			currentArrowLevelPos++;
 		}
+		*/
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			currentArrowLevelPos = &arrowLevelPosition[5];
@@ -147,6 +150,7 @@ bool SceneSelectArea::Update()
 		{
 			currentArrowLevelPos--;
 		}
+		*/
 	}
 	#pragma endregion
 

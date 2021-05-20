@@ -50,6 +50,9 @@ bool SceneSelectStage::Start()
 	// reset anim
 	stoneCoinAnim.Reset();
 
+	stageSelectPointer = 0;
+
+	//TODO
 	bigMoneyPointer = 1;
 
 	return true;

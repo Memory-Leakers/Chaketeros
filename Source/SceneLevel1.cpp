@@ -15,6 +15,7 @@
 #include "PokaPoka.h"
 #include "Mover.h"
 #include "Snail.h"
+#include "Mouse.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -45,7 +46,7 @@ NumText sceneUI;
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
-	srand(time(NULL));
+	
 	score = 0;
 	ID = 4;
 }
@@ -230,6 +231,7 @@ bool SceneLevel1::Start()
 	bomberman->Start();
 
 	// Spawn enemies
+	enemy[5] = new Mouse({ 72,64 }, texEnemies, tileMap);
 	enemy[4] = new Snail({ 112,64 }, texEnemies, tileMap);
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, texEnemies , &bomberman->pivotPoint, tileMap);
