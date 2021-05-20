@@ -70,9 +70,6 @@
     <ClInclude Include="ModuleEnemy.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleEnemy.h">
-      <Filter>Source Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleEnemyPool.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
@@ -175,6 +172,12 @@
     <ClInclude Include="Snail.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Bananacher.h">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEnemy.h">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -211,9 +214,6 @@
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleParticles.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleEnemy.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEnemy.cpp">
@@ -310,6 +310,12 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Snail.cpp">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Bananacher.cpp">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEnemy.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
   </ItemGroup>

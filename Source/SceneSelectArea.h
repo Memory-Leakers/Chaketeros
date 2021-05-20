@@ -2,10 +2,14 @@
 #define _SCENESELECTAREA_H_
 
 #include "Scene.h"
-#include "External/SDL_image/include/SDL_image.h"
+#include "Application.h"
 #include "Animation.h"
-#include "Particle.h"
-#include "Timer.h"
+
+struct SDL_Texture;
+
+class Particle;
+
+class Timer;
 
 class SceneSelectArea : public Scene
 {
@@ -31,6 +35,8 @@ private:
 	uint changeSelectSFX, selectSFX;
 
 	Particle* starParticle;
+
+	Timer particleTime;
 	
 public:
 	

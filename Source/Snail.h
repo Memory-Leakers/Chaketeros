@@ -58,7 +58,7 @@ public:
 
 	UpdateResult PostUpdate() override;
 
-	void die() override;
+	void Die() override;
 
 
 };
