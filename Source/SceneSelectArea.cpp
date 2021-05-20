@@ -166,7 +166,7 @@ bool SceneSelectArea::Update()
 	}
 	#pragma endregion
 
-	if (App->scene->isLevelCompleted == true) 
+	if (App->scene->isLevelCompleted[0] == true && App->scene->isLevelCompleted[1] == true && App->scene->isLevelCompleted[2] == true)
 	{	
 		Completed();
 	}

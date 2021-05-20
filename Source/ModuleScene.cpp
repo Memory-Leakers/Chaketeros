@@ -1,5 +1,5 @@
 #include "ModuleScene.h"
-
+#include <time.h>
 PlayerSettings* playerSettings = nullptr;
 
 ModuleScene::ModuleScene()
@@ -13,6 +13,7 @@ ModuleScene::ModuleScene()
 	scenes[6] = new SceneLevelBoss();
 	scenes[7] = new SceneGameOver();
 
+	srand(time(NULL));
 	playerSettings = PlayerSettings::Instance();
 }
 
@@ -80,6 +81,8 @@ UpdateResult ModuleScene::Update()
 
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+
+			App->render->ResetCamera();
 
 			currentScene->score = playerSettings->playerScore;
 			currentScene->lastID = lastSceneID;

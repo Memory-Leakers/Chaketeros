@@ -8,6 +8,7 @@
 #define LEVEL2_POWERUPS_NUM 5
 #define LEVEL2_OBSTACLES 256
 #define LEVEL2_MAP_WIDTH 512
+#define LEVEL2_POWERUPS 2
 
 class Player;
 
@@ -16,6 +17,8 @@ class Obstacle;
 class Tile;
 
 class Timer;
+
+class PowerUp;
 
 struct SDL_Texture;
 
@@ -41,6 +44,7 @@ private:
 	SDL_Texture* texCoreMecha = nullptr;
 	SDL_Texture* texPowerUps = nullptr;
 	SDL_Texture* texMiscUI = nullptr;
+	SDL_Texture* texBridge = nullptr;
 
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
@@ -70,6 +74,9 @@ private:
 	Obstacle* sceneObstacles[LEVEL2_OBSTACLES] = { nullptr };
 
 	Player* bomberman;
+
+	PowerUp* powerUps[LEVEL2_POWERUPS];
+
 	//	Timer
 	Timer timer;
 

@@ -396,4 +396,9 @@ void ModuleRender::CameraMove(iPoint pos)
 		camera.y = pos.y;
 	}
 }
+void ModuleRender::ResetCamera()
+{
+	camera.x = 0;
+	camera.y = 0;
+}
 #pragma endregion
