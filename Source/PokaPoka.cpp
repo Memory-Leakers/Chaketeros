@@ -49,8 +49,6 @@ bool PokaPoka::Start() {
 	upAnim.PushBack({ 104,1,15,28 });
 	upAnim.PushBack({ 87,1,15,28 });//IDLE
 	upAnim.PushBack({ 87,29,15,28 }); //Falta 1 girat
-	//upAnim.PushBack({ 65,2,16,22 });//IDLE
-	//upAnim.PushBack({ 81,2,16,22 });
 	upAnim.speed = defaultEnemySpeed;
 
 	//Animation RIGHT
@@ -58,8 +56,6 @@ bool PokaPoka::Start() {
 	rightAnim.PushBack({ 54, 1,15,28 });
 	rightAnim.PushBack({ 71,1,15,28 });
 	rightAnim.PushBack({ 54, 1,15,28 });
-	//rightAnim.PushBack({ 17,26,16,22 });//IDLE
-	//rightAnim.PushBack({ 33,26,16,22 });
 	rightAnim.speed = defaultEnemySpeed;
 
 	//Animation LEFT
@@ -67,18 +63,9 @@ bool PokaPoka::Start() {
 	leftAnim.PushBack({ 54, 1,15,28 });
 	leftAnim.PushBack({ 71,1,15,28 });
 	leftAnim.PushBack({ 54, 1,15,28 });
-	//leftAnim.PushBack({ 17,26,16,22 });//IDLE
-	//leftAnim.PushBack({ 33,26,16,22 });
 	leftAnim.speed = defaultEnemySpeed;
 
 	//Animation Attack
-	/*
-	attackAnim.PushBack({ 121,1,15,28 });//1
-	attackAnim.PushBack({ 139,1,15,28 });//2
-	attackAnim.PushBack({ 155,1,15,28 });//3
-	attackAnim.PushBack({ 173,5,15,28 });//4
-	attackAnim.PushBack({ 190,5,15,28 });//5
-	*/
 	attackAnim.PushBack({ 121,1,15,28 });//1 //0
 	attackAnim.PushBack({ 155,1,15,28 });//3 //1
 	attackAnim.PushBack({ 121,1,15,28 });//1	//2
@@ -125,11 +112,8 @@ bool PokaPoka::Start() {
 }
 
 UpdateResult PokaPoka::Update() {
-	if (isDead) {
-		//Play dead Animation
-
-	}
 	col->SetPos(this->position.x, this->position.y);
+
 	if (attacking == 1 || attacking == 2) {
 
 		attackTimer.Update();
@@ -154,23 +138,12 @@ UpdateResult PokaPoka::PostUpdate() {
 
 	int cF = (int)currentAnimation->getCurrentFrameF();
 
-	if ((cF == 13 || cF == 15 || cF == 17)) {
-		tempPos.y -= 38;
-	}
-	else {
-		tempPos.y -= 14;
-	}
+	//Checks if that frame needs to get move 
+	if ((cF == 13 || cF == 15 || cF == 17)) tempPos.y -= 38;
+	else tempPos.y -= 14;
 
-	if (isFlip)
-	{
-		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y, false, 180);
-	}
-	else
-	{
-		//App->render->DrawTexture(texture, tempPos, &rect);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y);
-	}
+	if (isFlip) App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y, false, 180);
+	else App->render->AddTextureRenderQueue(texture, tempPos, rectPoka, 1, position.y);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -185,7 +158,6 @@ void PokaPoka::movement() {
 	//Steps
 	if (pC >= 17 || pC == 0) {
 		pC = 0;
-		//moveRandom();
 	}
 
 	if (attacking == 1 || attacking == 2) {
@@ -196,14 +168,6 @@ void PokaPoka::movement() {
 
 
 	playerTilePos.y -= 1;//Correction
-	/*
-	if (playerTilePos.x == (nPoint.x - 1) && playerTilePos.y == nPoint.y && attacking == 3) {
-		attacking = 1;
-	}
-	else if (playerTilePos.x == (nPoint.x + 1) && playerTilePos.y == nPoint.y && attacking == 3) {
-		attacking = 2;
-	}
-	*/
 	int aP = playerPos->x - position.x; //Posicion del jugador respecto al PokaPoka
 	if(abs(aP) < attackRange && playerTilePos.y == nPoint.y){
 		if (attackRange >= aP && 0 < aP && attacking == 3) { // RIGHT
@@ -300,14 +264,14 @@ void PokaPoka::moveRandom(int i) {
 	}
 }
 
-
 void PokaPoka::OnCollision(Collider* col) {
+	/*
 	if (col->type == Type::EXPLOSION) 
 	{
 		die();
 	}
+	*/
 }
-
 
 void PokaPoka::die() {
 
