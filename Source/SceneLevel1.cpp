@@ -207,7 +207,7 @@ bool SceneLevel1::Start()
 	tileMap = new Tile();
 
 	//Reset variables
-	App->scene->isLevelCompleted = false;
+	App->scene->isLevelCompleted[0] = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
@@ -375,7 +375,7 @@ bool SceneLevel1::PreUpdate()
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 
-				App->scene->isLevelCompleted = true;
+				App->scene->isLevelCompleted[0] = true;
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle

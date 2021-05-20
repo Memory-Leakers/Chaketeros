@@ -74,7 +74,7 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
-	bool isLevelCompleted;
+	bool isLevelCompleted[3];
 
 	int currentLevel = 0;
 

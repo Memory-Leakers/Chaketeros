@@ -48,6 +48,8 @@ private:
 	bool godMode = false;
 
 	bool posMode = false;
+
+	iPoint mapLimits[3][2] = { {{24, 32}, {216, 192}}, {{24,32}, {472,192}}, {{24, 32}, {216, 192}} };
 	
 	Tile* level1Tile = nullptr;
 

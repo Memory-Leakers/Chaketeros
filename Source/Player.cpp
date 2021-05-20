@@ -114,7 +114,7 @@ UpdateResult Player::Update()
 		currentAnimation = &upAnim;
 		currentAnimation->hasIdle = false;
 		//TODO: Cambiar limites del mapa por nivel
-		if (/*position.y > 32 &&*/ canMoveDir[UP]) // Limiitar movimiento en la mapa//
+		if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
 		{
 			//position.y -= speed;
 			speedY = -speed;
@@ -153,7 +153,7 @@ UpdateResult Player::Update()
 		isFlip = false;
 		currentAnimation = &downAnim;
 		currentAnimation->hasIdle = false;
-		if (/*position.y < 208 - 16 &&*/canMoveDir[DOWN]) // Limiitar movimiento en la mapa
+		if (position.y < mapLimits[App->scene->currentLevel][1].y && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			//position.y += speed;
 			speedY = speed;
@@ -194,7 +194,7 @@ UpdateResult Player::Update()
 		currentAnimation->hasIdle = false;
 		if (canMoveDir[RIGHT])
 		{
-			if (/*position.x < 216*/true) // Limiitar movimiento en la mapa
+			if (position.x < mapLimits[App->scene->currentLevel][1].x) // Limiitar movimiento en la mapa
 			{
 				speedX = speed;
 			}
@@ -234,7 +234,7 @@ UpdateResult Player::Update()
 		currentAnimation = &leftAnim;
 		currentAnimation->hasIdle = false;
 
-		if (/*position.x > 24 && */canMoveDir[LEFT]) // Limiitar movimiento en la mapa
+		if (position.x > mapLimits[App->scene->currentLevel][0].x && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;
 			speedX = -speed;
