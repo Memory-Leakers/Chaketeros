@@ -97,6 +97,8 @@ public:
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 
 	void CameraMove(iPoint pos);
+
+	void ResetCamera();
 	#pragma endregion
 
 public:

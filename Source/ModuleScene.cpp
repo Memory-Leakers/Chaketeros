@@ -81,6 +81,8 @@ UpdateResult ModuleScene::Update()
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
 
+			App->render->ResetCamera();
+
 			currentScene->score = playerSettings->playerScore;
 			currentScene->lastID = lastSceneID;
 

@@ -168,6 +168,7 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, Type Typ
 		{
 			Particle* p = new Particle(particle);
 
+			p->isAlive = particle.isAlive;
 			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
 			p->position.x = pos.x;					// so when frameCount reaches 0 the particle will be activated
 			p->position.y = pos.y;
@@ -176,9 +177,9 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, Type Typ
 			p->layerOffset = layerOffset;
 
 			// Adding the particle's 
-			if (Type != Type::NONE)
+			if (Type == Type::EXPLOSION)
 			{
-				p->col = App->collisions->AddCollider(p->anim.GetCurrentFrame(), Type, this);
+				p->col = App->collisions->AddCollider({ p->position.x, p->position.y, 16,16, }, Type, this);
 			}
 
 			particles[i] = p;
