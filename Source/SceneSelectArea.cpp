@@ -8,6 +8,8 @@ Timer particleTime;
 
 SceneSelectArea::SceneSelectArea()
 {
+	ID = 2;
+
 	// Animation should be init in constructor!!!!
 	#pragma region Init Anim
 
@@ -155,12 +157,12 @@ bool SceneSelectArea::Update()
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			App->audio->PlaySound(selectSFX, 0);
-			App->scene->ChangeCurrentScene(STAGE_SCENE, 80);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 80);
 		}
 	}
 	#pragma endregion
 
-	if (App->scene->isLevelCompleted == true) 
+	if (App->scene->isLevelCompleted[0] == true && App->scene->isLevelCompleted[1] == true && App->scene->isLevelCompleted[2] == true)
 	{	
 		Completed();
 	}

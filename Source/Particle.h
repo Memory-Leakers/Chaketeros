@@ -50,6 +50,9 @@ public:
 	// rotaion when draw
 	float rotation = 0;
 
+	// layer offset
+	float layerOffset = 0;
+
 	// Defines the time when the particle will be spawned
 	int frameCount = 0;
 

@@ -4,6 +4,7 @@ Player* bombermanBoss = nullptr;
 
 SceneLevelBoss::SceneLevelBoss()
 {
+	ID = 6;
 }
 
 SceneLevelBoss::~SceneLevelBoss()

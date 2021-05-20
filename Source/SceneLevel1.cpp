@@ -14,7 +14,17 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-#include "NumText.h"
+#include "Snail.h"
+
+#include "Animation.h"
+#include "Application.h"
+#include "ModuleTextures.h"
+#include "ModuleRender.h"
+#include "ModuleAudio.h"
+#include "Player.h"
+#include "Timer.h"
+
+#include "ModuleEnemy.h"
 
 #include <time.h>
 #include <iostream>
@@ -27,34 +37,17 @@
 
 #pragma region Variables
 
-// Player
-Player* bomberman = nullptr;
-
-Obstacle* sceneObstacles[SCENE_OBSTACLES_NUM] = { nullptr };
-
-NumText sceneUI;
-
 vector<iPoint> emptySpaces;
 
-PowerUp* powerUps[MAX_POWERUPS];
-
-Stone* stones[MAX_STONE];
-
-ModuleEnemy* enemy[MAX_ENEMY];
-
-iPoint winPosition = { 120, 96 };
-
-iPoint powerUpPos[2];
-
+NumText sceneUI;
 #pragma endregion
-
-//iPoint debugOffset = { 0,0 };
 
 SceneLevel1::SceneLevel1()
 {
 	// Init random system
 	srand(time(NULL));
 	score = 0;
+	ID = 4;
 }
 
 SceneLevel1::~SceneLevel1()
@@ -173,30 +166,30 @@ void SceneLevel1::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
 	yellowFlowersNum = rand() % 6 + 43;
-	bool hasPowerUp = true;
+	int hasPowerUp = 2;
+	int powerType = 1;
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
 	{
-		if (i >= 2) // Create 2 powerUps
-		{
-			hasPowerUp = false;
-		}
-
 		int randomNum = rand() % emptySpaces.size();
 		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, powerType);	//emptySpaces.at = return value at index
 
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
 
 				emptySpaces.erase(emptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
 
-				if (hasPowerUp)
+				if (hasPowerUp > 0)
 				{
-					powerUpPos[i] = sceneObstacles[j]->getPosition();
+					powerUpPos[i] = sceneObstacles[j]->getPosition();				
+					if(--hasPowerUp <= 0)
+					{
+						powerType = 0;
+					}
 				}
 
 				break;
@@ -214,7 +207,7 @@ bool SceneLevel1::Start()
 	tileMap = new Tile();
 
 	//Reset variables
-	App->scene->isLevelCompleted = false;
+	App->scene->isLevelCompleted[0] = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
@@ -237,6 +230,7 @@ bool SceneLevel1::Start()
 	bomberman->Start();
 
 	// Spawn enemies
+	enemy[4] = new Snail({ 112,64 }, texEnemies, tileMap);
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, texEnemies , &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);
@@ -294,11 +288,11 @@ bool SceneLevel1::PreUpdate()
 		if (App->scene->playerSettings->playerLifes > 0)
 		{
 			App->scene->playerSettings->playerLifes--;
-			App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
 		}
 		else
 		{
-			App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 		}
 	}
 	#pragma endregion
@@ -316,7 +310,7 @@ bool SceneLevel1::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(STAGE_SCENE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
@@ -326,14 +320,14 @@ bool SceneLevel1::PreUpdate()
 			{
 				isChangingScene = true;
 				App->scene->playerSettings->playerLifes--;
-				App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90, score);
+				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
 			}
 
 			else
 			{
 				if (!isChangingScene)
 				{
-					App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+					App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 					isChangingScene = true;
 				}
 
@@ -381,7 +375,7 @@ bool SceneLevel1::PreUpdate()
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 
-				App->scene->isLevelCompleted = true;
+				App->scene->isLevelCompleted[0] = true;
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -440,7 +434,7 @@ bool SceneLevel1::Update()
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(GAME_OVER_SCENE, 90, score);
+		App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 	}
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
@@ -674,6 +668,7 @@ bool SceneLevel1::PostUpdate()
 
 	sceneUI.DrawChar(0, { 25,8 });
 	sceneUI.DrawChar(1, { 123,8 });
+
 	#pragma endregion
 
 	// Draw powerUpPos

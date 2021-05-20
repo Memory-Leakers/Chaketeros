@@ -13,7 +13,9 @@ FadeInOut* fade;
 
 SceneMainTitle::SceneMainTitle()
 {
+	ID = 1;
 }
+
 
 SceneMainTitle::~SceneMainTitle()
 {
@@ -117,7 +119,7 @@ bool SceneMainTitle::Update()
 					if (currentArrowPos == &arrowPosition[0])
 					{
 						App->audio->PlaySound(selectSFX, 0);
-						App->scene->ChangeCurrentScene(AREA_SCENE, 80);
+						App->scene->ChangeCurrentScene(SCENE_AREA, 80);
 
 					}
 				}

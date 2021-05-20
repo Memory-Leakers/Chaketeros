@@ -120,12 +120,12 @@ UpdateResult ModuleParticles::PostUpdate()
 			if (particle->rotation != 0)
 			{
 				//App->render->DrawRotateTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), particle->flipHor, particle->rotation);
-				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1, particle->position.y, particle->flipHor, particle->rotation);
+				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1, particle->position.y + particle->layerOffset, particle->flipHor, particle->rotation);
 			}
 			else
 			{
 				//App->render->DrawTexture(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()));
-				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1, particle->position.y);
+				App->render->AddTextureRenderQueue(particle->renderTex, particle->position, &(particle->anim.GetCurrentFrame()), 1, particle->position.y + particle->layerOffset);
 			}
 		}
 	}
@@ -133,7 +133,7 @@ UpdateResult ModuleParticles::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type Type, uint delay)
+void ModuleParticles::AddParticle(const Particle& particle, int x, int y, Type Type, float layerOffset, uint delay)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -145,6 +145,7 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type
 			p->frameCount = -(int)delay;			// We start the frameCount as the negative delay
 			p->position.x = x;						// so when frameCount reaches 0 the particle will be activated
 			p->position.y = y;
+			p->layerOffset = layerOffset;
 
 			// Adding the particle's 
 			if (Type != Type::NONE)
@@ -158,7 +159,7 @@ void ModuleParticles::AddParticle(const Particle& particle, int x, int y, ::Type
 	}
 }
 
-void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type Type, bool flipHor, float rotation, uint delay)
+void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, Type Type, bool flipHor, float rotation, float layerOffset, uint delay)
 {
 	for (uint i = 0; i < MAX_ACTIVE_PARTICLES; ++i)
 	{
@@ -172,6 +173,7 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, ::Type T
 			p->position.y = pos.y;
 			p->flipHor = flipHor;
 			p->rotation = rotation;
+			p->layerOffset = layerOffset;
 
 			// Adding the particle's 
 			if (Type != Type::NONE)

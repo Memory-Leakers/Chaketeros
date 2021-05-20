@@ -27,7 +27,7 @@ bool ModuleScene::Start()
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };	//Screen-size rectangle
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
-	currentScene = scenes[INTRO_SCENE];
+	currentScene = scenes[SCENE_INTRO];
 
 
 	if(currentScene == nullptr)
@@ -54,12 +54,21 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
+	#pragma region Update and FadeInOut
 	if (currentScene == nullptr)
 	{
 		return UpdateResult::UPDATE_CONTINUE;
 	}
 		
-	if (currentStep == FADE_NONE) { currentScene->Update(); return UpdateResult::UPDATE_CONTINUE; }	//Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
+	if (currentStep == FADE_NONE) //Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
+	{ 
+
+		currentScene->Update();
+		DebugChangeScene(); 
+
+		return UpdateResult::UPDATE_CONTINUE; 
+
+	}	
 
 	if (currentStep == FADE_IN)		//Si hay FADE IN, se ejecuta el Update HASTA QUE EL RECTANGULO NEGRO tenga opacidad m�xima
 	{
@@ -67,9 +76,14 @@ UpdateResult ModuleScene::Update()
 		currentScene->Update();
 		if (currentFrame >= maxFrames)	//Si el rect�ngulo negro tiene opacidad m�xima, cambiamos de escena e incializamos la siguiente
 		{
+			lastSceneID = currentScene->getID();
+
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+
 			currentScene->score = playerSettings->playerScore;
+			currentScene->lastID = lastSceneID;
+
 			currentScene->Start();
 			currentStep = FADE_OUT;
 			return UpdateResult::UPDATE_CONTINUE;
@@ -82,6 +96,8 @@ UpdateResult ModuleScene::Update()
 		currentScene->Update();
 		if (currentFrame <= 0) { currentStep = FADE_NONE; }	//Si la opacidad es 0, volvemos a FADE_NONE
 	}
+	#pragma endregion
+
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -142,4 +158,23 @@ bool ModuleScene::CleanUp()
 	playerSettings->Release();
 
 	return true;
+}
+
+void ModuleScene::DebugChangeScene()
+{
+	if (App->input->keys[SDL_SCANCODE_LCTRL] == KEY_REPEAT)
+	{
+		for (int i = 0; i < SCENES_NUM; i++)
+		{
+			if (App->input->keys[debugKeys[i]] == KEY_DOWN)
+			{
+				ChangeCurrentScene(i, 90);
+			}
+		}
+
+		if (App->input->keys[SDL_SCANCODE_R] == KEY_DOWN)
+		{
+			ChangeCurrentScene(currentScene->getID(), 90);
+		}
+	}
 }

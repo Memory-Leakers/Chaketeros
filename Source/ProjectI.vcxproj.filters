@@ -173,6 +173,9 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Saru.h">
+        <Filter>Source Files\Util\Enemies</Filter>
+     </ClInclude>
+    <ClInclude Include="Snail.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
@@ -310,6 +313,9 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Saru.cpp">
+        <Filter>Source Files\Util\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Snail.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
   </ItemGroup>

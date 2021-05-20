@@ -1,11 +1,26 @@
 #ifndef _SCENELEVEL2_H_
 #define _SCENELEVEL2_H_
-#include "Scene.h"
 
-#include "Application.h"
+#include "Scene.h"
+#include "Point.h"
 #include "Tile.h"
 
 #define LEVEL2_POWERUPS_NUM 5
+#define LEVEL2_OBSTACLES 256
+#define LEVEL2_MAP_WIDTH 512
+#define LEVEL2_POWERUPS 2
+
+class Player;
+
+class Obstacle;
+
+class Tile;
+
+class Timer;
+
+class PowerUp;
+
+struct SDL_Texture;
 
 class SceneLevel2 : public Scene
 {
@@ -29,6 +44,7 @@ private:
 	SDL_Texture* texCoreMecha = nullptr;
 	SDL_Texture* texPowerUps = nullptr;
 	SDL_Texture* texMiscUI = nullptr;
+	SDL_Texture* texBridge = nullptr;
 
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
@@ -38,7 +54,33 @@ private:
 
 	int yellowFlowersNum;
 
+	int totalSeconds;
+	//	Number of total minutes
+	int minutes;
+	// Current second shown on screen
+	int currentSecond = 0;
+	// Offset for the seconds timer
+
+	bool isTimeOut;
+
+	bool isChangingScene;
+
+	bool isExtraPointsActive;
+
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
+
+	iPoint colisionBoxPos;
+
+	Obstacle* sceneObstacles[LEVEL2_OBSTACLES] = { nullptr };
+
+	Player* bomberman;
+
+	PowerUp* powerUps[LEVEL2_POWERUPS];
+
+	//	Timer
+	Timer timer;
+
+
 
 public:
 

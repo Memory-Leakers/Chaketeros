@@ -78,7 +78,7 @@ bool Player::Start()
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
-	playerDestroyed = new Particle(500.0f, 0.1f, texture);
+	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 
 	playerDestroyed->anim.PushBack({ 4, 71, 22, 21});
 	playerDestroyed->anim.PushBack({ 26, 71, 22, 21});
@@ -106,12 +106,15 @@ UpdateResult Player::Update()
 
 	#pragma region Movements
 
+
+
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
 		isFlip = false;
 		currentAnimation = &upAnim;
 		currentAnimation->hasIdle = false;
-		if (position.y > 32 && canMoveDir[UP]) // Limiitar movimiento en la mapa
+		//TODO: Cambiar limites del mapa por nivel
+		if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
 		{
 			//position.y -= speed;
 			speedY = -speed;
@@ -150,7 +153,7 @@ UpdateResult Player::Update()
 		isFlip = false;
 		currentAnimation = &downAnim;
 		currentAnimation->hasIdle = false;
-		if (position.y < 208 - 16 && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
+		if (position.y < mapLimits[App->scene->currentLevel][1].y && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 		{
 			//position.y += speed;
 			speedY = speed;
@@ -191,7 +194,7 @@ UpdateResult Player::Update()
 		currentAnimation->hasIdle = false;
 		if (canMoveDir[RIGHT])
 		{
-			if (position.x < 216) // Limiitar movimiento en la mapa
+			if (position.x < mapLimits[App->scene->currentLevel][1].x) // Limiitar movimiento en la mapa
 			{
 				speedX = speed;
 			}
@@ -231,7 +234,7 @@ UpdateResult Player::Update()
 		currentAnimation = &leftAnim;
 		currentAnimation->hasIdle = false;
 
-		if (position.x > 24 && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
+		if (position.x > mapLimits[App->scene->currentLevel][0].x && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 		{
 			//position.x -= speed;
 			speedX = -speed;
@@ -282,6 +285,16 @@ UpdateResult Player::Update()
 
 	// Move
 	position += {speedX, speedY};
+
+	//	Move Camera on Player
+	if (App->scene->currentLevel == 1)
+	{
+		iPoint tempPos = { position.x, 0 };
+
+		App->render->CameraMove(tempPos);
+	}
+
+
 
 	// Player Idle or walk
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
@@ -385,7 +398,7 @@ void Player::OnCollision(Collider* col)
 				// Create die particle
 				iPoint tempPos = position;
 				tempPos -= {3, 5};
-				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 0);
+				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 5.1f);
 			}		
 		}
 

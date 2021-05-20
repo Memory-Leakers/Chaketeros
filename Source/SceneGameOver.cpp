@@ -8,6 +8,7 @@ SDL_Rect debugRect;
 
 SceneGameOver::SceneGameOver()
 {
+	ID = 7;
 	#pragma region Init Anim
 	gameOverAnim.PushBack({ 0,0,256,224 });
 	gameOverAnim.PushBack({ 0,224,256,224 });
@@ -68,6 +69,19 @@ bool SceneGameOver::Start()
 	
 	gameOverScore.Start();
 
+	switch (lastID)
+	{
+	case 4:
+		score = 2200;
+		break;
+	case 5:
+		score = 6800;
+		break;
+	case 6:
+		score = 7420;
+		break;
+	}
+
 	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
 	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
 	
@@ -116,14 +130,14 @@ bool SceneGameOver::Update()
 
 		if (currentPointerPos == &pointerPos[0] && !pressedContinue)
 		{		
-			if(App->scene->ChangeCurrentScene(LEVEL1_SCENE, 90))
+			if(App->scene->ChangeCurrentScene(lastID, 90))
 			{
 				pressedContinue = true;
 			}
 		}
 		else if (currentPointerPos == &pointerPos[1])
 		{
-			App->scene->ChangeCurrentScene(INTRO_SCENE, 90);
+			App->scene->ChangeCurrentScene(SCENE_INTRO, 90);
 		}
 	}
 	#pragma endregion

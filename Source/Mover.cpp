@@ -423,7 +423,7 @@ void Mover::die()
 
 	iPoint tempPos = position;
 	tempPos += {-4, -14};
-	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 0);
+	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 14.1f);
 
 	pendingToDelete = true;
 }

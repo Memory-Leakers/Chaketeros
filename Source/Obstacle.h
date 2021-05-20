@@ -20,8 +20,7 @@ protected:
 public:
 	SDL_Texture* texture = nullptr;
 
-	// Animacion actual del obstaculo (NO TODO LOS OBSTACULOS TIENEN ANIMACION)
-	//Animation* currentAnim = nullptr;
+	int powerUp = 0;
 	
 public:
 //methods
@@ -57,7 +56,6 @@ protected:
 	void SetRect(SDL_Rect r);
 
 	void SetDestructible(bool destructible);
-
 	
 	/// <summary>
 	/// ejecuta si ha chocado con algo
@@ -70,9 +68,6 @@ public:
 	SDL_Rect getRect();
 	Type getType();
 	
-
-	
-
 	bool pendingToDelete = false;
 
 };

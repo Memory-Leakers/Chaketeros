@@ -8,6 +8,8 @@ iPoint debugOffset = { 0,0 };
 
 SceneSelectStage::SceneSelectStage()
 {
+	ID = 3;
+
 	stoneCoinAnim.PushBack({ 2,2,15,16 });
 	stoneCoinAnim.PushBack({ 20,2,15,16 });
 	stoneCoinAnim.PushBack({ 37,2,15,16 });
@@ -91,13 +93,13 @@ bool SceneSelectStage::Update()
 	{
 		switch (stageSelectPointer)
 		{
-		case 0: App->scene->ChangeCurrentScene(LEVEL1_SCENE, 80); break;
+		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 80); break;
 
 		case 1: break;
 
 		case 2: break;
 
-		case 3: App->scene->ChangeCurrentScene(AREA_SCENE, 80); break;
+		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 80); break;
 
 		default: break;
 		}

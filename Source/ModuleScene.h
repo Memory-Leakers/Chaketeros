@@ -26,14 +26,14 @@ struct SDL_Texture;
 
 enum SCENE_NUM
 {
-	INTRO_SCENE,
-	MAIN_MENU_SCENE,
-	AREA_SCENE,
-	STAGE_SCENE,
-	LEVEL1_SCENE,
-	LEVEL2_SCENE,
-	LEVELBOSS_SCENE,
-	GAME_OVER_SCENE
+	SCENE_INTRO,
+	SCENE_MAINMENU,
+	SCENE_AREA,
+	SCENE_STAGE,
+	SCENE_LEVEL1,
+	SCENE_LEVEL2,
+	SCENE_LEVELBOSS,
+	SCENE_GAMEOVER
 };
 
 class ModuleScene : public Module
@@ -67,7 +67,6 @@ public:
 
 	bool CleanUp() override;
 
-	//Text* text = nullptr;
 
 	Scene* currentScene = nullptr;
 
@@ -75,9 +74,11 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
-	bool isLevelCompleted;
+	bool isLevelCompleted[3];
 
 	int currentLevel = 0;
+
+	int lastSceneID;
 
 private:
 
@@ -95,6 +96,14 @@ private:
 	int currentFrame = 0, maxFrames = 0;
 
 	int newScene;
+
+	SDL_Scancode debugKeys[8] = { SDL_SCANCODE_1, SDL_SCANCODE_2 , SDL_SCANCODE_3 , SDL_SCANCODE_4 ,
+								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8 };
+
+
+	void DebugChangeScene();
+
+	
 };
 
 #endif // __MODULESCENE_H__
