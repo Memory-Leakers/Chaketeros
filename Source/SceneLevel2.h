@@ -9,6 +9,7 @@
 #define LEVEL2_OBSTACLES 256
 #define LEVEL2_MAP_WIDTH 512
 #define LEVEL2_POWERUPS 2
+#define LEVEL2_MAXENEMIES 5
 
 class Player;
 
@@ -19,6 +20,8 @@ class Tile;
 class Timer;
 
 class PowerUp;
+
+class ModuleEnemy;
 
 struct SDL_Texture;
 
@@ -76,6 +79,8 @@ private:
 	Player* bomberman;
 
 	PowerUp* powerUps[LEVEL2_POWERUPS];
+
+	ModuleEnemy* enemy[LEVEL2_MAXENEMIES];
 
 	//	Timer
 	Timer timer;

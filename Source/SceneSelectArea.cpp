@@ -182,7 +182,7 @@ bool SceneSelectArea::PostUpdate()
 	else {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel2Rect, 2, 2);
 	}
-	if (App->scene->isLevelCompleted == false) 
+	if (App->scene->isLevelCompleted[0] == false && App->scene->isLevelCompleted[1] == false && App->scene->isLevelCompleted[2] == false)
 	{
 		App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
 	}

@@ -371,7 +371,7 @@ bool SceneLevel1::PreUpdate()
 			#pragma endregion
 
 			// Detect if level is complete
-			if (!anyCoreMecha && !App->scene->isLevelCompleted)
+			if (!anyCoreMecha && !App->scene->isLevelCompleted[0])
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 
@@ -439,7 +439,7 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
 	{
-		if (!App->scene->isLevelCompleted)
+		if (!App->scene->isLevelCompleted[0])
 		{
 			if (sceneObstacles[2] != nullptr && sceneObstacles[4])
 			{
@@ -472,7 +472,7 @@ bool SceneLevel1::Update()
 		bomberman->Update();
 
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && App->scene->isLevelCompleted && !isExtraPointsActive)
+		if (bomberman->position == winPosition && App->scene->isLevelCompleted[0] && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(levelCompleteSFX, 0);

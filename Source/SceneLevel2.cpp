@@ -18,6 +18,9 @@
 #include "Mover.h"
 #include "NumText.h"
 #include "Timer.h"
+#include "Snail.h"
+
+#include "ModuleEnemy.h"
 
 
 vector<iPoint> level2EmptySpaces;
@@ -148,6 +151,9 @@ bool SceneLevel2::Start()
 	level2TileMap = new Tile();
 
 	App->scene->currentLevel = 1;
+	App->scene->isLevelCompleted[1] = false;
+
+	InitAssets();
 
 	// Init player
 	bomberman = new Player(level2TileMap, sceneObstacles);
@@ -160,8 +166,22 @@ bool SceneLevel2::Start()
 	minutes = 4;
 	totalSeconds = 59;
 
+	//Spawn Enemies
+	enemy[3] = new Snail(level2TileMap->getWorldPos({ 13,5 }), texEnemies, level2TileMap);
+	enemy[2] = new PokaPoka(120, 32, &bomberman->position, level2TileMap);
+	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,5 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[0] = new Mover(level2TileMap->getWorldPos({3,7}), texEnemies, &bomberman->pivotPoint, level2TileMap);
 
-	InitAssets();
+	// Init enemies
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Start();
+		}
+	}
+
+
 
 	
 	return false;
@@ -169,6 +189,24 @@ bool SceneLevel2::Start()
 
 bool SceneLevel2::PreUpdate()
 {
+	# pragma region PreUpdate & Clean Enemy
+		for (int i = 0; i < MAX_ENEMY; ++i)
+		{
+			if (enemy[i] != nullptr)
+			{
+				if (enemy[i]->pendingToDelete)
+				{
+					delete enemy[i];
+					enemy[i] = nullptr;
+				}
+				else
+				{
+					enemy[i]->PreUpdate();
+				}
+			}
+		}
+	# pragma endregion
+
 	#pragma region Bomberman dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
@@ -230,7 +268,7 @@ bool SceneLevel2::PreUpdate()
 	#pragma region Create powerUp
 				for (int l = 0; l < 13; ++l)
 				{
-					for (int j = 0; j < 15; ++j)
+					for (int j = 0; j < 31; ++j)
 					{
 						if (level2TileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 8) // if reserved powerUp in this grid
 						{
@@ -254,7 +292,7 @@ bool SceneLevel2::PreUpdate()
 	#pragma endregion
 
 				// Detect if level is complete
-				if (!anyCoreMecha && !App->scene->isLevelCompleted)
+				if (!anyCoreMecha && !App->scene->isLevelCompleted[1])
 				{
 					sceneObstacles[glassCapsuleIndex]->Die();
 
@@ -285,6 +323,16 @@ bool SceneLevel2::Update()
 			sceneObstacles[i]->Update();
 		}
 	}
+
+	//Update Enemy
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Update();
+		}
+	}
+
 	return false;
 }
 
@@ -308,6 +356,15 @@ bool SceneLevel2::PostUpdate()
 	if (bomberman != nullptr)
 	{
 		bomberman->PostUpdate();
+	}
+
+	//Draw Enemy // will be in render exeption
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->PostUpdate();
+		}
 	}
 
 	// Draw UI
@@ -334,6 +391,17 @@ void SceneLevel2::OnCollision(Collider* c1, Collider* c2)
 				sceneObstacles[i]->OnCollision(c2);
 			}
 		}
+	#pragma endregion
+
+	#pragma region Enemy Collision
+			//Enemy Collision with bomb
+			for (int i = 0; i < LEVEL2_MAXENEMIES; ++i) {
+				// cuando se choca algo
+				if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+				{
+					enemy[i]->OnCollision(c2);
+				}
+			}
 	#pragma endregion
 
 }
@@ -370,6 +438,18 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 		delete bomberman;
 		bomberman = nullptr;
 	}
+
+	// Delete Enemy
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->CleanUp();
+			delete enemy[i];
+			enemy[i] = nullptr;
+		}
+	}
+#pragma endregion
 
 	if (level2TileMap != nullptr)
 	{
