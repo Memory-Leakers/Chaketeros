@@ -47,9 +47,9 @@ private:
 
 	iPoint posStoneCoins[3]
 	{	
-		{ 58, 76 }, // lv3
-		{ 101, 81 }, // lv2
 		{ 50, 56 }, // lv1
+		{ 101, 81 }, // lv2
+		{ 58, 76 }, // lv3	
 	};
 
 	iPoint posStageSelect[4]

@@ -60,30 +60,36 @@ bool SceneSelectStage::Start()
 
 void SceneSelectStage::ModifyStagePointer(int mod)
 {
-	switch (mod)
+	if (mod == 0)
 	{
-	case 0: stageSelectPointer = 3; break;
-	case 1: 
-		if(stageSelectPointer<2)
+		stageSelectPointer = 3;
+	}
+	else
+	{
+		if (stageSelectPointer == 3)
 		{
-			stageSelectPointer++;
+			stageSelectPointer = 0;
+			return;
 		}
-		else
+
+		int temp = stageSelectPointer;
+
+		stageSelectPointer += mod;
+
+		if (stageSelectPointer > 2)
 		{
 			stageSelectPointer = 0;
 		}
-		break;
-	case -1: 
-		if (stageSelectPointer > 0)
-		{
-			stageSelectPointer--;
-		}
-		else
+		else if (stageSelectPointer < 0)
 		{
 			stageSelectPointer = 2;
 		}
-		break;
-	}
+
+		if (stageSelectPointer != 0 && !App->scene->isLevelCompleted[stageSelectPointer - 1])
+		{
+			ModifyStagePointer(mod);
+		}
+	}	
 }
 
 bool SceneSelectStage::Update()
@@ -109,25 +115,21 @@ bool SceneSelectStage::Update()
 	}
 	#pragma endregion
 
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
-	{
-		ModifyStagePointer(1);
-	}
-	else if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
 	{
 		ModifyStagePointer(0);
+	}
+	else if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	{
+		ModifyStagePointer(1);
 	}
 	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
 	{
 		ModifyStagePointer(-1);
 	}
-	else if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
-	{
-		ModifyStagePointer(1);
-	}
 
 	#pragma region Debug Code
-	
+	/*
 	if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
 	{
 		debugOffset.y--;
@@ -152,7 +154,7 @@ bool SceneSelectStage::Update()
 		system("cls");
 		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
 	}
-	
+	*/
 	#pragma endregion
 
 	return true;
@@ -184,8 +186,11 @@ bool SceneSelectStage::PostUpdate()
 	// Coins
 	for (int i = 0; i < 3; i++)
 	{
-		//renderRect = stoneCoins[i].animation.GetCurrentFrame();
-		App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
+		if(!App->scene->isLevelCompleted[i])
+		{
+			//renderRect = stoneCoins[i].animation.GetCurrentFrame();
+			App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
+		}
 	}
 
 	return true;
