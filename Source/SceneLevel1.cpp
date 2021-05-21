@@ -443,10 +443,12 @@ bool SceneLevel1::Update()
 	{
 		if (!App->scene->isLevelCompleted[0])
 		{
-			if (sceneObstacles[2] != nullptr && sceneObstacles[4])
+			for (int i = 2; i <= 4; i += 2) 
 			{
-				sceneObstacles[2]->Die();
-				sceneObstacles[4]->Die();
+				if (sceneObstacles[i] != nullptr)
+				{
+					sceneObstacles[i]->Die();
+				}
 			}
 			bomberman->position = winPosition;
 		}

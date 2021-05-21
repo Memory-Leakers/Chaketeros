@@ -19,15 +19,19 @@
 #include "NumText.h"
 #include "Timer.h"
 #include "Snail.h"
+#include "Mouse.h"
 
 #include "ModuleEnemy.h"
 
 
 vector<iPoint> level2EmptySpaces;
 
+NumText level2SceneUI;
+
+//TODO: Add PowerUps
+
 SceneLevel2::SceneLevel2()
 {
-	
 	ID = 5;
 }
 
@@ -39,7 +43,7 @@ void SceneLevel2::CreateScene()
 {
 #pragma region Generate Obstacles
 
-	for (int i = 0, k = 0, l = 0, m = 0; i < 13; ++i)
+	for (int i = 0, k = 0, l = 0, m = 0, n = 0; i < 13; ++i)
 	{
 		for (int j = 0; j < 31; ++j)	//Check TileMap x axis
 		{
@@ -61,6 +65,7 @@ void SceneLevel2::CreateScene()
 				sceneObstacles[k++] = new RedFlower(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, level2TileMap);
 				break;
 			case 6:
+				choreMechaIndex[n++] = k;
 				sceneObstacles[k++] = new CoreMecha(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, level2TileMap, &coreMechaNum);
 				break;
 			case 10:
@@ -81,7 +86,7 @@ void SceneLevel2::CreateScene()
 void SceneLevel2::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
-	yellowFlowersNum = rand() % 6 + 60;
+	yellowFlowersNum = rand() % 6 + 70;
 	bool hasPowerUp = true;
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
@@ -116,6 +121,39 @@ void SceneLevel2::CreateYellowFlowers()
 
 void SceneLevel2::CreateCoins()
 {
+	for (int i = 0, l = 5; i < 13; ++i)
+	{
+		for (int j = 0; j < 31; ++j)
+		{
+			if (level2TileMap->LevelsTileMaps[App->scene->currentLevel][i][j] == 5)
+			{
+				for (int k = 0; k < yellowFlowersNum; k++)
+				{
+					if (sceneObstacles[l] != nullptr)
+					{
+						sceneObstacles[l]->pendingToDelete = true;
+						sceneObstacles[l]->getCollider()->pendingToDelete = true;
+						iPoint tempPos = sceneObstacles[l]->getPosition();
+						l++;
+						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
+						{
+							if (sceneObstacles[m] == nullptr)
+							{
+								sceneObstacles[m] = new Coin(tempPos, texCoin);
+								break;
+							}
+						}
+						break;
+					}
+					else
+					{
+						l++;
+					}
+				}
+				level2TileMap->LevelsTileMaps[App->scene->currentLevel][i][j] = 0;
+			}
+		}
+	}
 }
 
 void SceneLevel2::InitAssets()
@@ -153,6 +191,8 @@ bool SceneLevel2::Start()
 	App->scene->currentLevel = 1;
 	App->scene->isLevelCompleted[1] = false;
 
+	level2SceneUI.Start();
+
 	InitAssets();
 
 	// Init player
@@ -167,9 +207,11 @@ bool SceneLevel2::Start()
 	totalSeconds = 59;
 
 	//Spawn Enemies
-	enemy[3] = new Snail(level2TileMap->getWorldPos({ 13,5 }), texEnemies, level2TileMap);
-	enemy[2] = new PokaPoka(120, 32, &bomberman->position, level2TileMap);
-	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,5 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[4] = new Mouse(level2TileMap->getWorldPos({ 6,4 }), texEnemies, level2TileMap);
+	enemy[3] = new Snail(level2TileMap->getWorldPos({ 13,6 }), texEnemies, level2TileMap);
+	enemy[2] = new PokaPoka(424, 32, &bomberman->position, level2TileMap);
+	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,7 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
 	enemy[0] = new Mover(level2TileMap->getWorldPos({3,7}), texEnemies, &bomberman->pivotPoint, level2TileMap);
 
 	// Init enemies
@@ -182,7 +224,8 @@ bool SceneLevel2::Start()
 	}
 
 
-
+	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	Mix_VolumeMusic(10);
 	
 	return false;
 }
@@ -190,7 +233,7 @@ bool SceneLevel2::Start()
 bool SceneLevel2::PreUpdate()
 {
 	# pragma region PreUpdate & Clean Enemy
-		for (int i = 0; i < MAX_ENEMY; ++i)
+		for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
 		{
 			if (enemy[i] != nullptr)
 			{
@@ -311,10 +354,112 @@ bool SceneLevel2::PreUpdate()
 
 bool SceneLevel2::Update()
 {
+	//Debug Keys 
+
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!App->scene->isLevelCompleted[1])
+		{
+			for each (int choreMecha in choreMechaIndex)
+			{
+				if (sceneObstacles[choreMecha] != nullptr)
+				{
+					delete sceneObstacles[choreMecha];
+					sceneObstacles[choreMecha] = nullptr;
+				}
+			}
+			bomberman->position = winPosition;
+			App->scene->isLevelCompleted[1] = true;
+			App->render->CameraMove({384,0});
+		}
+	}
+
+
 	if (bomberman != nullptr)
 	{
 		bomberman->Update();
+		//Check if Player is on the Glass Capsule after completing the level
+		if (bomberman->position == winPosition && App->scene->isLevelCompleted[1] && !isExtraPointsActive)
+		{
+			Mix_HaltMusic();
+			App->audio->PlaySound(levelCompleteSFX, 0);
+			minutes = 0;
+			if (currentSecond > 15)
+			{
+				totalSeconds = 15;
+
+				timer.Reset();
+			}
+			isExtraPointsActive = true;
+			bomberman->ExtraPoints = true;
+
+			sceneObstacles[glassCapsuleIndex]->Die();
+			CreateCoins();
+
+			for (int i = 0; i < MAX_ENEMY; ++i)
+			{
+				if (enemy[i] != nullptr)
+				{
+					enemy[i]->col->pendingToDelete = true;
+					delete enemy[i];
+					enemy[i] = nullptr;
+				}
+			}
+
+			if (sceneObstacles[redFlowerIndex] != nullptr)
+			{
+				delete sceneObstacles[redFlowerIndex];
+				sceneObstacles[redFlowerIndex] = nullptr;
+			}
+
+		}
 	}
+
+	#pragma region Timer Logic
+		if (!isTimeOut)
+		{
+			currentSecond = totalSeconds - (int)timer.getDeltaTime();
+		}
+
+		if (currentSecond == 0)
+		{
+			if (minutes != 0)
+			{
+				minutes--;
+				timer.Reset();
+			}
+			else {
+				isTimeOut = true;
+			}
+		}
+
+		if (currentSecond < 10)
+		{
+			secondsXOffset = 40;
+		}
+		else
+		{
+			secondsXOffset = 32;
+		}
+
+	#pragma endregion
+
+	#pragma region SFX Coins Background 
+		// Backgorund sound for Extra points condition
+		BGFX_CoinsCounter += timer.Update();
+
+		if (isExtraPointsActive)
+		{
+			// Check 0.6s
+			if (BGFX_CoinsCounter >= 0.6f)
+			{
+				// Play BG_SFX
+				App->audio->PlaySound(extraCoinsBckgSFX, 0);
+				// Reset counter
+				BGFX_CoinsCounter = 0;
+			}
+		}
+	#pragma endregion
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -369,6 +514,19 @@ bool SceneLevel2::PostUpdate()
 
 	// Draw UI
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
+
+	#pragma region Text Drawing
+
+	level2SceneUI.DrawNum(minutes, { 16,8 });
+	level2SceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
+	level2SceneUI.DrawNum(score, { 144, 8 });
+	level2SceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
+
+	level2SceneUI.DrawChar(0, { 25,8 });
+	level2SceneUI.DrawChar(1, { 123,8 });
+
+	#pragma endregion
+
 	return false;
 }
 
@@ -379,7 +537,7 @@ void SceneLevel2::OnCollision(Collider* c1, Collider* c2)
 	{
 		bomberman->OnCollision(c2);
 	}
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Obstacle Collision
 		//Obstacle Collision ----------------------

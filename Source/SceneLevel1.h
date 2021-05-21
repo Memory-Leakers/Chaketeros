@@ -72,6 +72,7 @@ private:
 	int secondsXOffset = 100;
 	// CoreMecha's number
 	int coreMechaNum = 2;
+	
 
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 

@@ -58,8 +58,7 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 
 Player::~Player()
 {
-	col->pendingToDelete = true;
-
+	
 	if (playerDestroyed != nullptr)
 	{
 		delete playerDestroyed;
@@ -401,6 +400,11 @@ void Player::OnCollision(Collider* col)
 				App->audio->PlaySound(gameOverSFX, 0);
 				pendingToDelete = true;
 				posMode = false;
+
+				if (this->col != nullptr)
+				{
+					this->col->pendingToDelete = true;
+				}
 
 				// Create die particle
 				iPoint tempPos = position;

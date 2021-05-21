@@ -9,7 +9,7 @@
 #define LEVEL2_OBSTACLES 256
 #define LEVEL2_MAP_WIDTH 512
 #define LEVEL2_POWERUPS 2
-#define LEVEL2_MAXENEMIES 5
+#define LEVEL2_MAXENEMIES 6
 
 class Player;
 
@@ -62,7 +62,12 @@ private:
 	int minutes;
 	// Current second shown on screen
 	int currentSecond = 0;
-	// Offset for the seconds timer
+	//	CoreMecha's index in sceneObstacles array
+	int choreMechaIndex[3];
+	//	Timer Seconds Offset
+	int secondsXOffset;
+
+	float BGFX_CoinsCounter = 0;
 
 	bool isTimeOut;
 
@@ -73,6 +78,8 @@ private:
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 	iPoint colisionBoxPos;
+
+	iPoint winPosition = { 440,64 };
 
 	Obstacle* sceneObstacles[LEVEL2_OBSTACLES] = { nullptr };
 
