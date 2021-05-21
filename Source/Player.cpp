@@ -131,7 +131,7 @@ UpdateResult Player::Update()
 			int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
 
 			//if target grid don't have obstacle
-			if (playerAbove == 4 || playerAbove == 0)
+			if (playerAbove == 4 || playerAbove == 0 || playerAbove == 13)
 			{
 				// optimize movemente
 				if (pivotPoint.x > (tileX + 8))
@@ -272,13 +272,20 @@ UpdateResult Player::Update()
 
 	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && maxBombs > 0)
 	{
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		iPoint temp = getCurrentTilePos();
+		temp.y--;
+
+		// If player not situate in glass capsule stairs
+		if (tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x] != 13)
 		{
-			if (obstacles[i] == nullptr)
+			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 			{
-				obstacles[i] = new Bomb(this, texBomb, tileMap);
-				maxBombs--;
-				break;
+				if (obstacles[i] == nullptr)
+				{
+					obstacles[i] = new Bomb(this, texBomb, tileMap);
+					maxBombs--;
+					break;
+				}
 			}
 		}
 	}

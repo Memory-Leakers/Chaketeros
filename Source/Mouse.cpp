@@ -23,7 +23,7 @@ bool Mouse::Start() {
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
-#pragma region Init Anim
+	#pragma region Init Anim
 
 	// Anim DOWN
 	downAnim.PushBack({ 107,136,26,27 });//IDLE

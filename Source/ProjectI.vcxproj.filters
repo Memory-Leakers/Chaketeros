@@ -178,6 +178,9 @@
     <ClInclude Include="ModuleEnemy.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -316,6 +319,9 @@
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEnemy.cpp">
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
