@@ -1,7 +1,16 @@
 #include "Bananacher.h"
 
+
 Bananacher::Bananacher()
 {
+}
+
+Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
+{
+	bounds.x = position.x = spawnPos.x;
+	bounds.y = position.y = spawnPos.y;
+	bounds.w = bounds.h = 16;
+	this->tileMap = tileMap;
 }
 
 Bananacher::~Bananacher()
@@ -51,52 +60,52 @@ bool Bananacher::Start()
 	#pragma region Init Anim
 
 	// Anim DOWN
-	downAnim.PushBack({ 5,2,43,74 });
-	downAnim.PushBack({ 54,2,43,74 });
-	downAnim.PushBack({ 105,2,43,74 });
-	downAnim.PushBack({ 156,2,43,74 });
-	downAnim.PushBack({ 207,2,43,74 });
-	downAnim.PushBack({ 258,2,43,74 });
-	downAnim.PushBack({ 309,2,43,74 });
-	downAnim.PushBack({ 360,2,43,74 });
+	downAnim.PushBack({ 3,2,47,74 });
+	downAnim.PushBack({ 54,2,47,74 });
+	downAnim.PushBack({ 105,2,47,74 });
+	downAnim.PushBack({ 156,2,47,74 });
+	downAnim.PushBack({ 207,2,47,74 });
+	downAnim.PushBack({ 258,2,47,74 });
+	downAnim.PushBack({ 309,2,47,74 });
+	downAnim.PushBack({ 360,2,47,74 });
 	downAnim.speed = 0.08f;
 	downAnim.loop = true;
 	downAnim.hasIdle = false;
 
 	// Animation UP
-	upAnim.PushBack({ 4,164,45,70 });//IDLE
-	upAnim.PushBack({ 56,164,45,70 });
-	upAnim.PushBack({ 107,164,45,70 });
-	upAnim.PushBack({ 158,164,45,70 });
-	upAnim.PushBack({ 208,164,45,70 });
-	upAnim.PushBack({ 259,164,45,70 });
-	upAnim.PushBack({ 310,164,45,70 });
+	upAnim.PushBack({ 3,164,47,74 });
+	upAnim.PushBack({ 54,164,47,74 });
+	upAnim.PushBack({ 105,164,47,74 });
+	upAnim.PushBack({ 156,164,47,74 });
+	upAnim.PushBack({ 207,164,47,74 });
+	upAnim.PushBack({ 258,164,47,74 });
+	upAnim.PushBack({ 309,164,47,74 });
 	upAnim.speed = 0.08f;
 	upAnim.loop = true;
 	upAnim.hasIdle = false;
 
 	// Animation RIGHT
-	rightAnim.PushBack({ 6,84,41,71 });//IDLE
-	rightAnim.PushBack({ 57,84,41,71 });
-	rightAnim.PushBack({ 108,84,41,71 });
-	rightAnim.PushBack({ 161,84,41,71 });
-	rightAnim.PushBack({ 212,84,41,71 });
-	rightAnim.PushBack({ 263,84,41,71 });
-	rightAnim.PushBack({ 314,84,41,71 });
-	rightAnim.PushBack({ 363,84,41,71 });
+	rightAnim.PushBack({ 3,84,47,74 });
+	rightAnim.PushBack({ 54,84,47,74 });
+	rightAnim.PushBack({ 105,84,47,74 });
+	rightAnim.PushBack({ 156,84,47,74 });
+	rightAnim.PushBack({ 207,84,47,74 });
+	rightAnim.PushBack({ 258,84,47,74 });
+	rightAnim.PushBack({ 309,84,47,74 });
+	rightAnim.PushBack({ 360,84,47,74 });
 	rightAnim.speed = 0.08f;
 	rightAnim.loop = true;
 	rightAnim.hasIdle = false;
 
 	//Animation LEFT
-	leftAnim.PushBack({ 6,84,41,71 });//IDLE
-	leftAnim.PushBack({ 57,84,41,71 });
-	leftAnim.PushBack({ 108,84,41,71 });
-	leftAnim.PushBack({ 161,84,41,71 });
-	leftAnim.PushBack({ 212,84,41,71 });
-	leftAnim.PushBack({ 263,84,41,71 });
-	leftAnim.PushBack({ 314,84,41,71 });
-	leftAnim.PushBack({ 363,84,41,71 });
+	leftAnim.PushBack({ 3,84,47,74 });
+	leftAnim.PushBack({ 54,84,47,74 });
+	leftAnim.PushBack({ 105,84,47,74 });
+	leftAnim.PushBack({ 156,84,47,74 });
+	leftAnim.PushBack({ 207,84,47,74 });
+	leftAnim.PushBack({ 258,84,47,74 });
+	leftAnim.PushBack({ 309,84,47,74 });
+	leftAnim.PushBack({ 360,84,47,74 });
 	leftAnim.speed = 0.08f;
 	leftAnim.loop = true;
 	leftAnim.hasIdle = false;
@@ -164,14 +173,11 @@ UpdateResult Bananacher::PostUpdate()
 	rectBanana = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
-	tempPos += {-4, -14};
+	tempPos += {-16, -54};
 
-	if (currentAnimation == &downAnim || currentAnimation == &upAnim)
+	if (currentAnimation == &rightAnim)
 	{
-		if (currentAnimation->getCurrentFrameF() >= 3 && currentAnimation->getCurrentFrameF() <= 4)
-		{
-			isFlip = true;
-		}
+		isFlip = true;
 	}
 
 	if (isFlip)

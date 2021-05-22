@@ -2,8 +2,8 @@
 #define BANANACHER_H
 
 #include "Timer.h";
-
 #include "ModuleEnemy.h"
+
 class Bananacher : public ModuleEnemy
 {
 private: 
@@ -39,7 +39,7 @@ private:
 public:
 
 	Bananacher();
-	Bananacher(iPoint spawnPos, SDL_Texture* tex, Tile* tileMap);
+	Bananacher(iPoint spawnPos, Tile* tileMap);
 	~Bananacher();
 
 	void FixedUpdate();

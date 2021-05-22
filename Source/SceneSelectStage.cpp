@@ -102,13 +102,13 @@ bool SceneSelectStage::Update()
 	{
 		switch (stageSelectPointer)
 		{
-		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 80); break;
+		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 60); break;
 
-		case 1: break;
+		case 1: App->scene->ChangeCurrentScene(SCENE_LEVEL2, 60); break;
 
-		case 2: break;
+		case 2: App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 60); break;;
 
-		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 80); break;
+		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 60); break;
 
 		default: break;
 		}

@@ -1,6 +1,8 @@
 #include "SceneLevelBoss.h"
+#include "Bananacher.h"
 
 Player* bombermanBoss = nullptr;
+Bananacher* bananacher = nullptr;
 
 SceneLevelBoss::SceneLevelBoss()
 {
@@ -18,6 +20,7 @@ void SceneLevelBoss::CreateScene()
 
 	// Create new player
 	bombermanBoss = new Player(tileMap, obstacles);
+	bananacher = new Bananacher({ 72, 48 }, tileMap);
 	bombermanBoss->Start();
 
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
@@ -54,11 +57,15 @@ bool SceneLevelBoss::Start()
 
 	CreateScene();
 
+	bananacher->Start();
+
 	return false;
 }
 
 bool SceneLevelBoss::PreUpdate()
 {
+	bananacher->PreUpdate();
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr && obstacles[i]->pendingToDelete)
@@ -74,6 +81,7 @@ bool SceneLevelBoss::PreUpdate()
 bool SceneLevelBoss::Update()
 {
 	bombermanBoss->Update();
+	bananacher->Update();
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -88,6 +96,9 @@ bool SceneLevelBoss::Update()
 
 bool SceneLevelBoss::PostUpdate()
 {
+	// Draw Bananacher
+	bananacher->PostUpdate();
+
 	// Draw obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -111,19 +122,26 @@ bool SceneLevelBoss::PostUpdate()
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
-	if(bombermanBoss->col == c1)
+	if (bananacher->col == c1)
+	{
+		bananacher->OnCollision(c2);
+	}
+
+	else if(bombermanBoss->col == c1)
 	{
 		bombermanBoss->OnCollision(c2);
 	}
 
-	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	else
 	{
-		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
-			obstacles[i]->OnCollision(c2);
+			if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+			{
+				obstacles[i]->OnCollision(c2);
+			}
 		}
 	}
-
 }
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
@@ -148,6 +166,12 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	{
 		delete tileMap;
 		tileMap = nullptr;
+	}
+
+	if (bananacher != nullptr)
+	{
+		delete bananacher;
+		bananacher = nullptr;
 	}
 
 	if (bombermanBoss != nullptr)

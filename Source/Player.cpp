@@ -14,9 +14,10 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 
 	position.x = 40;
 	position.y = 32;
+
 	//Rect for col
-	bounds.x = 0;
-	bounds.y = 0;
+	bounds.x = position.x;
+	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
 
@@ -72,10 +73,10 @@ bool Player::Start()
 
 	bool ret = true;
 
+	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
+
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
-	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
 	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 

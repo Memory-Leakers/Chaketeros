@@ -8,6 +8,7 @@
 #include "Obstacle.h"
 #include "ModuleCollisions.h"
 
+
 #define SCENE_OBSTACLES_NUM 256
 
 class SceneLevelBoss : public Scene
