@@ -11,6 +11,7 @@ Snail::Snail(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
 	bounds.w = 16;
 	bounds.h = 16;
 	tileMap = levelMap;
+	points = 100;
 }
 
 Snail::~Snail() {
@@ -135,15 +136,6 @@ UpdateResult Snail::PostUpdate() {
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
-}
-
-void Snail::OnCollision(Collider* col)
-{
-	if (col->type == Type::EXPLOSION)
-	{
-		Die();
-		App->scene->currentScene->score += 200;
-	}
 }
 
 void Snail::Die()

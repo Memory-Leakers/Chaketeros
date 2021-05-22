@@ -55,8 +55,6 @@ public:
 	UpdateResult Update();
 	UpdateResult PostUpdate();
 
-	void OnCollision(Collider* col);
-
 	void Die() override;
 
 };

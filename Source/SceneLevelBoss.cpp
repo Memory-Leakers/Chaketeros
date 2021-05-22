@@ -80,9 +80,16 @@ bool SceneLevelBoss::PreUpdate()
 
 bool SceneLevelBoss::Update()
 {
-	bombermanBoss->Update();
-	bananacher->Update();
+	if (bombermanBoss != nullptr)
+	{
+		bombermanBoss->Update();
+	}
 
+	if (bananacher != nullptr && !bananacher->pendingToDelete)
+	{
+		bananacher->Update();
+	}
+	
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr)
@@ -96,9 +103,6 @@ bool SceneLevelBoss::Update()
 
 bool SceneLevelBoss::PostUpdate()
 {
-	// Draw Bananacher
-	bananacher->PostUpdate();
-
 	// Draw obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -108,14 +112,23 @@ bool SceneLevelBoss::PostUpdate()
 		}
 	}
 
+	// Draw Bananacher
+	if (!bananacher->pendingToDelete)
+	{
+		bananacher->PostUpdate();
+	}
+
+	// Draw player
+	if (bombermanBoss != nullptr)
+	{
+		bombermanBoss->PostUpdate();
+	}
+
 	// Draw BG
 	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, 0);
 
 	// Draw UI bar
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
-
-	// Draw player
-	bombermanBoss->PostUpdate();
 
 	return false;
 }

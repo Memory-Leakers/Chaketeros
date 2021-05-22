@@ -6,7 +6,7 @@
 
 class Bananacher : public ModuleEnemy
 {
-private: 
+private:
 
 	Animation upAnim;
 	Animation downAnim;
@@ -19,30 +19,34 @@ private:
 
 	Timer bananaTimer;
 
-	// current direction
-	int currentDir = 0;
-
-	int moveDirContrary[4]{ 1,0,3,2 };
-
 	iPoint moveDir[4] = {
 	{ 1, 0 },
 	{-1, 0 },
 	{ 0,-1 },
 	{ 0, 1 } };
 
+	// current direction
+	int currentDir = 0;
 	// Random Mov variable
 	int randomMoveDirIndex = 0;
 
+	int moveDirContrary[4]{ 1,0,3,2 };
+
+	int protectCount = 0;
+
 private:
+
 	int RandomMov();
+
+	void ProtectCountdown();
 
 public:
 
 	Bananacher();
-	Bananacher(iPoint spawnPos, Tile* tileMap);
-	~Bananacher();
 
-	void FixedUpdate();
+	Bananacher(iPoint spawnPos, Tile* tileMap);
+
+	~Bananacher();
 
 	bool Start() override;
 
@@ -52,7 +56,7 @@ public:
 
 	UpdateResult PostUpdate() override;
 
-	void OnCollision(Collider* col) override;
+	void FixedUpdate();
 
 	void Die() override;
 };

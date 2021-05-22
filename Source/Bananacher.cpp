@@ -11,44 +11,11 @@ Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
 	bounds.y = position.y = spawnPos.y;
 	bounds.w = bounds.h = 16;
 	this->tileMap = tileMap;
+	life = 2;
 }
 
 Bananacher::~Bananacher()
 {
-}
-
-void Bananacher::FixedUpdate()
-{
-	if (randomMoveDirIndex != -1)
-	{
-	position += moveDir[randomMoveDirIndex];
-	currentDir = randomMoveDirIndex;
-	}
-
-	isFlip = false;
-
-	switch (currentDir)
-	{
-	case 0:
-		if (currentAnimation != &rightAnim)
-			currentAnimation = &rightAnim;
-		isFlip = true;
-		break;
-	case 1:
-		if (currentAnimation != &leftAnim)
-			currentAnimation = &leftAnim;
-		break;
-	case 2:
-		if (currentAnimation != &upAnim)
-			currentAnimation = &upAnim;
-		break;
-	case 3:
-		if (currentAnimation != &downAnim)
-			currentAnimation = &downAnim;
-		break;
-	default:
-		break;
-	}
 }
 
 bool Bananacher::Start()
@@ -116,10 +83,10 @@ bool Bananacher::Start()
 	currentAnimation->hasIdle = false;
 	currentAnimation->speed = 0.08f;
 
-	#pragma endregion
+#pragma endregion
 
 	#pragma region Init destroy particle
-	dieParticle.InitParticle(500.0f, 0.1f, texture);
+	dieParticle.InitParticle(500.0f, 0.4f, texture);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -128,8 +95,6 @@ bool Bananacher::Start()
 			dieParticle.anim.PushBack({ j * 79 + 3, i * 92 + 240,76,89 });
 		}
 	}
-
-	dieParticle.anim.speed = 0.02f;
 	#pragma endregion
 
 	return true;
@@ -158,6 +123,8 @@ UpdateResult Bananacher::Update()
 
 	if (bananaTimer.getDeltaTime() >= 0.05f)
 	{
+		ProtectCountdown();
+
 		FixedUpdate();
 
 		bananaTimer.Reset();
@@ -194,11 +161,43 @@ UpdateResult Bananacher::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Bananacher::OnCollision(Collider* col)
+void Bananacher::FixedUpdate()
 {
-	if (col->type == Type::BOMB)
+	if (randomMoveDirIndex != -1)
 	{
-		Die();
+		position += moveDir[randomMoveDirIndex];
+		currentDir = randomMoveDirIndex;
+	}
+
+	isFlip = false;
+
+	switch (currentDir)
+	{
+	case 0:
+		if (currentAnimation != &rightAnim)
+		{
+			currentAnimation = &rightAnim;
+		}
+		isFlip = true;
+		break;
+	case 1:
+		if (currentAnimation != &leftAnim)
+		{
+			currentAnimation = &leftAnim;
+		}
+		break;
+	case 2:
+		if (currentAnimation != &upAnim)
+		{
+			currentAnimation = &upAnim;
+		}
+		break;
+	case 3:
+		if (currentAnimation != &downAnim)
+		{
+			currentAnimation = &downAnim;
+		}
+		break;
 	}
 }
 
@@ -251,6 +250,20 @@ int Bananacher::RandomMov()
 	return -1;
 }
 
+void Bananacher::ProtectCountdown()
+{
+	if (protect)
+	{
+		protectCount++;
+		if (protectCount >= 40)
+		{
+			protect = false;
+			protectCount = 0;
+			cout << "Protect Finish" << endl;
+		}
+	}
+}
+
 void Bananacher::Die()
 {
 	if (pendingToDelete) return;
@@ -258,14 +271,8 @@ void Bananacher::Die()
 	col->pendingToDelete = true;
 
 	iPoint tempPos = position;
-	tempPos += {-4, -14};
-	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 14.1f);
+	tempPos += {-28, -66};
+	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 66.1f);
 
 	pendingToDelete = true;
-
-	if (rectBanana != nullptr)
-	{
-		delete rectBanana;
-		rectBanana = nullptr;
-	}
 }

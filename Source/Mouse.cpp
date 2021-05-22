@@ -11,6 +11,7 @@ Mouse::Mouse(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
 	bounds.w = 16;
 	bounds.h = 16;
 	tileMap = levelMap;
+	points = 200;
 }
 
 Mouse::~Mouse() {
@@ -129,15 +130,6 @@ UpdateResult Mouse::PostUpdate() {
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
-}
-
-void Mouse::OnCollision(Collider* col)
-{
-	if (col->type == Type::EXPLOSION)
-	{
-		Die();
-		App->scene->currentScene->score += 400;
-	}
 }
 
 void Mouse::Die()

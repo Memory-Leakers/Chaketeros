@@ -52,8 +52,15 @@ bool SceneSelectStage::Start()
 
 	stageSelectPointer = 0;
 
-	//TODO
-	bigMoneyPointer = 1;
+	// determine big money sprite
+	bigMoneyPointer = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		if (App->scene->isLevelCompleted[i])
+		{
+			bigMoneyPointer++;
+		}
+	}
 
 	return true;
 }

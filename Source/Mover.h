@@ -75,8 +75,6 @@ public:
 
 	bool Start() override;
 
-	void OnCollision(Collider* col) override;
-
 	UpdateResult PreUpdate() override;
 
 	UpdateResult Update() override;

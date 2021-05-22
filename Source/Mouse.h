@@ -10,8 +10,6 @@ using namespace std;
 class Mouse : public ModuleEnemy
 {
 private:
-
-
 	Particle dieParticle;
 
 	Animation upAnim;
@@ -51,8 +49,6 @@ public:
 	void FixedUpdate();
 
 	bool Start() override;
-
-	void OnCollision(Collider* col) override;
 
 	UpdateResult PreUpdate() override;
 

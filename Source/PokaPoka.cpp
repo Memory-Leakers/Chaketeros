@@ -15,6 +15,8 @@ PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* tileMap) {
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
+	points = 100;
+	life = 1; 
 }
 
 PokaPoka::~PokaPoka() {
@@ -297,13 +299,6 @@ void PokaPoka::movement() {
 void PokaPoka::moveRandom(int i) {
 	while (moveRand == i) {
 		moveRand = rand() % 4;
-	}
-}
-
-void PokaPoka::OnCollision(Collider* col) {
-	if (col->type == Type::EXPLOSION) 
-	{
-		Die();
 	}
 }
 

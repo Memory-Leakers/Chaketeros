@@ -13,6 +13,7 @@ Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* tileMap
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;	
+	points = 400;
 }
 
 Mover::~Mover() 
@@ -187,15 +188,6 @@ UpdateResult Mover::PostUpdate() {
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
-}
-
-void Mover::OnCollision(Collider* col)
-{
-	if (col->type == Type::EXPLOSION)
-	{
-		Die();
-		App->scene->currentScene->score += 800;
-	}
 }
 
 int Mover::RandomMov()
