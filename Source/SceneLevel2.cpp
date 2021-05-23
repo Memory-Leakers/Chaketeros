@@ -135,7 +135,7 @@ void SceneLevel2::CreateCoins()
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
 						iPoint tempPos = sceneObstacles[l]->getPosition();
 						l++;
-						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
+						for (int m = 90; m < SCENE_OBSTACLES_NUM; m++)
 						{
 							if (sceneObstacles[m] == nullptr)
 							{
@@ -206,6 +206,8 @@ bool SceneLevel2::Start()
 	minutes = 4;
 	totalSeconds = 59;
 
+	isExtraPointsActive = false;
+
 	//Spawn Enemies
 	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
 	enemy[4] = new Mouse(level2TileMap->getWorldPos({ 6,4 }), texEnemies, level2TileMap);
@@ -265,7 +267,7 @@ bool SceneLevel2::PreUpdate()
 			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
 		}
 	}
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Runs out of time Condition
 	if (bomberman != nullptr && isTimeOut)
@@ -364,6 +366,7 @@ bool SceneLevel2::Update()
 			{
 				if (sceneObstacles[choreMecha] != nullptr)
 				{
+					sceneObstacles[choreMecha]->getCollider()->pendingToDelete = true;
 					delete sceneObstacles[choreMecha];
 					sceneObstacles[choreMecha] = nullptr;
 				}
@@ -408,6 +411,7 @@ bool SceneLevel2::Update()
 
 			if (sceneObstacles[redFlowerIndex] != nullptr)
 			{
+				sceneObstacles[redFlowerIndex]->getCollider()->pendingToDelete = true;
 				delete sceneObstacles[redFlowerIndex];
 				sceneObstacles[redFlowerIndex] = nullptr;
 			}
@@ -614,6 +618,10 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 		delete level2TileMap;
 		level2TileMap = nullptr;
 	}
+
+	//Delete Vector
+	level2EmptySpaces.clear();
+	level2EmptySpaces.shrink_to_fit();
 
 	return false;
 }

@@ -113,7 +113,6 @@ UpdateResult Player::Update()
 		isFlip = false;
 		currentAnimation = &upAnim;
 		currentAnimation->hasIdle = false;
-		//TODO: Cambiar limites del mapa por nivel
 		if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
 		{
 			//position.y -= speed;
