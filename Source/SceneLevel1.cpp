@@ -212,7 +212,7 @@ bool SceneLevel1::Start()
 	tileMap = new Tile();
 
 	//Reset variables
-	App->scene->isLevelCompleted[0] = false;
+	levelComplete = false;
 	*sceneObstacles = { nullptr };
 	isExtraPointsActive = false;
 	coreMechaNum = 2;
@@ -324,6 +324,7 @@ bool SceneLevel1::PreUpdate()
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
 			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
+			App->scene->isLevelCompleted[0] = true;
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)
@@ -353,7 +354,7 @@ bool SceneLevel1::PreUpdate()
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
 		{
-#pragma region Create powerUp
+	#pragma region Create powerUp
 
 			for (int l = 0; l < 13; ++l)
 			{
@@ -382,11 +383,11 @@ bool SceneLevel1::PreUpdate()
 #pragma endregion
 
 			// Detect if level is complete
-			if (!anyCoreMecha && !App->scene->isLevelCompleted[0])
+			if (!anyCoreMecha && !levelComplete)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 
-				App->scene->isLevelCompleted[0] = true;
+				levelComplete = true;
 			}
 
 			// CleanUp & destroy pendingToDelete obstacle
@@ -454,7 +455,7 @@ bool SceneLevel1::Update()
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
 	{
-		if (!App->scene->isLevelCompleted[0])
+		if (!levelComplete)
 		{
 			for (int i = 2; i <= 4; i += 2)
 			{
@@ -492,7 +493,7 @@ bool SceneLevel1::Update()
 		bomberman->Update();
 
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && App->scene->isLevelCompleted[0] && !isExtraPointsActive)
+		if (bomberman->position == winPosition && levelComplete && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(levelCompleteSFX, 0);

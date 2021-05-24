@@ -102,6 +102,8 @@ private:
 
 	bool pressedInstantWin;
 
+	bool levelComplete = false;
+
 	//	Timer
 	Timer timer;
 
