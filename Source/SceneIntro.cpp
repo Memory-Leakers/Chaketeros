@@ -19,7 +19,6 @@ SceneIntro::~SceneIntro()
 
 bool SceneIntro::Start()
 {
-
 	#pragma region Load Images
 
 	introImages[0] = App->textures->Load("Assets/Images/Sprites/IntroSprite/Intro_Image1.png");
@@ -28,8 +27,8 @@ bool SceneIntro::Start()
 	introImages[2] = App->textures->Load("Assets/Images/Sprites/IntroSprite/GameIntro/IntroSegaLogo.png");
 	introImages[3] = App->textures->Load("Assets/Images/Sprites/IntroSprite/GameIntro/IntroSegaLogo2.png");
 
-
 	#pragma endregion
+
 	currentImage = 0;	//Current image displayed
 	isChangingScene = false;
 

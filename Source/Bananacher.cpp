@@ -11,7 +11,7 @@ Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
 	bounds.y = position.y = spawnPos.y;
 	bounds.w = bounds.h = 16;
 	this->tileMap = tileMap;
-	life = 1;
+	life = 8;
 }
 
 Bananacher::~Bananacher()
@@ -83,7 +83,7 @@ bool Bananacher::Start()
 	currentAnimation->hasIdle = false;
 	currentAnimation->speed = 0.08f;
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Init destroy particle
 	dieParticle.InitParticle(500.0f, 0.25f, texture);

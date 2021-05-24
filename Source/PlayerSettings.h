@@ -1,5 +1,6 @@
 #ifndef _PLAYERSETTINGS_H_
 #define _PLAYERSETTINGS_H_
+
 class PlayerSettings
 {
 private:
@@ -9,7 +10,6 @@ private:
 	PlayerSettings();
 	~PlayerSettings();
 
-
 	enum Kangaroos
 	{
 		BLUE,
@@ -18,7 +18,6 @@ private:
 		PURPLE,
 		YELLOW
 	};
-
 
 public:
 
@@ -37,6 +36,5 @@ public:
 	 bool powerUpVest, powerUpKick;
 
 	 bool powerUpLouies[5];
-
 };
 #endif

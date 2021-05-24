@@ -37,11 +37,10 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 	//	Declare Variables
 	stack<int> digits;
 	vector<int> digitVec;
-	int totalDigits;
-
-	
+	int totalDigits;	
 
 	#pragma region Digit Order Logic
+
 	//Getting digits from number in order Logic
 	if (num != 0) {
 		while (num > 0)
@@ -65,9 +64,11 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 		digitVec.push_back(0);
 		totalDigits = 1;
 	}
+
 	#pragma endregion
 
 	#pragma region Drawing Num Logic
+
 	//Check wich font we're using
 	switch (font)
 	{
@@ -118,7 +119,6 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 	}
 
 	#pragma endregion
-
 }
 
 /// <summary>
