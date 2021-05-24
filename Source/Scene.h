@@ -35,8 +35,6 @@ public:
 
 	virtual bool CleanUp(bool finalCleanUp = true);
 
-	int score;
-
 	int lastID;
 
 

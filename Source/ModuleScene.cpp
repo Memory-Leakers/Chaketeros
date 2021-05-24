@@ -81,8 +81,6 @@ UpdateResult ModuleScene::Update()
 			currentScene = scenes[newScene];
 
 			App->render->ResetCamera();
-
-			currentScene->score = playerSettings->playerScore;
 			currentScene->lastID = lastSceneID;
 
 			currentScene->Start();
@@ -133,7 +131,7 @@ void ModuleScene::WillCollision(Collider* c1, Collider* c2)
 }
 
 //CleanUp current scene, change current scene (index), Start current Scene
-bool ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	
+bool ModuleScene::ChangeCurrentScene(uint index, int frames)	
 {
 	if (currentStep != FADE_NONE) return false;
 	
@@ -141,7 +139,6 @@ bool ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
-	playerSettings->playerScore = sceneScore;
 	return true;
 }
 

@@ -33,9 +33,7 @@ SceneGameOver::~SceneGameOver()
 
 bool SceneGameOver::Start()
 {
-	cout << "Start Game Over" << endl;
-
-	cout << "Score: " << this->score << endl;
+	
 
 	#pragma region Music Setup
 	Mix_HaltMusic();
@@ -165,7 +163,7 @@ bool SceneGameOver::PostUpdate()
 	#pragma endregion
 
 	#pragma region Display Game Over Score Logic
-	gameOverScore.DrawNum(score, { 130, 152 }, 1);
+	gameOverScore.DrawNum(score, { 130, 152 }, 3,1);
 	#pragma endregion
 
 	return true;

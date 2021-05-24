@@ -306,7 +306,7 @@ void PokaPoka::Die() {
 
 	if (pendingToDelete) return;
 
-	App->scene->currentScene->score += 200;
+	App->scene->playerSettings->playerScore += 200;
 	isDead = true;
 
 	col->pendingToDelete = true;

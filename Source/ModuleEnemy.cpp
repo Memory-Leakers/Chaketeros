@@ -43,7 +43,7 @@ void ModuleEnemy::OnCollision(Collider* otherCol)
 		if (--life == 0)
 		{
 			Die();
-			App->scene->currentScene->score += points;
+			App->scene->playerSettings->playerScore += points;
 		}
 	}
 };

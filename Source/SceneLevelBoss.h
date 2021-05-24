@@ -23,6 +23,7 @@ private:
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+
 public:
 	Tile* tileMap = nullptr;
 

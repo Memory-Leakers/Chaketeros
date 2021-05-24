@@ -14,8 +14,6 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-#include "Snail.h"
-#include "Mouse.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -46,7 +44,6 @@ NumText sceneUI;
 
 SceneLevel1::SceneLevel1()
 {
-	score = 0;
 	ID = 4;
 }
 
@@ -236,8 +233,8 @@ bool SceneLevel1::Start()
 	bomberman->Start();
 
 	// Spawn enemies
-	enemy[5] = new Mouse({ 72,64 }, texEnemies, tileMap);
-	enemy[4] = new Snail({ 112,64 }, texEnemies, tileMap);
+	
+
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, texEnemies, &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);
@@ -299,11 +296,11 @@ bool SceneLevel1::PreUpdate()
 		if (App->scene->playerSettings->playerLifes > 0)
 		{
 			App->scene->playerSettings->playerLifes--;
-			App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90);
 		}
 		else
 		{
-			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 		}
 	}
 
@@ -323,7 +320,7 @@ bool SceneLevel1::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 90);
 			App->scene->isLevelCompleted[0] = true;
 			isChangingScene = true;
 		}
@@ -333,12 +330,12 @@ bool SceneLevel1::PreUpdate()
 			{
 				isChangingScene = true;
 				App->scene->playerSettings->playerLifes--;
-				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
+				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90);
 			}
 
 			else if (!isChangingScene)
 			{
-				App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+				App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 				isChangingScene = true;
 			}
 		}
@@ -450,7 +447,7 @@ bool SceneLevel1::Update()
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
-		App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+		App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 	}
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
@@ -631,7 +628,7 @@ bool SceneLevel1::PostUpdate()
 	#pragma region DrawUI and Foreground
 
 	// Draw FrontGround
-	App->render->AddTextureRenderQueue(texFG, { 0,0 }, nullptr, 1, 100);
+	App->render->AddTextureRenderQueue(texFG, { 0,16 }, nullptr, 1, 100);
 
 	// Draw UI
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
@@ -690,7 +687,7 @@ bool SceneLevel1::PostUpdate()
 
 	sceneUI.DrawNum(minutes, { 16,8 });
 	sceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
-	sceneUI.DrawNum(score, { 144, 8 });
+	sceneUI.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 });
 	sceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
 
 	sceneUI.DrawChar(0, { 25,8 });

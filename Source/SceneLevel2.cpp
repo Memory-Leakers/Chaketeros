@@ -260,11 +260,11 @@ bool SceneLevel2::PreUpdate()
 		if (App->scene->playerSettings->playerLifes > 0)
 		{
 			App->scene->playerSettings->playerLifes--;
-			App->scene->ChangeCurrentScene(SCENE_LEVEL2, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_LEVEL2, 90);
 		}
 		else
 		{
-			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 		}
 	}
 	#pragma endregion
@@ -276,7 +276,7 @@ bool SceneLevel2::PreUpdate()
 		if (isExtraPointsActive && !isChangingScene)
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
-			App->scene->ChangeCurrentScene(SCENE_STAGE, 90, score);
+			App->scene->ChangeCurrentScene(SCENE_STAGE, 90);
 			App->scene->isLevelCompleted[1] = true;
 			isChangingScene = true;
 		}
@@ -287,14 +287,14 @@ bool SceneLevel2::PreUpdate()
 			{
 				isChangingScene = true;
 				App->scene->playerSettings->playerLifes--;
-				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90, score);
+				App->scene->ChangeCurrentScene(SCENE_LEVEL1, 90);
 			}
 
 			else
 			{
 				if (!isChangingScene)
 				{
-					App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90, score);
+					App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 					isChangingScene = true;
 				}
 
@@ -524,7 +524,7 @@ bool SceneLevel2::PostUpdate()
 
 	level2SceneUI.DrawNum(minutes, { 16,8 });
 	level2SceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
-	level2SceneUI.DrawNum(score, { 144, 8 });
+	level2SceneUI.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 });
 	level2SceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
 
 	level2SceneUI.DrawChar(0, { 25,8 });

@@ -36,7 +36,7 @@ void CoreMecha::Die()
 	tempPos -= {5, 11};
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE);
 
-	App->scene->currentScene->score += 800;
+	App->scene->playerSettings->playerScore += 800;
 
 	int tileX, tileY;
 	tileX = currentTileMap->getTilePos(getPosition()).x;

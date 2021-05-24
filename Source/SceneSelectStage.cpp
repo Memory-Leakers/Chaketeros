@@ -117,7 +117,7 @@ bool SceneSelectStage::Update()
 
 		case 1: App->scene->ChangeCurrentScene(SCENE_LEVEL2, 60); break;
 
-		case 2: App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 60); break;;
+		case 2: App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 60); break;
 
 		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 60); break;
 
