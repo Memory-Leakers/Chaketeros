@@ -14,9 +14,9 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
         {1,0,1},
         {1,0,1},
     };
-    for (int i = 0, k = 0; i < 3; i++)
+    for (int i = 0, k = 0; i < 3; ++i)
     {
-        for (int j = 0; j < 3; j++)
+        for (int j = 0; j < 3; ++j)
         {
             if (colPos[i][j] == 1)
             {
@@ -70,12 +70,14 @@ void GlassCapsule::PostUpdate()
 void GlassCapsule::Die()
 {
     dieCount++;
-    if (dieCount == 1) {
+    if (dieCount == 1) 
+    {
         isDead = true;
         currentAnim = &withoutglassAnim;
     }
     
-    if (dieCount == 2) {
+    if (dieCount == 2) 
+    {
         currentAnim = &withoutfragments;
     }
 }

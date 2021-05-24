@@ -6,9 +6,17 @@
 
 class RedFlower : public Obstacle
 {
+private:
+	Particle dieParticle;
+
+	SDL_Rect renderRect;
+
+	Tile* currentTileMap = nullptr;
+
 public:
 	//Constructor
 	RedFlower();
+
 	RedFlower(iPoint pos, SDL_Texture* tex,Tile* tile);
 
 	//Destructor
@@ -16,13 +24,10 @@ public:
 
 	// Metodos
 	void PostUpdate() override;
-	void Die() override;
-	void OnCollision(Collider* col) override;
 
-private:
-	Particle dieParticle;
-	SDL_Rect renderRect;
-	Tile* currentTileMap = nullptr;
+	void Die() override;
+
+	void OnCollision(Collider* col) override;
 };
 
 #endif // !_REDFLOWER_H_

@@ -9,14 +9,22 @@
 class SceneSelectStage : public Scene
 {
 private:
+	// Textures in this scene
 	SDL_Texture* texMap = nullptr;
+
 	SDL_Texture* texUISelect = nullptr;
+
 	SDL_Texture* texStages = nullptr;
+
 	SDL_Texture* texStoneCoin = nullptr;
+
 	SDL_Texture* texInGameUI = nullptr;
+
 	SDL_Texture* texBigStoneCoins = nullptr;
+
 	SDL_Texture* texBomberman = nullptr;
 
+	// rects for tectures
 	SDL_Rect recStages[4]
 	{
 		{0, 0, 77,   63}, //Stage1
@@ -60,8 +68,10 @@ private:
 		{ 500, 500 } // exit
 	};
 
+	// stage select actual position
 	int stageSelectPointer = 0;
 
+	// bigMoney actual state
 	int bigMoneyPointer = 0;
 
 public:

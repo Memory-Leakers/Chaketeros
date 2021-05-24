@@ -22,14 +22,16 @@ private:
 
 	uint explosionSFX, putBombSFX;
 
-	// Animacion actual de la bomba
+	// curernt Anim
 	Animation* currentAnim = nullptr;
 
-	// Animaciones de la bomba
+	// Bomb Anim
 	Animation defaultAnim;
 
 	Particle explosionCenter;
+
 	Particle explosionMiddle;
+
 	Particle explosionEnd;
 
 	iPoint myTilePos;
@@ -40,12 +42,15 @@ private:
 
 public:
 	Bomb();
+
 	Bomb(Player* p, SDL_Texture* tex, Tile* tile);
 
 	~Bomb();
 
  	void PostUpdate() override;
+
 	void Update() override;
+
 	void Die() override;
 };
 

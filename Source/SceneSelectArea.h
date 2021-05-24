@@ -16,20 +16,32 @@ class SceneSelectArea : public Scene
 private:
 	//Textures
 	SDL_Texture* texSelectArea = nullptr;
+
 	SDL_Texture* texLevels = nullptr;
+
 	SDL_Texture* texMainMenu = nullptr;
+
 	SDL_Texture* texbombermaninArea = nullptr;
+
 	//	Textures Rectangles
 	SDL_Rect SelectStageBackgroundRect;
+
 	SDL_Rect UIStageLevel1Rect;
+
 	SDL_Rect UIStageLevel2Rect;
+
 	SDL_Rect StageCheeseandStarsRect;
+
 	SDL_Rect StageCheese1Completed;
+
 	SDL_Rect BombermaninAreaRect;
+
 	// Animation
 	Animation texLevel1CheeseAnim, texLevel2CheeseAnim, texLevel3CheeseAnim, texLevel4CheeseAnim, texLevel5CheeseAnim;
+	
 	// Arrow Position and current Arrow
 	iPoint arrowLevelPosition[5];
+
 	iPoint* currentArrowLevelPos = nullptr;
 
 	uint changeSelectSFX, selectSFX;

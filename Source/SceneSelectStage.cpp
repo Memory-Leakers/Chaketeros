@@ -4,7 +4,7 @@
 using namespace std;
 
 // Debug variable
-iPoint debugOffset = { 0,0 };
+//iPoint debugOffset = { 0,0 };
 
 SceneSelectStage::SceneSelectStage()
 {
@@ -67,22 +67,25 @@ bool SceneSelectStage::Start()
 
 void SceneSelectStage::ModifyStagePointer(int mod)
 {
+	// if key is down
 	if (mod == 0)
-	{
+	{ 
+		// show exit icon
 		stageSelectPointer = 3;
 	}
 	else
 	{
+		// if the last state is Exit
 		if (stageSelectPointer == 3)
 		{
+			// current state should be level 1
 			stageSelectPointer = 0;
 			return;
 		}
 
-		int temp = stageSelectPointer;
-
 		stageSelectPointer += mod;
 
+		// if out of range
 		if (stageSelectPointer > 2)
 		{
 			stageSelectPointer = 0;
@@ -92,6 +95,7 @@ void SceneSelectStage::ModifyStagePointer(int mod)
 			stageSelectPointer = 2;
 		}
 
+		// go to the next accecible level
 		if (stageSelectPointer != 0 && !App->scene->isLevelCompleted[stageSelectPointer - 1])
 		{
 			ModifyStagePointer(mod);
@@ -195,7 +199,6 @@ bool SceneSelectStage::PostUpdate()
 	{
 		if(!App->scene->isLevelCompleted[i])
 		{
-			//renderRect = stoneCoins[i].animation.GetCurrentFrame();
 			App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
 		}
 	}

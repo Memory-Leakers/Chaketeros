@@ -13,8 +13,11 @@ private:
 	Particle dieParticle;
 
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation rightAnim;
+
 	Animation leftAnim;
 
 	Timer snailTimer;
@@ -31,6 +34,7 @@ private:
 
 	// Random Mov variable
 	int randomMoveDirIndex = 0; // get RandomMos result
+
 	int moveDirContrary[4]{ 1,0,3,2 }; // push back direccion A star
 private:
 	
@@ -57,8 +61,6 @@ public:
 	UpdateResult PostUpdate() override;
 
 	void Die() override;
-
-
 };
 #endif // !_SNAIL_H_
 

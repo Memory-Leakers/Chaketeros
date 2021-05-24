@@ -13,8 +13,11 @@ private:
 	Particle dieParticle;
 
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation rightAnim;
+
 	Animation leftAnim;
 
 	Timer mouseTimer;

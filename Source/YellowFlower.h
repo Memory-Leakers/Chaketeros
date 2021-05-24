@@ -7,7 +7,6 @@
 class YellowFlower : public Obstacle 
 {
 private:
-
 	SDL_Rect renderRect;
 
 	Particle dieParticle;
@@ -27,7 +26,6 @@ public:
 	void PostUpdate() override;
 
 	void OnCollision(Collider* col) override;
-
 };
 
 #endif // _YELLOWFLOWER_H_

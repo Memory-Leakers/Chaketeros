@@ -138,23 +138,29 @@ void Mover::FixedUpdate()
 	switch (currentDir)
 	{
 	case 0:
-		if (currentAnimation != &rightAnim)
-		currentAnimation = &rightAnim;
 		isFlip = true;
+		if (currentAnimation != &rightAnim)
+		{
+			currentAnimation = &rightAnim;
+		}
 		break;
 	case 1:
 		if (currentAnimation != &leftAnim)
-		currentAnimation = &leftAnim;
+		{
+			currentAnimation = &leftAnim;
+		}	
 		break;
 	case 2:
 		if (currentAnimation != &upAnim)
-		currentAnimation = &upAnim;
+		{
+			currentAnimation = &upAnim;
+		}	
 		break;
 	case 3:
 		if (currentAnimation != &downAnim)
-		currentAnimation = &downAnim;
-		break;
-	default:
+		{
+			currentAnimation = &downAnim;
+		}		
 		break;
 	}
 }

@@ -117,17 +117,19 @@ void Bomb::Die()
 	player->maxBombs++;
 	getCollider()->pendingToDelete = true;
 
-	// Centro de la explocion
+	// Create explotion center
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
-	// Calculate spawn number for dir
+	#pragma region Calculate spawn number for dir
+
 	int explotionNum[4] = { 0,0,0,0 };
 	int tileX, tileY;
 	tileX = lv1Tile->getTilePos(getPosition()).x;
 	tileY = (lv1Tile->getTilePos(getPosition()).y) - 1;
 	iPoint dirSpawn[4] = { {1,0},{0,1},{-1,0},{0,-1} };
 
-	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 0;	//Cambiar el numero en tileMap al morir
+	// Change number of tileMao when destroy
+	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 0;	
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -149,7 +151,10 @@ void Bomb::Die()
 		}
 	}
 
-	// Create explotion
+	#pragma endregion
+
+	#pragma region Create explotion
+
 	for (int i = 1; i < explotionRange; i++)
 	{
 		// 4 direction for explotion
@@ -188,4 +193,6 @@ void Bomb::Die()
 			}			
 		}
 	}
+
+	#pragma endregion
 }

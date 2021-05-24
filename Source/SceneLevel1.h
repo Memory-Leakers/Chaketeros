@@ -37,19 +37,32 @@ class SceneLevel1 : public Scene
 private:
 	// Texture
 	SDL_Texture* texMap = nullptr;
+
 	SDL_Texture* texFG = nullptr;
+
 	SDL_Texture* texUI = nullptr;
+
 	SDL_Texture* texStone = nullptr;
+
 	SDL_Texture* texGlassCapsule = nullptr;
+
 	SDL_Texture* texYellowFlower = nullptr;
+
 	SDL_Texture* texEnemies = nullptr;
+
 	SDL_Texture* texItemDestroyed = nullptr;
+
 	SDL_Texture* texCoin = nullptr;
+
 	SDL_Texture* texPowerUpDestroyed = nullptr;
+
 	SDL_Texture* texCoreMecha = nullptr;
+
 	SDL_Texture* texPowerUps = nullptr;
+
 	SDL_Texture* texMiscUI = nullptr;
 
+	// Rects for tetures
 	SDL_Rect recCoreMehcaUI[2] = { {0, 0, 7, 14}, {8, 0, 7, 14} };
 
 	SDL_Rect recUIbar = { 0,0,256,24 };
@@ -73,7 +86,6 @@ private:
 	// CoreMecha's number
 	int coreMechaNum = 2;
 	
-
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
 	//	Counter for Sound Effects
@@ -109,7 +121,6 @@ private:
 	iPoint winPosition = { 120, 96 };
 
 	iPoint powerUpPos[2];
-
 
 public:
 
