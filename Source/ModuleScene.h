@@ -73,7 +73,7 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
-	bool isLevelCompleted[3];	//TODO: Cambiar el uso de esta variable en las escenas Level1 y Level2
+	bool isLevelCompleted[3];	//TODO: Cambiar el uso de esta variable en las escenas Level1 y Level2!!!
 
 	int currentLevel = 0;
 

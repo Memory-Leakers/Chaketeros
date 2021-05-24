@@ -75,6 +75,8 @@ private:
 
 	bool isExtraPointsActive;
 
+	bool levelCompleted;
+
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 	iPoint colisionBoxPos;
