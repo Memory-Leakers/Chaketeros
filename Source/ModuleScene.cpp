@@ -63,12 +63,10 @@ UpdateResult ModuleScene::Update()
 		
 	if (currentStep == FADE_NONE) //Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
 	{ 
-
 		currentScene->Update();
 		DebugChangeScene(); 
 
 		return UpdateResult::UPDATE_CONTINUE; 
-
 	}	
 
 	if (currentStep == FADE_IN)		//Si hay FADE IN, se ejecuta el Update HASTA QUE EL RECTANGULO NEGRO tenga opacidad m�xima

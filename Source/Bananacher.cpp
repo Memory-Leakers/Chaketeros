@@ -11,7 +11,7 @@ Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
 	bounds.y = position.y = spawnPos.y;
 	bounds.w = bounds.h = 16;
 	this->tileMap = tileMap;
-	life = 8;
+	life = 1;
 }
 
 Bananacher::~Bananacher()
@@ -285,7 +285,9 @@ void Bananacher::Die()
 	col->pendingToDelete = true;
 
 	iPoint tempPos = position;
+
 	tempPos += {-28, -66};
+
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 66.1f);
 
 	pendingToDelete = true;

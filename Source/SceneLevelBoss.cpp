@@ -40,8 +40,6 @@ void SceneLevelBoss::CreateScene()
 
 void SceneLevelBoss::InitAssets()
 {
-	texBananacher = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Banana.png");
-	texSaru = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Monkey.png");
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/BossMap.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
@@ -128,7 +126,7 @@ bool SceneLevelBoss::PostUpdate()
 	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, 0);
 
 	// Draw UI bar
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 0, 5);
 
 	return false;
 }

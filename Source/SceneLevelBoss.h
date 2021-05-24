@@ -14,8 +14,6 @@
 class SceneLevelBoss : public Scene
 {
 private:
-	SDL_Texture* texBananacher = nullptr;
-	SDL_Texture* texSaru = nullptr;
 	SDL_Texture* texMap = nullptr;
 	SDL_Texture* texBomb = nullptr;
 	SDL_Texture* texUI = nullptr;

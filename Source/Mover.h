@@ -23,8 +23,11 @@ class Mover : public ModuleEnemy
 private:
 
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation rightAnim;
+
 	Animation leftAnim;
 
 	Particle dieParticle;
