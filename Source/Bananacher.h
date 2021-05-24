@@ -9,8 +9,11 @@ class Bananacher : public ModuleEnemy
 private:
 
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation rightAnim;
+
 	Animation leftAnim;
 
 	SDL_Rect* rectBanana;
@@ -34,6 +37,8 @@ private:
 
 	int protectCount = 0;
 
+	bool injureAnim = false;
+
 private:
 
 	int RandomMov();
@@ -55,6 +60,8 @@ public:
 	UpdateResult Update() override;
 
 	UpdateResult PostUpdate() override;
+
+	void OnCollision(Collider* col) override;
 
 	void FixedUpdate();
 

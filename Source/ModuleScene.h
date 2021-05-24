@@ -67,7 +67,6 @@ public:
 
 	bool CleanUp() override;
 
-
 	Scene* currentScene = nullptr;
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
@@ -101,9 +100,7 @@ private:
 								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8 };
 
 
-	void DebugChangeScene();
-
-	
+	void DebugChangeScene();	
 };
 
 #endif // __MODULESCENE_H__

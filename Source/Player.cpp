@@ -21,6 +21,8 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 	bounds.w = 16;
 	bounds.h = 16;
 
+	#pragma region Init Anim
+
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
 	downAnim.PushBack({ 0, 2, 16, 22 });
@@ -51,6 +53,8 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 
 	currentAnimation = &downAnim;
 
+	#pragma endregion
+
 	//Load Sound
 	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
 	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
@@ -59,7 +63,6 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 
 Player::~Player()
 {
-	
 	if (playerDestroyed != nullptr)
 	{
 		delete playerDestroyed;
@@ -69,8 +72,6 @@ Player::~Player()
 
 bool Player::Start()
 {
-	LOG("Loading player textures");
-
 	bool ret = true;
 
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
@@ -104,9 +105,7 @@ UpdateResult Player::Update()
 	int speedX = 0;
 	int speedY = 0;
 
-	#pragma region Movements
-
-
+	#pragma region Movements keys
 
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
@@ -269,6 +268,7 @@ UpdateResult Player::Update()
 
 	#pragma endregion
 
+	// Drop a bomb
 	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && maxBombs > 0)
 	{
 		iPoint temp = getCurrentTilePos();
@@ -300,9 +300,7 @@ UpdateResult Player::Update()
 		App->render->CameraMove(tempPos);
 	}
 
-
-
-	// Player Idle or walk
+	// Player idle or walk state
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 	{
@@ -319,6 +317,10 @@ UpdateResult Player::Update()
 	pivotPoint = { position.x + 8, position.y + 8 };
 
 	#pragma region Debug keys
+	if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
+	{
+		App->scene->playerSettings->powerUpFlame++;
+	}
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -386,6 +388,62 @@ UpdateResult Player::PostUpdate()
 	// App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
 
 	return UpdateResult::UPDATE_CONTINUE;
+}
+
+//TODO
+iPoint Player::Move(int dir)
+{
+	iPoint tempDir[4]
+	{
+		{ 0,-1 * speed}, // Up
+		{ 0, 1 * speed}, // Down
+		{-1 * speed, 0}, // Left
+		{ 1 * speed, 0} // Right	 
+	};
+
+	iPoint tempSpeed = { 0,0 };
+
+	Animation* tempAnim[4] = { &upAnim, &downAnim , &leftAnim, &rightAnim };
+
+	bool tempFlip[] = { false,false,false,true };
+
+	isFlip = tempFlip[dir];
+	currentAnimation = tempAnim[dir];
+	currentAnimation->hasIdle = false;
+	if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[dir]) // Limiitar movimiento en la mapa//
+	{
+		tempSpeed = tempDir[dir];
+	}
+
+	// movemenet fix
+	else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+	{
+		iPoint tempTilePos = getCurrentTilePos();
+
+		int tileX = getCurrentTileWorldPos().x;
+
+		tempTilePos.y--; // offset
+
+		int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
+
+		//if target grid don't have obstacle
+		if (playerAbove == 4 || playerAbove == 0 || playerAbove == 13)
+		{
+			// optimize movemente
+			if (pivotPoint.x > (tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+		}
+	}
+
+	SpecialSound();
+
+	return tempSpeed;
 }
 
 void Player::OnCollision(Collider* col)

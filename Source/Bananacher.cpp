@@ -11,7 +11,7 @@ Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
 	bounds.y = position.y = spawnPos.y;
 	bounds.w = bounds.h = 16;
 	this->tileMap = tileMap;
-	life = 2;
+	life = 8;
 }
 
 Bananacher::~Bananacher()
@@ -86,7 +86,7 @@ bool Bananacher::Start()
 #pragma endregion
 
 	#pragma region Init destroy particle
-	dieParticle.InitParticle(500.0f, 0.4f, texture);
+	dieParticle.InitParticle(500.0f, 0.25f, texture);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -135,30 +135,43 @@ UpdateResult Bananacher::Update()
 
 UpdateResult Bananacher::PostUpdate()
 {
-	currentAnimation->Update();
-
-	rectBanana = &currentAnimation->GetCurrentFrame();
-
-	iPoint tempPos = position;
-	tempPos += {-16, -54};
-
-	if (currentAnimation == &rightAnim)
+	if(injureAnim)
 	{
-		isFlip = true;
-	}
-
-	if (isFlip)
-	{
-		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectBanana, 1, position.y, false, 180);
+		SDL_Rect tempRect = { 0,0,1,1 };
+		
+		App->render->AddTextureRenderQueue(texture, position, &tempRect, 1, position.y, false, 180);
 	}
 	else
 	{
-		//App->render->DrawTexture(texture, tempPos, &rect);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectBanana, 1, position.y);
+		currentAnimation->Update();
+
+		rectBanana = &currentAnimation->GetCurrentFrame();
+
+		iPoint tempPos = position;
+
+		tempPos += {-16, -54};
+
+		if (currentAnimation == &rightAnim)
+		{
+			isFlip = true;
+		}
+
+		if (isFlip)
+		{
+			App->render->AddTextureRenderQueue(texture, tempPos, rectBanana, 1, position.y, false, 180);
+		}
+		else
+		{
+			App->render->AddTextureRenderQueue(texture, tempPos, rectBanana, 1, position.y);
+		}
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
+}
+
+void Bananacher::OnCollision(Collider* col)
+{
+	ModuleEnemy::OnCollision(col);
 }
 
 void Bananacher::FixedUpdate()
@@ -254,6 +267,7 @@ void Bananacher::ProtectCountdown()
 {
 	if (protect)
 	{
+		injureAnim = !injureAnim;
 		protectCount++;
 		if (protectCount >= 40)
 		{
