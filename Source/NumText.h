@@ -19,7 +19,7 @@ public:
 
 	void Start();
 
-	void DrawNum(int num, iPoint pos, float scale = 3.0f, int font = 0);
+	void DrawNum(int num, iPoint pos, float scale = 3.0f, int layer = 2, float orderInLayer = 0.0f, int font = 0);
 	void DrawChar(int character, iPoint pos);
 };
 

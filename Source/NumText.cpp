@@ -32,7 +32,7 @@ void NumText::Start()
 	texFonts = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 }
 
-void NumText::DrawNum(int num, iPoint pos, float scale, int font)
+void NumText::DrawNum(int num, iPoint pos, float scale, int layer, float orderInLayer, int font)
 {
 	//	Declare Variables
 	stack<int> digits;
@@ -78,7 +78,7 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 			iPoint tempPos = pos;
 			tempPos.x += (9 * i);						//Offset from num to num
 			//App->render->DrawTexture(texFonts, tempPos, &fonts[font][digitVec.at(i)]); //digitVec returns the number that must be shown
-			App->render->AddTextureRenderQueue(texFonts, tempPos, &fonts[font][digitVec.at(i)], 2, 3, false, 0, scale);
+			App->render->AddTextureRenderQueue(texFonts, tempPos, &fonts[font][digitVec.at(i)], layer, orderInLayer, false, 0, 3);
 		}
 		break;
 	case 1:

@@ -44,6 +44,8 @@ void CoreMecha::Die()
 	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
 
 	(*coreMechaNum)--;
+
+	App->scene->DrawPoints(800, getPosition());
 }
 
 void CoreMecha::PostUpdate()

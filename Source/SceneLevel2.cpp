@@ -400,7 +400,7 @@ bool SceneLevel2::Update()
 			sceneObstacles[glassCapsuleIndex]->Die();
 			CreateCoins();
 
-			for (int i = 0; i < MAX_ENEMY; ++i)
+			for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
 			{
 				if (enemy[i] != nullptr)
 				{

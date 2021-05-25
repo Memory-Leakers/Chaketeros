@@ -1,5 +1,6 @@
 #include "ModuleEnemy.h"
 
+
 ModuleEnemy::ModuleEnemy()
 {
 
@@ -17,6 +18,7 @@ ModuleEnemy::~ModuleEnemy()
 
 bool ModuleEnemy::Start()
 {
+	
 	return true;
 };
 
@@ -44,6 +46,7 @@ void ModuleEnemy::OnCollision(Collider* otherCol)
 		{
 			Die();
 			App->scene->playerSettings->playerScore += points;
+			App->scene->DrawPoints(points, this->col->getPos());
 		}
 	}
 };

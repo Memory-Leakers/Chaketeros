@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "PlayerSettings.h"
 
+
 #define SCENES_NUM 8
 
 struct SDL_Texture;
@@ -64,6 +65,8 @@ public:
 	void WillCollision(Collider* c1, Collider* c2) override;
 
 	bool ChangeCurrentScene(uint index, int frames);
+
+	void DrawPoints(int score, iPoint position);
 
 	bool CleanUp() override;
 

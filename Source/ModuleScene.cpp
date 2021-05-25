@@ -1,6 +1,9 @@
 #include "ModuleScene.h"
+#include "DrawPoints.h"
 #include <time.h>
 PlayerSettings* playerSettings = nullptr;
+
+DrawPoints drawPoints;
 
 ModuleScene::ModuleScene()
 {
@@ -30,6 +33,8 @@ bool ModuleScene::Start()
 
 	currentScene = scenes[SCENE_INTRO];
 
+	drawPoints.Start();
+
 
 	if(currentScene == nullptr)
 	{
@@ -55,6 +60,8 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
+	drawPoints.Update();
+
 	#pragma region Update and FadeInOut
 	if (currentScene == nullptr)
 	{
@@ -141,6 +148,12 @@ bool ModuleScene::ChangeCurrentScene(uint index, int frames)
 	newScene = index;
 	return true;
 }
+
+void ModuleScene::DrawPoints(int score, iPoint position)
+{
+	drawPoints.DrawScore(score, position);
+}
+
 
 bool ModuleScene::CleanUp()
 {
