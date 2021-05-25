@@ -67,6 +67,7 @@ bool SceneSelectArea::Start()
 	StageCheeseandStarsRect = { 512,6,256,224 };
 	UIStageLevel1Rect = { 0, 0, 256, 224 };
 	UIStageLevel2Rect = { 0, 224, 256, 224 };
+	
 	#pragma endregion
 
 	#pragma region Arrow Positions Setup
@@ -177,7 +178,8 @@ bool SceneSelectArea::PostUpdate()
 {
 	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 0,0);
 
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
+
+	
 
 	App->render->AddTextureRenderQueue(texbombermaninArea, { 165, 52 }, &BombermaninAreaRect, 2, 1);
 	if (currentArrowLevelPos == &arrowLevelPosition[0]) {
@@ -186,9 +188,12 @@ bool SceneSelectArea::PostUpdate()
 	else {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel2Rect, 2, 2);
 	}
-	if (App->scene->isLevelCompleted[0] == false && App->scene->isLevelCompleted[1] == false && App->scene->isLevelCompleted[2] == false)
+	if (App->scene->isLevelCompleted[0] == false)
 	{
 		App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
+	}
+	if (App->scene->isLevelCompleted[0] == true) {
+		App->render->AddTextureRenderQueue(texLevels, { 127,72 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
 	}
 	App->render->AddTextureRenderQueue(texLevels, { 141, 108 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2, 4);
 	App->render->AddTextureRenderQueue(texLevels, { 103, 134 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2, 7);
