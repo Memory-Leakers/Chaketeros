@@ -72,6 +72,10 @@ public:
 
 	void SortRenderObjects(vector<RenderObject>& obj);
 
+	void CameraMove(iPoint pos);
+
+	void ResetCamera();
+
 	#pragma region Obsolete
 	// Draws a texture to the screen
 	// Param texture	- A valid SDL Texture, validation checks are not performed
@@ -96,9 +100,6 @@ public:
 
 	bool DrawRectangle(const SDL_Rect& rect, SDL_Color color, float speed = 1.0f);
 
-	void CameraMove(iPoint pos);
-
-	void ResetCamera();
 	#pragma endregion
 
 public:
