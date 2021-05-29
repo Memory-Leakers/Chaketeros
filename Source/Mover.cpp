@@ -1,11 +1,12 @@
 #include "Mover.h"
 
+
 SDL_Rect* rectMover;
 
-Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* level1Tile)
+Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* tileMap)
 {
 	this->playerPos = playerPos; // Player pivot
-	this->level1Tile = level1Tile;
+	this->tileMap = tileMap;
 	texture = tex;
 	position.x = spawnPos.x;
 	position.y = spawnPos.y;
@@ -13,6 +14,7 @@ Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* level1T
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;	
+	points = 400;
 }
 
 Mover::~Mover() 
@@ -71,7 +73,7 @@ bool Mover::Start()
 	currentAnimation->hasIdle = false;
 	currentAnimation->speed = 0.08f;
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Init destroy particle
 	dieParticle.InitParticle(500.0f, 0.1f, texture);
@@ -84,8 +86,8 @@ bool Mover::Start()
 
 UpdateResult Mover::PreUpdate()
 {
-	iPoint tilePos =  level1Tile->getTilePos(position);
-	iPoint centerTile = level1Tile->getWorldPos(tilePos);
+	iPoint tilePos =  tileMap->getTilePos(position);
+	iPoint centerTile = tileMap->getWorldPos(tilePos);
 
 	// Deteci if mover is center of grid
 	if (position == centerTile)
@@ -137,23 +139,29 @@ void Mover::FixedUpdate()
 	switch (currentDir)
 	{
 	case 0:
-		if (currentAnimation != &rightAnim)
-		currentAnimation = &rightAnim;
 		isFlip = true;
+		if (currentAnimation != &rightAnim)
+		{
+			currentAnimation = &rightAnim;
+		}
 		break;
 	case 1:
 		if (currentAnimation != &leftAnim)
-		currentAnimation = &leftAnim;
+		{
+			currentAnimation = &leftAnim;
+		}	
 		break;
 	case 2:
 		if (currentAnimation != &upAnim)
-		currentAnimation = &upAnim;
+		{
+			currentAnimation = &upAnim;
+		}	
 		break;
 	case 3:
 		if (currentAnimation != &downAnim)
-		currentAnimation = &downAnim;
-		break;
-	default:
+		{
+			currentAnimation = &downAnim;
+		}		
 		break;
 	}
 }
@@ -189,19 +197,10 @@ UpdateResult Mover::PostUpdate() {
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Mover::OnCollision(Collider* col)
-{
-	if (col->type == Type::EXPLOSION)
-	{
-		die();
-		App->scene->currentScene->score += 800;
-	}
-}
-
 int Mover::RandomMov()
 {
 	// Get mover tile posiion
-	iPoint myTilePos = level1Tile->getTilePos(position);
+	iPoint myTilePos = tileMap->getTilePos(position);
 	// offset
 	myTilePos.y--;
 
@@ -215,7 +214,7 @@ int Mover::RandomMov()
 
 	for (int i = 0; i < 4; ++i)
 	{
-		int thisGrid = level1Tile->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
+		int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
 		if(thisGrid == 0 || thisGrid == 4)
 		{
 			// Save usable direccion
@@ -255,11 +254,11 @@ int Mover::AStar()
 	}
 
 	// mi posicion (tile)
-	iPoint myTilePos = level1Tile->getTilePos(position);	
+	iPoint myTilePos = tileMap->getTilePos(position);	
 	myTilePos.y--;
 
 	// posicion de destinatario (tile)
-	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
+	iPoint playerTilePos = tileMap->getTilePos(*playerPos);
 	playerTilePos.y--;
 
 	if (myTilePos == playerTilePos)
@@ -361,7 +360,7 @@ int Mover::AStar()
 		{
 			pass = false;
 
-			int thisGrid = level1Tile->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
+			int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
 			// si el grid que vamos a ir no es 0 o 4
 			if(thisGrid != 0 && thisGrid != 4)
 			{
@@ -415,14 +414,16 @@ int Mover::AStar()
 	return { -1 };
 }
 
-void Mover::die()
+void Mover::Die()
 {
 	if(pendingToDelete) return;
 
 	col->pendingToDelete = true;
 
 	iPoint tempPos = position;
+
 	tempPos += {-4, -14};
+
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 14.1f);
 
 	pendingToDelete = true;

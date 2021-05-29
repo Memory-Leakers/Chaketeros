@@ -8,13 +8,12 @@
 #include "Obstacle.h"
 #include "ModuleCollisions.h"
 
+
 #define SCENE_OBSTACLES_NUM 256
 
 class SceneLevelBoss : public Scene
 {
 private:
-	SDL_Texture* texBananacher = nullptr;;
-	SDL_Texture* texSaru = nullptr;
 	SDL_Texture* texMap = nullptr;
 	SDL_Texture* texBomb = nullptr;
 	SDL_Texture* texUI = nullptr;
@@ -23,6 +22,7 @@ private:
 	SDL_Rect recUIbar = { 0,0,256,24 };
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+
 
 public:
 	Tile* tileMap = nullptr;

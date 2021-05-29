@@ -45,7 +45,8 @@ void RedFlower::OnCollision(Collider* col)
 {
 	if (col->type == Type::EXPLOSION)
 	{
-		App->scene->currentScene->score += 100;
+		App->scene->playerSettings->playerScore += 100;
+		App->scene->DrawPoints(100, getPosition());
 
 		Die();
 	}

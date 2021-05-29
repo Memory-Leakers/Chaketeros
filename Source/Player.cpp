@@ -7,18 +7,21 @@ using namespace std;
 
 SDL_Rect* rect;
 
-Player::Player(Tile* level1Tile, Obstacle** obs)
+Player::Player(Tile* tileMap, Obstacle** obs)
 {
-	this->level1Tile = level1Tile;
+	this->tileMap = tileMap;
 	obstacles = obs;
 
 	position.x = 40;
 	position.y = 32;
+
 	//Rect for col
-	bounds.x = 0;
-	bounds.y = 0;
+	bounds.x = position.x;
+	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
+
+	#pragma region Init Anim
 
 	//Animation Down
 	downAnim.PushBack({ 17, 2, 16, 22 });//IDLE
@@ -50,6 +53,8 @@ Player::Player(Tile* level1Tile, Obstacle** obs)
 
 	currentAnimation = &downAnim;
 
+	#pragma endregion
+
 	//Load Sound
 	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
 	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
@@ -58,8 +63,6 @@ Player::Player(Tile* level1Tile, Obstacle** obs)
 
 Player::~Player()
 {
-	col->pendingToDelete = true;
-
 	if (playerDestroyed != nullptr)
 	{
 		delete playerDestroyed;
@@ -69,14 +72,12 @@ Player::~Player()
 
 bool Player::Start()
 {
-	LOG("Loading player textures");
-
 	bool ret = true;
+
+	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-
-	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
 	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 
@@ -104,16 +105,13 @@ UpdateResult Player::Update()
 	int speedX = 0;
 	int speedY = 0;
 
-	#pragma region Movements
-
-
+	#pragma region Movements keys
 
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
 	{
 		isFlip = false;
 		currentAnimation = &upAnim;
 		currentAnimation->hasIdle = false;
-		//TODO: Cambiar limites del mapa por nivel
 		if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
 		{
 			//position.y -= speed;
@@ -128,10 +126,10 @@ UpdateResult Player::Update()
 
 			tempTilePos.y--; // offset
 
-			int playerAbove = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
+			int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
 
 			//if target grid don't have obstacle
-			if (playerAbove == 4 || playerAbove == 0)
+			if (playerAbove == 4 || playerAbove == 0 || playerAbove == 13)
 			{
 				// optimize movemente
 				if (pivotPoint.x > (tileX + 8))
@@ -167,7 +165,7 @@ UpdateResult Player::Update()
 
 			int tileX = getCurrentTileWorldPos().x;
 
-			int playerBelow = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y + 1][tempTilePos.x];
+			int playerBelow = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y + 1][tempTilePos.x];
 
 			//if target grid don't have obstacle
 			if (playerBelow == 4 || playerBelow == 0)
@@ -208,7 +206,7 @@ UpdateResult Player::Update()
 
 			tempTilePos.y--; // offset
 
-			int playerRight = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
+			int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
 
 			//if target grid don't have obstacle
 			if(playerRight == 4 || playerRight == 0)
@@ -248,7 +246,7 @@ UpdateResult Player::Update()
 
 			tempTilePos.y--; // offset
 
-			int playerRight = level1Tile->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
+			int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
 
 			//if target grid don't have obstacle
 			if (playerRight == 4 || playerRight == 0)
@@ -270,15 +268,23 @@ UpdateResult Player::Update()
 
 	#pragma endregion
 
+	// Drop a bomb
 	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && maxBombs > 0)
 	{
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		iPoint temp = getCurrentTilePos();
+		temp.y--;
+
+		// If player not situate in glass capsule stairs
+		if (tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x] != 13)
 		{
-			if (obstacles[i] == nullptr)
+			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 			{
-				obstacles[i] = new Bomb(this, texBomb, level1Tile);
-				maxBombs--;
-				break;
+				if (obstacles[i] == nullptr)
+				{
+					obstacles[i] = new Bomb(this, texBomb, tileMap);
+					maxBombs--;
+					break;
+				}
 			}
 		}
 	}
@@ -294,9 +300,7 @@ UpdateResult Player::Update()
 		App->render->CameraMove(tempPos);
 	}
 
-
-
-	// Player Idle or walk
+	// Player idle or walk state
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
 		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
 	{
@@ -313,6 +317,10 @@ UpdateResult Player::Update()
 	pivotPoint = { position.x + 8, position.y + 8 };
 
 	#pragma region Debug keys
+	if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
+	{
+		App->scene->playerSettings->powerUpFlame++;
+	}
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		godMode = !godMode;
@@ -325,11 +333,11 @@ UpdateResult Player::Update()
 		if(posMode)
 		{
 			lastTilePos = getCurrentTilePos();
-			level1Tile->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
+			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
 		}
 		else
 		{
-			level1Tile->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
+			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
 		}
 	}
 	#pragma endregion
@@ -370,8 +378,8 @@ UpdateResult Player::PostUpdate()
 		tilePos = getCurrentTilePos();
 		if (tilePos != lastTilePos)
 		{
-			level1Tile->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = 0;
-			level1Tile->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = -1;
+			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = 0;
+			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = -1;
 			lastTilePos = tilePos;
 		}
 	}
@@ -380,6 +388,62 @@ UpdateResult Player::PostUpdate()
 	// App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
 
 	return UpdateResult::UPDATE_CONTINUE;
+}
+
+//TODO
+iPoint Player::Move(int dir)
+{
+	iPoint tempDir[4]
+	{
+		{ 0,-1 * speed}, // Up
+		{ 0, 1 * speed}, // Down
+		{-1 * speed, 0}, // Left
+		{ 1 * speed, 0} // Right	 
+	};
+
+	iPoint tempSpeed = { 0,0 };
+
+	Animation* tempAnim[4] = { &upAnim, &downAnim , &leftAnim, &rightAnim };
+
+	bool tempFlip[] = { false,false,false,true };
+
+	isFlip = tempFlip[dir];
+	currentAnimation = tempAnim[dir];
+	currentAnimation->hasIdle = false;
+	if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[dir]) // Limiitar movimiento en la mapa//
+	{
+		tempSpeed = tempDir[dir];
+	}
+
+	// movemenet fix
+	else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+	{
+		iPoint tempTilePos = getCurrentTilePos();
+
+		int tileX = getCurrentTileWorldPos().x;
+
+		tempTilePos.y--; // offset
+
+		int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
+
+		//if target grid don't have obstacle
+		if (playerAbove == 4 || playerAbove == 0 || playerAbove == 13)
+		{
+			// optimize movemente
+			if (pivotPoint.x > (tileX + 8))
+			{
+				position.x -= speed;
+			}
+			else if (pivotPoint.x < (tileX + 8))
+			{
+				position.x += speed;
+			}
+		}
+	}
+
+	SpecialSound();
+
+	return tempSpeed;
 }
 
 void Player::OnCollision(Collider* col)
@@ -394,6 +458,11 @@ void Player::OnCollision(Collider* col)
 				App->audio->PlaySound(gameOverSFX, 0);
 				pendingToDelete = true;
 				posMode = false;
+
+				if (this->col != nullptr)
+				{
+					this->col->pendingToDelete = true;
+				}
 
 				// Create die particle
 				iPoint tempPos = position;
@@ -478,13 +547,13 @@ void Player::SpecialSound()
 
 bool Player::InGrid(Collider* col)
 {
-	iPoint colGrid = level1Tile->getTilePos(col->getPos());
+	iPoint colGrid = tileMap->getTilePos(col->getPos());
 
 	if(col->type==Type::ENEMY) // Detect enemy pivot point
 	{
 		iPoint tempPos = col->getPos();
 		tempPos += {8, 8};
-		colGrid = level1Tile->getTilePos(tempPos);
+		colGrid = tileMap->getTilePos(tempPos);
 	}
 	
 	if(colGrid == getCurrentTilePos())
@@ -499,7 +568,7 @@ iPoint Player::getCurrentTilePos()
 {
 	iPoint ret = pivotPoint;
 
-	ret = level1Tile->getTilePos(ret);
+	ret = tileMap->getTilePos(ret);
 
 	return ret;
 }
@@ -508,8 +577,8 @@ iPoint Player::getCurrentTileWorldPos()
 {
 	iPoint ret = pivotPoint;
 
-	ret = level1Tile->getTilePos(ret);
-	ret = level1Tile->getWorldPos(ret);
+	ret = tileMap->getTilePos(ret);
+	ret = tileMap->getWorldPos(ret);
 
 	return ret;
 }

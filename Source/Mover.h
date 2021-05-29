@@ -22,12 +22,15 @@ class Mover : public ModuleEnemy
 {
 private:
 
-	Particle dieParticle;
-
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation rightAnim;
+
 	Animation leftAnim;
+
+	Particle dieParticle;
 
 	Timer moverTimer;
 
@@ -75,15 +78,13 @@ public:
 
 	bool Start() override;
 
-	void OnCollision(Collider* col) override;
-
 	UpdateResult PreUpdate() override;
 
 	UpdateResult Update() override;
 
 	UpdateResult PostUpdate() override;	
 
-	void die() override;
+	void Die() override;
 };
 
 #endif // !_MOVER_H_

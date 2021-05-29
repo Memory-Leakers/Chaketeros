@@ -23,9 +23,7 @@ SceneMainTitle::~SceneMainTitle()
 
 bool SceneMainTitle::Start()
 {
-
-
-#pragma region Textures Setup
+	#pragma region Textures Setup
 
 	for (int i = 0; i < 9; ++i)
 	{
@@ -34,8 +32,6 @@ bool SceneMainTitle::Start()
 		introImages[i] = App->textures->Load(num);
 	}
 
-
-
 	texMainMenu = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenu.png");
 	texMenuArrow = App->textures->Load("Assets/Images/Sprites/UI_Sprites/MainMenuArrow.png");
 	menuBackgroundRect = { 768, 0, 256, 224 };
@@ -43,16 +39,18 @@ bool SceneMainTitle::Start()
 	menuOptionsRect = { 263, 0, 256, 216 };
 	menuTitleRect = { 0,0,256, 200 };
 	menuBottomRect = { 48, 200, 144, 8 };
+
 	#pragma endregion
 
 	#pragma region Arrow Positions Setup
+
 	arrowPosition[0] = { 63, 151 };
 	arrowPosition[1] = { 63, 167 };
 	arrowPosition[2] = { 63, 182 };
 
 	currentArrowPos = &arrowPosition[0];
-	#pragma endregion
 
+	#pragma endregion
 
 	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
 	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
@@ -83,7 +81,8 @@ bool SceneMainTitle::Update()
 			App->audio->PlayMusic("Assets/Audio/Music/TitleScreen.ogg", 0); 
 		}
 
-		#pragma region Input Arrow Position Logic
+			#pragma region Input Arrow Position Logic
+
 			//Check Input to change Arrow Position
 			if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 			{
@@ -109,9 +108,11 @@ bool SceneMainTitle::Update()
 					currentArrowPos--;
 				}
 			}
-		#pragma endregion
 
-		#pragma region Select Option Logic
+			#pragma endregion
+
+				#pragma region Select Option Logic
+
 				//Select an option based on the arrow position
 				if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 				{
@@ -123,7 +124,8 @@ bool SceneMainTitle::Update()
 
 					}
 				}
-		#pragma endregion
+
+				#pragma endregion
 	}
 	else 
 	{
@@ -148,8 +150,6 @@ bool SceneMainTitle::Update()
 
 bool SceneMainTitle::PostUpdate()
 {
-
-
 	if ((currentImage == 8 && mainMenuTimer.getDeltaTime() >= 1.0f) || skipIntro)
 	{
 		//Drawing Textures

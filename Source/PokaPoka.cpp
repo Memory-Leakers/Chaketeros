@@ -5,9 +5,9 @@ using namespace std;
 
 SDL_Rect* rectPoka;
 
-PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
+PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* tileMap) {
 	
-	this->level1Tile = level1Tile;
+	this->tileMap = tileMap;
 	this->playerPos = playerPos;
 	position.x = x;
 	position.y = y;
@@ -15,6 +15,8 @@ PokaPoka::PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile) {
 	bounds.y = position.y;
 	bounds.w = 16;
 	bounds.h = 16;
+	points = 100;
+	life = 1; 
 }
 
 PokaPoka::~PokaPoka() {
@@ -149,11 +151,11 @@ UpdateResult PokaPoka::PostUpdate() {
 }
 
 void PokaPoka::movement() {
-	nPoint = level1Tile->getTilePos(position);
+	nPoint = tileMap->getTilePos(position);
 	nPoint.y -= 1;
 
 	//Posició del Jugador
-	iPoint playerTilePos = level1Tile->getTilePos(*playerPos);
+	iPoint playerTilePos = tileMap->getTilePos(*playerPos);
 	
 	//Steps
 	if (pC >= 17 || pC == 0) {
@@ -183,8 +185,8 @@ void PokaPoka::movement() {
 		keepAttacking = false;
 		switch (moveRand) {
 			case 0://DOWN
-				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 0 ||
-					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 4) { // 0 i 4 son l'id de la tile
+				if (tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 4) { // 0 i 4 son l'id de la tile
 					isFlip = false;
 					currentAnimation = &downAnim;
 					currentAnimation->hasIdle = false;
@@ -202,8 +204,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 1://UP
-				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
-					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4) {
+				if (tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4) {
 					isFlip = false;
 					currentAnimation = &upAnim;
 					currentAnimation->hasIdle = false;
@@ -221,8 +223,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 2://RIGHT
-				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
-					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4) {
+				if (tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4) {
 					isFlip = true;
 					currentAnimation = &rightAnim;
 					currentAnimation->hasIdle = false;
@@ -240,8 +242,8 @@ void PokaPoka::movement() {
 				}
 				break;
 			case 3://LEFT
-				if (level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 0 ||
-					level1Tile->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 4) {
+				if (tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 4) {
 					isFlip = false;
 					currentAnimation = &leftAnim;
 					currentAnimation->hasIdle = false;
@@ -267,18 +269,11 @@ void PokaPoka::moveRandom(int i) {
 	}
 }
 
-void PokaPoka::OnCollision(Collider* col) {
-	if (col->type == Type::EXPLOSION) 
-	{
-		die();
-	}
-}
-
-void PokaPoka::die() {
+void PokaPoka::Die() {
 
 	if (pendingToDelete) return;
 
-	App->scene->currentScene->score += 200;
+	App->scene->playerSettings->playerScore += 200;
 	isDead = true;
 
 	col->pendingToDelete = true;

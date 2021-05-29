@@ -1,6 +1,8 @@
 #include "SceneLevelBoss.h"
+#include "Bananacher.h"
 
 Player* bombermanBoss = nullptr;
+Bananacher* bananacher = nullptr;
 
 SceneLevelBoss::SceneLevelBoss()
 {
@@ -18,6 +20,7 @@ void SceneLevelBoss::CreateScene()
 
 	// Create new player
 	bombermanBoss = new Player(tileMap, obstacles);
+	bananacher = new Bananacher({ 72, 48 }, tileMap);
 	bombermanBoss->Start();
 	bombermanBoss->setPosition(120, 192); //232 352
 
@@ -38,8 +41,6 @@ void SceneLevelBoss::CreateScene()
 
 void SceneLevelBoss::InitAssets()
 {
-	texBananacher = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Banana.png");
-	texSaru = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Monkey.png");
 	texMap = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/BossMap.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
@@ -55,11 +56,15 @@ bool SceneLevelBoss::Start()
 
 	CreateScene();
 
+	bananacher->Start();
+
 	return false;
 }
 
 bool SceneLevelBoss::PreUpdate()
 {
+	bananacher->PreUpdate();
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr && obstacles[i]->pendingToDelete)
@@ -74,8 +79,16 @@ bool SceneLevelBoss::PreUpdate()
 
 bool SceneLevelBoss::Update()
 {
-	bombermanBoss->Update();
+	if (bombermanBoss != nullptr)
+	{
+		bombermanBoss->Update();
+	}
 
+	if (bananacher != nullptr && !bananacher->pendingToDelete)
+	{
+		bananacher->Update();
+	}
+	
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr)
@@ -98,33 +111,49 @@ bool SceneLevelBoss::PostUpdate()
 		}
 	}
 
+	// Draw Bananacher
+	if (!bananacher->pendingToDelete)
+	{
+		bananacher->PostUpdate();
+	}
+
+	// Draw player
+	if (bombermanBoss != nullptr)
+	{
+		bombermanBoss->PostUpdate();
+	}
+
 	// Draw BG
 	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, 0);
 
 	// Draw UI bar
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
-
-	// Draw player
-	bombermanBoss->PostUpdate();
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 0, 5);
 
 	return false;
 }
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
-	if(bombermanBoss->col == c1)
+	if (bananacher->col == c1)
+	{
+		bananacher->OnCollision(c2);
+	}
+
+	else if(bombermanBoss->col == c1)
 	{
 		bombermanBoss->OnCollision(c2);
 	}
 
-	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	else
 	{
-		if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
-			obstacles[i]->OnCollision(c2);
+			if (obstacles[i] != nullptr && obstacles[i]->getCollider() == c1)
+			{
+				obstacles[i]->OnCollision(c2);
+			}
 		}
 	}
-
 }
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
@@ -149,6 +178,12 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	{
 		delete tileMap;
 		tileMap = nullptr;
+	}
+
+	if (bananacher != nullptr)
+	{
+		delete bananacher;
+		bananacher = nullptr;
 	}
 
 	if (bombermanBoss != nullptr)

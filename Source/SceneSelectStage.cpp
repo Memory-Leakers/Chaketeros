@@ -4,7 +4,7 @@
 using namespace std;
 
 // Debug variable
-iPoint debugOffset = { 0,0 };
+//iPoint debugOffset = { 0,0 };
 
 SceneSelectStage::SceneSelectStage()
 {
@@ -50,37 +50,57 @@ bool SceneSelectStage::Start()
 	// reset anim
 	stoneCoinAnim.Reset();
 
-	bigMoneyPointer = 1;
+	stageSelectPointer = 0;
+
+	// determine big money sprite
+	bigMoneyPointer = 0;
+	for (int i = 0; i < 3; i++)
+	{
+		if (App->scene->isLevelCompleted[i])
+		{
+			bigMoneyPointer++;
+		}
+	}
 
 	return true;
 }
 
 void SceneSelectStage::ModifyStagePointer(int mod)
 {
-	switch (mod)
+	// if key is down
+	if (mod == 0)
+	{ 
+		// show exit icon
+		stageSelectPointer = 3;
+	}
+	else
 	{
-	case 0: stageSelectPointer = 3; break;
-	case 1: 
-		if(stageSelectPointer<2)
+		// if the last state is Exit
+		if (stageSelectPointer == 3)
 		{
-			stageSelectPointer++;
+			// current state should be level 1
+			stageSelectPointer = 0;
+			return;
 		}
-		else
+
+		stageSelectPointer += mod;
+
+		// if out of range
+		if (stageSelectPointer > 2)
 		{
 			stageSelectPointer = 0;
 		}
-		break;
-	case -1: 
-		if (stageSelectPointer > 0)
-		{
-			stageSelectPointer--;
-		}
-		else
+		else if (stageSelectPointer < 0)
 		{
 			stageSelectPointer = 2;
 		}
-		break;
-	}
+
+		// go to the next accecible level
+		if (stageSelectPointer != 0 && !App->scene->isLevelCompleted[stageSelectPointer - 1])
+		{
+			ModifyStagePointer(mod);
+		}
+	}	
 }
 
 bool SceneSelectStage::Update()
@@ -93,38 +113,34 @@ bool SceneSelectStage::Update()
 	{
 		switch (stageSelectPointer)
 		{
-		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 80); break;
+		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 60); break;
 
-		case 1: break;
+		case 1: App->scene->ChangeCurrentScene(SCENE_LEVEL2, 60); break;
 
-		case 2: break;
+		case 2: App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 60); break;
 
-		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 80); break;
+		case 3: App->scene->ChangeCurrentScene(SCENE_AREA, 60); break;
 
 		default: break;
 		}
 	}
 	#pragma endregion
 
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
-	{
-		ModifyStagePointer(1);
-	}
-	else if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
 	{
 		ModifyStagePointer(0);
+	}
+	else if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	{
+		ModifyStagePointer(1);
 	}
 	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
 	{
 		ModifyStagePointer(-1);
 	}
-	else if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
-	{
-		ModifyStagePointer(1);
-	}
 
 	#pragma region Debug Code
-	
+	/*
 	if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
 	{
 		debugOffset.y--;
@@ -149,7 +165,7 @@ bool SceneSelectStage::Update()
 		system("cls");
 		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
 	}
-	
+	*/
 	#pragma endregion
 
 	return true;
@@ -181,8 +197,10 @@ bool SceneSelectStage::PostUpdate()
 	// Coins
 	for (int i = 0; i < 3; i++)
 	{
-		//renderRect = stoneCoins[i].animation.GetCurrentFrame();
-		App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
+		if(!App->scene->isLevelCompleted[i])
+		{
+			App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
+		}
 	}
 
 	return true;

@@ -47,7 +47,7 @@ public:
 	int speed = 1; //Movement only
 
 public:
-	PokaPoka(int x, int y, iPoint* playerPos, Tile* level1Tile);
+	PokaPoka(int x, int y, iPoint* playerPos, Tile* tileMap);
 
 	~PokaPoka();
 
@@ -56,10 +56,7 @@ public:
 	UpdateResult Update();
 	UpdateResult PostUpdate();
 
-	void OnCollision(Collider* col);
-
-	void die() override;
-
+	void Die() override;
 
 };
 

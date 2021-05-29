@@ -62,16 +62,21 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
-	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN) {
+	#pragma region Debug key
+
+	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
+	{
 		debugCamera = !debugCamera;
 		startCountTime = SDL_GetPerformanceCounter();
-		if (!debugCamera) {
+		if (!debugCamera) 
+		{
 			camera.y = 0;
 			camera.x = 0;
 		}
 	}
 
-	if (debugCamera) {
+	if (debugCamera) 
+	{
 		// Handle positive vertical movement
 		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
 
@@ -82,6 +87,8 @@ UpdateResult ModuleRender::Update()
 
 		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
 	}
+
+	#pragma endregion
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -121,11 +128,6 @@ UpdateResult ModuleRender::PostUpdate()
 		SDL_SetRenderDrawColor(renderer, renderRect.color.r, renderRect.color.g, renderRect.color.b, renderRect.color.a);
 		SDL_RenderFillRect(renderer, &renderRect.rect);
 	}
-
-
-
-	
-
 
 	// Update the screen
 	SDL_RenderPresent(renderer);
@@ -223,6 +225,23 @@ void ModuleRender::SortRenderObjects(vector<RenderObject>& obj)
 			}
 		}
 	}
+}
+
+void ModuleRender::CameraMove(iPoint pos)
+{
+	//	If the target is on the area where camera can follow (not off limits)
+	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))
+	{
+		//	Camera position = target position
+		camera.x = pos.x - (SCREEN_WIDTH / 2);	
+		camera.y = pos.y;
+	}
+}
+
+void ModuleRender::ResetCamera()
+{
+	camera.x = 0;
+	camera.y = 0;
 }
 
 #pragma region Obsolete
@@ -386,14 +405,5 @@ bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float sp
 	}
 
 	return ret;
-}
-
-void ModuleRender::CameraMove(iPoint pos)
-{
-	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
-	{
-		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
-		camera.y = pos.y;
-	}
 }
 #pragma endregion

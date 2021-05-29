@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "PlayerSettings.h"
 
+
 #define SCENES_NUM 8
 
 struct SDL_Texture;
@@ -63,10 +64,11 @@ public:
 
 	void WillCollision(Collider* c1, Collider* c2) override;
 
-	bool ChangeCurrentScene(uint index, int frames, int sceneScore = 0);
+	bool ChangeCurrentScene(uint index, int frames);
+
+	void DrawPoints(int score, iPoint position);
 
 	bool CleanUp() override;
-
 
 	Scene* currentScene = nullptr;
 
@@ -74,7 +76,7 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
-	bool isLevelCompleted[3];
+	bool isLevelCompleted[3];	//TODO: Cambiar el uso de esta variable en las escenas Level1 y Level2!!!
 
 	int currentLevel = 0;
 
@@ -101,9 +103,7 @@ private:
 								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8 };
 
 
-	void DebugChangeScene();
-
-	
+	void DebugChangeScene();	
 };
 
 #endif // __MODULESCENE_H__

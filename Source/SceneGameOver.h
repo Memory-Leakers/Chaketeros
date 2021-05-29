@@ -37,6 +37,8 @@ private:
 
 	bool pressedContinue = false;	//Boolean to control the changing scenes logic
 
+	int score;
+
 public:
 	SceneGameOver();
 
@@ -56,7 +58,6 @@ public:
 	bool PostUpdate() override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
-
 };
 
 #endif // !_SCENEGAMEOVER_H_

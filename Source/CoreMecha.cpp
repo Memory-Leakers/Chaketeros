@@ -36,7 +36,7 @@ void CoreMecha::Die()
 	tempPos -= {5, 11};
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE);
 
-	App->scene->currentScene->score += 800;
+	App->scene->playerSettings->playerScore += 800;
 
 	int tileX, tileY;
 	tileX = currentTileMap->getTilePos(getPosition()).x;
@@ -44,6 +44,8 @@ void CoreMecha::Die()
 	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
 
 	(*coreMechaNum)--;
+
+	App->scene->DrawPoints(800, getPosition());
 }
 
 void CoreMecha::PostUpdate()

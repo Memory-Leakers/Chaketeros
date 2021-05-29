@@ -20,9 +20,9 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 	#pragma region Init explotionparticle
 
-	explosionCenter.InitParticle(500.0f, 0.3f, tex);
-	explosionMiddle.InitParticle(500.0f, 0.3f, tex);
-	explosionEnd.InitParticle(500.0f, 0.3f, tex);
+	explosionCenter.InitParticle(500.0f, 0.4f, tex);
+	explosionMiddle.InitParticle(500.0f, 0.4f, tex);
+	explosionEnd.InitParticle(500.0f, 0.4f, tex);
 
 	// ExplosionCenter particle
 	explosionCenter.anim.PushBack({ 21, 2, 16, 16 });
@@ -49,6 +49,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 	// Inicializar animacion prestablecida de la bomba
 	#pragma region Init bomb anim
+
 	defaultAnim.hasIdle = false;
 	defaultAnim.speed = 0.07f;
 	defaultAnim.loop = true;
@@ -56,6 +57,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
 	defaultAnim.PushBack({ 1,39,16,16 }); //big
 	defaultAnim.PushBack({ 1,21,16,16 }); //midle
+
 	#pragma endregion
 
 	// Assignar anamacion prestablecida a currentAnim
@@ -115,34 +117,32 @@ void Bomb::Die()
 	player->maxBombs++;
 	getCollider()->pendingToDelete = true;
 
-	// Centro de la explocion
+	// Create explotion center
 	App->particle->AddParticle(explosionCenter, getPosition(), Type::EXPLOSION);
 
-	// Calculate spawn number for dir
+	#pragma region Calculate spawn number for dir
+
 	int explotionNum[4] = { 0,0,0,0 };
 	int tileX, tileY;
 	tileX = lv1Tile->getTilePos(getPosition()).x;
 	tileY = (lv1Tile->getTilePos(getPosition()).y) - 1;
 	iPoint dirSpawn[4] = { {1,0},{0,1},{-1,0},{0,-1} };
 
-	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 0;	//Cambiar el numero en tileMap al morir
+	// Change number of tileMao when destroy
+	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 0;	
 
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 1; j <= explotionRange; j++)
 		{
-			if (lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j ] == 0||
-				lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == 4 ||
-				lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] == -1)
+			int temp = lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j];
+			if (temp == 0|| temp == 4 || temp == -1)
 			{
 				explotionNum[i]++;
 			}
 			else
 			{
-				if(lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] !=1
-					&&lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 2
-					&& lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 7
-					&& lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j] != 9)
+				if(temp !=1 && temp != 2 && temp  != 7 && temp != 10 && temp != 13)
 				{
 					explotionNum[i]++;
 				}
@@ -151,7 +151,10 @@ void Bomb::Die()
 		}
 	}
 
-	// Create explotion
+	#pragma endregion
+
+	#pragma region Create explotion
+
 	for (int i = 1; i < explotionRange; i++)
 	{
 		// 4 direction for explotion
@@ -190,4 +193,6 @@ void Bomb::Die()
 			}			
 		}
 	}
+
+	#pragma endregion
 }

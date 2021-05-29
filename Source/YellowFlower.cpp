@@ -10,7 +10,7 @@ YellowFlower::YellowFlower(iPoint pos, SDL_Texture* tex,Tile* tile, int hasPower
 {
 	// Flow tienen sprites en diferentes sprite sheet, por eso necesita una textura aparte para guardar la animacion de morir
 	this->currentTileMap = tile;
-	this->hasPowerUp = hasPowerUp;
+	this->powerUp = hasPowerUp;
 
 	//Init Particle
 	this->dieParticle.InitParticle(500.0f, 0.3f, tex);
@@ -37,14 +37,16 @@ void YellowFlower::Die()
 	tileX = currentTileMap->getTilePos(getPosition()).x;
 	tileY = (currentTileMap->getTilePos(getPosition()).y);
 
-	if (hasPowerUp == 1)
-	{
-		currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 8;
-	}
-	else
-	{
-		currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
-	}
+	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
+
+	//if (hasPowerUp == 1)
+	//{
+	//	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 8;
+	//}
+	//else
+	//{
+	//	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
+	//}
 }
 
 void YellowFlower::PostUpdate()

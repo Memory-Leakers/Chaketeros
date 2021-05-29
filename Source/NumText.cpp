@@ -32,16 +32,15 @@ void NumText::Start()
 	texFonts = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 }
 
-void NumText::DrawNum(int num, iPoint pos, float scale, int font)
+void NumText::DrawNum(int num, iPoint pos, float scale, int layer, float orderInLayer, int font)
 {
 	//	Declare Variables
 	stack<int> digits;
 	vector<int> digitVec;
-	int totalDigits;
-
-	
+	int totalDigits;	
 
 	#pragma region Digit Order Logic
+
 	//Getting digits from number in order Logic
 	if (num != 0) {
 		while (num > 0)
@@ -65,9 +64,11 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 		digitVec.push_back(0);
 		totalDigits = 1;
 	}
+
 	#pragma endregion
 
 	#pragma region Drawing Num Logic
+
 	//Check wich font we're using
 	switch (font)
 	{
@@ -77,7 +78,7 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 			iPoint tempPos = pos;
 			tempPos.x += (9 * i);						//Offset from num to num
 			//App->render->DrawTexture(texFonts, tempPos, &fonts[font][digitVec.at(i)]); //digitVec returns the number that must be shown
-			App->render->AddTextureRenderQueue(texFonts, tempPos, &fonts[font][digitVec.at(i)], 2, 3, false, 0, scale);
+			App->render->AddTextureRenderQueue(texFonts, tempPos, &fonts[font][digitVec.at(i)], layer, orderInLayer, false, 0, 3);
 		}
 		break;
 	case 1:
@@ -118,7 +119,6 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int font)
 	}
 
 	#pragma endregion
-
 }
 
 /// <summary>

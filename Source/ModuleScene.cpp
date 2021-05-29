@@ -1,6 +1,9 @@
 #include "ModuleScene.h"
-
+#include "DrawPoints.h"
+#include <time.h>
 PlayerSettings* playerSettings = nullptr;
+
+DrawPoints drawPoints;
 
 ModuleScene::ModuleScene()
 {
@@ -13,6 +16,7 @@ ModuleScene::ModuleScene()
 	scenes[6] = new SceneLevelBoss();
 	scenes[7] = new SceneGameOver();
 
+	srand(time(NULL));
 	playerSettings = PlayerSettings::Instance();
 }
 
@@ -28,6 +32,8 @@ bool ModuleScene::Start()
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
 	currentScene = scenes[SCENE_INTRO];
+
+	drawPoints.Start();
 
 
 	if(currentScene == nullptr)
@@ -54,6 +60,8 @@ UpdateResult ModuleScene::PreUpdate()
 
 UpdateResult ModuleScene::Update()
 {
+	drawPoints.Update();
+
 	#pragma region Update and FadeInOut
 	if (currentScene == nullptr)
 	{
@@ -62,12 +70,10 @@ UpdateResult ModuleScene::Update()
 		
 	if (currentStep == FADE_NONE) //Si no hay FADE solo se ejecuta el UPDATE de la CURRENT SCENE
 	{ 
-
 		currentScene->Update();
 		DebugChangeScene(); 
 
 		return UpdateResult::UPDATE_CONTINUE; 
-
 	}	
 
 	if (currentStep == FADE_IN)		//Si hay FADE IN, se ejecuta el Update HASTA QUE EL RECTANGULO NEGRO tenga opacidad m�xima
@@ -81,7 +87,7 @@ UpdateResult ModuleScene::Update()
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
 
-			currentScene->score = playerSettings->playerScore;
+			App->render->ResetCamera();
 			currentScene->lastID = lastSceneID;
 
 			currentScene->Start();
@@ -131,7 +137,8 @@ void ModuleScene::WillCollision(Collider* c1, Collider* c2)
 	currentScene->WillCollision(c1, c2);
 }
 
-bool ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//CleanUp current scene, change current scene (index), Start current Scene
+//CleanUp current scene, change current scene (index), Start current Scene
+bool ModuleScene::ChangeCurrentScene(uint index, int frames)	
 {
 	if (currentStep != FADE_NONE) return false;
 	
@@ -139,9 +146,14 @@ bool ModuleScene::ChangeCurrentScene(uint index, int frames, int sceneScore)	//C
 	maxFrames = frames;
 	currentFrame = 0;
 	newScene = index;
-	playerSettings->playerScore = sceneScore;
 	return true;
 }
+
+void ModuleScene::DrawPoints(int score, iPoint position)
+{
+	drawPoints.DrawScore(score, position);
+}
+
 
 bool ModuleScene::CleanUp()
 {

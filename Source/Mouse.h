@@ -1,5 +1,5 @@
-#ifndef _SNAIL_H_
-#define _SNAIL_H_
+#ifndef _MOUSE_H_
+#define _MOUSE_H_
 
 #include "ModuleEnemy.h"
 #include "Timer.h"
@@ -7,7 +7,7 @@
 #include <vector>
 using namespace std;
 
-class Snail : public ModuleEnemy
+class Mouse : public ModuleEnemy
 {
 private:
 	Particle dieParticle;
@@ -20,7 +20,7 @@ private:
 
 	Animation leftAnim;
 
-	Timer snailTimer;
+	Timer mouseTimer;
 
 	iPoint moveDir[4] = {
 	 { 1, 0 },
@@ -30,23 +30,22 @@ private:
 
 	int currentDir = 0; // Current direccion that we will move
 
-	int speed = 1; //Movement onlys
+	int speed = 2; //Movement onlys
 
 	// Random Mov variable
 	int randomMoveDirIndex = 0; // get RandomMos result
-
 	int moveDirContrary[4]{ 1,0,3,2 }; // push back direccion A star
 private:
-	
+
 	int RandomMov();
 
 public:
 
 	// Constructor
-	Snail(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap);
+	Mouse(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap);
 
 	// Destructor
-	~Snail();
+	~Mouse();
 
 	// Update for x second 
 	// call in Update
@@ -61,6 +60,7 @@ public:
 	UpdateResult PostUpdate() override;
 
 	void Die() override;
+
 };
 #endif // !_SNAIL_H_
 

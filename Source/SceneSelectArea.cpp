@@ -1,15 +1,15 @@
 #include "SceneSelectArea.h"
 
+#include "Timer.h"
+#include "Particle.h"
+#include "External/SDL_image/include/SDL_image.h"
+
 #include <iostream>
 using namespace std;
-#include "Application.h"
-
-Timer particleTime;
 
 SceneSelectArea::SceneSelectArea()
 {
 	ID = 2;
-
 	// Animation should be init in constructor!!!!
 	#pragma region Init Anim
 
@@ -67,6 +67,7 @@ bool SceneSelectArea::Start()
 	StageCheeseandStarsRect = { 512,6,256,224 };
 	UIStageLevel1Rect = { 0, 0, 256, 224 };
 	UIStageLevel2Rect = { 0, 224, 256, 224 };
+	
 	#pragma endregion
 
 	#pragma region Arrow Positions Setup
@@ -127,6 +128,7 @@ bool SceneSelectArea::Update()
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
 		if (currentArrowLevelPos == &arrowLevelPosition[5])
 		{
 			currentArrowLevelPos = &arrowLevelPosition[0];
@@ -135,10 +137,12 @@ bool SceneSelectArea::Update()
 		{
 			currentArrowLevelPos++;
 		}
+		*/
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
 			currentArrowLevelPos = &arrowLevelPosition[5];
@@ -147,6 +151,7 @@ bool SceneSelectArea::Update()
 		{
 			currentArrowLevelPos--;
 		}
+		*/
 	}
 	#pragma endregion
 
@@ -173,7 +178,8 @@ bool SceneSelectArea::PostUpdate()
 {
 	App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &SelectStageBackgroundRect, 0,0);
 
-	App->render->AddTextureRenderQueue(texMainMenu, { 0,-6 }, &StageCheese1Completed, 2, 0);
+
+	
 
 	App->render->AddTextureRenderQueue(texbombermaninArea, { 165, 52 }, &BombermaninAreaRect, 2, 1);
 	if (currentArrowLevelPos == &arrowLevelPosition[0]) {
@@ -182,9 +188,12 @@ bool SceneSelectArea::PostUpdate()
 	else {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel2Rect, 2, 2);
 	}
-	if (App->scene->isLevelCompleted == false) 
+	if (App->scene->isLevelCompleted[0] == false)
 	{
 		App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
+	}
+	if (App->scene->isLevelCompleted[0] == true) {
+		App->render->AddTextureRenderQueue(texLevels, { 127,72 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
 	}
 	App->render->AddTextureRenderQueue(texLevels, { 141, 108 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2, 4);
 	App->render->AddTextureRenderQueue(texLevels, { 103, 134 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2, 7);

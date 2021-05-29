@@ -49,9 +49,13 @@ private:
 
 	bool posMode = false;
 
-	iPoint mapLimits[3][2] = { {{24, 32}, {216, 192}}, {{24,32}, {472,192}}, {{24, 32}, {216, 192}} };
+	iPoint mapLimits[3][2] = { 
+		{{24, 32}, {216, 192}},
+		{{24,32}, {472,192}},
+		{{24, 32}, {216, 192}} 
+	};
 	
-	Tile* level1Tile = nullptr;
+	Tile* tileMap = nullptr;
 
 	Timer playerTimer;
 
@@ -66,9 +70,13 @@ private:
 
 	// A set of animations
 	Animation idleAnim;
+
 	Animation upAnim;
+
 	Animation downAnim;
+
 	Animation leftAnim;
+
 	Animation rightAnim;
 
 	// Player texture
@@ -109,7 +117,7 @@ public:
 
 public:
 	// Constructor
-	Player(Tile* level1Tile, Obstacle** obs);
+	Player(Tile* tileMap, Obstacle** obs);
 
 	// Destructor
 	~Player();
@@ -125,6 +133,8 @@ public:
 	// Called at the end of the application loop
 	// Performs the render call of the player sprite
 	UpdateResult PostUpdate();
+
+	iPoint Move(int dir);
 
 	// Collision callback, called when the player intersects with another
 	void OnCollision(Collider* col);

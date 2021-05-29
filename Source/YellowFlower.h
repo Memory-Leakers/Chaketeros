@@ -7,14 +7,11 @@
 class YellowFlower : public Obstacle 
 {
 private:
-
 	SDL_Rect renderRect;
 
 	Particle dieParticle;
 
 	Tile* currentTileMap;
-
-	int hasPowerUp = 0; // Luego se cambia por int ya que habra mas tipos de power ups
 
 public: 
 	//Constructor
@@ -27,7 +24,6 @@ public:
 	void PostUpdate() override;
 
 	void OnCollision(Collider* col) override;
-
 };
 
 #endif // _YELLOWFLOWER_H_

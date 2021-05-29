@@ -1,8 +1,8 @@
-#include "Snail.h"
+#include "Mouse.h"
 
-SDL_Rect* rectSnail;
+SDL_Rect* rectMouse;
 
-Snail::Snail(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
+Mouse::Mouse(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
 	texture = tex;
 	position.x = spawnPos.x;
 	position.y = spawnPos.y;
@@ -11,52 +11,46 @@ Snail::Snail(iPoint spawnPos, SDL_Texture* tex, Tile* levelMap) {
 	bounds.w = 16;
 	bounds.h = 16;
 	tileMap = levelMap;
-	points = 100;
+	points = 200;
 }
 
-Snail::~Snail() {
+Mouse::~Mouse() {
 
 }
 
-bool Snail::Start() {
+bool Mouse::Start() {
 
-	LOG("LOADING ENEMY SNAIL");
+	LOG("LOADING ENEMY MOUSE");
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
-#pragma region Init Anim
+	#pragma region Init Anim
 
 	// Anim DOWN
-	downAnim.PushBack({ 2,58,22,28 });//IDLE
-	downAnim.PushBack({ 35,59,22,28 });
-	downAnim.PushBack({ 68,59,22,28 });
-	downAnim.PushBack({ 2,58,22,28 });//IDLE
-	downAnim.speed = 0.03f;
+	downAnim.PushBack({ 107,136,26,27 });//IDLE
+	downAnim.PushBack({ 140,136,26,27 });
+	downAnim.speed = 0.12f;
 	downAnim.loop = true;
 	downAnim.hasIdle = false;
 
 	// Animation UP
-	upAnim.PushBack({ 200,56,22,32 });//IDLE
-	upAnim.PushBack({ 233,56,22,32 });
-	upAnim.PushBack({ 2,95,22,32 });
-	upAnim.PushBack({ 200,56,22,32 });//IDLE
-	upAnim.speed = 0.03f;
+	upAnim.PushBack({ 107,136,26,27 });//IDLE
+	upAnim.PushBack({ 140,136,26,27 });
+	upAnim.speed = 0.12f;
 	upAnim.loop = true;
 	upAnim.hasIdle = false;
 
 	// Animation RIGHT
-	rightAnim.PushBack({ 99,56,27,30 });//IDLE
-	rightAnim.PushBack({ 129,56,28,30 });
-	rightAnim.PushBack({ 166,56,26,30 });
-	rightAnim.speed = 0.03f;
+	rightAnim.PushBack({ 107,136,26,27 });//IDLE
+	rightAnim.PushBack({ 140,136,26,27 });
+	rightAnim.speed = 0.12f;
 	rightAnim.loop = true;
 	rightAnim.hasIdle = false;
 
 	//Animation LEFT
-	leftAnim.PushBack({ 99,56,27,30 });//IDLE
-	leftAnim.PushBack({ 129,56,28,30 });
-	leftAnim.PushBack({ 166,56,26,30 });
-	leftAnim.speed = 0.03f;
+	leftAnim.PushBack({ 107,136,26,27 });//IDLE
+	leftAnim.PushBack({ 140,136,26,27 });
+	leftAnim.speed = 0.12f;
 	leftAnim.loop = true;
 	leftAnim.hasIdle = false;
 
@@ -64,20 +58,19 @@ bool Snail::Start() {
 	currentAnimation = &downAnim;
 	currentAnimation->loop = true;
 	currentAnimation->hasIdle = false;
-	currentAnimation->speed = 0.03f;
+	currentAnimation->speed = 0.12f;
 
 #pragma endregion
 #pragma region Init destroy particle
 	dieParticle.InitParticle(500.0f, 0.1f, texture);
-	dieParticle.anim.PushBack({ 35,97,28,30 });
-	dieParticle.anim.PushBack({ 68,97,28,30 });
+	dieParticle.anim.PushBack({ 173,136,26,27 });
+	dieParticle.anim.PushBack({ 208,136,26,27 });
 	dieParticle.anim.speed = 0.08f;
 #pragma endregion
-
 	return true;
 }
 
-UpdateResult Snail::PreUpdate()
+UpdateResult Mouse::PreUpdate()
 {
 	iPoint tilePos = tileMap->getTilePos(position);
 	iPoint centerTile = tileMap->getWorldPos(tilePos);
@@ -85,33 +78,34 @@ UpdateResult Snail::PreUpdate()
 	// Deteci if mover is center of grid
 	if (position == centerTile)
 	{
+
 		randomMoveDirIndex = RandomMov();
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-UpdateResult Snail::Update() {
+UpdateResult Mouse::Update() {
 
 	col->SetPos(this->position.x, this->position.y);
 
-	snailTimer.Update();
+	mouseTimer.Update();
 
-	if (snailTimer.getDeltaTime() >= 0.1f)
+	if (mouseTimer.getDeltaTime() >= 0.04f)
 	{
 		FixedUpdate();
 
-		snailTimer.Reset();
+		mouseTimer.Reset();
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-UpdateResult Snail::PostUpdate() {
+UpdateResult Mouse::PostUpdate() {
 
 	currentAnimation->Update();
 
-	rectSnail = &currentAnimation->GetCurrentFrame();
+	rectMouse = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
 	tempPos += {-4, -14};
@@ -127,18 +121,18 @@ UpdateResult Snail::PostUpdate() {
 	if (isFlip)
 	{
 		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectSnail, 1, position.y, false, 180);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMouse, 1, position.y, false, 180);
 	}
 	else
 	{
 		//App->render->DrawTexture(texture, tempPos, &rect);
-		App->render->AddTextureRenderQueue(texture, tempPos, rectSnail, 1, position.y);
+		App->render->AddTextureRenderQueue(texture, tempPos, rectMouse, 1, position.y);
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Snail::Die()
+void Mouse::Die()
 {
 	if (pendingToDelete) return;
 
@@ -151,9 +145,9 @@ void Snail::Die()
 	pendingToDelete = true;
 }
 
-int Snail::RandomMov()
+int Mouse::RandomMov()
 {
-	// Get snail tile posiion
+	// Get Mouse tile posiion
 	iPoint myTilePos = tileMap->getTilePos(position);
 	// offset
 	myTilePos.y--;
@@ -200,11 +194,12 @@ int Snail::RandomMov()
 	return -1;
 }
 
-void Snail::FixedUpdate()
+void Mouse::FixedUpdate()
 {
 	if (randomMoveDirIndex != -1)
 	{
-		position += moveDir[randomMoveDirIndex];
+		iPoint temp = {moveDir[randomMoveDirIndex].x * speed ,moveDir[randomMoveDirIndex].y * speed} ;
+		position += temp;
 		currentDir = randomMoveDirIndex;
 	}
 
@@ -229,13 +224,13 @@ void Snail::FixedUpdate()
 		if (currentAnimation != &upAnim)
 		{
 			currentAnimation = &upAnim;
-		}
+		}	
 		break;
 	case 3:
 		if (currentAnimation != &downAnim)
 		{
 			currentAnimation = &downAnim;
-		}
+		}		
 		break;
 	}
 }

@@ -93,13 +93,16 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Bananacher.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CoreMecha.h" />
+    <ClInclude Include="DrawPoints.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="GlassCapsule.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Mover.h" />
     <ClInclude Include="NumText.h" />
     <ClInclude Include="Player.h" />
@@ -140,10 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Bananacher.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CoreMecha.cpp" />
+    <ClCompile Include="DrawPoints.cpp" />
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="GlassCapsule.cpp" />
     <ClCompile Include="Globals.cpp" />
@@ -159,6 +164,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Mover.cpp" />
     <ClCompile Include="NumText.cpp" />
     <ClCompile Include="Obstacle.cpp" />
