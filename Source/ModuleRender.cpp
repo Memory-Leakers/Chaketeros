@@ -160,6 +160,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer, bool isFlipH, float rotation, float scale, float speed)
 {
 	RenderObject renderObject;
+	//Fullscreen
 	/*if (scale != SCREEN_SIZE) {
 		scale /= 3;
 	}*/
@@ -234,11 +235,10 @@ void ModuleRender::SortRenderObjects(vector<RenderObject>& obj)
 
 void ModuleRender::CameraMove(iPoint pos)
 {
-	//	If the target is on the area where camera can follow (not off limits)
-	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))
+	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
 	{
-		//	Camera position = target position
-		camera.x = pos.x - (SCREEN_WIDTH / 2);	
+		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
+
 		camera.y = pos.y;
 	}
 }
@@ -413,20 +413,6 @@ bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float sp
 }
 
 
-void ModuleRender::CameraMove(iPoint pos)
-{
-	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
-	{
-		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
-		
-		camera.y = pos.y;
-		
-	}
-}
-void ModuleRender::ResetCamera()
-{
-	camera.x = 0;
-	camera.y = 0;
-}
+
 
 #pragma endregion
