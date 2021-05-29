@@ -94,8 +94,6 @@ private:
 	//	Timer
 	Timer timer;
 
-
-
 public:
 
 	SceneLevel2();

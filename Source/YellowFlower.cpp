@@ -38,15 +38,6 @@ void YellowFlower::Die()
 	tileY = (currentTileMap->getTilePos(getPosition()).y);
 
 	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
-
-	//if (hasPowerUp == 1)
-	//{
-	//	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 8;
-	//}
-	//else
-	//{
-	//	currentTileMap->LevelsTileMaps[App->scene->currentLevel][tileY - 1][tileX] = 0;
-	//}
 }
 
 void YellowFlower::PostUpdate()

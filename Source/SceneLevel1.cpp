@@ -163,8 +163,8 @@ void SceneLevel1::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
 	yellowFlowersNum = rand() % 6 + 43;
-	int hasPowerUp = 2;
-	int powerType = 1;
+	int hasPowerUp = 4;
+	int powerType[5] = { 0,1,1,2,2 };
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
 	{
@@ -174,7 +174,7 @@ void SceneLevel1::CreateYellowFlowers()
 			if (sceneObstacles[j] == nullptr)
 			{
 				//emptySpaces.at = return value at index
-				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, powerType);	
+				sceneObstacles[j] = new YellowFlower(emptySpaces.at(randomNum), texYellowFlower, tileMap, powerType[hasPowerUp]);
 
 				//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));
@@ -188,10 +188,7 @@ void SceneLevel1::CreateYellowFlowers()
 				if (hasPowerUp > 0)
 				{
 					powerUpPos[i] = sceneObstacles[j]->getPosition();
-					if (--hasPowerUp <= 0)
-					{
-						powerType = 0;
-					}
+					hasPowerUp--;
 				}
 
 				break;
@@ -689,7 +686,7 @@ bool SceneLevel1::PostUpdate()
 #pragma endregion
 
 	// Draw powerUpPos
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		Obstacle* temp = sceneObstacles[7 + i];
 		if (debugPowerUp && temp != nullptr && temp->getCollider()->type != Type::BOMB)
@@ -772,6 +769,7 @@ void SceneLevel1::CreateCoins()
 					if (sceneObstacles[l] != nullptr)
 					{
 						sceneObstacles[l]->pendingToDelete = true;
+						//sceneObstacles[l]->powerUp = 0;
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
 						iPoint tempPos = sceneObstacles[l]->getPosition();
 						l++;
