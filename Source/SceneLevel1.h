@@ -84,7 +84,7 @@ private:
 	// Offset for the seconds timer
 	int secondsXOffset = 100;
 	// CoreMecha's number
-	int coreMechaNum = 2;
+	int coreMechaNum = 0;
 	
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
