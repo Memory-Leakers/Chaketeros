@@ -19,6 +19,7 @@ void SceneLevelBoss::CreateScene()
 	// Create new player
 	bombermanBoss = new Player(tileMap, obstacles);
 	bombermanBoss->Start();
+	bombermanBoss->setPosition(120, 192); //232 352
 
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
 	{

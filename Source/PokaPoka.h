@@ -20,6 +20,7 @@ private:
 	Timer attackTimer;
 	Timer moveTimer;
 	int attacking = 3;
+	bool keepAttacking = false;
 
 	void moveRandom(int i);
 
