@@ -66,7 +66,16 @@ bool Mouse::Start() {
 	dieParticle.anim.PushBack({ 173,136,26,27 });
 	dieParticle.anim.PushBack({ 208,136,26,27 });
 	dieParticle.anim.speed = 0.08f;
+	dieParticle2.InitParticle(500.0f, 0.1f, texture);
+	dieParticle2.anim.PushBack({ 140,108,26,27 });
+	dieParticle2.anim.PushBack({ 170,108,32,27 });
+	dieParticle2.anim.PushBack({ 206,108,42,27 });
+	dieParticle2.anim.speed = 0.08f;
 #pragma endregion
+	
+
+	
+	
 	return true;
 }
 
@@ -134,13 +143,23 @@ UpdateResult Mouse::PostUpdate() {
 
 void Mouse::Die()
 {
+	
+
 	if (pendingToDelete) return;
+
+	
 
 	col->pendingToDelete = true;
 
-	iPoint tempPos = position;
+	iPoint tempPos = position,tempPos2 = position;
 	tempPos += {-4, -14};
+	tempPos2 += { -6, -13};
+	
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 0);
+	
+	App->particle->AddParticle(dieParticle2, tempPos2, Type::NONE, true, 0, 0, 26u);
+
+	
 
 	pendingToDelete = true;
 }

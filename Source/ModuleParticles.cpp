@@ -115,7 +115,7 @@ UpdateResult ModuleParticles::PostUpdate()
 	{
 		Particle* particle = particles[i];
 
-		if (particle != nullptr && particle->isAlive)
+		if (particle != nullptr && particle->isAlive && particle->frameCount >=0)
 		{
 			if (particle->rotation != 0)
 			{

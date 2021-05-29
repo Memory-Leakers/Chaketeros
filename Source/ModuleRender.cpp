@@ -42,6 +42,9 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
+	// Fullscreen
+	/*SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);*/
+
 	// init layers size
 	layers.resize(3);
 
@@ -155,7 +158,9 @@ bool ModuleRender::CleanUp()
 void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer, bool isFlipH, float rotation, float scale, float speed)
 {
 	RenderObject renderObject;
-
+	/*if (scale != SCREEN_SIZE) {
+		scale /= 3;
+	}*/
 	renderObject.texture = texture;
 	renderObject.rotation = rotation;
 	renderObject.section = section;
@@ -393,7 +398,9 @@ void ModuleRender::CameraMove(iPoint pos)
 	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
 	{
 		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
+		
 		camera.y = pos.y;
+		
 	}
 }
 void ModuleRender::ResetCamera()

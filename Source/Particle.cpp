@@ -46,15 +46,16 @@ bool Particle::Update()
 	if (!isAlive && frameCount >= 0)
 		isAlive = true;
 
-	if (isAlive)
+	if (isAlive && frameCount >= 0)
 	{
 		anim.Update();
-
+		
 		// If the particle has a specific lifetime, check when it has to be destroyed
 		if (lifetime > 0)
 		{
-			if (frameCount >= lifetime)
+			if (frameCount >= (int)lifetime) {
 				ret = false;
+			}
 		}
 		// Otherwise the particle is destroyed when the animation is finished
 		else if (anim.HasFinished())
