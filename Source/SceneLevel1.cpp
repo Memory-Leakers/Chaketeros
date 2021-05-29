@@ -140,7 +140,7 @@ void SceneLevel1::CreateScene()
 				sceneObstacles[k++] = new RedFlower(tileMap->getWorldPos({ j,i }) -= {0, -16}, texEnemies, tileMap);
 				break;
 			case 6:
-				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, tileMap, & coreMechaNum);
+				sceneObstacles[k++] = new CoreMecha(tileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, tileMap, &coreMechaNum);
 				break;
 			case 10:
 				glassCapsuleIndex = k;
@@ -178,6 +178,7 @@ void SceneLevel1::CreateYellowFlowers()
 
 				//Sets tileMap position to 4 to prevent multiple flowers on the same tile
 				iPoint temp = tileMap->getTilePos(emptySpaces.at(randomNum));
+
 				//-1 en Y no sabemos por qu???
 				tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;
 
@@ -285,7 +286,7 @@ bool SceneLevel1::PreUpdate()
 		}
 	}
 
-# pragma endregion
+	# pragma endregion
 	
 	#pragma region Bomberman dies Condition
 
@@ -304,13 +305,7 @@ bool SceneLevel1::PreUpdate()
 		}
 	}
 
-#pragma endregion
-
-	//One minute left SFX condition
-	if (minutes == 0 && currentSecond == 59)
-	{
-		App->audio->PlaySound(oneMinuteSFX, 0);
-	}
+	#pragma endregion
 
 	#pragma region Runs out of time Condition
 
@@ -345,42 +340,34 @@ bool SceneLevel1::PreUpdate()
 
 	#pragma region Clean obstacles
 
-	bool anyCoreMecha = false;
-
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
 		{
-	#pragma region Create powerUp
+			#pragma region Create powerUp
 
-			for (int l = 0; l < 13; ++l)
+			if (sceneObstacles[i]->powerUp != 0)
 			{
-				for (int j = 0; j < 15; ++j)
+				for (int k = 0; k < MAX_POWERUPS; ++k)
 				{
-					if (tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 8) // if reserved powerUp in this grid
+					if (powerUps[k] == nullptr)
 					{
-						for (int k = 0; k < MAX_POWERUPS; ++k)
-						{
-							if (powerUps[k] == nullptr)
-							{
-								powerUps[k] = new PowerUp(tileMap->getWorldPos({ j,l + 1 }), texPowerUps, texPowerUpDestroyed);
-								tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] = 0;
-								break;
-							}
+						iPoint tempPos = sceneObstacles[i]->getPosition();
+						//tempPos.y++;
 
-						}
-					}
-					if (tileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 6)
-					{
-						anyCoreMecha = true;
+						//iPoint tilePos = tileMap->getWorldPos(tempPos);
+
+						powerUps[k] = new PowerUp(tempPos, texPowerUps, texPowerUpDestroyed);
+						//tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.x][tilePos.y] = 0;
+						break;
 					}
 				}
 			}
 
-#pragma endregion
+			#pragma endregion
 
 			// Detect if level is complete
-			if (!anyCoreMecha && !levelComplete)
+			if (coreMechaNum <= 0 && !levelComplete)
 			{
 				sceneObstacles[glassCapsuleIndex]->Die();
 
@@ -393,7 +380,7 @@ bool SceneLevel1::PreUpdate()
 		}
 	}
 
-#pragma endregion
+	#pragma endregion
 	
 	#pragma region CleanUp & destroy powerUp
 
@@ -406,7 +393,13 @@ bool SceneLevel1::PreUpdate()
 		}
 	}
 
-#pragma endregion	
+	#pragma endregion	
+
+	//One minute left SFX condition
+	if (minutes == 0 && currentSecond == 59)
+	{
+		App->audio->PlaySound(oneMinuteSFX, 0);
+	}
 
 	return true;
 }
@@ -651,7 +644,7 @@ bool SceneLevel1::PostUpdate()
 		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[1], 2, 1);
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Timer Logic (Should be in Update)
 

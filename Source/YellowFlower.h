@@ -13,8 +13,6 @@ private:
 
 	Tile* currentTileMap;
 
-	int hasPowerUp = 0; // Luego se cambia por int ya que habra mas tipos de power ups
-
 public: 
 	//Constructor
 	YellowFlower();
