@@ -412,7 +412,4 @@ bool ModuleRender::DrawRectangle(const SDL_Rect& rect, SDL_Color color, float sp
 	return ret;
 }
 
-
-
-
 #pragma endregion

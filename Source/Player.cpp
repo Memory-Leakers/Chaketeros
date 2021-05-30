@@ -317,6 +317,7 @@ UpdateResult Player::Update()
 	pivotPoint = { position.x + 8, position.y + 8 };
 
 	#pragma region Debug keys
+
 	if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
 	{
 		App->scene->playerSettings->powerUpFlame++;
@@ -340,6 +341,7 @@ UpdateResult Player::Update()
 			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
 		}
 	}
+
 	#pragma endregion
 
 	// Reset Movemenet
@@ -410,6 +412,7 @@ iPoint Player::Move(int dir)
 	isFlip = tempFlip[dir];
 	currentAnimation = tempAnim[dir];
 	currentAnimation->hasIdle = false;
+
 	if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[dir]) // Limiitar movimiento en la mapa//
 	{
 		tempSpeed = tempDir[dir];

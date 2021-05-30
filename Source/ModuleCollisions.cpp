@@ -123,7 +123,6 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::COIN)][uint(Type::BOMBPOWER)] = false;
 	matrix[uint(Type::COIN)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::COIN)][uint(Type::COIN)] = false;
-
 }
 
 // Destructor
@@ -156,8 +155,10 @@ UpdateResult ModuleCollisions::PreUpdate()
 	{
 		// Skip empty colliders
 		if(colliders[i] == nullptr)
+		{
 			continue;
-
+		}
+			
 		c1 = colliders[i];
 
 		// Avoid checking collisions already checked
@@ -165,8 +166,10 @@ UpdateResult ModuleCollisions::PreUpdate()
 		{
 			// Skip empty colliders
 			if(colliders[k] == nullptr)
+			{
 				continue;
-
+			}
+				
 			c2 = colliders[k];
 
 			if (c1->WillIntersects(c2->rect))
@@ -195,7 +198,9 @@ UpdateResult ModuleCollisions::PreUpdate()
 UpdateResult ModuleCollisions::Update()
 {
 	if (App->input->keys[SDL_SCANCODE_F2] == KEY_DOWN)
+	{
 		debug = !debug;
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -203,7 +208,9 @@ UpdateResult ModuleCollisions::Update()
 UpdateResult ModuleCollisions::PostUpdate()
 {
 	if (debug)
+	{
 		DebugDraw();
+	}	
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
