@@ -23,6 +23,19 @@ private:
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+	Timer timer;
+
+	//	Number of total seconds
+	int totalSeconds = 59;
+	//	Number of total minutes
+	int minutes = 4;
+	// Current second shown on screen
+	int currentSecond = 0;
+	// Offset for the seconds timer
+	int secondsXOffset = 100;
+
+	bool isTimeOut;
+
 
 public:
 	Tile* tileMap = nullptr;
