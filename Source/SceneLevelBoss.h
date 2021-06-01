@@ -23,6 +23,8 @@ private:
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+	//Both of them are used to prevent the Buff to trigger more than once
+	bool saruBuff = false;
 
 public:
 	Tile* tileMap = nullptr;

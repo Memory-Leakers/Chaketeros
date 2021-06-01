@@ -2,17 +2,30 @@
 
 #include "ModuleEnemy.h"
 
+#define moveTotDefault 2
 
 class Saru : public ModuleEnemy
 {
 	private:
-		int speed = 1; //Movement only
-		int lives = 5;
+		int vRange = 40;//Range of vision of Saru
+		int speed = 4; //Movement only
+		int moveRangeCount = 0;
 		SDL_Rect* rectSaru;
 		iPoint* playerPos = nullptr;
+		iPoint nPoint;
+		bool onMovement = false;
+		int direction = 4;
+		int pC = 0;
+		int movementTot = 6;
+		int protectCount = 0;
+
+		Timer shotTimer;
+		Timer updateTimer;
 
 		void logic();
-
+		void movement(int direction);
+		void shot();
+		void ProtectCountdown();
 	public:
 
 		iPoint position;
@@ -27,16 +40,22 @@ class Saru : public ModuleEnemy
 		Animation rightAnim;
 		Animation leftAnim;
 
-		Saru(int x, int y, iPoint* playerPos, Tile* level1Tile);
+		Saru(iPoint spawnPos, iPoint* playerPos, Tile* tileMap);
 		~Saru();
 
 		bool Start();
 
-		UpdateResult Update();
-		UpdateResult PostUpdate();
+		UpdateResult PreUpdate() override;
+		UpdateResult Update() override;
+		UpdateResult PostUpdate() override;
 
-		void OnCollision(Collider* col);
+		void OnCollision(Collider* col) override;
 
-		void die() override;
+		void Die() override;
+
+		/*GETTERS AND SETTERS*/
+		void setVRange(int vRange) { //Setters used to change Saru behaviour when bananacher dies
+			this->vRange = vRange;
+		}
 };
 
