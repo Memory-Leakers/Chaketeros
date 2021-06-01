@@ -77,6 +77,8 @@ private:
 
 	bool levelComplete = false;
 
+	bool debugPowerUp = false;
+
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
 	iPoint colisionBoxPos;

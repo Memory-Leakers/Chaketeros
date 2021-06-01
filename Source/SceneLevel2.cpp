@@ -86,7 +86,7 @@ void SceneLevel2::CreateScene()
 void SceneLevel2::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
-	yellowFlowersNum = rand() % 6 + 60;
+	yellowFlowersNum = rand() % 6 + 70;
 	// Power numbers in this level
 	int hasPowerUp = 5;
 	// 1 == fire power,  2 == bomb power, 3 == Invensible power
@@ -239,6 +239,14 @@ bool SceneLevel2::Start()
 
 bool SceneLevel2::PreUpdate()
 {
+	//	TEMPORAL DEBUG TODO: change to debug class
+
+		// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		debugPowerUp = !debugPowerUp;
+	}
+
 # pragma region PreUpdate & Clean Enemy
 	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
 	{
@@ -560,17 +568,11 @@ bool SceneLevel2::PostUpdate()
 	// Draw powerUpPos
 	for (int i = 0; i < LEVEL2_OBSTACLES; i++)
 	{
-		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->powerUp != 0)
+		if (debugPowerUp == true && sceneObstacles[i] != nullptr && sceneObstacles[i]->powerUp != 0)
 		{
 			App->render->AddRectRenderQueue({ sceneObstacles[i]->getPosition().x + 2,sceneObstacles[i]->getPosition().y + 2,12,12 }, { 0,0,255,255 });
 
 		}
-
-		/*Obstacle* temp = sceneObstacles[5 + i];
-		if (debugPowerUp && temp != nullptr && temp->getCollider()->type != Type::BOMB)
-		{
-			App->render->AddRectRenderQueue({ powerUpPos[i].x + 2,powerUpPos[i].y + 2,12,12 }, { 0,0,255,255 });
-		}*/
 	}
 
 	return false;
