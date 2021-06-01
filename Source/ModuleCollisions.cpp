@@ -32,8 +32,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::PLAYER)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::FIREPOWER)] = true;
-	matrix[uint(Type::PLAYER)][uint(Type::BOMBPOWER)] = false;
-	matrix[uint(Type::PLAYER)][uint(Type::INVINCIBLEPOWER)] = false;
+	matrix[uint(Type::PLAYER)][uint(Type::BOMBPOWER)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::INVINCIBLEPOWER)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::COIN)] = true;
 
 	matrix[uint(Type::ENEMY)][uint(Type::WALL)] = true;
@@ -51,7 +51,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::BOMB)][uint(Type::PLAYER)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::ENEMY)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::BOMB)] = false;
-	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::FIREPOWER)] = false;
 	matrix[uint(Type::BOMB)][uint(Type::BOMBPOWER)] = false;
@@ -254,6 +254,8 @@ void ModuleCollisions::DebugDraw()
 			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
 			break;
 			case Type::FIREPOWER: // black
+			case Type::BOMBPOWER:
+			case Type::INVINCIBLEPOWER:
 			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
 			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
 			break;

@@ -1,8 +1,11 @@
 #include "PowerUp.h"
 
-PowerUp::PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex) {
+PowerUp::PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex, int powerType) {
 
-    renderRect = { 2,2,16,16 };
+    SDL_Rect powerRects[] = { { 2,2,16,16 }, { 2,2,16,16 }, { 20,20,16,16 }, { 20,2,16,16 }, { 2,20,16,16 } };
+
+
+    renderRect = powerRects[powerType];
 
     texture = tex;
 
@@ -18,10 +21,18 @@ PowerUp::PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex) {
     this->position.x = position.x;
     this->position.y = position.y;
 
-    // type[] = { Type::NONE,}
-
-    col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::FIREPOWER, App->scene);
-
+    switch (powerType)
+    {
+    case 1:
+        col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::FIREPOWER, App->scene);
+        break;
+    case 2:
+        col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::BOMBPOWER, App->scene);
+        break;
+    case 3:
+        col = App->collisions->AddCollider({ position.x , position.y, 16, 16 }, Type::INVINCIBLEPOWER, App->scene);
+        break;
+    }
     pickPowerUpSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Objects_and_PowerUps_Sounds/G_PickPowerUpSound.wav");
 }
 

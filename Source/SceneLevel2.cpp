@@ -312,7 +312,7 @@ bool SceneLevel2::PreUpdate()
 		{
 			if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
 			{
-	#pragma region Create powerUp
+			#pragma region Create powerUp
 				for (int l = 0; l < 13; ++l)
 				{
 					for (int j = 0; j < 31; ++j)

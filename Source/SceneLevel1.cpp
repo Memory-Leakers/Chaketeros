@@ -100,7 +100,7 @@ void SceneLevel1::PrintDebugInformation()
 		cout << endl;
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Debug Manual
 
@@ -152,7 +152,7 @@ void SceneLevel1::CreateScene()
 		}
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	cout << endl;
 
@@ -163,7 +163,9 @@ void SceneLevel1::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
 	yellowFlowersNum = rand() % 6 + 43;
+	// Power numbers in this level
 	int hasPowerUp = 4;
+	// 1 == fire power,  2 == bomb power, 3 == Invensible power
 	int powerType[5] = { 0,1,1,2,2 };
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
@@ -220,7 +222,7 @@ bool SceneLevel1::Start()
 	minutes = 4;
 	totalSeconds = 59;
 
-#pragma endregion
+	#pragma endregion
 
 	InitAssets();
 	
@@ -354,7 +356,7 @@ bool SceneLevel1::PreUpdate()
 
 						//iPoint tilePos = tileMap->getWorldPos(tempPos);
 
-						powerUps[k] = new PowerUp(tempPos, texPowerUps, texPowerUpDestroyed);
+						powerUps[k] = new PowerUp(tempPos, texPowerUps, texPowerUpDestroyed, sceneObstacles[i]->powerUp);
 						//tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.x][tilePos.y] = 0;
 						break;
 					}
@@ -405,7 +407,7 @@ bool SceneLevel1::Update()
 {
 	#pragma region Special Keys (Debugging)
 
-#pragma region UI offset debug
+	#pragma region UI offset debug
 
 	/*if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
 	{
@@ -707,7 +709,7 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		bomberman->OnCollision(c2);
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region PowerUps Collision
 
@@ -719,7 +721,7 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Obstacle Collision
 
@@ -732,7 +734,7 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 		}
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Enemy Collision
 

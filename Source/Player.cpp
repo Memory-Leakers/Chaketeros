@@ -269,7 +269,7 @@ UpdateResult Player::Update()
 	#pragma endregion
 
 	// Drop a bomb
-	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && maxBombs > 0)
+	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && App->scene->playerSettings->maxBombs > 0)
 	{
 		iPoint temp = getCurrentTilePos();
 		temp.y--;
@@ -282,7 +282,7 @@ UpdateResult Player::Update()
 				if (obstacles[i] == nullptr)
 				{
 					obstacles[i] = new Bomb(this, texBomb, tileMap);
-					maxBombs--;
+					App->scene->playerSettings->maxBombs--;
 					break;
 				}
 			}
@@ -453,30 +453,18 @@ void Player::OnCollision(Collider* col)
 {
 	if(!godMode)
 	{
-		if (col->type == Type::EXPLOSION || col->type == Type::ENEMY)
+		switch (col->type)
 		{
-			if(InGrid(col))
-			{
-				App->audio->PlaySound(deathSFX, 0);
-				App->audio->PlaySound(gameOverSFX, 0);
-				pendingToDelete = true;
-				posMode = false;
-
-				if (this->col != nullptr)
-				{
-					this->col->pendingToDelete = true;
-				}
-
-				// Create die particle
-				iPoint tempPos = position;
-				tempPos -= {3, 5};
-				App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 5.1f);
-			}		
-		}
-
-		if (col->type == Type::FIREPOWER)
-		{
-			App->scene->playerSettings->powerUpFlame++;
+		case Type::EXPLOSION:
+		case Type::ENEMY:
+			if (InGrid(col)) Die(); break;
+		case Type::FIREPOWER:
+			App->scene->playerSettings->powerUpFlame++; break;
+		case Type::BOMBPOWER:
+			App->scene->playerSettings->maxBombs++; break;
+		case Type::INVINCIBLEPOWER:
+			break;
+			//App->scene->playerSettings->powerUpFlame++; break;
 		}
 	}
 }
@@ -584,4 +572,22 @@ iPoint Player::getCurrentTileWorldPos()
 	ret = tileMap->getWorldPos(ret);
 
 	return ret;
+}
+
+void Player::Die()
+{
+	App->audio->PlaySound(deathSFX, 0);
+	App->audio->PlaySound(gameOverSFX, 0);
+	pendingToDelete = true;
+	posMode = false;
+
+	if (this->col != nullptr)
+	{
+		this->col->pendingToDelete = true;
+	}
+
+	// Create die particle
+	iPoint tempPos = position;
+	tempPos -= {3, 5};
+	App->particle->AddParticle(*playerDestroyed, tempPos.x, tempPos.y, Type::NONE, 5.1f);
 }

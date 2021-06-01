@@ -21,7 +21,7 @@ void PlayerSettings::Reset()
 {
     playerLifes = 3;
     playerScore = 0;
-    powerUpBomb = 0;
+    maxBombs = 1;
     powerUpFlame = 0;
     powerUpKick = false;
     powerUpVest = false;

@@ -83,7 +83,7 @@ Bomb::~Bomb()
 
 void Bomb::Update()
 {
-	ColUpdate();
+	//ColUpdate();
 
 	currentAnim->Update();
 
@@ -95,8 +95,7 @@ void Bomb::Update()
 		double timeOffset = SDL_GetPerformanceFrequency();
 
 		if (((currentCountTime - startCountTime) / timeOffset) >= explotionTime)
-		{
-			App->audio->PlaySound(explosionSFX, 0);
+		{		
 			Die();
 		}
 	}
@@ -111,10 +110,19 @@ void Bomb::PostUpdate()
 	}
 }
 
+void Bomb::OnCollision(Collider* col)
+{
+	if (col->type == Type::EXPLOSION)
+	{
+		Die();
+	}
+}
+
 void Bomb::Die()
 {
+	App->audio->PlaySound(explosionSFX, 0);
 	pendingToDelete = true;
-	player->maxBombs++;
+	App->scene->playerSettings->maxBombs++;
 	getCollider()->pendingToDelete = true;
 
 	// Create explotion center
