@@ -149,6 +149,11 @@ public:
 
 	// pos for bomb
 	iPoint getCurrentTileWorldPos();
+
+	void setPosition(int x, int y) {
+		this->position.x = x;
+		this->position.y = y;
+	}
 };
 #endif // __PLAYER_H__
 

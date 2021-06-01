@@ -10,6 +10,8 @@
 #include "Tile.h"
 
 #define defaultEnemySpeed 0.13f //Animation only
+#define saruAnimSpeed 0.08f //Animation only
+
 
 struct SDL_Texture;
 

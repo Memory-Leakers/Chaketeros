@@ -1,10 +1,12 @@
 #include "SceneLevelBoss.h"
 #include "Bananacher.h"
+#include "Saru.h"
 #include "NumText.h"
 #include "Timer.h"
 
 Player* bombermanBoss = nullptr;
 Bananacher* bananacher = nullptr;
+Saru* saru = nullptr;
 NumText bossText;
 
 SceneLevelBoss::SceneLevelBoss()
@@ -23,9 +25,10 @@ void SceneLevelBoss::CreateScene()
 
 	// Create new player
 	bombermanBoss = new Player(tileMap, obstacles);
-	bananacher = new Bananacher({ 72, 48 }, tileMap);
+	bananacher = new Bananacher({ 120, 64 }, tileMap);
 	bombermanBoss->Start();
-
+	bombermanBoss->setPosition(120, 192); //232 352
+	saru = new Saru({ 152, 64 }, &bombermanBoss->position, tileMap);
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
@@ -65,6 +68,7 @@ bool SceneLevelBoss::Start()
 	CreateScene();
 
 	bananacher->Start();
+	saru->Start();
 
 	return false;
 }
@@ -72,6 +76,7 @@ bool SceneLevelBoss::Start()
 bool SceneLevelBoss::PreUpdate()
 {
 	bananacher->PreUpdate();
+	saru->PreUpdate();
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -91,13 +96,13 @@ bool SceneLevelBoss::Update()
 	timer.Update();
 
 #pragma region Timer Logic
-	
+
 	if (minutes == 0 && currentSecond == 0)	//	Time is Out
 	{
 		isTimeOut = true;
 	}
-	
-	
+
+
 	if (!isTimeOut)
 	{
 		currentSecond = totalSeconds - (int)timer.getDeltaTime();
@@ -135,8 +140,24 @@ bool SceneLevelBoss::Update()
 	if (bananacher != nullptr && !bananacher->pendingToDelete)
 	{
 		bananacher->Update();
+		if ((bananacher == nullptr || bananacher->pendingToDelete) && !saruBuff) {
+			bananacher->Die();
+		}
 	}
-	
+
+	if (saru != nullptr && !saru->pendingToDelete) {
+		saru->Update();
+		//Checks if bananacher is dead to tigger buff
+		if ((bananacher == nullptr || bananacher->pendingToDelete) && !saruBuff) {
+			saru->setVRange(20); //Makes saru detect the player on next tile
+			saruBuff = true;
+		}
+	}
+	else if (bananacher != nullptr && !bananacher->pendingToDelete) {
+		bananacher->Die();
+
+	}
+
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
 		if (obstacles[i] != nullptr)
@@ -163,6 +184,11 @@ bool SceneLevelBoss::PostUpdate()
 	if (!bananacher->pendingToDelete)
 	{
 		bananacher->PostUpdate();
+	}
+
+	//Draw Saru
+	if (!saru->pendingToDelete) {
+		saru->PostUpdate();
 	}
 
 	// Draw player
@@ -196,7 +222,9 @@ void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 	{
 		bananacher->OnCollision(c2);
 	}
-
+	else if (saru->col == c1) {
+		saru->OnCollision(c2);
+	}
 	else if(bombermanBoss->col == c1)
 	{
 		bombermanBoss->OnCollision(c2);
@@ -242,6 +270,11 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	{
 		delete bananacher;
 		bananacher = nullptr;
+	}
+
+	if (saru != nullptr) {
+		delete saru;
+		saru = nullptr;
 	}
 
 	if (bombermanBoss != nullptr)

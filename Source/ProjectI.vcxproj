@@ -126,6 +126,7 @@
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="PokaPoka.h" />
     <ClInclude Include="RedFlower.h" />
+    <ClInclude Include="Saru.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGameOver.h" />
     <ClInclude Include="SceneIntro.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="PokaPoka.cpp" />
     <ClCompile Include="RedFlower.cpp" />
+    <ClCompile Include="Saru.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGameOver.cpp" />
     <ClCompile Include="SceneIntro.cpp" />
