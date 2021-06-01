@@ -126,17 +126,17 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int layer, float orderIn
 /// </summary>
 /// <param name="character">0 = " : " 1 = "SC"</param>
 /// <param name="pos">Position where the character will be displayed on the screen</param>
-void NumText::DrawChar(int character, iPoint pos, int layer)
+void NumText::DrawChar(int character, iPoint pos)
 {
 	switch (character)
 	{
 	case 0:
 		//App->render->DrawTexture(texFonts, pos, &chars[0]);
-		App->render->AddTextureRenderQueue(texFonts, pos, &chars[0], layer, 3);
+		App->render->AddTextureRenderQueue(texFonts, pos, &chars[0], 2, 3);
 		break;
 	case 1:
 		//App->render->DrawTexture(texFonts, pos, &chars[1]);
-		App->render->AddTextureRenderQueue(texFonts, pos, &chars[1], layer, 3);
+		App->render->AddTextureRenderQueue(texFonts, pos, &chars[1], 2, 3);
 		break;
 	}
 }

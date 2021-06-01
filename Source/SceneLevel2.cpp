@@ -137,7 +137,6 @@ void SceneLevel2::CreateCoins()
 					{
 						sceneObstacles[l]->pendingToDelete = true;
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
-						sceneObstacles[l]->powerUp = 0;
 						iPoint tempPos = sceneObstacles[l]->getPosition();
 						l++;
 						for (int m = 90; m < SCENE_OBSTACLES_NUM; m++)

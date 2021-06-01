@@ -3,13 +3,8 @@
 #include <iostream>
 using namespace std;
 
-#include "NumText.h"
-
 // Debug variable
 //iPoint debugOffset = { 0,0 };
-
-
-NumText stageText;
 
 SceneSelectStage::SceneSelectStage()
 {
@@ -57,8 +52,6 @@ bool SceneSelectStage::Start()
 
 	// reset anim
 	stoneCoinAnim.Reset();
-
-	stageText.Start();
 
 	stageSelectPointer = 0;
 
@@ -220,20 +213,7 @@ bool SceneSelectStage::PostUpdate()
 		}
 	}
 
-	//	Text drawing
-
-	stageText.DrawNum(5, { 16,8 });
-	stageText.DrawNum(0, { 40, 8 });
-	stageText.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 });
-	stageText.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
-
-	stageText.DrawChar(0, { 25,8 });
-	stageText.DrawChar(1, { 123,8 });
-
-
 	return true;
-
-
 }
 
 bool SceneSelectStage::CleanUp(bool finalCleanUp)
@@ -242,7 +222,7 @@ bool SceneSelectStage::CleanUp(bool finalCleanUp)
 	{
 		App->textures->CleanUpScene();
 	}
-
+	
 	LOG("Clean Up SceneSelectStage");
 	return true;
 }

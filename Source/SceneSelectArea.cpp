@@ -128,10 +128,30 @@ bool SceneSelectArea::Update()
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
+		if (currentArrowLevelPos == &arrowLevelPosition[5])
+		{
+			currentArrowLevelPos = &arrowLevelPosition[0];
+		}
+		else
+		{
+			currentArrowLevelPos++;
+		}
+		*/
 	}
 	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
+		/*
+		if (currentArrowLevelPos == &arrowLevelPosition[0])
+		{
+			currentArrowLevelPos = &arrowLevelPosition[5];
+		}
+		else
+		{
+			currentArrowLevelPos--;
+		}
+		*/
 	}
 	#pragma endregion
 
@@ -180,7 +200,11 @@ bool SceneSelectArea::PostUpdate()
 	App->render->AddTextureRenderQueue(texLevels, { 73, 107 }, &texLevel4CheeseAnim.GetCurrentFrame(), 2, 6);
 	App->render->AddTextureRenderQueue(texLevels, { 79, 60 }, &texLevel5CheeseAnim.GetCurrentFrame(), 2, 5);
 
-	
+	/*App->render->AddTextureRenderQueue(texLevels, { 127, 73 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2,3);
+	App->render->AddTextureRenderQueue(texLevels, { 128, 105 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2,4);
+	App->render->AddTextureRenderQueue(texLevels, { 104, 122 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2,7);
+	App->render->AddTextureRenderQueue(texLevels, { 88, 106 }, &texLevel4CheeseAnim.GetCurrentFrame(), 2, 6);
+	App->render->AddTextureRenderQueue(texLevels, { 88, 75 }, &texLevel5CheeseAnim.GetCurrentFrame(), 2, 5);*/
 	return true;
 }
 
