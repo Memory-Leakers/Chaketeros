@@ -122,7 +122,7 @@ private:
 
 	iPoint winPosition = { 120, 96 };
 
-	iPoint powerUpPos[2];
+	iPoint powerUpPos[4];
 
 public:
 

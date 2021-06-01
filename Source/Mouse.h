@@ -10,7 +10,8 @@ using namespace std;
 class Mouse : public ModuleEnemy
 {
 private:
-	Particle dieParticle;
+	Particle dieParticle,dieParticle2,dieParticle3,dieParticle4;
+	
 
 	Animation upAnim;
 

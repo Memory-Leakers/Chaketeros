@@ -72,6 +72,15 @@ bool Snail::Start() {
 	dieParticle.anim.PushBack({ 35,97,28,30 });
 	dieParticle.anim.PushBack({ 68,97,28,30 });
 	dieParticle.anim.speed = 0.08f;
+	dieParticle2.InitParticle(500.0f, 0.1f, texture);
+	dieParticle2.anim.PushBack({ 140,108,26,27 });
+	dieParticle2.anim.speed = 0.2f;
+	dieParticle3.InitParticle(500.0f, 0.1f, texture);
+	dieParticle3.anim.PushBack({ 170,108,32,27 });
+	dieParticle3.anim.speed = 0.2f;
+	dieParticle4.InitParticle(500.0f, 0.1f, texture);
+	dieParticle4.anim.PushBack({ 206,108,42,27 });
+	dieParticle4.anim.speed = 0.2f;
 #pragma endregion
 
 	return true;
@@ -144,9 +153,19 @@ void Snail::Die()
 
 	col->pendingToDelete = true;
 
-	iPoint tempPos = position;
-	tempPos += {-4, -14};
+	iPoint tempPos = position, tempPos2 = position, tempPos3 = position, tempPos4 = position;
+	tempPos += {-3, -14};
+	tempPos2 += { -5, -7};
+	tempPos3 += { -4 - 3};
+	tempPos4 += {-13, -7};
+
 	App->particle->AddParticle(dieParticle, tempPos, Type::NONE, true, 0, 0);
+
+	App->particle->AddParticle(dieParticle2, tempPos2, Type::NONE, true, 0, 0, 26u);
+
+	App->particle->AddParticle(dieParticle3, tempPos3, Type::NONE, true, 0, 0, 29u);
+
+	App->particle->AddParticle(dieParticle4, tempPos4, Type::NONE, true, 0, 0, 31u);
 
 	pendingToDelete = true;
 }

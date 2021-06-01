@@ -10,7 +10,9 @@
 ModuleCollisions::ModuleCollisions()
 {
 	for(uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
 		colliders[i] = nullptr;
+	}	
 
 	matrix[uint(Type::WALL)][uint(Type::WALL)] = false;
 	matrix[uint(Type::WALL)][uint(Type::PLAYER)] = true;
@@ -19,6 +21,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::WALL)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::WALL)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::WALL)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::WALL)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::WALL)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::WALL)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::PLAYER)][uint(Type::WALL)] = true;
@@ -28,6 +32,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::PLAYER)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::FIREPOWER)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::BOMBPOWER)] = true;
+	matrix[uint(Type::PLAYER)][uint(Type::INVINCIBLEPOWER)] = true;
 	matrix[uint(Type::PLAYER)][uint(Type::COIN)] = true;
 
 	matrix[uint(Type::ENEMY)][uint(Type::WALL)] = true;
@@ -37,15 +43,19 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::ENEMY)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::ENEMY)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::ENEMY)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::ENEMY)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::ENEMY)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::ENEMY)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::BOMB)][uint(Type::WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::PLAYER)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::ENEMY)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::BOMB)] = false;
-	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::BOMB)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::BOMB)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::EXPLOSION)][uint(Type::WALL)] = true;
@@ -55,6 +65,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::EXPLOSION)][uint(Type::EXPLOSION)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::DESTRUCTABLE_WALL)] = true;
 	matrix[uint(Type::EXPLOSION)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::WALL)] = true;
@@ -64,6 +76,8 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::DESTRUCTABLE_WALL)] = false;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::FIREPOWER)][uint(Type::FIREPOWER)] = false;
@@ -73,18 +87,42 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::FIREPOWER)][uint(Type::BOMB)] = false;
 	matrix[uint(Type::FIREPOWER)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::FIREPOWER)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::FIREPOWER)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::FIREPOWER)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::FIREPOWER)][uint(Type::COIN)] = false;
 
+	matrix[uint(Type::BOMBPOWER)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::WALL)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::INVINCIBLEPOWER)] = false;
+	matrix[uint(Type::BOMBPOWER)][uint(Type::COIN)] = false;
 
-	matrix[uint(Type::COIN)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::WALL)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::PLAYER)] = true;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::EXPLOSION)] = true;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::INVINCIBLEPOWER)] = false;
+	matrix[uint(Type::INVINCIBLEPOWER)][uint(Type::COIN)] = false;
+
 	matrix[uint(Type::COIN)][uint(Type::WALL)] = false;
 	matrix[uint(Type::COIN)][uint(Type::PLAYER)] = true;
 	matrix[uint(Type::COIN)][uint(Type::ENEMY)] = false;
 	matrix[uint(Type::COIN)][uint(Type::BOMB)] = true;
 	matrix[uint(Type::COIN)][uint(Type::EXPLOSION)] = true;
 	matrix[uint(Type::COIN)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::COIN)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::COIN)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::COIN)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::COIN)][uint(Type::COIN)] = false;
-
 }
 
 // Destructor
@@ -117,8 +155,10 @@ UpdateResult ModuleCollisions::PreUpdate()
 	{
 		// Skip empty colliders
 		if(colliders[i] == nullptr)
+		{
 			continue;
-
+		}
+			
 		c1 = colliders[i];
 
 		// Avoid checking collisions already checked
@@ -126,8 +166,10 @@ UpdateResult ModuleCollisions::PreUpdate()
 		{
 			// Skip empty colliders
 			if(colliders[k] == nullptr)
+			{
 				continue;
-
+			}
+				
 			c2 = colliders[k];
 
 			if (c1->WillIntersects(c2->rect))
@@ -156,7 +198,9 @@ UpdateResult ModuleCollisions::PreUpdate()
 UpdateResult ModuleCollisions::Update()
 {
 	if (App->input->keys[SDL_SCANCODE_F2] == KEY_DOWN)
+	{
 		debug = !debug;
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -164,7 +208,9 @@ UpdateResult ModuleCollisions::Update()
 UpdateResult ModuleCollisions::PostUpdate()
 {
 	if (debug)
+	{
 		DebugDraw();
+	}	
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -208,6 +254,8 @@ void ModuleCollisions::DebugDraw()
 			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 255, 0, 255, alpha });
 			break;
 			case Type::FIREPOWER: // black
+			case Type::BOMBPOWER:
+			case Type::INVINCIBLEPOWER:
 			//App->render->DrawRectangle(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
 			App->render->AddRectRenderQueue(colliders[i]->rect, SDL_Color{ 0, 0, 0, alpha });
 			break;

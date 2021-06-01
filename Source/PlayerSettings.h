@@ -28,10 +28,12 @@ public:
 public:
 
 	 int playerLifes;
+
 	 int playerScore;
 
 	 int powerUpFlame;
-	 int powerUpBomb;
+
+	 int maxBombs = 1;
 
 	 bool powerUpVest, powerUpKick;
 

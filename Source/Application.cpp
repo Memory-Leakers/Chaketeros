@@ -16,6 +16,8 @@ Application::Application()
 	modules[7] = collisions = new ModuleCollisions();
 
 	modules[8] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
+
+	isPaused = false;
 }
 
 Application::~Application()
@@ -57,6 +59,16 @@ bool Application::Init()
 UpdateResult Application::Update()
 {
 	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
+
+	//TODO: (Opcional) Añadir sprite de Juego Pausado
+
+	if (isPaused) 
+	{ 
+		modules[1]->PreUpdate();
+		modules[1]->Update();
+		modules[1]->PostUpdate(); 
+		return ret; 
+	}
 
 	globalTime.Update();
 

@@ -66,7 +66,7 @@ void SceneLevel2::CreateScene()
 				break;
 			case 6:
 				choreMechaIndex[n++] = k;
-				sceneObstacles[k++] = new CoreMecha(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, level2TileMap, &coreMechaNum);
+				sceneObstacles[k++] = new CoreMecha(level2TileMap->getWorldPos({ j,i }) -= {0, -16}, texCoreMecha, texPowerUpDestroyed, level2TileMap, & coreMechaNum);
 				break;
 			case 10:
 				glassCapsuleIndex = k;
@@ -87,30 +87,34 @@ void SceneLevel2::CreateYellowFlowers()
 {
 	//Randomize yellow flowers number
 	yellowFlowersNum = rand() % 6 + 70;
-	bool hasPowerUp = true;
+	// Power numbers in this level
+	int hasPowerUp = 5;
+	// 1 == fire power,  2 == bomb power, 3 == Invensible power
+	int powerType[6] = { 0,1,1,2,2,3 };
 
 	for (int i = 0; i < yellowFlowersNum; ++i)
 	{
-		if (i >= 2) // Create 2 powerUps
-		{
-			hasPowerUp = false;
-		}
-
 		int randomNum = rand() % level2EmptySpaces.size();
 		for (int j = 0; j < SCENE_OBSTACLES_NUM; ++j)
 		{
 			if (sceneObstacles[j] == nullptr)
 			{
-				sceneObstacles[j] = new YellowFlower(level2EmptySpaces.at(randomNum), texYellowFlower, level2TileMap, hasPowerUp);	//emptySpaces.at = return value at index
+				//emptySpaces.at = return value at index
+				sceneObstacles[j] = new YellowFlower(level2EmptySpaces.at(randomNum), texYellowFlower, level2TileMap, powerType[hasPowerUp]);
 
-				iPoint temp = level2TileMap->getTilePos(level2EmptySpaces.at(randomNum));	//Sets tileMap position to 4 to prevent multiple flowers on the same tile
-				level2TileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;	//-1 en Y no sabemos por qu???
+				//Sets tileMap position to 4 to prevent multiple flowers on the same tile
+				iPoint temp = level2TileMap->getTilePos(level2EmptySpaces.at(randomNum));
 
-				level2EmptySpaces.erase(level2EmptySpaces.begin() + randomNum);	//delete the emptySpace position from the emptySpaces vector
+				//-1 en Y no sabemos por qu???
+				level2TileMap->LevelsTileMaps[App->scene->currentLevel][temp.y - 1][temp.x] = 5;
 
-				if (hasPowerUp)
+				//delete the emptySpace position from the emptySpaces vector
+				level2EmptySpaces.erase(level2EmptySpaces.begin() + randomNum);
+
+				if (hasPowerUp > 0)
 				{
 					powerUpPos[i] = sceneObstacles[j]->getPosition();
+					hasPowerUp--;
 				}
 
 				break;
@@ -133,6 +137,7 @@ void SceneLevel2::CreateCoins()
 					{
 						sceneObstacles[l]->pendingToDelete = true;
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
+						sceneObstacles[l]->powerUp = 0;
 						iPoint tempPos = sceneObstacles[l]->getPosition();
 						l++;
 						for (int m = 90; m < SCENE_OBSTACLES_NUM; m++)
@@ -189,7 +194,7 @@ bool SceneLevel2::Start()
 	level2TileMap = new Tile();
 
 	App->scene->currentLevel = 1;
-	levelCompleted = false;
+	levelComplete = false;
 
 	level2SceneUI.Start();
 
@@ -214,7 +219,7 @@ bool SceneLevel2::Start()
 	enemy[3] = new Snail(level2TileMap->getWorldPos({ 13,6 }), texEnemies, level2TileMap);
 	enemy[2] = new PokaPoka(424, 32, &bomberman->position, level2TileMap);
 	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,7 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
-	enemy[0] = new Mover(level2TileMap->getWorldPos({3,7}), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[0] = new Mover(level2TileMap->getWorldPos({ 3,7 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
 
 	// Init enemies
 	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
@@ -228,31 +233,39 @@ bool SceneLevel2::Start()
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
-	
+
 	return false;
 }
 
 bool SceneLevel2::PreUpdate()
 {
-	# pragma region PreUpdate & Clean Enemy
-		for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	//	TEMPORAL DEBUG TODO: change to debug class
+
+		// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		debugPowerUp = !debugPowerUp;
+	}
+
+# pragma region PreUpdate & Clean Enemy
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+	{
+		if (enemy[i] != nullptr)
 		{
-			if (enemy[i] != nullptr)
+			if (enemy[i]->pendingToDelete)
 			{
-				if (enemy[i]->pendingToDelete)
-				{
-					delete enemy[i];
-					enemy[i] = nullptr;
-				}
-				else
-				{
-					enemy[i]->PreUpdate();
-				}
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
+			else
+			{
+				enemy[i]->PreUpdate();
 			}
 		}
-	# pragma endregion
+	}
+# pragma endregion
 
-	#pragma region Bomberman dies Condition
+#pragma region Bomberman dies Condition
 	if (bomberman != nullptr && bomberman->pendingToDelete)
 	{
 		delete bomberman;
@@ -267,9 +280,9 @@ bool SceneLevel2::PreUpdate()
 			App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 		}
 	}
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Runs out of time Condition
+#pragma region Runs out of time Condition
 	if (bomberman != nullptr && isTimeOut)
 	{
 		bomberman->speed = 0;
@@ -303,54 +316,62 @@ bool SceneLevel2::PreUpdate()
 	}
 #pragma endregion
 
-	#pragma region Clean obstacles
+#pragma region Clean obstacles
 
-		bool anyCoreMecha = false;
-
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
 		{
-			if (sceneObstacles[i] != nullptr && sceneObstacles[i]->pendingToDelete)
-			{
-	#pragma region Create powerUp
-				for (int l = 0; l < 13; ++l)
-				{
-					for (int j = 0; j < 31; ++j)
-					{
-						if (level2TileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 8) // if reserved powerUp in this grid
-						{
-							for (int k = 0; k < MAX_POWERUPS; ++k)
-							{
-								if (powerUps[k] == nullptr)
-								{
-									powerUps[k] = new PowerUp(level2TileMap->getWorldPos({ j,l + 1 }), texPowerUps, texPowerUpDestroyed);
-									level2TileMap->LevelsTileMaps[App->scene->currentLevel][l][j] = 0;
-									break;
-								}
+#pragma region Create powerUp
 
-							}
-						}
-						if (level2TileMap->LevelsTileMaps[App->scene->currentLevel][l][j] == 6)
-						{
-							anyCoreMecha = true;
-						}
+			if (sceneObstacles[i]->powerUp != 0)
+			{
+				for (int k = 0; k < MAX_POWERUPS; ++k)
+				{
+					if (powerUps[k] == nullptr)
+					{
+						iPoint tempPos = sceneObstacles[i]->getPosition();
+						//tempPos.y++;
+
+						//iPoint tilePos = tileMap->getWorldPos(tempPos);
+
+						powerUps[k] = new PowerUp(tempPos, texPowerUps, texPowerUpDestroyed, sceneObstacles[i]->powerUp);
+						//tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.x][tilePos.y] = 0;
+						break;
 					}
 				}
-	#pragma endregion
+			}
 
-				// Detect if level is complete
-				if (!anyCoreMecha && !levelCompleted)
-				{
-					sceneObstacles[glassCapsuleIndex]->Die();
+#pragma endregion
 
-					levelCompleted = true;
-				}
+			// Detect if level is complete
+			if (coreMechaNum <= 0 && !levelComplete)
+			{
+				sceneObstacles[glassCapsuleIndex]->Die();
 
-				// CleanUp & destroy pendingToDelete obstacle
-				delete sceneObstacles[i];
-				sceneObstacles[i] = nullptr;
+				levelComplete = true;
+			}
+
+			// CleanUp & destroy pendingToDelete obstacle
+			delete sceneObstacles[i];
+			sceneObstacles[i] = nullptr;
+		}
+	}
+#pragma endregion
+
+	//	Clean PowerUps
+
+	for (int i = 0; i < LEVEL2_POWERUPS; ++i)
+	{
+		if (powerUps[i] != nullptr)
+		{
+			if (powerUps[i]->pendingToDelete)
+			{
+				delete powerUps[i];
+				powerUps[i] = nullptr;
 			}
 		}
-	#pragma endregion
+	}
 
 	return false;
 }
@@ -361,7 +382,7 @@ bool SceneLevel2::Update()
 
 	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
 	{
-		if (!levelCompleted)
+		if (!levelComplete)
 		{
 			for each (int choreMecha in choreMechaIndex)
 			{
@@ -373,8 +394,8 @@ bool SceneLevel2::Update()
 				}
 			}
 			bomberman->position = winPosition;
-			levelCompleted= true;
-			App->render->CameraMove({384,0});
+			levelComplete = true;
+			App->render->CameraMove({ 384,0 });
 		}
 	}
 
@@ -383,7 +404,7 @@ bool SceneLevel2::Update()
 	{
 		bomberman->Update();
 		//Check if Player is on the Glass Capsule after completing the level
-		if (bomberman->position == winPosition && levelCompleted && !isExtraPointsActive)
+		if (bomberman->position == winPosition && levelComplete && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
 			App->audio->PlaySound(levelCompleteSFX, 0);
@@ -420,51 +441,51 @@ bool SceneLevel2::Update()
 		}
 	}
 
-	#pragma region Timer Logic
-		if (!isTimeOut)
-		{
-			currentSecond = totalSeconds - (int)timer.getDeltaTime();
-		}
+#pragma region Timer Logic
+	if (!isTimeOut)
+	{
+		currentSecond = totalSeconds - (int)timer.getDeltaTime();
+	}
 
-		if (currentSecond == 0)
+	if (currentSecond == 0)
+	{
+		if (minutes != 0)
 		{
-			if (minutes != 0)
-			{
-				minutes--;
-				timer.Reset();
-			}
-			else {
-				isTimeOut = true;
-			}
+			minutes--;
+			timer.Reset();
 		}
+		else {
+			isTimeOut = true;
+		}
+	}
 
-		if (currentSecond < 10)
+	if (currentSecond < 10)
+	{
+		secondsXOffset = 40;
+	}
+	else
+	{
+		secondsXOffset = 32;
+	}
+
+#pragma endregion
+
+#pragma region SFX Coins Background 
+	// Backgorund sound for Extra points condition
+	BGFX_CoinsCounter += timer.Update();
+
+	if (isExtraPointsActive)
+	{
+		// Check 0.6s
+		if (BGFX_CoinsCounter >= 0.6f)
 		{
-			secondsXOffset = 40;
+			// Play BG_SFX
+			App->audio->PlaySound(extraCoinsBckgSFX, 0);
+			// Reset counter
+			BGFX_CoinsCounter = 0;
 		}
-		else
-		{
-			secondsXOffset = 32;
-		}
-
-	#pragma endregion
-
-	#pragma region SFX Coins Background 
-		// Backgorund sound for Extra points condition
-		BGFX_CoinsCounter += timer.Update();
-
-		if (isExtraPointsActive)
-		{
-			// Check 0.6s
-			if (BGFX_CoinsCounter >= 0.6f)
-			{
-				// Play BG_SFX
-				App->audio->PlaySound(extraCoinsBckgSFX, 0);
-				// Reset counter
-				BGFX_CoinsCounter = 0;
-			}
-		}
-	#pragma endregion
+	}
+#pragma endregion
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -517,10 +538,20 @@ bool SceneLevel2::PostUpdate()
 		}
 	}
 
+	//	Draw PowerUps
+
+	for (int i = 0; i < LEVEL2_POWERUPS; ++i)
+	{
+		if (powerUps[i] != nullptr)
+		{
+			powerUps[i]->PostUpdate();
+		}
+	}
+
 	// Draw UI
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
-	#pragma region Text Drawing
+#pragma region Text Drawing
 
 	level2SceneUI.DrawNum(minutes, { 16,8 });
 	level2SceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
@@ -530,42 +561,65 @@ bool SceneLevel2::PostUpdate()
 	level2SceneUI.DrawChar(0, { 25,8 });
 	level2SceneUI.DrawChar(1, { 123,8 });
 
-	#pragma endregion
+#pragma endregion
+
+#pragma endregion
+
+	// Draw powerUpPos
+	for (int i = 0; i < LEVEL2_OBSTACLES; i++)
+	{
+		if (debugPowerUp == true && sceneObstacles[i] != nullptr && sceneObstacles[i]->powerUp != 0)
+		{
+			App->render->AddRectRenderQueue({ sceneObstacles[i]->getPosition().x + 2,sceneObstacles[i]->getPosition().y + 2,12,12 }, { 0,0,255,255 });
+
+		}
+	}
 
 	return false;
 }
 
 void SceneLevel2::OnCollision(Collider* c1, Collider* c2)
 {
-	#pragma region Bomberman Collision
+#pragma region Bomberman Collision
 	if (bomberman != nullptr && bomberman->col == c1)
 	{
 		bomberman->OnCollision(c2);
 	}
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Obstacle Collision
-		//Obstacle Collision ----------------------
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+#pragma region Obstacle Collision
+	//Obstacle Collision ----------------------
+	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+	{
+		// cuando se choca algo
+		if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
 		{
-			// cuando se choca algo
-			if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
-			{
-				sceneObstacles[i]->OnCollision(c2);
-			}
+			sceneObstacles[i]->OnCollision(c2);
 		}
-	#pragma endregion
+	}
+#pragma endregion
 
-	#pragma region Enemy Collision
-			//Enemy Collision with bomb
-			for (int i = 0; i < LEVEL2_MAXENEMIES; ++i) {
-				// cuando se choca algo
-				if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
-				{
-					enemy[i]->OnCollision(c2);
-				}
-			}
-	#pragma endregion
+#pragma region Enemy Collision
+	//Enemy Collision with bomb
+	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i) {
+		// cuando se choca algo
+		if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+		{
+			enemy[i]->OnCollision(c2);
+		}
+	}
+#pragma endregion
+
+	//PowerUps Collision
+
+	for (int i = 0; i < LEVEL2_POWERUPS; ++i) {
+		// cuando se choca algo
+		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
+		{
+			powerUps[i]->OnCollision(c2);
+		}
+	}
+
 
 }
 
@@ -618,6 +672,15 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 	{
 		delete level2TileMap;
 		level2TileMap = nullptr;
+	}
+
+	for (int i = 0; i < LEVEL2_POWERUPS; ++i)
+	{
+		if (powerUps[i] != nullptr)
+		{
+			delete powerUps[i];
+			powerUps[i] = nullptr;
+		}
 	}
 
 	//Delete Vector

@@ -51,6 +51,8 @@ public:
 
 	void Update() override;
 
+	void OnCollision(Collider* col) override;
+
 	void Die() override;
 };
 

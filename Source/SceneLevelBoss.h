@@ -23,8 +23,22 @@ private:
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
-	//Both of them are used to prevent the Buff to trigger more than once
+	//It is used to prevent the Buff from triggering more than once
 	bool saruBuff = false;
+
+	Timer timer;
+
+	//	Number of total seconds
+	int totalSeconds = 59;
+	//	Number of total minutes
+	int minutes = 4;
+	// Current second shown on screen
+	int currentSecond = 0;
+	// Offset for the seconds timer
+	int secondsXOffset = 100;
+
+	bool isTimeOut;
+
 
 public:
 	Tile* tileMap = nullptr;
@@ -60,4 +74,3 @@ public:
 	void InitAssets();
 };
 #endif
-

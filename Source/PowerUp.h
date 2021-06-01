@@ -22,7 +22,7 @@ public:
     iPoint position;
 
 public:
-    PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex);
+    PowerUp(iPoint position, SDL_Texture* tex, SDL_Texture* dieTex, int powerType = 0);
 
     ~PowerUp();
 

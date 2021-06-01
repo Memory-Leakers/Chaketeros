@@ -75,7 +75,9 @@ private:
 
 	bool isExtraPointsActive;
 
-	bool levelCompleted;
+	bool levelComplete = false;
+
+	bool debugPowerUp = false;
 
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 
@@ -93,8 +95,6 @@ private:
 
 	//	Timer
 	Timer timer;
-
-
 
 public:
 
