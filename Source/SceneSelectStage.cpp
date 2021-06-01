@@ -50,6 +50,9 @@ bool SceneSelectStage::Start()
 {
 	LOG("Load SceneSelectStage");
 
+	Mix_VolumeMusic(15);
+	App->audio->PlayMusic("Assets/Audio/Music/StageSelect.ogg", 1.5f);
+
 	InitAssets();
 
 	// reset anim
@@ -58,6 +61,9 @@ bool SceneSelectStage::Start()
 	stageText.Start();
 
 	stageSelectPointer = 0;
+
+	changeSelectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_ChangeOptionSound.wav");
+	selectSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
 
 	// determine big money sprite
 	bigMoneyPointer = 0;
@@ -118,6 +124,7 @@ bool SceneSelectStage::Update()
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
 	{
+		App->audio->PlaySound(selectSFX, 0);
 		switch (stageSelectPointer)
 		{
 		case 0: App->scene->ChangeCurrentScene(SCENE_LEVEL1, 60); break;
@@ -135,14 +142,17 @@ bool SceneSelectStage::Update()
 
 	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
 	{
+		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(0);
 	}
 	else if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
 	{
+		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(1);
 	}
 	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
 	{
+		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(-1);
 	}
 

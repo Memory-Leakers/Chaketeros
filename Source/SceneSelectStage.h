@@ -24,6 +24,9 @@ private:
 
 	SDL_Texture* texBomberman = nullptr;
 
+	uint changeSelectSFX, selectSFX;
+	
+
 	// rects for tectures
 	SDL_Rect recStages[4]
 	{

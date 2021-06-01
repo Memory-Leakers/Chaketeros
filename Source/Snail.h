@@ -10,7 +10,7 @@ using namespace std;
 class Snail : public ModuleEnemy
 {
 private:
-	Particle dieParticle;
+	Particle dieParticle, dieParticle2, dieParticle3, dieParticle4;
 
 	Animation upAnim;
 
