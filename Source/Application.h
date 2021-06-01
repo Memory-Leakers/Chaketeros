@@ -69,6 +69,8 @@ public:
 	ModuleParticles* particle = nullptr;
 
 	Timer globalTime;
+
+	bool isPaused;
 };
 
 // Global var made extern for Application ---

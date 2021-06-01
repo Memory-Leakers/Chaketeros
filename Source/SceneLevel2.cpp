@@ -489,131 +489,133 @@ bool SceneLevel2::Update()
 
 bool SceneLevel2::PostUpdate()
 {
-#pragma region Drawing
+	#pragma region Drawing
 
-	// Draw Map
-	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
+		// Draw Map
+		App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
 
-	// Draw Obstacle
-	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
-	{
-		if (sceneObstacles[i] != nullptr)
+		// Draw Obstacle
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
-			sceneObstacles[i]->PostUpdate();
+			if (sceneObstacles[i] != nullptr)
+			{
+				sceneObstacles[i]->PostUpdate();
+			}
 		}
-	}
 
-	//	Draw Player
-	if (bomberman != nullptr)
-	{
-		bomberman->PostUpdate();
-	}
-
-	//Draw Enemy // will be in render exeption
-	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
-	{
-		if (enemy[i] != nullptr)
+		//	Draw Player
+		if (bomberman != nullptr)
 		{
-			enemy[i]->PostUpdate();
+			bomberman->PostUpdate();
 		}
-	}
 
-	// Draw UI
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
+		//Draw Enemy // will be in render exeption
+		for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+		{
+			if (enemy[i] != nullptr)
+			{
+				enemy[i]->PostUpdate();
+			}
+		}
 
-	#pragma region Text Drawing
+		// Draw UI
+		App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);
 
-	level2SceneUI.DrawNum(minutes, { 16,8 });
-	level2SceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
-	level2SceneUI.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 });
-	level2SceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
+		#pragma region Text Drawing
 
-	level2SceneUI.DrawChar(0, { 25,8 });
-	level2SceneUI.DrawChar(1, { 123,8 });
+		level2SceneUI.DrawNum(minutes, { 16,8 });
+		level2SceneUI.DrawNum(currentSecond, { secondsXOffset, 8 });
+		level2SceneUI.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 });
+		level2SceneUI.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 });
+
+		level2SceneUI.DrawChar(0, { 25,8 });
+		level2SceneUI.DrawChar(1, { 123,8 });
+
+		#pragma endregion
 
 	#pragma endregion
 
 	return false;
-}
+	}
 
 void SceneLevel2::OnCollision(Collider* c1, Collider* c2)
-{
-	#pragma region Bomberman Collision
-	if (bomberman != nullptr && bomberman->col == c1)
 	{
-		bomberman->OnCollision(c2);
-	}
-	#pragma endregion
-
-	#pragma region Obstacle Collision
-		//Obstacle Collision ----------------------
-		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		#pragma region Bomberman Collision
+		if (bomberman != nullptr && bomberman->col == c1)
 		{
-			// cuando se choca algo
-			if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
-			{
-				sceneObstacles[i]->OnCollision(c2);
-			}
+			bomberman->OnCollision(c2);
 		}
-	#pragma endregion
+		#pragma endregion
 
-	#pragma region Enemy Collision
-			//Enemy Collision with bomb
-			for (int i = 0; i < LEVEL2_MAXENEMIES; ++i) {
+		#pragma region Obstacle Collision
+			//Obstacle Collision ----------------------
+			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+			{
 				// cuando se choca algo
-				if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+				if (sceneObstacles[i] != nullptr && sceneObstacles[i]->getCollider() == c1)
 				{
-					enemy[i]->OnCollision(c2);
+					sceneObstacles[i]->OnCollision(c2);
 				}
 			}
-	#pragma endregion
+		#pragma endregion
 
-}
+		#pragma region Enemy Collision
+				//Enemy Collision with bomb
+				for (int i = 0; i < LEVEL2_MAXENEMIES; ++i) {
+					// cuando se choca algo
+					if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+					{
+						enemy[i]->OnCollision(c2);
+					}
+				}
+		#pragma endregion
+
+	}
 
 void SceneLevel2::WillCollision(Collider* c1, Collider* c2)
-{
-	if (bomberman != nullptr && bomberman->col == c1)
 	{
-		bomberman->WillCollision(c2);
+		if (bomberman != nullptr && bomberman->col == c1)
+		{
+			bomberman->WillCollision(c2);
+		}
 	}
-}
 
 bool SceneLevel2::CleanUp(bool finalCleanUp)
-{
-	if (!finalCleanUp)
 	{
-		App->collisions->CleanUpScene();
-		App->textures->CleanUpScene();
-		App->particle->CleanUpScene();
-		App->audio->CleanUpScene();
-	}
-
-	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
-	{
-		if (sceneObstacles[i] != nullptr)
+		if (!finalCleanUp)
 		{
-			delete sceneObstacles[i];
-			sceneObstacles[i] = nullptr;
+			App->collisions->CleanUpScene();
+			App->textures->CleanUpScene();
+			App->particle->CleanUpScene();
+			App->audio->CleanUpScene();
 		}
-	}
 
-	if (bomberman != nullptr)
-	{
-		delete bomberman;
-		bomberman = nullptr;
-	}
-
-	// Delete Enemy
-	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
-	{
-		if (enemy[i] != nullptr)
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
-			enemy[i]->CleanUp();
-			delete enemy[i];
-			enemy[i] = nullptr;
+			if (sceneObstacles[i] != nullptr)
+			{
+				delete sceneObstacles[i];
+				sceneObstacles[i] = nullptr;
+			}
 		}
-	}
-#pragma endregion
+
+		if (bomberman != nullptr)
+		{
+			delete bomberman;
+			bomberman = nullptr;
+		}
+
+		// Delete Enemy
+		for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
+		{
+			if (enemy[i] != nullptr)
+			{
+				enemy[i]->CleanUp();
+				delete enemy[i];
+				enemy[i] = nullptr;
+			}
+		}
+	#pragma endregion
 
 	if (level2TileMap != nullptr)
 	{

@@ -44,6 +44,10 @@ UpdateResult ModuleInput::PreUpdate()
 		else keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
 	}
 
+	//Pause logic
+
+	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN) App->isPaused = !App->isPaused;
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
