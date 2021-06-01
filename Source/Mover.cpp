@@ -215,7 +215,7 @@ int Mover::RandomMov()
 	for (int i = 0; i < 4; ++i)
 	{
 		int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
-		if(thisGrid == 0 || thisGrid == 4)
+		if(thisGrid == 0 || thisGrid == 4 || thisGrid == 12)
 		{
 			// Save usable direccion
 			dirIndex.push_back(i);
@@ -362,7 +362,7 @@ int Mover::AStar()
 
 			int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
 			// si el grid que vamos a ir no es 0 o 4
-			if(thisGrid != 0 && thisGrid != 4)
+			if(thisGrid != 0 && thisGrid != 4 && thisGrid != 12)
 			{
 				// ignoramos este grid
 				pass = true;
