@@ -75,7 +75,7 @@ private:
 
 	bool isExtraPointsActive;
 
-	bool levelCompleted;
+	bool levelComplete = false;
 
 	iPoint powerUpPos[LEVEL2_POWERUPS_NUM];
 

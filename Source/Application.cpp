@@ -60,15 +60,13 @@ UpdateResult Application::Update()
 {
 	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
 
+	//TODO: (Opcional) Añadir sprite de Juego Pausado
+
 	if (isPaused) 
 	{ 
 		modules[1]->PreUpdate();
 		modules[1]->Update();
 		modules[1]->PostUpdate(); 
-
-		modules[3]->PreUpdate();
-		modules[3]->Update();
-		modules[3]->PostUpdate();
 		return ret; 
 	}
 
