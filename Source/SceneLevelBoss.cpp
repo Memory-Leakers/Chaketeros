@@ -1,8 +1,11 @@
 #include "SceneLevelBoss.h"
 #include "Bananacher.h"
+#include "NumText.h"
+#include "Timer.h"
 
 Player* bombermanBoss = nullptr;
 Bananacher* bananacher = nullptr;
+NumText bossText;
 
 SceneLevelBoss::SceneLevelBoss()
 {
@@ -51,6 +54,12 @@ bool SceneLevelBoss::Start()
 	// Change current scene
 	App->scene->currentLevel = 2;
 
+	bossText.Start();
+
+	timer.Reset();
+
+	isTimeOut = false;
+
 	InitAssets();
 
 	CreateScene();
@@ -78,6 +87,46 @@ bool SceneLevelBoss::PreUpdate()
 
 bool SceneLevelBoss::Update()
 {
+
+	timer.Update();
+
+#pragma region Timer Logic
+	
+	if (minutes == 0 && currentSecond == 0)	//	Time is Out
+	{
+		isTimeOut = true;
+	}
+	
+	
+	if (!isTimeOut)
+	{
+		currentSecond = totalSeconds - (int)timer.getDeltaTime();
+
+		if (currentSecond == 0)
+		{
+			if (minutes != 0)
+			{
+				minutes--;
+				timer.Reset();
+			}
+			else {
+				isTimeOut = true;
+			}
+		}
+
+		if (currentSecond < 10)
+		{
+			secondsXOffset = 40;
+		}
+		else
+		{
+			secondsXOffset = 32;
+		}
+	}
+
+#pragma endregion
+
+
 	if (bombermanBoss != nullptr)
 	{
 		bombermanBoss->Update();
@@ -123,10 +172,20 @@ bool SceneLevelBoss::PostUpdate()
 	}
 
 	// Draw BG
-	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, 0);
+	App->render->AddTextureRenderQueue(texMap, { 0,0 }, nullptr, 0, -10);
 
 	// Draw UI bar
-	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 0, 5);
+	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 0, -5);
+
+	//	Draw Text
+
+	bossText.DrawNum(minutes, { 16,8 }, 3, 0);
+	bossText.DrawNum(currentSecond, { secondsXOffset, 8 }, 3, 0);
+	bossText.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 }, 3, 0);
+	bossText.DrawNum(App->scene->playerSettings->playerLifes, { 232, 8 }, 3, 0);
+
+	bossText.DrawChar(0, { 25,8 }, 0);
+	bossText.DrawChar(1, { 123,8 }, 0);
 
 	return false;
 }
