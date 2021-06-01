@@ -23,6 +23,9 @@ private:
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
 
+	//It is used to prevent the Buff from triggering more than once
+	bool saruBuff = false;
+
 	Timer timer;
 
 	//	Number of total seconds
@@ -71,4 +74,3 @@ public:
 	void InitAssets();
 };
 #endif
-

@@ -11,7 +11,7 @@ Bananacher::Bananacher(iPoint spawnPos, Tile* tileMap)
 	bounds.y = position.y = spawnPos.y;
 	bounds.w = bounds.h = 16;
 	this->tileMap = tileMap;
-	life = 8;
+	life = 8;//8
 }
 
 Bananacher::~Bananacher()
