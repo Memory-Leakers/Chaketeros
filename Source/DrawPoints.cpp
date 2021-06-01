@@ -23,7 +23,7 @@ void DrawPoints::DrawScore(int score, iPoint position)
 	}
 }
 
-int debugInt[4] = { 0 };
+int AnimCounter[4] = { 0 };
 
 void DrawPoints::Update()
 {
@@ -36,9 +36,9 @@ void DrawPoints::Update()
 			{
 				iPoint temp = { -6, 4 };
 
-				debugInt[i]++;
+				AnimCounter[i]++;
 
-				if ( debugInt[i] % 15 == 0)
+				if ( AnimCounter[i] % 15 == 0)
 				{
 					positionsArray[i] += {0, -1};
 				}
@@ -49,7 +49,7 @@ void DrawPoints::Update()
 			{
 				boolsArray[i] = false;
 				timers[i].Reset();
-				debugInt[i] = 0;
+				AnimCounter[i] = 0;
 			}
 			
 		}
