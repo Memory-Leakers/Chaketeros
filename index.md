@@ -82,6 +82,6 @@ F7 - On/Off Camera Movement
 
 **Adrià Sellarés**
 
-![taskList1](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/adriatasks1.png)
+![taskList1](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks1.png)
 
 ![taskList2](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/adriatasks1.png)
