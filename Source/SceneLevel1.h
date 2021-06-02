@@ -22,6 +22,8 @@ class ModuleEnemy;
 
 class Tile;
 
+class Debug;
+
 struct SDL_Texture;
 
 struct SDL_Rect;
@@ -124,6 +126,11 @@ private:
 
 	iPoint powerUpPos[4];
 
+	Debug* gameDebug;
+
+private:
+	void DebugKeys();
+
 public:
 
 	SceneLevel1();
@@ -158,8 +165,6 @@ public:
 	void CreateCoins();
 
 	void InitAssets();
-
-	void PrintDebugInformation();
 };
 
 #endif

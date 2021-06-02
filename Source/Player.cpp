@@ -318,29 +318,29 @@ UpdateResult Player::Update()
 
 	#pragma region Debug keys
 
-	if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
-	{
-		App->scene->playerSettings->powerUpFlame++;
-	}
-	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
-	{
-		godMode = !godMode;
-	}
+	//if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
+	//{
+	//	App->scene->playerSettings->powerUpFlame++;
+	//}
+	//if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	//{
+	//	godMode = !godMode;
+	//}
 
-	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
-	{
-		posMode = !posMode;
+	//if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	//{
+	//	posMode = !posMode;
 
-		if(posMode)
-		{
-			lastTilePos = getCurrentTilePos();
-			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
-		}
-		else
-		{
-			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
-		}
-	}
+	//	if(posMode)
+	//	{
+	//		lastTilePos = getCurrentTilePos();
+	//		tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
+	//	}
+	//	else
+	//	{
+	//		tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
+	//	}
+	//}
 
 	#pragma endregion
 

@@ -10,15 +10,19 @@ Bomb::Bomb()
 Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 :Obstacle({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
+	name = "Bomb";
+
  	this->player = player;
+
 	lv1Tile = tile;
 
 	myTilePos = lv1Tile->getTilePos(getPosition());
+
 	myTilePos.y--;
 
 	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 11;
 
-	#pragma region Init explotionparticle
+	#pragma region Init explotion particle
 
 	explosionCenter.InitParticle(500.0f, 0.4f, tex);
 	explosionMiddle.InitParticle(500.0f, 0.4f, tex);
@@ -71,6 +75,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 	//TODO: Poner en forma de struct en la escena	//	o pasar como argumento por el constructor
 	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
+
 	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
 
 	// SFX Put bomb
@@ -121,8 +126,11 @@ void Bomb::OnCollision(Collider* col)
 void Bomb::Die()
 {
 	App->audio->PlaySound(explosionSFX, 0);
+
 	pendingToDelete = true;
+
 	App->scene->playerSettings->maxBombs++;
+
 	getCollider()->pendingToDelete = true;
 
 	// Create explotion center

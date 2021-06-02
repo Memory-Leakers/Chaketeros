@@ -80,6 +80,13 @@ Type Obstacle::getType() {
 	return collider->type;
 }
 
+bool Obstacle::CompareName(string name)
+{
+	if (this->name == name) return true;
+	
+	return false;
+}
+
 bool Obstacle::getTrigger() {
 	return trigger;
 }

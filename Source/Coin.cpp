@@ -6,7 +6,10 @@ Coin::~Coin()
 
 Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, position.y, 16, 16 }, true, App->collisions->AddCollider({ position.x, position.y, 16, 16 }, Type::COIN, App->scene), texture)
 {
+	name = "Coin";
+
 	#pragma region Init idle anim
+
 	idle.hasIdle = false;
 
 	idle.PushBack({ 5,6,16,16 });
@@ -15,6 +18,7 @@ Coin::Coin(iPoint position, SDL_Texture* texture) : Obstacle({ position.x, posit
 	idle.PushBack({ 26,28,16,16 });
 	idle.speed = 0.08f;
 	idle.loop = true;
+
 	#pragma endregion
 
 	pickCoinSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_PickCoinSound.wav");

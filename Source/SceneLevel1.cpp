@@ -14,6 +14,7 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
+#include "Debug.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -69,7 +70,7 @@ void SceneLevel1::InitAssets()
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Init audios
 
@@ -79,44 +80,7 @@ void SceneLevel1::InitAssets()
 	levelCompleteSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_LevelCompleteSound.wav");
 	extraCoinsBckgSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraCoinsBackgroundSound.wav");
 
-#pragma endregion
-}
-
-void SceneLevel1::PrintDebugInformation()
-{
-	#pragma region Draw Map in Console
-
-	for (int i = 0, k = 0; i < 13; ++i)
-	{
-		for (int j = 0; j < 15; ++j)
-		{
-			switch (tileMap->LevelsTileMaps[App->scene->currentLevel][i][j])
-			{
-			case -1: cout << "P,"; break;
-			case 10: cout << "G,"; break;
-			default: cout << tileMap->LevelsTileMaps[App->scene->currentLevel][i][j] << ","; break;
-			}
-		}
-		cout << endl;
-	}
-
 	#pragma endregion
-
-	#pragma region Debug Manual
-
-	cout << endl;
-	cout << "F1: On/Off GodMod" << endl;
-	cout << "F2: On/Off Collision box" << endl;
-	cout << "F3: Instant lose" << endl;
-	cout << "F4: Instant win" << endl;
-	cout << "F5: On/Off PowerUp position" << endl;
-	cout << "F6: On/Off Mover A* path" << endl;
-	cout << "F7: On/Off Camera (move with dirArrown)" << endl;
-	cout << "F10: On/Off Draw player pos in console map (use with Q)" << endl;
-	cout << "Q: Update console tileMap" << endl;
-	cout << "Q: bomb flame powerUp" << endl;
-
-#pragma endregion
 }
 
 void SceneLevel1::CreateScene()
@@ -199,6 +163,53 @@ void SceneLevel1::CreateYellowFlowers()
 	}
 }
 
+void SceneLevel1::DebugKeys()
+{
+	// Go to GAME OVER with F3
+	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	{
+		gameDebug->GameOver();
+	}
+
+	// Win
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!levelComplete)
+		{
+			gameDebug->Win(bomberman, winPosition);
+		}
+	}
+
+	// Draw debug tileMap with Q
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		gameDebug->DrawMapInConsole(tileMap, 15, 13);
+
+		gameDebug->PrintDebugInformation();
+	}
+
+	// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		gameDebug->PowerUpPosition();
+	}
+
+	if (App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
+	{
+		gameDebug->AddUpFlame();
+	}
+
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		gameDebug->PlayerPosInConsole(bomberman);
+	}
+
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	{
+		gameDebug->PlayerGodMod(bomberman);
+	}
+}
+
 bool SceneLevel1::Start()
 {
 	bool ret = true;
@@ -210,16 +221,24 @@ bool SceneLevel1::Start()
 
 	//Reset variables
 	levelComplete = false;
+
 	*sceneObstacles = { nullptr };
+
 	isExtraPointsActive = false;
+
 	coreMechaNum = 2;
+
 	App->scene->currentLevel = 0;
 
 	//	Timer Reset
 	timer.Reset();
+
 	isTimeOut = false;
+
 	isChangingScene = false;
+
 	minutes = 4;
+
 	totalSeconds = 59;
 
 	#pragma endregion
@@ -233,8 +252,6 @@ bool SceneLevel1::Start()
 	bomberman->Start();
 
 	// Spawn enemies
-	
-
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
 	enemy[1] = new Mover({ 168,64 }, texEnemies, &bomberman->pivotPoint, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);
@@ -246,21 +263,24 @@ bool SceneLevel1::Start()
 		enemy[i]->Start();
 	}
 
-#pragma endregion
+	#pragma endregion
+
+	//	Create Scene
+	CreateScene();
+
+	// Init debug
+	gameDebug = new Debug(sceneObstacles);
 
 	sceneUI.Start();
 
 	// Create music
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+
 	Mix_VolumeMusic(10);
 
-	//	Create Scene
-	CreateScene();
+	gameDebug->DrawMapInConsole(tileMap, 15, 13);
 
-	system("cls");
-
-	// Debug information;
-	PrintDebugInformation();
+	gameDebug->PrintDebugInformation();
 
 	return ret;
 }
@@ -405,7 +425,8 @@ bool SceneLevel1::PreUpdate()
 
 bool SceneLevel1::Update()
 {
-	#pragma region Special Keys (Debugging)
+	// Special Keys (Debugging)
+	DebugKeys();
 
 	#pragma region UI offset debug
 
@@ -436,45 +457,6 @@ bool SceneLevel1::Update()
 
 #pragma endregion
 
-	// Go to GAME OVER with F3
-	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
-	{
-		App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
-	}
-
-	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
-	{
-		if (!levelComplete)
-		{
-			for (int i = 2; i <= 4; i += 2)
-			{
-				if (sceneObstacles[i] != nullptr)
-				{
-					sceneObstacles[i]->Die();
-				}
-			}
-			bomberman->position = winPosition;
-		}
-	}
-
-	// Draw debug tileMap with Q
-	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
-	{
-		system("cls");
-		cout << endl;
-
-		// Debug information
-		PrintDebugInformation();
-	}
-
-	// Show the powerUps position
-	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
-	{
-		debugPowerUp = !debugPowerUp;
-	}
-
-#pragma endregion
-
 	#pragma region Bomberman Update
 
 	if (bomberman != nullptr)
@@ -485,18 +467,24 @@ bool SceneLevel1::Update()
 		if (bomberman->position == winPosition && levelComplete && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
+
 			App->audio->PlaySound(levelCompleteSFX, 0);
+
 			minutes = 0;
+
 			if (currentSecond > 15)
 			{
 				totalSeconds = 15;
 
 				timer.Reset();
 			}
+
 			isExtraPointsActive = true;
+
 			bomberman->ExtraPoints = true;
 
 			sceneObstacles[glassCapsuleIndex]->Die();
+
 			CreateCoins();
 
 			for (int i = 0; i < MAX_ENEMY; ++i)
@@ -517,10 +505,10 @@ bool SceneLevel1::Update()
 					sceneObstacles[redFlowerIndex[i]]->getCollider()->pendingToDelete = true;
 				}
 			}
-
 		}
 	}
-#pragma endregion
+
+	#pragma endregion
 
 	#pragma region SFX Coins Background 
 
@@ -615,7 +603,7 @@ bool SceneLevel1::PostUpdate()
 		bomberman->PostUpdate();
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region DrawUI and Foreground
 
@@ -673,7 +661,7 @@ bool SceneLevel1::PostUpdate()
 		secondsXOffset = 32;
 	}
 
-#pragma endregion
+	#pragma endregion
 
 	#pragma region Text Drawing
 
@@ -685,17 +673,10 @@ bool SceneLevel1::PostUpdate()
 	sceneUI.DrawChar(0, { 25,8 });
 	sceneUI.DrawChar(1, { 123,8 });
 
-#pragma endregion
+	#pragma endregion
 
 	// Draw powerUpPos
-	for (int i = 0; i < 4; i++)
-	{
-		Obstacle* temp = sceneObstacles[7 + i];
-		if (debugPowerUp && temp != nullptr && temp->getCollider()->type != Type::BOMB)
-		{
-			App->render->AddRectRenderQueue({ powerUpPos[i].x + 2,powerUpPos[i].y + 2,12,12 }, { 0,0,255,255 });
-		}
-	}
+	gameDebug->DrawPowerUpPosition();
 
 	return true;
 }
@@ -747,7 +728,6 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 	}
 
 #pragma endregion
-
 }
 
 void SceneLevel1::WillCollision(Collider* c1, Collider* c2)
@@ -771,9 +751,13 @@ void SceneLevel1::CreateCoins()
 					if (sceneObstacles[l] != nullptr)
 					{
 						sceneObstacles[l]->pendingToDelete = true;
+
 						sceneObstacles[l]->powerUp = 0;
+
 						sceneObstacles[l]->getCollider()->pendingToDelete = true;
+
 						iPoint tempPos = sceneObstacles[l]->getPosition();
+
 						l++;
 						for (int m = 60; m < SCENE_OBSTACLES_NUM; m++)
 						{
@@ -878,6 +862,13 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	{
 		delete tileMap;
 		tileMap = nullptr;
+	}
+
+	// Delete debug
+	if (gameDebug != nullptr)
+	{
+		delete gameDebug;
+		gameDebug = nullptr;
 	}
 
 	return true;

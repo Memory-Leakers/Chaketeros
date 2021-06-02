@@ -5,15 +5,25 @@ SDL_Rect* rectMover;
 
 Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* tileMap)
 {
-	this->playerPos = playerPos; // Player pivot
+	// Player pivot
+	this->playerPos = playerPos; 
+
 	this->tileMap = tileMap;
+
 	texture = tex;
+
 	position.x = spawnPos.x;
+
 	position.y = spawnPos.y;
+
 	bounds.x = position.x;
+
 	bounds.y = position.y;
+
 	bounds.w = 16;
+
 	bounds.h = 16;	
+
 	points = 400;
 }
 
@@ -23,10 +33,6 @@ Mover::~Mover()
 
 bool Mover::Start() 
 {
-	LOG("LOADING ENEMY MOVER");
-
-	//texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Enemies.png");
-
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
 	#pragma region Init Anim
@@ -76,9 +82,11 @@ bool Mover::Start()
 	#pragma endregion
 
 	#pragma region Init destroy particle
+
 	dieParticle.InitParticle(500.0f, 0.1f, texture);
 	dieParticle.anim.PushBack({ 232,166,23,30 });
 	dieParticle.anim.speed = 0.02f;
+
 	#pragma endregion
 
 	return true;
@@ -173,6 +181,8 @@ UpdateResult Mover::PostUpdate() {
 	rectMover = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;
+
+	// offset
 	tempPos += {-4, -14};
 
 	if(currentAnimation == &downAnim || currentAnimation == &upAnim)
@@ -185,12 +195,10 @@ UpdateResult Mover::PostUpdate() {
 
 	if (isFlip)
 	{
-		//App->render->DrawRotateTexture(texture, tempPos, &rect, false, 180);
 		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, position.y, false, 180);
 	}
 	else
 	{
-		//App->render->DrawTexture(texture, tempPos, &rect);
 		App->render->AddTextureRenderQueue(texture, tempPos, rectMover, 1, position.y);
 	}
 
@@ -411,7 +419,7 @@ int Mover::AStar()
 	}
 
 	// si no ha encontrado ningun camino, devolvemos un -1
-	return { -1 };
+	return -1;
 }
 
 void Mover::Die()
