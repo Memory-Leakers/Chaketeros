@@ -1,4 +1,4 @@
-![gameLogo](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/GameTitle.jpg)
+![gameLogo](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/main/Game/MegaBomberman/Assets/Images/WikiImages/GameTitle.jpg)
 
 # Project Description
 
@@ -66,22 +66,22 @@ F7 - On/Off Camera Movement
 
 **Zhida Chen**
 
-![TaskList](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/chenTasks1.png)
+![TaskList](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks1.png)
 
-![TaskList2](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/chenTasks2.png)
+![TaskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks2.png)
 
 **Robert Recordà**
 
-![taskList](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/robertTasks.png)
+![taskList](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/robertTasks.png)
 
 
 **Pol Rius**
 
-![TaskList](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/poltASKS.png)
+![TaskList](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/poltASKS.png)
 
 
 **Adrià Sellarés**
 
 ![taskList1](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks1.png)
 
-![taskList2](https://github.com/AdriaSeSa/Chaketeros/blob/main/Game/MegaBomberman/Assets/Images/WikiImages/Web/adriatasks1.png)
+![taskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks2.png)
