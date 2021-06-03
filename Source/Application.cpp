@@ -63,21 +63,13 @@ UpdateResult Application::Update()
 
 	//TODO: (Opcional) Añadir sprite de Juego Pausado
 
-	if (isPaused) 
-	{ 
-		modules[1]->PreUpdate();
-		modules[1]->Update();
-		modules[1]->PostUpdate(); 
-		return ret; 
-	}
-
 	globalTime.Update();
 
 	if (globalTime.getDeltaTime() >= 1.0f / FPS)
 	{
 		for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		{
-			if (modules[i] != nullptr)
+			if (modules[i] != nullptr && (!isPaused || modules[i]->pauseIgnore))
 			{
 				ret = modules[i]->PreUpdate();
 			}
@@ -85,7 +77,7 @@ UpdateResult Application::Update()
 
 		for (int i = 0; i < NUM_MODULES && ret == UpdateResult::UPDATE_CONTINUE; ++i)
 		{
-			if (modules[i] != nullptr)
+			if (modules[i] != nullptr && (!isPaused || modules[i]->pauseIgnore))
 			{
 				ret = modules[i]->Update();
 			}

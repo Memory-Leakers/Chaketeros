@@ -7,6 +7,9 @@
 class Module
 {
 public:
+
+	bool pauseIgnore = false;
+
 	virtual ~Module() {}
 
 	// Called at the beginning of the application execution

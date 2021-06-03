@@ -187,9 +187,6 @@
     <ClInclude Include="DrawPoints.h">
       <Filter>Source Files\Util\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Source Files\Util\Other</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleDebug.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
@@ -340,9 +337,6 @@
       <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="DrawPoints.cpp">
-      <Filter>Source Files\Util\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Debug.cpp">
       <Filter>Source Files\Util\Other</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDebug.cpp">

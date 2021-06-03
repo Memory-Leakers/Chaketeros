@@ -10,10 +10,55 @@ using namespace std;
 
 ModuleDebug::ModuleDebug()
 {
+	pauseIgnore = true;
 }
 
 ModuleDebug::~ModuleDebug()
 {
+}
+
+UpdateResult ModuleDebug::Update()
+{
+	//Pause logic
+	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN) 
+	{
+		App->isPaused = !App->isPaused;
+		CalPauseTimeOffset();
+	}
+
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
+UpdateResult ModuleDebug::PostUpdate()
+{
+	if(App->isPaused)
+	{
+		ConstructMode();
+	}
+	return UpdateResult::UPDATE_CONTINUE;
+}
+
+void ModuleDebug::InitDebug(Obstacle** obstacles)
+{
+	this->obstacles = obstacles;
+	pauseTimeOffset = 0;
+}
+
+void ModuleDebug::ConstructMode()
+{
+	App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0,0,255,50});
+}
+
+void ModuleDebug::CalPauseTimeOffset()
+{
+	if (App->isPaused)
+	{
+		pauseTimeOffset = (SDL_GetTicks() * 0.001f) - pauseTimeOffset;
+	}
+	else
+	{
+		pauseTimeOffset = (SDL_GetTicks() * 0.001f) - pauseTimeOffset;
+	}
 }
 
 void ModuleDebug::AddUpFlame()

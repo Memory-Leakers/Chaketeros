@@ -125,6 +125,8 @@ UpdateResult Mover::Update()
 		debugAStarPath = !debugAStarPath;
 	}
 
+	currentAnimation->Update();
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -173,10 +175,8 @@ void Mover::FixedUpdate()
 	}
 }
 
-UpdateResult Mover::PostUpdate() {
-
-	currentAnimation->Update();
-
+UpdateResult Mover::PostUpdate() 
+{
 	rectMover = &currentAnimation->GetCurrentFrame();
 
 	iPoint tempPos = position;

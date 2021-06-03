@@ -48,7 +48,7 @@ bool ModuleScene::Start()
 
 UpdateResult ModuleScene::PreUpdate()
 {
-	if (currentScene == nullptr)
+	if (currentScene == nullptr || App->isPaused)
 	{
 		return UpdateResult::UPDATE_CONTINUE;
 	}
@@ -63,7 +63,8 @@ UpdateResult ModuleScene::Update()
 	drawPoints.Update();
 
 	#pragma region Update and FadeInOut
-	if (currentScene == nullptr)
+
+	if (currentScene == nullptr || App->isPaused)
 	{
 		return UpdateResult::UPDATE_CONTINUE;
 	}

@@ -5,11 +5,15 @@
 
 #include "External/SDL/include/SDL.h"
 
-ModuleInput::ModuleInput() : Module()
-{}
+ModuleInput::ModuleInput()
+{
+	pauseIgnore = true;
+}
 
 ModuleInput::~ModuleInput()
-{}
+{
+
+}
 
 bool ModuleInput::Init()
 {
@@ -43,10 +47,6 @@ UpdateResult ModuleInput::PreUpdate()
 		if (keyboard[i]) keys[i] = (keys[i] == KEY_IDLE) ? KEY_DOWN : KEY_REPEAT;
 		else keys[i] = (keys[i] == KEY_REPEAT || keys[i] == KEY_DOWN) ? KEY_UP : KEY_IDLE;
 	}
-
-	//Pause logic
-
-	if (keys[SDL_SCANCODE_SPACE] == KEY_DOWN) App->isPaused = !App->isPaused;
 
 	return UpdateResult::UPDATE_CONTINUE;
 }

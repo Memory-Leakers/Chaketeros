@@ -168,14 +168,12 @@ void SceneLevel1::DebugKeys()
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
 		App->debug->PlayerGodMod(bomberman);
-		//gameDebug->PlayerGodMod(bomberman);
 	}
 
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
 		App->debug->GameOver();
-		//gameDebug->GameOver();
 	}
 
 	// Win
@@ -184,7 +182,6 @@ void SceneLevel1::DebugKeys()
 		if (!levelComplete)
 		{
 			App->debug->Win(bomberman, winPosition);
-			//gameDebug->Win(bomberman, winPosition);
 		}
 	}
 
@@ -192,30 +189,25 @@ void SceneLevel1::DebugKeys()
 	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
 	{
 		App->debug->PowerUpPosition();
-		//gameDebug->PowerUpPosition();
 	}
 
 	// Detect player position in console (use with Q)
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
 		App->debug->PlayerPosInConsole(bomberman);
-		//gameDebug->PlayerPosInConsole(bomberman);
 	}
 
 	// Refresh debug tileMap with Q (use with f10)
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
 		App->debug->DrawMapInConsole(tileMap, 15, 13);
-		//gameDebug->DrawMapInConsole(tileMap, 15, 13);
 		App->debug->PrintDebugInformation();
-		//gameDebug->PrintDebugInformation();
 	}
 
 	// Get up flame power
 	if (App->input->keys[SDL_SCANCODE_Z] == KEY_DOWN)
 	{
 		App->debug->AddUpFlame();
-		//gameDebug->AddUpFlame();
 	}
 }
 
@@ -278,7 +270,7 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	// Init debug
-	App->debug->setObstacles(sceneObstacles);
+	App->debug->InitDebug(sceneObstacles);
 	//gameDebug = new Debug(sceneObstacles);
 
 	sceneUI.Start();
@@ -289,10 +281,8 @@ bool SceneLevel1::Start()
 	Mix_VolumeMusic(10);
 
 	App->debug->DrawMapInConsole(tileMap, 15, 13);
-	//gameDebug->DrawMapInConsole(tileMap, 15, 13);
 
 	App->debug->PrintDebugInformation();
-	//gameDebug->PrintDebugInformation();
 
 	return ret;
 }
@@ -563,6 +553,36 @@ bool SceneLevel1::Update()
 
 #pragma endregion
 
+	#pragma region Timer Logic (Should be in Update)
+
+	if (!isTimeOut)
+	{
+		currentSecond = totalSeconds - ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+	}
+
+	if (currentSecond == 0)
+	{
+		if (minutes != 0)
+		{
+			minutes--;
+			timer.Reset();
+		}
+		else {
+			isTimeOut = true;
+		}
+	}
+
+	if (currentSecond < 10)
+	{
+		secondsXOffset = 40;
+	}
+	else
+	{
+		secondsXOffset = 32;
+	}
+
+	#pragma endregion
+
 	return true;
 }
 
@@ -645,36 +665,6 @@ bool SceneLevel1::PostUpdate()
 
 	#pragma endregion
 
-	#pragma region Timer Logic (Should be in Update)
-
-	if (!isTimeOut)
-	{
-		currentSecond = totalSeconds - (int)timer.getDeltaTime();
-	}
-
-	if (currentSecond == 0)
-	{
-		if (minutes != 0)
-		{
-			minutes--;
-			timer.Reset();
-		}
-		else {
-			isTimeOut = true;
-		}
-	}
-
-	if (currentSecond < 10)
-	{
-		secondsXOffset = 40;
-	}
-	else
-	{
-		secondsXOffset = 32;
-	}
-
-	#pragma endregion
-
 	#pragma region Text Drawing
 
 	sceneUI.DrawNum(minutes, { 16,8 });
@@ -689,7 +679,6 @@ bool SceneLevel1::PostUpdate()
 
 	// Draw powerUpPos
 	App->debug->DrawPowerUpPosition();
-	//gameDebug->DrawPowerUpPosition();
 
 	return true;
 }

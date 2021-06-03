@@ -71,7 +71,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 	explotionRange += App->scene->playerSettings->powerUpFlame;
 
 	// Init TimeCount
-	startCountTime = SDL_GetPerformanceCounter();
+	startCountTime = SDL_GetTicks();
 
 	//TODO: Poner en forma de struct en la escena	//	o pasar como argumento por el constructor
 	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
@@ -96,10 +96,9 @@ void Bomb::Update()
 	if (!pendingToDelete)
 	{
 		// Cuenta Atras para que la bomba se explota
-		double currentCountTime = SDL_GetPerformanceCounter();
-		double timeOffset = SDL_GetPerformanceFrequency();
+		float currentCountTime = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 
-		if (((currentCountTime - startCountTime) / timeOffset) >= explotionTime)
+		if (((currentCountTime - startCountTime) * 0.001f) >= explotionTime)
 		{		
 			Die();
 		}

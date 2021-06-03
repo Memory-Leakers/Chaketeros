@@ -5,7 +5,9 @@
 #include "Point.h"
 
 class Player;
+
 class Tile;
+
 class Obstacle;
 
 class ModuleDebug :  public Module
@@ -16,11 +18,22 @@ private:
 	bool debugPowerUpPosition = false;
 
 public:
+	float pauseTimeOffset = 0;
+
+public:
 	ModuleDebug();
 
 	~ModuleDebug();
 
-	void setObstacles(Obstacle** obstacles) { this->obstacles = obstacles; }
+	UpdateResult Update() override;
+
+	UpdateResult PostUpdate() override;
+
+	void InitDebug(Obstacle** obstacles);
+
+	void ConstructMode();
+
+	void CalPauseTimeOffset();
 
 	void AddUpFlame();
 
