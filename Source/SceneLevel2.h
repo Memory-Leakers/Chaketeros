@@ -123,6 +123,8 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
+	void DebugKeys();
+
 	void CreateScene();
 
 	void CreateYellowFlowers();

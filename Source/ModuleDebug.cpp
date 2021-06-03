@@ -126,7 +126,7 @@ void ModuleDebug::PrintDebugInformation()
 	cout << "Z: bomb flame powerUp" << endl;
 }
 
-void ModuleDebug::Win(Player* player, iPoint winPos)
+void ModuleDebug::Win(Player* player, iPoint winPos, int cameraX)
 {
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -136,6 +136,7 @@ void ModuleDebug::Win(Player* player, iPoint winPos)
 		}
 	}
 	player->position = winPos;
+	App->render->CameraMove({ cameraX,0 });
 }
 
 void ModuleDebug::GameOver()

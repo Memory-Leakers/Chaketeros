@@ -189,6 +189,56 @@ void SceneLevel2::InitAssets()
 }
 
 
+void SceneLevel2::DebugKeys()
+{
+	// Player god mod
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	{
+		App->debug->PlayerGodMod(bomberman);
+	}
+
+	// Go to GAME OVER with F3
+	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	{
+		App->debug->GameOver();
+	}
+
+	// Win
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!levelComplete)
+		{
+			App->debug->Win(bomberman, winPosition, 384);
+		}
+	}
+
+	// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		App->debug->PowerUpPosition();
+	}
+
+	// Detect player position in console (use with Q)
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		App->debug->PlayerPosInConsole(bomberman);
+	}
+
+	// Refresh debug tileMap with Q (use with f10)
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		App->debug->DrawMapInConsole(level2TileMap, 31, 13);
+		App->debug->PrintDebugInformation();
+	}
+
+	// Get up flame power
+	if (App->input->keys[SDL_SCANCODE_Z] == KEY_DOWN)
+	{
+		App->debug->AddUpFlame();
+	}
+}
+
+
 bool SceneLevel2::Start()
 {
 	level2TileMap = new Tile();
@@ -230,6 +280,8 @@ bool SceneLevel2::Start()
 		}
 	}
 
+
+	App->debug->InitDebug(sceneObstacles);
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
@@ -379,25 +431,7 @@ bool SceneLevel2::PreUpdate()
 bool SceneLevel2::Update()
 {
 	//Debug Keys 
-
-	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
-	{
-		if (!levelComplete)
-		{
-			for each (int choreMecha in choreMechaIndex)
-			{
-				if (sceneObstacles[choreMecha] != nullptr)
-				{
-					sceneObstacles[choreMecha]->getCollider()->pendingToDelete = true;
-					delete sceneObstacles[choreMecha];
-					sceneObstacles[choreMecha] = nullptr;
-				}
-			}
-			bomberman->position = winPosition;
-			levelComplete = true;
-			App->render->CameraMove({ 384,0 });
-		}
-	}
+	DebugKeys();
 
 
 	if (bomberman != nullptr)
@@ -444,7 +478,7 @@ bool SceneLevel2::Update()
 #pragma region Timer Logic
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - (int)timer.getDeltaTime();
+		currentSecond = totalSeconds - (int)(timer.getDeltaTime() - App->debug->pauseTimeOffset);
 	}
 
 	if (currentSecond == 0)
@@ -514,7 +548,7 @@ bool SceneLevel2::PostUpdate()
 	// Draw Map
 	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
 
-	App->render->AddTextureRenderQueue(texBridge, { 258, 96 }, nullptr, 0, 10);
+	App->render->AddTextureRenderQueue(texBridge, { 258, 104 }, nullptr, 0, 10);
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)

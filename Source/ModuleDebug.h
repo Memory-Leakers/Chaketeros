@@ -47,7 +47,7 @@ public:
 
 	void PrintDebugInformation();
 
-	void Win(Player* player, iPoint winPos);
+	void Win(Player* player, iPoint winPos, int cameraX = 0);
 
 	void GameOver();
 
