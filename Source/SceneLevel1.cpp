@@ -14,7 +14,6 @@
 #include "PowerUp.h"
 #include "PokaPoka.h"
 #include "Mover.h"
-#include "Debug.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -165,10 +164,18 @@ void SceneLevel1::CreateYellowFlowers()
 
 void SceneLevel1::DebugKeys()
 {
+	// Player god mod
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	{
+		App->debug->PlayerGodMod(bomberman);
+		//gameDebug->PlayerGodMod(bomberman);
+	}
+
 	// Go to GAME OVER with F3
 	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
 	{
-		gameDebug->GameOver();
+		App->debug->GameOver();
+		//gameDebug->GameOver();
 	}
 
 	// Win
@@ -176,37 +183,39 @@ void SceneLevel1::DebugKeys()
 	{
 		if (!levelComplete)
 		{
-			gameDebug->Win(bomberman, winPosition);
+			App->debug->Win(bomberman, winPosition);
+			//gameDebug->Win(bomberman, winPosition);
 		}
-	}
-
-	// Draw debug tileMap with Q
-	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
-	{
-		gameDebug->DrawMapInConsole(tileMap, 15, 13);
-
-		gameDebug->PrintDebugInformation();
 	}
 
 	// Show the powerUps position
 	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
 	{
-		gameDebug->PowerUpPosition();
+		App->debug->PowerUpPosition();
+		//gameDebug->PowerUpPosition();
 	}
 
-	if (App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
-	{
-		gameDebug->AddUpFlame();
-	}
-
+	// Detect player position in console (use with Q)
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
-		gameDebug->PlayerPosInConsole(bomberman);
+		App->debug->PlayerPosInConsole(bomberman);
+		//gameDebug->PlayerPosInConsole(bomberman);
 	}
 
-	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	// Refresh debug tileMap with Q (use with f10)
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
 	{
-		gameDebug->PlayerGodMod(bomberman);
+		App->debug->DrawMapInConsole(tileMap, 15, 13);
+		//gameDebug->DrawMapInConsole(tileMap, 15, 13);
+		App->debug->PrintDebugInformation();
+		//gameDebug->PrintDebugInformation();
+	}
+
+	// Get up flame power
+	if (App->input->keys[SDL_SCANCODE_Z] == KEY_DOWN)
+	{
+		App->debug->AddUpFlame();
+		//gameDebug->AddUpFlame();
 	}
 }
 
@@ -269,7 +278,8 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	// Init debug
-	gameDebug = new Debug(sceneObstacles);
+	App->debug->setObstacles(sceneObstacles);
+	//gameDebug = new Debug(sceneObstacles);
 
 	sceneUI.Start();
 
@@ -278,9 +288,11 @@ bool SceneLevel1::Start()
 
 	Mix_VolumeMusic(10);
 
-	gameDebug->DrawMapInConsole(tileMap, 15, 13);
+	App->debug->DrawMapInConsole(tileMap, 15, 13);
+	//gameDebug->DrawMapInConsole(tileMap, 15, 13);
 
-	gameDebug->PrintDebugInformation();
+	App->debug->PrintDebugInformation();
+	//gameDebug->PrintDebugInformation();
 
 	return ret;
 }
@@ -676,7 +688,8 @@ bool SceneLevel1::PostUpdate()
 	#pragma endregion
 
 	// Draw powerUpPos
-	gameDebug->DrawPowerUpPosition();
+	App->debug->DrawPowerUpPosition();
+	//gameDebug->DrawPowerUpPosition();
 
 	return true;
 }
@@ -862,13 +875,6 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	{
 		delete tileMap;
 		tileMap = nullptr;
-	}
-
-	// Delete debug
-	if (gameDebug != nullptr)
-	{
-		delete gameDebug;
-		gameDebug = nullptr;
 	}
 
 	return true;

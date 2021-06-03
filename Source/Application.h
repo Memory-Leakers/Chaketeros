@@ -13,10 +13,11 @@
 #include "ModuleCollisions.h"
 #include "ModuleParticles.h"
 #include "ModuleEnemyPool.h"
+#include "ModuleDebug.h"
 
 #include "Timer.h"
 
-#define NUM_MODULES 9
+#define NUM_MODULES 10
 #define FPS 60
 
 class Module;
@@ -28,6 +29,7 @@ class ModuleScene;
 class ModuleRender;
 class ModuleAudio;
 class ModuleParticles;
+class ModuleDebug;
 class ModuleCollisions;
 
 class Application
@@ -56,16 +58,23 @@ public:
 
 	// All the modules stored individually
 	ModuleWindow* window = nullptr;
+
 	ModuleInput* input = nullptr;
+
 	ModuleTextures* textures = nullptr;
 
 	ModuleEnemyPool* enemy = nullptr;
 
 	ModuleScene* scene = nullptr;
+
 	ModuleRender* render = nullptr;
 
 	ModuleAudio* audio = nullptr;
+
 	ModuleCollisions* collisions = nullptr;
+
+	ModuleDebug* debug = nullptr;
+
 	ModuleParticles* particle = nullptr;
 
 	Timer globalTime;

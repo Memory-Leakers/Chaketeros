@@ -22,8 +22,6 @@ class ModuleEnemy;
 
 class Tile;
 
-class Debug;
-
 struct SDL_Texture;
 
 struct SDL_Rect;
@@ -125,8 +123,6 @@ private:
 	iPoint winPosition = { 120, 96 };
 
 	iPoint powerUpPos[4];
-
-	Debug* gameDebug;
 
 private:
 	void DebugKeys();

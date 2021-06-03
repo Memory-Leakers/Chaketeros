@@ -167,8 +167,8 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Saru.h">
-        <Filter>Source Files\Util\Enemies</Filter>
-     </ClInclude>
+      <Filter>Source Files\Util\Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="Snail.h">
       <Filter>Source Files\Util\Enemies</Filter>
     </ClInclude>
@@ -189,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Source Files\Util\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebug.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,7 +322,7 @@
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Saru.cpp">
-        <Filter>Source Files\Util\Enemies</Filter>
+      <Filter>Source Files\Util\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Snail.cpp">
       <Filter>Source Files\Util\Enemies</Filter>
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files\Util\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleDebug.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

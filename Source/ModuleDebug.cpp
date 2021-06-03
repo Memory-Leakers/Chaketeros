@@ -1,4 +1,5 @@
-#include "Debug.h"
+#include "ModuleDebug.h"
+
 #include "Application.h"
 #include "Player.h"
 #include "Tile.h"
@@ -7,32 +8,30 @@
 #include <iostream>
 using namespace std;
 
-Debug::Debug(Obstacle** obstacles)
+ModuleDebug::ModuleDebug()
 {
-	this->obstacles = obstacles;
 }
 
-Debug::~Debug()
+ModuleDebug::~ModuleDebug()
 {
-
 }
 
-void Debug::AddUpFlame()
+void ModuleDebug::AddUpFlame()
 {
 	App->scene->playerSettings->powerUpFlame++;
 }
 
-void Debug::PowerUpPosition()
+void ModuleDebug::PowerUpPosition()
 {
 	debugPowerUpPosition = !debugPowerUpPosition;
 }
 
-void Debug::PlayerGodMod(Player* player)
+void ModuleDebug::PlayerGodMod(Player* player)
 {
 	player->godMode = !player->godMode;
 }
 
-void Debug::PlayerPosInConsole(Player* player)
+void ModuleDebug::PlayerPosInConsole(Player* player)
 {
 	player->posMode = !player->posMode;
 
@@ -47,7 +46,7 @@ void Debug::PlayerPosInConsole(Player* player)
 	}
 }
 
-void Debug::DrawMapInConsole(Tile* tile, int gridX, int gridY)
+void ModuleDebug::DrawMapInConsole(Tile* tile, int gridX, int gridY)
 {
 	system("cls");
 	cout << endl;
@@ -58,16 +57,16 @@ void Debug::DrawMapInConsole(Tile* tile, int gridX, int gridY)
 		{
 			switch (tile->LevelsTileMaps[App->scene->currentLevel][i][j])
 			{
-				case -1: cout << "P,"; break;
-				case 10: cout << "G,"; break;
-				default: cout << tile->LevelsTileMaps[App->scene->currentLevel][i][j] << ","; break;
+			case -1: cout << "P,"; break;
+			case 10: cout << "G,"; break;
+			default: cout << tile->LevelsTileMaps[App->scene->currentLevel][i][j] << ","; break;
 			}
 		}
 		cout << endl;
 	}
 }
 
-void Debug::PrintDebugInformation()
+void ModuleDebug::PrintDebugInformation()
 {
 	cout << endl;
 	cout << "F1: On/Off GodMod" << endl;
@@ -79,10 +78,10 @@ void Debug::PrintDebugInformation()
 	cout << "F7: On/Off Camera (move with dirArrown)" << endl;
 	cout << "F10: On/Off Draw player pos in console map (use with Q)" << endl;
 	cout << "Q: Update console tileMap" << endl;
-	cout << "M: bomb flame powerUp" << endl;
+	cout << "Z: bomb flame powerUp" << endl;
 }
 
-void Debug::Win(Player* player, iPoint winPos)
+void ModuleDebug::Win(Player* player, iPoint winPos)
 {
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -94,16 +93,12 @@ void Debug::Win(Player* player, iPoint winPos)
 	player->position = winPos;
 }
 
-void Debug::GameOver()
+void ModuleDebug::GameOver()
 {
 	App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
 }
 
-void Debug::Update()
-{
-}
-
-void Debug::DrawPowerUpPosition()
+void ModuleDebug::DrawPowerUpPosition()
 {
 	// Draw powerUpPos
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; i++)

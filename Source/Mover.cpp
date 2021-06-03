@@ -1,6 +1,5 @@
 #include "Mover.h"
 
-
 SDL_Rect* rectMover;
 
 Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* tileMap)

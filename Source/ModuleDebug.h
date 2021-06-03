@@ -1,13 +1,14 @@
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef __MODULE_DEBUG_H
+#define __MODULE_DEBUG_H
 
+#include "Module.h"
 #include "Point.h"
 
 class Player;
 class Tile;
 class Obstacle;
 
-class Debug
+class ModuleDebug :  public Module
 {
 private:
 	Obstacle** obstacles = nullptr;
@@ -15,9 +16,11 @@ private:
 	bool debugPowerUpPosition = false;
 
 public:
-	Debug(Obstacle** obstacles);
+	ModuleDebug();
 
-	~Debug();
+	~ModuleDebug();
+
+	void setObstacles(Obstacle** obstacles) { this->obstacles = obstacles; }
 
 	void AddUpFlame();
 
@@ -35,10 +38,8 @@ public:
 
 	void GameOver();
 
-	void Update();
-
 	void DrawPowerUpPosition();
 };
 
-#endif // !DEBUG?H
+#endif // !__MODULE_DEBUG_Hs
 

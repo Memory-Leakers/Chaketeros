@@ -102,6 +102,7 @@
     <ClInclude Include="DrawPoints.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="GlassCapsule.h" />
+    <ClInclude Include="ModuleDebug.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Mover.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCollisions.cpp" />
+    <ClCompile Include="ModuleDebug.cpp" />
     <ClCompile Include="ModuleEnemy.cpp" />
     <ClCompile Include="ModuleEnemyPool.cpp" />
     <ClCompile Include="ModuleInput.cpp" />

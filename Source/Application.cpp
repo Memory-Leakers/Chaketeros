@@ -14,8 +14,9 @@ Application::Application()
 	modules[5] = scene = new ModuleScene();
 	modules[6] = enemy = new ModuleEnemyPool();
 	modules[7] = collisions = new ModuleCollisions();
+	modules[8] = debug = new ModuleDebug();
 
-	modules[8] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
+	modules[9] = render = new ModuleRender();    //RENDER HAS TO BE ALWAYS THE LAST ONE ON THE modules ARRAY!!!!!!!!!!!!!!!!!!!!!!!!
 
 	isPaused = false;
 }
