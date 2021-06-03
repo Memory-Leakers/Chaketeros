@@ -177,7 +177,7 @@ void SceneLevel2::InitAssets()
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/CoreMecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
-	texBridge = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Bridge.png");
+	texBridge = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/BridgeTogether.png");
 
 
 	whistlingSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_WhistlingEndSound.wav");
@@ -513,6 +513,8 @@ bool SceneLevel2::PostUpdate()
 
 	// Draw Map
 	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
+
+	App->render->AddTextureRenderQueue(texBridge, { 258, 96 }, nullptr, 0, 10);
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
