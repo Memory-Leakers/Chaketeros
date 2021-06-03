@@ -548,6 +548,9 @@ bool SceneLevel2::PostUpdate()
 	// Draw Map
 	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
 
+	App->render->AddTextureRenderQueue(texFG, { 16, 16 }, &forGroundSection1, 0, 5);
+	App->render->AddTextureRenderQueue(texFG, { 480, 16 }, &forGroundSection2, 0, 5);
+
 	App->render->AddTextureRenderQueue(texBridge, { 258, 106 }, nullptr, 0, 10);
 
 	// Draw Obstacle
@@ -681,6 +684,7 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
+			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}

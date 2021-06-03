@@ -42,7 +42,7 @@ void DrawPoints::Update()
 				{
 					positionsArray[i] += {0, -1};
 				}
-				drawPoints.DrawNum(numsArray[i], positionsArray[i] + temp ,3 ,2 , 1000.0f);
+				drawPoints.DrawNum(numsArray[i], positionsArray[i] + temp ,3 ,1 , 1000.0f);
 			}
 			else
 			{
