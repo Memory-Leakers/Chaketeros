@@ -84,6 +84,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 Bomb::~Bomb()
 {
+	
 }
 
 void Bomb::Update()
@@ -157,7 +158,7 @@ void Bomb::Die()
 			}
 			else
 			{
-				if(temp !=1 && temp != 2 && temp  != 7 && temp != 10 && temp != 13)
+				if(temp !=1 && temp != 2 && temp  != 7 && temp != 10 && temp != 13 && temp != 12)
 				{
 					explotionNum[i]++;
 				}
@@ -210,4 +211,9 @@ void Bomb::Die()
 	}
 
 	#pragma endregion
+}
+
+void Bomb::CleanUp()
+{
+	App->scene->playerSettings->maxBombs++;
 }

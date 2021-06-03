@@ -18,6 +18,8 @@ public:
 
 	void Update();
 
+	void Reset();
+
 	void DrawScore(int score, iPoint position);
 
 	DrawPoints();

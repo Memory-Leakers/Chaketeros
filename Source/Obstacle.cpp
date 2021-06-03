@@ -28,7 +28,7 @@ Obstacle::Obstacle(const Obstacle& Obs)
 
 Obstacle::~Obstacle()
 {
-	
+	CleanUp();
 }
 
 void Obstacle::SetDestructible(bool destructible)

@@ -54,6 +54,8 @@ public:
 	void OnCollision(Collider* col) override;
 
 	void Die() override;
+
+	void CleanUp() override;
 };
 
 #endif // !__BOMB_H__
