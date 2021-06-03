@@ -696,7 +696,7 @@ void SceneLevel1::OnCollision(Collider* c1, Collider* c2)
 
 	#pragma region PowerUps Collision
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < MAX_POWERUPS; ++i)
 	{
 		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
 		{
