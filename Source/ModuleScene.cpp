@@ -1,6 +1,8 @@
 #include "ModuleScene.h"
 #include "DrawPoints.h"
 #include <time.h>
+
+
 PlayerSettings* playerSettings = nullptr;
 
 DrawPoints drawPoints;
@@ -87,6 +89,9 @@ UpdateResult ModuleScene::Update()
 
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+
+			drawPoints.Reset();
+			drawPoints.Start();
 
 			App->render->ResetCamera();
 			currentScene->lastID = lastSceneID;

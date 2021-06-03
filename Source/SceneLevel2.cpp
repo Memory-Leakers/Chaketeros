@@ -548,7 +548,7 @@ bool SceneLevel2::PostUpdate()
 	// Draw Map
 	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
 
-	App->render->AddTextureRenderQueue(texBridge, { 258, 104 }, nullptr, 0, 10);
+	App->render->AddTextureRenderQueue(texBridge, { 258, 106 }, nullptr, 0, 10);
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)

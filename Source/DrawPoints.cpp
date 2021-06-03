@@ -42,8 +42,7 @@ void DrawPoints::Update()
 				{
 					positionsArray[i] += {0, -1};
 				}
-
-				drawPoints.DrawNum(numsArray[i], positionsArray[i] + temp ,3 ,1 , 1000.0f);
+				drawPoints.DrawNum(numsArray[i], positionsArray[i] + temp ,3 ,2 , 1000.0f);
 			}
 			else
 			{
@@ -53,6 +52,17 @@ void DrawPoints::Update()
 			}
 			
 		}
+	}
+}
+
+void DrawPoints::Reset()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		numsArray[i] = 0;
+		boolsArray[i] = false;
+		positionsArray[i] = { 0,0 };
+		timers[i].Reset();
 	}
 }
 

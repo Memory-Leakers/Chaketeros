@@ -815,6 +815,7 @@ bool SceneLevel1::CleanUp(bool finalCleanUp)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
+			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}
