@@ -78,9 +78,9 @@ private:
 	//	Number of total seconds
 	int totalSeconds;
 	//	Number of total minutes
-	int minutes;
+	int minutes = 4;
 	// Current second shown on screen
-	int currentSecond = 0;
+	int currentSecond = 59;
 	// Offset for the seconds timer
 	int secondsXOffset = 100;
 	// CoreMecha's number

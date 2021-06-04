@@ -26,7 +26,7 @@ private:
 
 	int* currentNumPos;
 
-	bool isPasswordCorrect = false;
+	bool isPasswordCorrect1 = false,isPasswordCorrect2 = false;
 
 	SDL_Texture* texScenePassword;
 

@@ -259,9 +259,13 @@ bool SceneLevel2::Start()
 	isTimeOut = false;
 	isChangingScene = false;
 	minutes = 4;
-	totalSeconds = 59;
+
+	currentSecond = 59;
+
+	totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 
 	isExtraPointsActive = false;
+	coreMechaNum = 3;
 
 	//Spawn Enemies
 	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
@@ -441,18 +445,26 @@ bool SceneLevel2::Update()
 		if (bomberman->position == winPosition && levelComplete && !isExtraPointsActive)
 		{
 			Mix_HaltMusic();
+
 			App->audio->PlaySound(levelCompleteSFX, 0);
+			
 			minutes = 0;
+
 			if (currentSecond > 15)
 			{
 				totalSeconds = 15;
 
 				timer.Reset();
+
+				totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 			}
+
 			isExtraPointsActive = true;
+
 			bomberman->ExtraPoints = true;
 
 			sceneObstacles[glassCapsuleIndex]->Die();
+			
 			CreateCoins();
 
 			for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
@@ -471,14 +483,19 @@ bool SceneLevel2::Update()
 				delete sceneObstacles[redFlowerIndex];
 				sceneObstacles[redFlowerIndex] = nullptr;
 			}
-
 		}
 	}
 
 #pragma region Timer Logic
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - (int)(timer.getDeltaTime() - App->debug->pauseTimeOffset);
+		int tempTime = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+
+		if (tempTime - totalSeconds >= 1)
+		{
+			currentSecond--;
+			totalSeconds = tempTime;
+		}
 	}
 
 	if (currentSecond == 0)
@@ -487,8 +504,11 @@ bool SceneLevel2::Update()
 		{
 			minutes--;
 			timer.Reset();
+			totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+			currentSecond = 59;
 		}
-		else {
+		else 
+		{
 			isTimeOut = true;
 		}
 	}

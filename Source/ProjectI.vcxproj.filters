@@ -32,6 +32,9 @@
     <Filter Include="Source Files\Util\Other">
       <UniqueIdentifier>{e20bc77c-0c24-4c71-8cdb-eccbcb0a3900}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Icon">
+      <UniqueIdentifier>{1cfc80d2-935d-4904-94de-c71102e409c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -193,6 +196,9 @@
     <ClInclude Include="ScenePassword.h">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source Files\Icon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -348,5 +354,15 @@
     <ClCompile Include="ScenePassword.cpp">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Bomberman.rc">
+      <Filter>Source Files\Icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Game\MegaBomberman\Assets\Images\Sprites\Icon.ico">
+      <Filter>Source Files\Icon</Filter>
+    </Image>
   </ItemGroup>
 </Project>
