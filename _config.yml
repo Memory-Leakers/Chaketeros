@@ -1,8 +1,7 @@
-title: Chaketeros Page
+# Name of website
+title: Chaketeros Website
 
-layout: page
-title: "PAGE TITLE"
-permalink: /https://serveistic.upc.edu/ca/atenea/
-
+# Your name to show in the footer
+author: Adrià Sellarés
 
 theme: jekyll-theme-midnight
