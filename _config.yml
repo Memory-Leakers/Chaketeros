@@ -1,4 +1,8 @@
 title: Chaketeros Page
 
+layout: page
+title: "PAGE TITLE"
+permalink: /https://serveistic.upc.edu/ca/atenea/
+
 
 theme: jekyll-theme-midnight
