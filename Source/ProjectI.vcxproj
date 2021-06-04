@@ -134,6 +134,7 @@
     <ClInclude Include="SceneLevel2.h" />
     <ClInclude Include="SceneLevelBoss.h" />
     <ClInclude Include="SceneMainTitle.h" />
+    <ClInclude Include="ScenePassword.h" />
     <ClInclude Include="SceneSelectArea.h" />
     <ClInclude Include="SceneSelectStage.h" />
     <ClInclude Include="Snail.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="SceneLevel2.cpp" />
     <ClCompile Include="SceneLevelBoss.cpp" />
     <ClCompile Include="SceneMainTitle.cpp" />
+    <ClCompile Include="ScenePassword.cpp" />
     <ClCompile Include="SceneSelectArea.cpp" />
     <ClCompile Include="SceneSelectStage.cpp" />
     <ClCompile Include="Snail.cpp" />

@@ -114,7 +114,7 @@ void NumText::DrawNum(int num, iPoint pos, float scale, int layer, float orderIn
 			}
 
 			//App->render->DrawTexture(texFonts, { xPos + (xOffset * i), 152 }, &fonts[1][digitVec.at(i)]);	//	Drawing Num
-			App->render->AddTextureRenderQueue(texFonts, { xPos + (xOffset * i), 152 }, &fonts[1][digitVec.at(i)], 2, 3, false, 0, scale);
+			App->render->AddTextureRenderQueue(texFonts, { xPos + (xOffset * i), pos.y }, &fonts[1][digitVec.at(i)], 2, 3, false, 0, scale);
 		}
 	}
 

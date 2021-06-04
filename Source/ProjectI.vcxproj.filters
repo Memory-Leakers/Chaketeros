@@ -190,6 +190,9 @@
     <ClInclude Include="ModuleDebug.h">
       <Filter>Source Files\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ScenePassword.h">
+      <Filter>Source Files\Util\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="ModuleDebug.cpp">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenePassword.cpp">
+      <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

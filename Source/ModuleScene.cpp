@@ -17,6 +17,7 @@ ModuleScene::ModuleScene()
 	scenes[5] = new SceneLevel2();
 	scenes[6] = new SceneLevelBoss();
 	scenes[7] = new SceneGameOver();
+	scenes[8] = new ScenePassword();
 
 	srand(time(NULL));
 	playerSettings = PlayerSettings::Instance();

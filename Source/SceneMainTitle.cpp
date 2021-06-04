@@ -123,6 +123,11 @@ bool SceneMainTitle::Update()
 						App->scene->ChangeCurrentScene(SCENE_AREA, 80);
 
 					}
+					if (currentArrowPos == &arrowPosition[2])
+					{
+						App->audio->PlaySound(selectSFX, 0);
+						App->scene->ChangeCurrentScene(SCENE_PASSWORD, 80);
+					}
 				}
 
 				#pragma endregion
