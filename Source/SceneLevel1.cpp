@@ -240,7 +240,9 @@ bool SceneLevel1::Start()
 
 	minutes = 4;
 
-	totalSeconds = 59;
+	currentSecond = 59;
+
+	totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 
 	#pragma endregion
 
@@ -476,9 +478,11 @@ bool SceneLevel1::Update()
 
 			if (currentSecond > 15)
 			{
-				totalSeconds = 15;
+				currentSecond = 15;
 
 				timer.Reset();
+
+				totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 			}
 
 			isExtraPointsActive = true;
@@ -557,7 +561,13 @@ bool SceneLevel1::Update()
 
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+		int tempTime = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+
+		if (tempTime - totalSeconds >= 1)
+		{
+			currentSecond--;
+			totalSeconds = tempTime;
+		}
 	}
 
 	if (currentSecond == 0)
@@ -566,8 +576,11 @@ bool SceneLevel1::Update()
 		{
 			minutes--;
 			timer.Reset();
+			totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+			currentSecond = 59;
 		}
-		else {
+		else 
+		{
 			isTimeOut = true;
 		}
 	}
