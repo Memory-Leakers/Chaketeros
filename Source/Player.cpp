@@ -104,10 +104,12 @@ UpdateResult Player::Update()
 {
 	int speedX = 0;
 	int speedY = 0;
-
+	GamePad& pad = App->input->pads[0];
+	
+	#pragma region Movements keys
 	#pragma region Movements keys
 
-	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT)
+	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
 	{
 		isFlip = false;
 		currentAnimation = &upAnim;
@@ -118,7 +120,7 @@ UpdateResult Player::Update()
 			speedY = -speed;
 		}
 		// movemenet fix
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
 		{
 			iPoint tempTilePos = getCurrentTilePos();
 
@@ -146,7 +148,7 @@ UpdateResult Player::Update()
 		SpecialSound();
 	}
 
-	if (App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT)
+	if ((App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT || pad.left_y > 0.0f) && (App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT || pad.left_y < 0.0f))
 	{
 		isFlip = false;
 		currentAnimation = &downAnim;
@@ -157,7 +159,7 @@ UpdateResult Player::Update()
 			speedY = speed;
 		}
 		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
 		{
 			iPoint tempTilePos = getCurrentTilePos();
 
@@ -185,7 +187,7 @@ UpdateResult Player::Update()
 		SpecialSound();
 	}
 
-	if (App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT && App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT)
+	if ((App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT || pad.left_x > 0.0f) && (App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT || pad.left_x < 0.0f))
 	{
 		isFlip = true;
 		currentAnimation = &rightAnim;
@@ -198,7 +200,7 @@ UpdateResult Player::Update()
 			}
 		}
 		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
 		{
 			iPoint tempTilePos = getCurrentTilePos();
 
@@ -226,7 +228,7 @@ UpdateResult Player::Update()
 		SpecialSound();
 	}
 
-	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT)
+	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT || pad.left_x < 0.0f)
 	{
 		isFlip = false;
 		currentAnimation = &leftAnim;
@@ -238,7 +240,7 @@ UpdateResult Player::Update()
 			speedX = -speed;
 		}
 		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
 		{
 			iPoint tempTilePos = getCurrentTilePos();		
 
@@ -269,7 +271,7 @@ UpdateResult Player::Update()
 	#pragma endregion
 
 	// Drop a bomb
-	if (App->input->keys[SDL_SCANCODE_J] == KEY_DOWN && App->scene->playerSettings->maxBombs > 0)
+	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->maxBombs > 0)
 	{
 		iPoint temp = getCurrentTilePos();
 		temp.y--;
@@ -304,7 +306,7 @@ UpdateResult Player::Update()
 
 	// Player idle or walk state
 	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
-		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE)
+		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_x == 0.0f && pad.left_y == 0.0f)
 	{
 		currentAnimation->hasIdle = true;
 	}
@@ -397,6 +399,7 @@ UpdateResult Player::PostUpdate()
 //TODO
 iPoint Player::Move(int dir)
 {
+	GamePad& pad = App->input->pads[0];
 	iPoint tempDir[4]
 	{
 		{ 0,-1 * speed}, // Up
@@ -415,13 +418,19 @@ iPoint Player::Move(int dir)
 	currentAnimation = tempAnim[dir];
 	currentAnimation->hasIdle = false;
 
+
+	//Left	A	|| pad.left_x < 0.0f
+	//Right	D	|| pad.left_x > 0.0f
+	//UP	W	|| pad.left_y < 0.0f
+	//Down	S	|| pad.left_y > 0.0f
+
 	if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[dir]) // Limiitar movimiento en la mapa//
 	{
 		tempSpeed = tempDir[dir];
 	}
 
 	// movemenet fix
-	else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE)
+	else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
 	{
 		iPoint tempTilePos = getCurrentTilePos();
 

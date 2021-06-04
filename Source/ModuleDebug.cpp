@@ -19,8 +19,10 @@ ModuleDebug::~ModuleDebug()
 
 UpdateResult ModuleDebug::Update()
 {
+
+	GamePad& pad = App->input->pads[0];
 	//Pause logic
-	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN) 
+	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
 	{
 		App->isPaused = !App->isPaused;
 		CalPauseTimeOffset();

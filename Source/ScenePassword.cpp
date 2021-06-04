@@ -72,6 +72,7 @@ bool ScenePassword::Start() {
 }
 
 bool ScenePassword::Update() {
+	GamePad& pad = App->input->pads[0];
 
 	BombermanAndSpaceship.Update();
 
@@ -91,7 +92,7 @@ bool ScenePassword::Update() {
 #pragma region Input Arrow Position Logic
 
 	//Check Input to change Arrow Position
-	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || App->input->keys[SDL_SCANCODE_D] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || App->input->keys[SDL_SCANCODE_D] == KEY_DOWN || pad.right == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentArrowPos == &arrowNumPosition[3] && currentNumPos == &nums[3])
@@ -105,7 +106,7 @@ bool ScenePassword::Update() {
 			currentNumPos++;
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || App->input->keys[SDL_SCANCODE_A] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || App->input->keys[SDL_SCANCODE_A] == KEY_DOWN || pad.left == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentArrowPos == &arrowNumPosition[0] && currentNumPos == &nums[0])
@@ -120,7 +121,7 @@ bool ScenePassword::Update() {
 		}
 	}
 	
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN || pad.up == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		for (int i = 0; i < 4; i++) {
@@ -136,7 +137,7 @@ bool ScenePassword::Update() {
 		}
 	}
 
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN || pad.down == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		for (int i = 0; i < 4; i++) {
@@ -161,8 +162,9 @@ bool ScenePassword::Update() {
 #pragma region Select Option Logic
 
 	//Select an option based on the arrow position
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN )
+	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 	{
+		cout << "kek" << endl;
 		Comprovation();
 		if (isPasswordCorrect1) {
 

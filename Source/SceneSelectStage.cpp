@@ -118,11 +118,12 @@ void SceneSelectStage::ModifyStagePointer(int mod)
 
 bool SceneSelectStage::Update()
 {
+	GamePad& pad = App->input->pads[0];
 	stoneCoinAnim.Update();
 
 	#pragma region Select Option Logic
 	//Select an option based on the arrow position
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 	{
 		App->audio->PlaySound(selectSFX, 0);
 		switch (stageSelectPointer)
@@ -140,17 +141,17 @@ bool SceneSelectStage::Update()
 	}
 	#pragma endregion
 
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || pad.down == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(0);
 	}
-	else if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	else if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.up == KEY_DOWN || pad.right == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(1);
 	}
-	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		ModifyStagePointer(-1);

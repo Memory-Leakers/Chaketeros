@@ -102,6 +102,7 @@ bool SceneSelectArea::Start()
 
 bool SceneSelectArea::Update()
 {	
+	GamePad& pad = App->input->pads[0];
 	particleTime.Update();
 
 	if(particleTime.getDeltaTime() > 0.15f)
@@ -125,11 +126,11 @@ bool SceneSelectArea::Update()
 
 	#pragma region Input Arrow Position Logic
 	//Check Input to change Arrow Position
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN || pad.down == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 	}
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN || pad.up == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 	}
@@ -137,7 +138,7 @@ bool SceneSelectArea::Update()
 
 	#pragma region Select Option Logic
 	//Select an option based on the arrow position
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 	{
 		if (currentArrowLevelPos == &arrowLevelPosition[0])
 		{
