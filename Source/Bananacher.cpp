@@ -20,6 +20,7 @@ Bananacher::~Bananacher()
 
 bool Bananacher::Start()
 {
+	LOG("-LOADING ENEMY BANANACHER-");
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Banana.png");
 
 	col = App->collisions->AddCollider({ 0,0,16,16 }, Type::ENEMY, App->scene);

@@ -83,6 +83,9 @@ public:
 	void setDestroyedFx(int fxId) { this->destroyedFx = fxId; }
 
 	const Collider* getCollider() const { return col; }
+
+	int getLife() { return life; }
+
 };
 
 #endif

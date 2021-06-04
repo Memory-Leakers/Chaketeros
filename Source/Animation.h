@@ -54,6 +54,10 @@ public:
 		return frames[(int)current_frame];
 	}
 
+	SDL_Rect& getFrame(int frame) {
+		return frames[frame];
+	}
+
 	bool HasFinished()
 	{
 		if(current_frame >= last_frame && !loop)
@@ -62,6 +66,10 @@ public:
 		}
 
 		return false;
+	}
+
+	int size() {
+		return last_frame;
 	}
 };
 
