@@ -265,6 +265,7 @@ bool SceneLevel2::Start()
 	totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 
 	isExtraPointsActive = false;
+	coreMechaNum = 3;
 
 	//Spawn Enemies
 	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
