@@ -12,6 +12,7 @@ class Bomb : public Obstacle
 private:
 	// Cuanta atras de la explosion
 	float explotionTime = 3.5f;
+
 	// Tiempo cuando empieza a contar
 	double startCountTime;
 

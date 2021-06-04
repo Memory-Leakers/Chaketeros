@@ -200,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Game\MegaBomberman\Assets\Images\Sprites\Icon.ico" />
-    <Image Include="..\Game\MegaBomberman\Assets\Images\Sprites\Icon32.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
