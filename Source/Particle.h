@@ -63,6 +63,8 @@ public:
 
 	void InitParticle(float lifetime, float animSpeed, SDL_Texture* tex, bool flipHor = true, float rotation = 0, iPoint speed = { 0,0 });
 
+	/*GETTERS AND SETTERS*/
+
 	void setSpeed(iPoint speed)
 	{
 		this->speed = speed;

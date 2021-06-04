@@ -28,7 +28,7 @@ void SceneLevelBoss::CreateScene()
 	bananacher = new Bananacher({ 120, 64 }, tileMap);
 	bombermanBoss->Start();
 	bombermanBoss->setPosition(120, 192); //232 352
-	saru = new Saru({ 152, 64 }, &bombermanBoss->position, tileMap);
+	saru = new Saru({ 152, 64 }, &bombermanBoss->position, &bananacher->position, tileMap);
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
 	{
 		for (int j = 0; j < 15; ++j)	//Check TileMap x axis
@@ -145,17 +145,18 @@ bool SceneLevelBoss::Update()
 		}
 	}
 
-	if (saru != nullptr && !saru->pendingToDelete) {
+	/*DELETES BANANACHER in case Saru is playing the death animation*/
+	if (bananacher != nullptr && !bananacher->pendingToDelete && saru->getLife() == 1) {
+		bananacher->Die();
+	}
+
+	if (saru != nullptr && !saru->pendingToDelete ) {
 		saru->Update();
 		//Checks if bananacher is dead to tigger buff
 		if ((bananacher == nullptr || bananacher->pendingToDelete) && !saruBuff) {
 			saru->setVRange(20); //Makes saru detect the player on next tile
 			saruBuff = true;
 		}
-	}
-	else if (bananacher != nullptr && !bananacher->pendingToDelete) {
-		bananacher->Die();
-
 	}
 
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
