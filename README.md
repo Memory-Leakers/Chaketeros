@@ -40,5 +40,5 @@ F7 - On/Off Camera Movement
 ## Assets:
 All assets are from the original game.
 
-## Licence:
+## License:
 This project is licensed under an unmodifield MIT licence, which is an OSI-certifield license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
