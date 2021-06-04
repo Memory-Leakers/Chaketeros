@@ -177,7 +177,7 @@ void SceneLevel2::InitAssets()
 	texCoreMecha = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/CoreMecha.png");
 	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
-	texBridge = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/Bridge.png");
+	texBridge = App->textures->Load("Assets/Images/Sprites/Environment_Sprites/BridgeTogether.png");
 
 
 	whistlingSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_WhistlingEndSound.wav");
@@ -186,6 +186,56 @@ void SceneLevel2::InitAssets()
 	extraCoinsBckgSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraCoinsBackgroundSound.wav");
 
 	CreateScene();
+}
+
+
+void SceneLevel2::DebugKeys()
+{
+	// Player god mod
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	{
+		App->debug->PlayerGodMod(bomberman);
+	}
+
+	// Go to GAME OVER with F3
+	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	{
+		App->debug->GameOver();
+	}
+
+	// Win
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!levelComplete)
+		{
+			App->debug->Win(bomberman, winPosition, 384);
+		}
+	}
+
+	// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		App->debug->PowerUpPosition();
+	}
+
+	// Detect player position in console (use with Q)
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		App->debug->PlayerPosInConsole(bomberman);
+	}
+
+	// Refresh debug tileMap with Q (use with f10)
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		App->debug->DrawMapInConsole(level2TileMap, 31, 13);
+		App->debug->PrintDebugInformation();
+	}
+
+	// Get up flame power
+	if (App->input->keys[SDL_SCANCODE_Z] == KEY_DOWN)
+	{
+		App->debug->AddUpFlame();
+	}
 }
 
 
@@ -230,6 +280,8 @@ bool SceneLevel2::Start()
 		}
 	}
 
+
+	App->debug->InitDebug(sceneObstacles);
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
@@ -379,25 +431,7 @@ bool SceneLevel2::PreUpdate()
 bool SceneLevel2::Update()
 {
 	//Debug Keys 
-
-	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
-	{
-		if (!levelComplete)
-		{
-			for each (int choreMecha in choreMechaIndex)
-			{
-				if (sceneObstacles[choreMecha] != nullptr)
-				{
-					sceneObstacles[choreMecha]->getCollider()->pendingToDelete = true;
-					delete sceneObstacles[choreMecha];
-					sceneObstacles[choreMecha] = nullptr;
-				}
-			}
-			bomberman->position = winPosition;
-			levelComplete = true;
-			App->render->CameraMove({ 384,0 });
-		}
-	}
+	DebugKeys();
 
 
 	if (bomberman != nullptr)
@@ -444,7 +478,7 @@ bool SceneLevel2::Update()
 #pragma region Timer Logic
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - (int)timer.getDeltaTime();
+		currentSecond = totalSeconds - (int)(timer.getDeltaTime() - App->debug->pauseTimeOffset);
 	}
 
 	if (currentSecond == 0)
@@ -513,6 +547,11 @@ bool SceneLevel2::PostUpdate()
 
 	// Draw Map
 	App->render->AddTextureRenderQueue(texMap, { 0, 16 }, nullptr, 0, 0);
+
+	App->render->AddTextureRenderQueue(texFG, { 16, 16 }, &forGroundSection1, 0, 5);
+	App->render->AddTextureRenderQueue(texFG, { 480, 16 }, &forGroundSection2, 0, 5);
+
+	App->render->AddTextureRenderQueue(texBridge, { 258, 106 }, nullptr, 0, 10);
 
 	// Draw Obstacle
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
@@ -645,6 +684,7 @@ bool SceneLevel2::CleanUp(bool finalCleanUp)
 	{
 		if (sceneObstacles[i] != nullptr)
 		{
+			sceneObstacles[i]->CleanUp();
 			delete sceneObstacles[i];
 			sceneObstacles[i] = nullptr;
 		}

@@ -14,9 +14,12 @@ private:
 
 	Collider* collider = nullptr;
 
-	SDL_Rect r; // cuadrado de textura
+	// cuadrado de textura
+	SDL_Rect r; 
 
 protected:
+	string name = "Default";
+
 	bool getDestructible();
 
 	bool getTrigger();
@@ -37,6 +40,8 @@ public:
 	SDL_Texture* texture = nullptr;
 
 	int powerUp = 0;
+
+	bool pendingToDelete = false;
 	
 public:
 	//methods
@@ -57,6 +62,7 @@ public:
 	virtual void Die();
 
 	virtual void CleanUp();
+
 	// Actualizar la posicion de la colision para que encaje con la posicion de la textura +
 	void ColUpdate();
 
@@ -67,8 +73,8 @@ public:
 	SDL_Rect getRect();
 
 	Type getType();
-	
-	bool pendingToDelete = false;
+
+	bool CompareName(string name);
 
 };
 #endif // !__OBSTACLE_H__

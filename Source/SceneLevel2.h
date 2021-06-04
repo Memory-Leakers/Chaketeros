@@ -49,6 +49,8 @@ private:
 	SDL_Texture* texMiscUI = nullptr;
 	SDL_Texture* texBridge = nullptr;
 
+	SDL_Rect forGroundSection1 = { 16,0, 16, 208 }, forGroundSection2 = { 224,0, 16, 208 };
+
 	uint whistlingSFX, oneMinuteSFX, levelCompleteSFX, extraCoinsBckgSFX;
 
 	int redFlowerIndex, glassCapsuleIndex;
@@ -122,6 +124,8 @@ public:
 	void WillCollision(Collider* c1, Collider* c2) override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
+	void DebugKeys();
 
 	void CreateScene();
 

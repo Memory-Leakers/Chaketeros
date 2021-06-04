@@ -1,6 +1,8 @@
 #include "ModuleScene.h"
 #include "DrawPoints.h"
 #include <time.h>
+
+
 PlayerSettings* playerSettings = nullptr;
 
 DrawPoints drawPoints;
@@ -15,6 +17,7 @@ ModuleScene::ModuleScene()
 	scenes[5] = new SceneLevel2();
 	scenes[6] = new SceneLevelBoss();
 	scenes[7] = new SceneGameOver();
+	scenes[8] = new ScenePassword();
 
 	srand(time(NULL));
 	playerSettings = PlayerSettings::Instance();
@@ -48,7 +51,7 @@ bool ModuleScene::Start()
 
 UpdateResult ModuleScene::PreUpdate()
 {
-	if (currentScene == nullptr)
+	if (currentScene == nullptr || App->isPaused)
 	{
 		return UpdateResult::UPDATE_CONTINUE;
 	}
@@ -63,7 +66,8 @@ UpdateResult ModuleScene::Update()
 	drawPoints.Update();
 
 	#pragma region Update and FadeInOut
-	if (currentScene == nullptr)
+
+	if (currentScene == nullptr || App->isPaused)
 	{
 		return UpdateResult::UPDATE_CONTINUE;
 	}
@@ -86,6 +90,9 @@ UpdateResult ModuleScene::Update()
 
 			currentScene->CleanUp(false);
 			currentScene = scenes[newScene];
+
+			drawPoints.Reset();
+			drawPoints.Start();
 
 			App->render->ResetCamera();
 			currentScene->lastID = lastSceneID;

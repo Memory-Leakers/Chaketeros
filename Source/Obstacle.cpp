@@ -28,7 +28,7 @@ Obstacle::Obstacle(const Obstacle& Obs)
 
 Obstacle::~Obstacle()
 {
-	
+	CleanUp();
 }
 
 void Obstacle::SetDestructible(bool destructible)
@@ -78,6 +78,13 @@ SDL_Rect Obstacle::getRect()
 
 Type Obstacle::getType() {
 	return collider->type;
+}
+
+bool Obstacle::CompareName(string name)
+{
+	if (this->name == name) return true;
+	
+	return false;
 }
 
 bool Obstacle::getTrigger() {

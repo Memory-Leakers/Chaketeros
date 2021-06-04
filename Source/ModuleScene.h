@@ -11,6 +11,7 @@
 #include "SceneLevel1.h"
 #include "SceneLevel2.h"
 #include "SceneLevelBoss.h"
+#include "ScenePassword.h"
 
 #include "Animation.h"
 #include "Application.h"
@@ -21,7 +22,7 @@
 #include "PlayerSettings.h"
 
 
-#define SCENES_NUM 8
+#define SCENES_NUM 9
 
 struct SDL_Texture;
 
@@ -34,7 +35,8 @@ enum SCENE_NUM
 	SCENE_LEVEL1,
 	SCENE_LEVEL2,
 	SCENE_LEVELBOSS,
-	SCENE_GAMEOVER
+	SCENE_GAMEOVER,
+	SCENE_PASSWORD
 };
 
 class ModuleScene : public Module
@@ -99,8 +101,8 @@ private:
 
 	int newScene;
 
-	SDL_Scancode debugKeys[8] = { SDL_SCANCODE_1, SDL_SCANCODE_2 , SDL_SCANCODE_3 , SDL_SCANCODE_4 ,
-								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8 };
+	SDL_Scancode debugKeys[9] = { SDL_SCANCODE_1, SDL_SCANCODE_2 , SDL_SCANCODE_3 , SDL_SCANCODE_4 ,
+								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8,SDL_SCANCODE_9 };
 
 
 	void DebugChangeScene();	

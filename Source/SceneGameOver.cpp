@@ -163,7 +163,7 @@ bool SceneGameOver::PostUpdate()
 	#pragma endregion
 
 	#pragma region Display Game Over Score Logic
-	gameOverScore.DrawNum(score, { 130, 152 }, 3,1);
+	gameOverScore.DrawNum(score, { 130, 152 }, 3,2, 10, 1);
 	#pragma endregion
 
 	return true;

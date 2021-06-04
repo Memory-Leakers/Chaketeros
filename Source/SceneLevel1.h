@@ -124,6 +124,9 @@ private:
 
 	iPoint powerUpPos[4];
 
+private:
+	void DebugKeys();
+
 public:
 
 	SceneLevel1();
@@ -158,8 +161,6 @@ public:
 	void CreateCoins();
 
 	void InitAssets();
-
-	void PrintDebugInformation();
 };
 
 #endif

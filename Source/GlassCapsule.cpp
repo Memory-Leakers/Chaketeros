@@ -2,11 +2,12 @@
 
 GlassCapsule::GlassCapsule()
 {
-    LOG("Constructor GlassCapsule");
 }
 
 GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos.y, 16, 16 }, true, App->collisions->AddCollider({ pos.x, pos.y, 16, 16 }, Type::WALL, App->scene), tex)
 {
+    name = "GlassCapsule";
+
     // Init para colision auxiliar
     int colPos[3][3] =
     {
@@ -25,7 +26,8 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
         }
     }
 
-	// Init para animacion
+#pragma region Init Anim
+
     idleAnim.hasIdle = false;
     idleAnim.PushBack({ 46,112,48,64 });
     idleAnim.PushBack({ 102,112,48,64 });
@@ -44,6 +46,9 @@ GlassCapsule::GlassCapsule(iPoint pos, SDL_Texture* tex) : Obstacle({ pos.x, pos
     withoutfragments.PushBack({102,47,48,54});
 
     currentAnim = &idleAnim;
+
+#pragma endregion
+
 }
 
 void GlassCapsule::Update() 
@@ -53,30 +58,23 @@ void GlassCapsule::Update()
 
 void GlassCapsule::PostUpdate()
 {  
-    iPoint tempPos = getPosition();;
-    if (!isDead)
-    {
-        tempPos.y -= 16;
-        //App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());   
-    }
-    else 
-    {
-        tempPos.y -= 6;
-       //App->render->DrawTexture(texture, tempPos, &currentAnim->GetCurrentFrame());
-    }
+    iPoint tempPos = getPosition();
+
+    tempPos.y -= isDead ? 6 : 16;
+
     App->render->AddTextureRenderQueue(texture, tempPos, &currentAnim->GetCurrentFrame(), 1, getPosition().y);
 }
 
 void GlassCapsule::Die()
 {
     dieCount++;
+
     if (dieCount == 1) 
     {
         isDead = true;
         currentAnim = &withoutglassAnim;
-    }
-    
-    if (dieCount == 2) 
+    } 
+    else if (dieCount == 2) 
     {
         currentAnim = &withoutfragments;
     }

@@ -45,17 +45,11 @@ private:
 
 	bool isMoveDie[4];
 
-	bool godMode = false;
-
-	bool posMode = false;
-
 	iPoint mapLimits[3][2] = { 
 		{{24, 32}, {216, 192}},
 		{{24,32}, {472,192}},
 		{{24, 32}, {216, 192}} 
 	};
-	
-	Tile* tileMap = nullptr;
 
 	Timer playerTimer;
 
@@ -106,6 +100,8 @@ public:
 	// Collider
 	Collider* col = nullptr;
 
+	Tile* tileMap = nullptr;
+
 	// The speed in which we move the player (pixels per frame)
 	int speed = 1; //Movement only
 
@@ -114,6 +110,10 @@ public:
 	bool pendingToDelete = false;
 
 	bool ExtraPoints = false;	
+
+	bool godMode = false;
+
+	bool posMode = false;
 
 public:
 	// Constructor

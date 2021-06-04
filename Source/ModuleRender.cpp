@@ -17,7 +17,7 @@ vector<RenderRect> rects;
 
 ModuleRender::ModuleRender() : Module()
 {
-
+	pauseIgnore = true;
 }
 
 ModuleRender::~ModuleRender()
@@ -124,6 +124,7 @@ UpdateResult ModuleRender::PostUpdate()
 	{
 		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
 	}
+	
 	// Draw rects
 	for each (auto renderRect in rects)
 	{

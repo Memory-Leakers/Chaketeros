@@ -98,10 +98,10 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CoreMecha.h" />
-    <ClInclude Include="Debug.h" />
     <ClInclude Include="DrawPoints.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="GlassCapsule.h" />
+    <ClInclude Include="ModuleDebug.h" />
     <ClInclude Include="ModuleEnemyPool.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Mover.h" />
@@ -134,6 +134,7 @@
     <ClInclude Include="SceneLevel2.h" />
     <ClInclude Include="SceneLevelBoss.h" />
     <ClInclude Include="SceneMainTitle.h" />
+    <ClInclude Include="ScenePassword.h" />
     <ClInclude Include="SceneSelectArea.h" />
     <ClInclude Include="SceneSelectStage.h" />
     <ClInclude Include="Snail.h" />
@@ -149,13 +150,13 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CoreMecha.cpp" />
-    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DrawPoints.cpp" />
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="GlassCapsule.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCollisions.cpp" />
+    <ClCompile Include="ModuleDebug.cpp" />
     <ClCompile Include="ModuleEnemy.cpp" />
     <ClCompile Include="ModuleEnemyPool.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="SceneLevel2.cpp" />
     <ClCompile Include="SceneLevelBoss.cpp" />
     <ClCompile Include="SceneMainTitle.cpp" />
+    <ClCompile Include="ScenePassword.cpp" />
     <ClCompile Include="SceneSelectArea.cpp" />
     <ClCompile Include="SceneSelectStage.cpp" />
     <ClCompile Include="Snail.cpp" />

@@ -10,15 +10,19 @@ Bomb::Bomb()
 Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 :Obstacle({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
+	name = "Bomb";
+
  	this->player = player;
+
 	lv1Tile = tile;
 
 	myTilePos = lv1Tile->getTilePos(getPosition());
+
 	myTilePos.y--;
 
 	lv1Tile->LevelsTileMaps[App->scene->currentLevel][myTilePos.y][myTilePos.x] = 11;
 
-	#pragma region Init explotionparticle
+	#pragma region Init explotion particle
 
 	explosionCenter.InitParticle(500.0f, 0.4f, tex);
 	explosionMiddle.InitParticle(500.0f, 0.4f, tex);
@@ -67,10 +71,11 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 	explotionRange += App->scene->playerSettings->powerUpFlame;
 
 	// Init TimeCount
-	startCountTime = SDL_GetPerformanceCounter();
+	startCountTime = SDL_GetTicks();
 
 	//TODO: Poner en forma de struct en la escena	//	o pasar como argumento por el constructor
 	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
+
 	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
 
 	// SFX Put bomb
@@ -79,6 +84,7 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 
 Bomb::~Bomb()
 {
+	
 }
 
 void Bomb::Update()
@@ -91,10 +97,9 @@ void Bomb::Update()
 	if (!pendingToDelete)
 	{
 		// Cuenta Atras para que la bomba se explota
-		double currentCountTime = SDL_GetPerformanceCounter();
-		double timeOffset = SDL_GetPerformanceFrequency();
+		float currentCountTime = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 
-		if (((currentCountTime - startCountTime) / timeOffset) >= explotionTime)
+		if (((currentCountTime - startCountTime) * 0.001f) >= explotionTime)
 		{		
 			Die();
 		}
@@ -121,8 +126,11 @@ void Bomb::OnCollision(Collider* col)
 void Bomb::Die()
 {
 	App->audio->PlaySound(explosionSFX, 0);
+
 	pendingToDelete = true;
+
 	App->scene->playerSettings->maxBombs++;
+
 	getCollider()->pendingToDelete = true;
 
 	// Create explotion center
@@ -150,7 +158,7 @@ void Bomb::Die()
 			}
 			else
 			{
-				if(temp !=1 && temp != 2 && temp  != 7 && temp != 10 && temp != 13)
+				if(temp !=1 && temp != 2 && temp  != 7 && temp != 10 && temp != 13 && temp != 12)
 				{
 					explotionNum[i]++;
 				}
@@ -203,4 +211,9 @@ void Bomb::Die()
 	}
 
 	#pragma endregion
+}
+
+void Bomb::CleanUp()
+{
+	App->scene->playerSettings->maxBombs++;
 }

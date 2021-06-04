@@ -129,7 +129,7 @@ UpdateResult Player::Update()
 			int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
 
 			//if target grid don't have obstacle
-			if (playerAbove == 4 || playerAbove == 0 || playerAbove == 13)
+			if (playerAbove == 4 || playerAbove == 0 || playerAbove == 12 || playerAbove == 13)
 			{
 				// optimize movemente
 				if (pivotPoint.x > (tileX + 8))
@@ -209,7 +209,7 @@ UpdateResult Player::Update()
 			int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
 
 			//if target grid don't have obstacle
-			if(playerRight == 4 || playerRight == 0)
+			if(playerRight == 4 || playerRight == 0 || playerRight == 12)
 			{
 				// optimize movement
 				if (pivotPoint.y > (tileY + 8))
@@ -246,10 +246,10 @@ UpdateResult Player::Update()
 
 			tempTilePos.y--; // offset
 
-			int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
+			int playerLeft = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
 
 			//if target grid don't have obstacle
-			if (playerRight == 4 || playerRight == 0)
+			if (playerLeft == 4 || playerLeft == 0 || playerLeft == 12)
 			{
 				// optimize movement
 				if (pivotPoint.y > (tileY + 8))
@@ -273,9 +273,11 @@ UpdateResult Player::Update()
 	{
 		iPoint temp = getCurrentTilePos();
 		temp.y--;
+		int currentGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
+
 
 		// If player not situate in glass capsule stairs
-		if (tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x] != 13)
+		if (currentGrid != 13 && currentGrid != 12)
 		{
 			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 			{
@@ -318,29 +320,29 @@ UpdateResult Player::Update()
 
 	#pragma region Debug keys
 
-	if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
-	{
-		App->scene->playerSettings->powerUpFlame++;
-	}
-	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
-	{
-		godMode = !godMode;
-	}
+	//if(App->input->keys[SDL_SCANCODE_M] == KEY_DOWN)
+	//{
+	//	App->scene->playerSettings->powerUpFlame++;
+	//}
+	//if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	//{
+	//	godMode = !godMode;
+	//}
 
-	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
-	{
-		posMode = !posMode;
+	//if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	//{
+	//	posMode = !posMode;
 
-		if(posMode)
-		{
-			lastTilePos = getCurrentTilePos();
-			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
-		}
-		else
-		{
-			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
-		}
-	}
+	//	if(posMode)
+	//	{
+	//		lastTilePos = getCurrentTilePos();
+	//		tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
+	//	}
+	//	else
+	//	{
+	//		tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
+	//	}
+	//}
 
 	#pragma endregion
 
