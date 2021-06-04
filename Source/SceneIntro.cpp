@@ -39,9 +39,10 @@ bool SceneIntro::Start()
 
 bool SceneIntro::Update()
 {
+	GamePad& pad = App->input->pads[0];
 	fadeInOut->Update();
 
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
+	if ((App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN) && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
 	{
 		if (currentImage == 3)
 		{
@@ -52,11 +53,6 @@ bool SceneIntro::Update()
 		{
 			fadeInOut->FadeIn(30);
 		}		
-	}
-	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
-	{
-		isChangingScene = true;
-		App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 60);
 	}
 	if (fadeInOut->isFadeInDone == true)
 	{

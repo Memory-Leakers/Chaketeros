@@ -88,12 +88,13 @@ bool SceneGameOver::Start()
 
 bool SceneGameOver::Update()
 {
+	GamePad& pad = App->input->pads[0];
 	//Animation Logic
 	gameOverAnim.Update();
 	if (pressedContinue) { gameOverContinueAnim.Update(); }
 
 	#pragma region Input Pointer Position Logic
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN || pad.down == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentPointerPos == &pointerPos[1])
@@ -105,7 +106,7 @@ bool SceneGameOver::Update()
 			currentPointerPos++;
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN || pad.up == KEY_DOWN)
 	{
 		App->audio->PlaySound(changeSelectSFX, 0);
 		if (currentPointerPos == &pointerPos[0])
@@ -120,7 +121,7 @@ bool SceneGameOver::Update()
 	#pragma endregion
 
 	#pragma region Select Option Logic
-	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 	{
 		App->audio->PlaySound(selectSFX, 0);
 

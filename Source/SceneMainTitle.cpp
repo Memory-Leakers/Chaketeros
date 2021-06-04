@@ -69,6 +69,7 @@ bool SceneMainTitle::Start()
 
 bool SceneMainTitle::Update()
 {
+	GamePad& pad = App->input->pads[0];
 	//Update timer and FadeInOut
 	mainMenuTimer.Update();
 	fade->Update();
@@ -84,7 +85,7 @@ bool SceneMainTitle::Update()
 			#pragma region Input Arrow Position Logic
 
 			//Check Input to change Arrow Position
-			if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN)
+			if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || App->input->keys[SDL_SCANCODE_S] == KEY_DOWN || pad.down== KEY_DOWN)
 			{
 				App->audio->PlaySound(changeSelectSFX, 0);
 				if (currentArrowPos == &arrowPosition[2])
@@ -96,7 +97,7 @@ bool SceneMainTitle::Update()
 					currentArrowPos++;
 				}
 			}
-			if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN)
+			if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || App->input->keys[SDL_SCANCODE_W] == KEY_DOWN || pad.up == KEY_DOWN)
 			{
 				App->audio->PlaySound(changeSelectSFX, 0);
 				if (currentArrowPos == &arrowPosition[0])
@@ -114,7 +115,7 @@ bool SceneMainTitle::Update()
 				#pragma region Select Option Logic
 
 				//Select an option based on the arrow position
-				if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+				if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 				{
 
 					if (currentArrowPos == &arrowPosition[0])
@@ -134,7 +135,7 @@ bool SceneMainTitle::Update()
 	}
 	else 
 	{
-		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN && mainMenuTimer.getDeltaTime() >= 1.0f && fade->currentStep == FadeInOut::FadeSteps::FADE_NONE) 
+		if ((App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN) && mainMenuTimer.getDeltaTime() >= 1.0f && fade->currentStep == FadeInOut::FadeSteps::FADE_NONE)
 		{fade->FadeIn(45);}
 
 		if (fade->isFadeInDone == true)
