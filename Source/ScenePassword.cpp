@@ -164,12 +164,16 @@ bool ScenePassword::Update() {
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN )
 	{
 		Comprovation();
-		if (isPasswordCorrect) {
+		if (isPasswordCorrect1) {
 
 			App->audio->PlaySound(selectSFX, 0);
 			App->scene->ChangeCurrentScene(SCENE_LEVEL2, 80);
 		}
-		
+		if (isPasswordCorrect2) {
+			
+			App->audio->PlaySound(selectSFX, 0);
+			App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 80);
+		}
 	}
 
 #pragma endregion
@@ -222,11 +226,23 @@ void ScenePassword::Comprovation() {
 	int password[4] = { 6,8,0,0 };
 	for (int i = 0; i < 4; i++) {
 		if (nums[i] == password[i]) {
-			isPasswordCorrect = true;
+			isPasswordCorrect1 = true;
 		}
 		else {
-			isPasswordCorrect = false;
+			isPasswordCorrect1 = false;
 			break;
 		}
 	}
+	
+	int password2[4] = { 7,4,2,0 };
+	for (int i = 0; i < 4; i++) {
+		if (nums[i] == password2[i]) {
+			isPasswordCorrect2 = true;
+		}
+		else {
+			isPasswordCorrect2 = false;
+			break;
+		}
+	}
+
 }

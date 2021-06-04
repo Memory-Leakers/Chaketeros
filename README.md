@@ -1,22 +1,35 @@
 # Chaketeros
-## Project 1 - My first amazing arcade game
+## Project 1 - Tribute to Mega Bomberman (1994)
 
 ## Description:
-This is a Student's Project where we create a copy of the Mega Bomberman videogame (SEGA Genesis) using SDL2 library. 
+This is a Student's Project where we create a tribute of the Mega Bomberman videogame (SEGA Genesis) using SDL2 library and Visual Studio 2019. 
 
 ## Key Features:
 Puzzle-maze videogame where you must complete objectives and defeat enemies to succeed.
 You must use Bombs to get through the levels and defeat the enemies.
 
 ## Controls:
-* W: Move Up
-* A: Move Left
-* S: Move Down
-* D: Move Right
-* J: Put a Bomb 
-* F1: Activate God Mode 
-* F2: Activate Showing Colliders 
-* F3: Activate Instant Loss
+Game Controls
+
+Arrow Keys for movement
+
+D - Putting Bomb
+
+SpaceBar - Pause Game
+
+F1 - God Mode
+
+F2 - Show Collision Box
+
+F3 - Instant Lose
+
+F4 - Instant Win
+
+F5 - Show PowerUp position
+
+F6 - Show Mover Enemy Movement
+
+F7 - On/Off Camera Movement
 
 ## Developers:
 * Xidashuaige 
@@ -27,5 +40,5 @@ You must use Bombs to get through the levels and defeat the enemies.
 ## Assets:
 All assets are from the original game.
 
-## Licence:
+## License:
 This project is licensed under an unmodifield MIT licence, which is an OSI-certifield license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.

@@ -47,7 +47,11 @@ class Saru : public ModuleEnemy {
 		int movementTot = 6;
 		int protectCount = 0;
 
+
 		iPoint tempPos;
+
+		uint DeadSFX;
+
 
 		Timer shotTimer;
 		Timer updateTimer;
