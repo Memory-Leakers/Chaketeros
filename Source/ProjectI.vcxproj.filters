@@ -193,6 +193,7 @@
     <ClInclude Include="ScenePassword.h">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Module.cpp">
@@ -348,5 +349,12 @@
     <ClCompile Include="ScenePassword.cpp">
       <Filter>Source Files\Util\Scenes</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Bomberman.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Game\MegaBomberman\Assets\Images\Sprites\Icon.ico" />
+    <Image Include="..\Game\MegaBomberman\Assets\Images\Sprites\Icon32.ico" />
   </ItemGroup>
 </Project>
