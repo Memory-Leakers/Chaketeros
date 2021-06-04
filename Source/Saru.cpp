@@ -38,6 +38,7 @@ bool Saru::Start() {
 
 	col = App->collisions->AddCollider(bounds, Type::ENEMY, App->scene);
 
+	DeadSFX = App->audio->LoadSound("Assets/Audio/SFX/Boss_Battle_Sounds/BB_BossDeath.wav");
 
 	//Animation DOWN
 	downAnim.PushBack({ 5,48,21,18 });
@@ -541,6 +542,8 @@ void Saru::Die() {
 	if (pendingToDelete) return;
 
 	isDead = true;
+
+	App->audio->PlaySound(DeadSFX, 0);
 
 	col->pendingToDelete = true;
 

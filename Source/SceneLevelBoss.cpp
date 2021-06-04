@@ -55,6 +55,10 @@ void SceneLevelBoss::InitAssets()
 bool SceneLevelBoss::Start()
 {
 	// Change current scene
+
+	Mix_VolumeMusic(15);
+	App->audio->PlayMusic("Assets/Audio/Music/BossTheme.ogg", 1.5f);
+
 	App->scene->currentLevel = 2;
 
 	bossText.Start();
