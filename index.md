@@ -66,9 +66,9 @@ F7 - On/Off Camera Movement
 
 **Zhida Chen**
 
-![TaskList](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks1.png)
+![TaskList](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks1.png);  ![TaskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks2.png)
 
-![TaskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/chenTasks2.png)
+
 
 **Robert Recordà**
 
@@ -82,6 +82,6 @@ F7 - On/Off Camera Movement
 
 **Adrià Sellarés**
 
-![taskList1](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks1.png)
+![taskList1](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks1.png);  ![taskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks2.png)
 
-![taskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks2.png)
+
