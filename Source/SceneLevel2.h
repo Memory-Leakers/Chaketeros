@@ -63,7 +63,7 @@ private:
 	//	Number of total minutes
 	int minutes;
 	// Current second shown on screen
-	int currentSecond = 0;
+	int currentSecond = 59;
 	//	CoreMecha's index in sceneObstacles array
 	int choreMechaIndex[3];
 	//	Timer Seconds Offset
