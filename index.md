@@ -42,7 +42,7 @@ F7 - On/Off Camera Movement
 
 **Zhida Chen**
 
-*Enemy AI, Getting Sprites, Player movement, Particles*
+*Enemy AI, Getting Sprites, Player, Particles*
 * Github: [Xidashuaige](https://github.com/Xidashuaige)
 
 **Robert Recordà**
@@ -58,7 +58,7 @@ F7 - On/Off Camera Movement
 
 **Adrià Sellarés**
 
-*Getting Audios, UI implementation, Scene Managment, Level Creation*
+*Getting Audios, UI implementation, Scene Management, Level Creation*
 
 * Github: [AdriaSeSa](https://github.com/AdriaSeSa)
 
