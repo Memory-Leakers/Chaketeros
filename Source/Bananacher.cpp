@@ -132,6 +132,10 @@ UpdateResult Bananacher::Update()
 
 		bananaTimer.Reset();
 	}
+	if(!injureAnim)
+	{
+		currentAnimation->Update();
+	}
 
 	return UpdateResult();
 }
@@ -146,8 +150,6 @@ UpdateResult Bananacher::PostUpdate()
 	}
 	else
 	{
-		currentAnimation->Update();
-
 		rectBanana = &currentAnimation->GetCurrentFrame();
 
 		iPoint tempPos = position;

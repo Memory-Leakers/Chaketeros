@@ -72,6 +72,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::EXPLOSION)][uint(Type::FIREPOWER)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::BOMBPOWER)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::INVINCIBLEPOWER)] = false;
+	matrix[uint(Type::EXPLOSION)][uint(Type::BANANA)] = false;
 	matrix[uint(Type::EXPLOSION)][uint(Type::COIN)] = false;
 
 	matrix[uint(Type::DESTRUCTABLE_WALL)][uint(Type::WALL)] = true;

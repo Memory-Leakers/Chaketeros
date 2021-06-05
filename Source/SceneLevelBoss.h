@@ -1,13 +1,15 @@
 #ifndef _SCENELEVELBOSS_H_
 #define _SCENELEVELBOSS_H_
 
+#define MAX_ENEMY 4
+#define MAX_POWERUPS 6
+
 #include "Scene.h"
 #include "ModuleTextures.h"
 #include "Application.h"
 #include "Tile.h"
 #include "Obstacle.h"
 #include "ModuleCollisions.h"
-
 
 #define SCENE_OBSTACLES_NUM 256
 
@@ -18,10 +20,16 @@ private:
 	SDL_Texture* texBomb = nullptr;
 	SDL_Texture* texUI = nullptr;
 	SDL_Texture* texMiscUI = nullptr;
+	SDL_Texture* texPowerUps = nullptr;
+	SDL_Texture* texPowerUpDestroyed = nullptr;
 
 	SDL_Rect recUIbar = { 0,0,256,24 };
 
 	Obstacle* obstacles[SCENE_OBSTACLES_NUM] = { nullptr };
+
+	ModuleEnemy* enemy[MAX_ENEMY];
+
+	PowerUp* powerUps[MAX_POWERUPS];
 
 	//It is used to prevent the Buff from triggering more than once
 	bool saruBuff = false;
@@ -69,6 +77,8 @@ public:
 	void WillCollision(Collider* c1, Collider* c2) override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
+	void Spawn(iPoint spawnPos, int objectID) override;
 
 	void CreateScene();
 

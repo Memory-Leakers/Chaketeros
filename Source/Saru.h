@@ -71,8 +71,6 @@ class Saru : public ModuleEnemy {
 		void ProtectCountdown();
 	public:
 
-		
-
 		Saru(iPoint spawnPos, iPoint* playerPos, iPoint* bananacherPos, Tile* tileMap);
 		~Saru();
 

@@ -54,6 +54,9 @@ void SceneLevelBoss::InitAssets()
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	texUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/InGameUI.png");
 	texMiscUI = App->textures->Load("Assets/Images/Sprites/UI_Sprites/Misc.png");
+
+	texPowerUps = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+	texPowerUpDestroyed = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/ItemDestroyedSheet.png");
 }
 
 bool SceneLevelBoss::Start()
@@ -95,6 +98,26 @@ bool SceneLevelBoss::PreUpdate()
 		{
 			delete obstacles[i];
 			obstacles[i] = nullptr;
+		}
+	}
+
+	// Draw enemies
+	for (int i = 0; i < MAX_ENEMY; i++)
+	{
+		if (enemy[i] != nullptr && enemy[i]->pendingToDelete)
+		{
+			delete enemy[i];
+			enemy[i] = nullptr;
+		}
+	}
+
+	// Draw powerUps
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		if (powerUps[i] != nullptr && powerUps[i]->pendingToDelete)
+		{
+			delete powerUps[i];
+			powerUps[i] = nullptr;
 		}
 	}
 
@@ -192,7 +215,8 @@ bool SceneLevelBoss::Update()
 	if (saru != nullptr && !saru->pendingToDelete ) {
 		saru->Update();
 		//Checks if bananacher is dead to tigger buff
-		if ((bananacher == nullptr || bananacher->pendingToDelete) && !saruBuff) {
+		if ((bananacher == nullptr || bananacher->pendingToDelete) && !saruBuff) 
+		{
 			saru->setVRange(20); //Makes saru detect the player on next tile
 			saruBuff = true;
 		}
@@ -206,6 +230,14 @@ bool SceneLevelBoss::Update()
 		}
 	}
 
+	// Update enemies
+	for (int i = 0; i < MAX_ENEMY; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->Update();
+		}
+	}
 
 	DebugKeys();
 
@@ -220,6 +252,24 @@ bool SceneLevelBoss::PostUpdate()
 		if (obstacles[i] != nullptr)
 		{
 			obstacles[i]->PostUpdate();
+		}
+	}
+
+	// Draw enemies
+	for (int i = 0; i < MAX_ENEMY; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			enemy[i]->PostUpdate();
+		}
+	}
+
+	// Draw powerUps
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		if (powerUps[i] != nullptr)
+		{
+			powerUps[i]->PostUpdate();
 		}
 	}
 
@@ -247,7 +297,6 @@ bool SceneLevelBoss::PostUpdate()
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 0, -5);
 
 	//	Draw Text
-
 	bossText.DrawNum(minutes, { 16,8 }, 3, 0);
 	bossText.DrawNum(currentSecond, { secondsXOffset, 8 }, 3, 0);
 	bossText.DrawNum(App->scene->playerSettings->playerScore, { 144, 8 }, 3, 0);
@@ -283,6 +332,22 @@ void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 			}
 		}
 	}
+
+	for (int i = 0; i < MAX_ENEMY; i++)
+	{
+		if (enemy[i] != nullptr && enemy[i]->getCollider() == c1)
+		{
+			enemy[i]->OnCollision(c2);
+		}
+	}
+
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		if (powerUps[i] != nullptr && powerUps[i]->getCollider() == c1)
+		{
+			powerUps[i]->OnCollision(c2);
+		}
+	}
 }
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
@@ -292,6 +357,30 @@ void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
 	{
 		bombermanBoss->WillCollision(c2);
 	}
+}
+
+void SceneLevelBoss::Spawn(iPoint spawnPos, int objectID)
+{
+	objectID++;
+	switch (objectID)
+	{
+	case 1:
+	case 2:
+	case 3:
+		for (int i = 0; i < MAX_POWERUPS; ++i)
+		{
+			if (powerUps[i] == nullptr)
+			{
+				powerUps[i] = new PowerUp(spawnPos, texPowerUps, texPowerUpDestroyed, objectID);
+				return;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+
 }
 
 bool SceneLevelBoss::CleanUp(bool finalCleanUp)
@@ -333,6 +422,24 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 		{
 			delete obstacles[i];
 			obstacles[i] = nullptr;
+		}
+	}
+
+	for (int i = 0; i < MAX_ENEMY; i++)
+	{
+		if (enemy[i] != nullptr)
+		{
+			delete enemy[i];
+			enemy[i] = nullptr;
+		}
+	}
+
+	for (int i = 0; i < MAX_POWERUPS; i++)
+	{
+		if(powerUps[i]!=nullptr)
+		{
+			delete powerUps[i];
+			powerUps[i] = nullptr;
 		}
 	}
 
