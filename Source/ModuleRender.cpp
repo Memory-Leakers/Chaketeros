@@ -42,9 +42,6 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
-	// Fullscreen
-	/*SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);*/
-
 	// init layers size
 	layers.resize(3);
 
@@ -54,6 +51,7 @@ bool ModuleRender::Init()
 // Called every draw update
 UpdateResult ModuleRender::PreUpdate()
 {
+
 	// Set the color used for drawing operations
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	
@@ -65,6 +63,19 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
+
+	if (App->FullScreenDesktop)
+	{
+		// Fullscreen
+		SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+		defaultSpeed = 1;
+	}
+	else
+	{
+		SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH * 3, SCREEN_HEIGHT * 3);
+		defaultSpeed = 3;
+	}
+
 	#pragma region Debug key
 
 	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
@@ -161,10 +172,15 @@ bool ModuleRender::CleanUp()
 void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer, bool isFlipH, float rotation, float scale, float speed)
 {
 	RenderObject renderObject;
+
+	speed = defaultSpeed;
+
 	//Fullscreen
-	/*if (scale != SCREEN_SIZE) {
+	if (App->FullScreenDesktop) 
+	{
 		scale /= 3;
-	}*/
+	}
+
 	renderObject.texture = texture;
 	renderObject.rotation = rotation;
 	renderObject.section = section;
@@ -204,6 +220,8 @@ void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_R
 void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed)
 {
 	RenderRect rec;
+
+	speed = defaultSpeed;
 
 	rec.color = color;
 	rec.rect.x = (int)(-camera.x * speed) + rect.x * SCREEN_SIZE;

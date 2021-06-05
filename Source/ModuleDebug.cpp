@@ -20,6 +20,25 @@ ModuleDebug::~ModuleDebug()
 
 UpdateResult ModuleDebug::Update()
 {
+	// Toggle Fullscreen
+	if (App->input->keys[SDL_SCANCODE_F] == KEY_DOWN)
+	{
+		App->FullScreenDesktop = !App->FullScreenDesktop;
+		cout << "Pressed F" << endl;
+
+		if (App->FullScreenDesktop)
+		{
+			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			App->ScreenSize = 1;
+		}
+		else
+		{
+			SDL_SetWindowFullscreen(App->window->window, 0);
+			App->ScreenSize = 3;
+		}
+
+	}
+
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
 	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 

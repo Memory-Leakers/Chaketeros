@@ -34,6 +34,8 @@ class ModuleRender : public Module
 private:
 	float textTime = 3;
 
+	float defaultSpeed = 3;
+
 	double startCountTime;
 	bool debugCamera = false;
 
