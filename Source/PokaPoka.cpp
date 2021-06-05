@@ -162,9 +162,9 @@ void PokaPoka::movement() {
 		pC = 0;
 	}
 
+	
 	if (attacking == 1 || attacking == 2) {
 		attack();
-		currentAnimation->Update();
 		return;
 	}
 
@@ -296,10 +296,8 @@ void PokaPoka::attack() {
 	else if (attacking == 2) {
 		isFlip = true;
 	}
-	
-	if (attackTimer.getDeltaTime() <= 1.19f && keepAttacking == false) {
-		cout << "out" << endl;
+
+	if (currentAnimation->getCurrentFrameI() == 18) {
 		attacking = 3;
-		attackTimer.Reset();
 	}
 }
