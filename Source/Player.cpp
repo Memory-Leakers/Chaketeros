@@ -78,6 +78,9 @@ bool Player::Start()
 
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
+	playerInvensible.texInvensible = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+
+#pragma region Init particle
 
 	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 
@@ -96,6 +99,8 @@ bool Player::Start()
 
 	// Las tile position of player
 	lastTilePos = getCurrentTilePos();
+
+#pragma endregion
 
 	return ret;
 }
@@ -395,8 +400,21 @@ UpdateResult Player::PostUpdate()
 		}
 	}
 
-	// Draw player pivot point
-	// App->render->AddRectRenderQueue({ pivotPoint.x,pivotPoint.y,1,1 }, { 255,0,0,255 });
+	if(invensibleTime >= 0)
+	{
+		if (invensibleTime < 3)
+		{
+			playerInvensible.DrawInvensible = !playerInvensible.DrawInvensible;
+			if(playerInvensible.DrawInvensible)
+			{
+				App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 500);
+			}			
+		}
+		else
+		{
+			App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 500);
+		}	
+	}
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -482,8 +500,8 @@ void Player::OnCollision(Collider* col)
 			App->scene->playerSettings->maxBombs++; break;
 
 		case Type::INVINCIBLEPOWER:
-			invensibleTime = 15;
-			invensibleCount = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
+			invensibleTime = 10;
+			playerInvensible.invensibleCount = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 			break;
 		}
 	}
@@ -562,9 +580,9 @@ void Player::InvensibleCheck()
 	{
 		float tempTime = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 
-		if (((tempTime - invensibleCount) * 0.001f) >= 0.1f)
+		if (((tempTime - playerInvensible.invensibleCount) * 0.001f) >= 0.1f)
 		{
-			invensibleCount = tempTime;
+			playerInvensible.invensibleCount = tempTime;
 
 			invensibleTime -= 0.1f;
 
