@@ -17,6 +17,8 @@ D - Putting Bomb
 
 SpaceBar - Pause Game
 
+F - Toggle Fullscreen
+
 F1 - God Mode
 
 F2 - Show Collision Box
