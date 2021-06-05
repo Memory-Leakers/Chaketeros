@@ -122,7 +122,21 @@ UpdateResult Bananacher::Update()
 
 	bananaTimer.Update();
 
-	if (bananaTimer.getDeltaTime() >= 0.05f)
+	if (buffed) {
+		rev = 0.03f;
+
+		buffTimer.Update();
+		if (buffTimer.getDeltaTime() >= 5.0f) {
+			buffed = false;
+			buffTimer.Reset();
+		}
+	}
+	else {
+		rev = 0.05f;
+	}
+
+
+	if (bananaTimer.getDeltaTime() >= rev)
 	{
 		ProtectCountdown();
 
@@ -172,15 +186,22 @@ UpdateResult Bananacher::PostUpdate()
 
 void Bananacher::OnCollision(Collider* col)
 {
+	if (col->type == Type::SARUSHOT && buffed == false) {
+		buffed = true;
+	}
+	else if (col->type == Type::SARUSHOT && buffed == true) {
+		buffTimer.Reset();
+	}
 	ModuleEnemy::OnCollision(col);
 }
 
 void Bananacher::FixedUpdate()
 {
 	if (randomMoveDirIndex != -1)
-	{
+	{	
 		position += moveDir[randomMoveDirIndex];
 		currentDir = randomMoveDirIndex;
+
 	}
 
 	isFlip = false;

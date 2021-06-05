@@ -10,14 +10,6 @@ Saru::Saru(iPoint spawnPos, iPoint* playerPos, iPoint* bananacherPos, Tile* tile
 	this->tileMap = tileMap;
 	life = 5; //5 It has to be this number so it can trigger the death animation at 1. It actually keeps having 4 lifes
 
-	/*
-	stopTimer[0] = 1.40f;
-	stopTimer[1] = 1.80f;
-	stopTimer[2] = 10.0f;
-	stopTimer[3] = 1.20f;
-	stopTimer[4] = 3.0f;
-	stopTimer[5] = 2.0f;
-	*/
 	stopTimer[0] = 1.40f;
 	stopTimer[1] = 1.80f;
 	stopTimer[2] = 10.0f;
@@ -178,7 +170,6 @@ UpdateResult Saru::PostUpdate() {
 		tempPos.x -= tempX;
 	}
 	
-	
 
 
 	//Render flip
@@ -302,33 +293,24 @@ void Saru::shot() {
 	int theNum = 46;
 	int random = rand() % 120;
 
-	//if (theNum == random && !shooting) {
-		if (theNum == random) {
-		cout << "YES" << endl;
+
+	if (theNum == random) {
 		theShot.position.x = position.x;
 		theShot.position.y = position.y;
-		/*
-		if (bananacherPos->x) {
+		int auxX = (bananacherPos->x - position.x) / 20;
+		int auxY = (bananacherPos->y - position.y) / 20;
 
-		}
-		else {
+		if (auxX < -3) auxX = -3;
+		else if (auxX > 3 ) auxX = 3;
+		if (auxY < -3) auxY = -3;
+		else if (auxY > 3) auxY = 3;
 
-		}
-		*/
-		theShot.setSpeed({ -2 , -1 });
-		App->particle->AddParticle(theShot, position, Type::NONE, true, 0, 66.1f);
+		cout << auxX << " | " << auxY << endl;
+		theShot.setSpeed({ auxX , auxY });
+		App->particle->AddParticle(theShot, position, Type::SARUSHOT, true, 0, 66.1f);
 		
 		shooting = true;
 	}
-	//if (shooting) {
-		//cout << "PEW PEW" << endl;
-		//theShot.position.x -= 1;
-		//theShot.position.y -= 1;
-		//if(theShot.position.x >= ) {
-		//	shooting = false;
-		//}
-	//}
-
 }
 
 void Saru::OnCollision(Collider* col) {

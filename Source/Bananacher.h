@@ -39,6 +39,11 @@ private:
 
 	bool injureAnim = false;
 
+	bool buffed = false;
+	Timer buffTimer;
+
+	float rev = 0.05f;
+
 private:
 
 	int RandomMov();

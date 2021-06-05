@@ -20,7 +20,8 @@ enum class Type
 	BOMBPOWER,
 	INVINCIBLEPOWER,
 	COIN,
-	MAX
+	MAX,
+	SARUSHOT
 };
 
 struct Collider
