@@ -110,6 +110,15 @@ bool SceneLevelBoss::PreUpdate()
 
 	#pragma endregion
 
+	#pragma region Boss dies Condition
+
+			if (saru != nullptr && saru->pendingToDelete)
+			{
+				App->scene->ChangeCurrentScene(SCENE_MAINMENU, 90);
+			}
+
+	#pragma endregion
+
 	return false;
 }
 
