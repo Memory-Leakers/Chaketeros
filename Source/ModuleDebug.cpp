@@ -91,7 +91,7 @@ UpdateResult ModuleDebug::Update()
 
 	#pragma region ContructMode
 
-	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 	{
 		debugPoint.x-=16;
 		if (debugPoint.x < currentTile->limitMin[App->scene->currentLevel].x)
@@ -99,7 +99,7 @@ UpdateResult ModuleDebug::Update()
 			debugPoint.x = currentTile->limitMin[App->scene->currentLevel].x;
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
 	{
 		debugPoint.x+= 16;
 		if (debugPoint.x > currentTile->limitMax[App->scene->currentLevel].x)
@@ -107,7 +107,7 @@ UpdateResult ModuleDebug::Update()
 			debugPoint.x = currentTile->limitMax[App->scene->currentLevel].x;
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || pad.up == KEY_DOWN)
 	{
 		debugPoint.y-= 16;
 		if (debugPoint.y < currentTile->limitMin[App->scene->currentLevel].y)
@@ -115,7 +115,7 @@ UpdateResult ModuleDebug::Update()
 			debugPoint.y = currentTile->limitMin[App->scene->currentLevel].y;
 		}
 	}
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || pad.down == KEY_DOWN)
 	{
 		debugPoint.y+= 16;
 		if (debugPoint.y > currentTile->limitMax[App->scene->currentLevel].y)
@@ -180,30 +180,31 @@ void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile)
 
 void ModuleDebug::ConstructMode()
 {
+	GamePad& pad = App->input->pads[0];
 	if(createObject)
 	{
-		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN || pad.b == KEY_DOWN)
 		{
 			createObject = false;
 		}
 	}
 	else
 	{
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 		{
 			if (arrowPosPointer <= 0) arrowPosPointer = 6;
 
 			else arrowPosPointer--;
 		}
 
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
 		{
 			if (arrowPosPointer >= 6) arrowPosPointer = 0;
 
 			else arrowPosPointer++;		
 		}
 
-		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 		{
 			createObject = true;
 			debugPoint = currentTile->getWorldPos({ 1, 2 });

@@ -71,6 +71,8 @@ public:
 	void FixedUpdate();
 
 	void Die() override;
+
+	Collider* bigCol = nullptr;
 };
 
 #endif // !BANANACHER_H

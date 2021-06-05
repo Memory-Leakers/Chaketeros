@@ -24,6 +24,7 @@ bool Bananacher::Start()
 	texture = App->textures->Load("Assets/Images/Sprites/Enemies_Sprites/Banana.png");
 
 	col = App->collisions->AddCollider({ 0,0,16,16 }, Type::ENEMY, App->scene);
+	bigCol = App->collisions->AddCollider({ 0,0,32,64 }, Type::BANANA, App->scene);
 
 	#pragma region Init Anim
 
@@ -119,22 +120,9 @@ UpdateResult Bananacher::Update()
 {
 	// Update Col
 	col->SetPos(this->position.x, this->position.y);
+	bigCol->SetPos(this->position.x - 8, this->position.y - 48);
 
 	bananaTimer.Update();
-
-	if (buffed) {
-		rev = 0.03f;
-
-		buffTimer.Update();
-		if (buffTimer.getDeltaTime() >= 5.0f) {
-			buffed = false;
-			buffTimer.Reset();
-		}
-	}
-	else {
-		rev = 0.05f;
-	}
-
 
 	if (bananaTimer.getDeltaTime() >= rev)
 	{
@@ -186,11 +174,10 @@ UpdateResult Bananacher::PostUpdate()
 
 void Bananacher::OnCollision(Collider* col)
 {
-	if (col->type == Type::SARUSHOT && buffed == false) {
-		buffed = true;
-	}
-	else if (col->type == Type::SARUSHOT && buffed == true) {
-		buffTimer.Reset();
+	if (col->type == Type::SARUSHOT) {
+		if (rev >= 0.01) {
+			rev -= 0.005f;
+		}
 	}
 	ModuleEnemy::OnCollision(col);
 }
@@ -305,6 +292,7 @@ void Bananacher::Die()
 	if (pendingToDelete) return;
 
 	col->pendingToDelete = true;
+	bigCol->pendingToDelete = true;
 
 	iPoint tempPos = position;
 

@@ -14,12 +14,16 @@ ModuleCollisions::ModuleCollisions()
 		colliders[i] = nullptr;
 	}	
 
+	//TRUE -> Can be detected BY FIRST OBJECT // FALSE -> CAN'T BE DETECTED BY FIRST OBJECT
+	// EX-> matrix[uint(Type::WALL)][uint(Type::PLAYER)] = false;
+	// WALL CAN DETECT PLAYER
+
 	matrix[uint(Type::WALL)][uint(Type::WALL)] = false;
-	matrix[uint(Type::WALL)][uint(Type::PLAYER)] = true;
-	matrix[uint(Type::WALL)][uint(Type::ENEMY)] = true;
-	matrix[uint(Type::WALL)][uint(Type::BOMB)] = true;
-	matrix[uint(Type::WALL)][uint(Type::EXPLOSION)] = true;
-	matrix[uint(Type::WALL)][uint(Type::DESTRUCTABLE_WALL)] = true;
+	matrix[uint(Type::WALL)][uint(Type::PLAYER)] = false;
+	matrix[uint(Type::WALL)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::WALL)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::WALL)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::WALL)][uint(Type::DESTRUCTABLE_WALL)] = false;
 	matrix[uint(Type::WALL)][uint(Type::FIREPOWER)] = false;
 	matrix[uint(Type::WALL)][uint(Type::BOMBPOWER)] = false;
 	matrix[uint(Type::WALL)][uint(Type::INVINCIBLEPOWER)] = false;
@@ -46,6 +50,7 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::ENEMY)][uint(Type::BOMBPOWER)] = false;
 	matrix[uint(Type::ENEMY)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::ENEMY)][uint(Type::COIN)] = false;
+	matrix[uint(Type::ENEMY)][uint(Type::SARUSHOT)] = true;
 
 	matrix[uint(Type::BOMB)][uint(Type::WALL)] = true;
 	matrix[uint(Type::BOMB)][uint(Type::PLAYER)] = true;
@@ -123,6 +128,22 @@ ModuleCollisions::ModuleCollisions()
 	matrix[uint(Type::COIN)][uint(Type::BOMBPOWER)] = false;
 	matrix[uint(Type::COIN)][uint(Type::INVINCIBLEPOWER)] = false;
 	matrix[uint(Type::COIN)][uint(Type::COIN)] = false;
+	matrix[uint(Type::COIN)][uint(Type::SARUSHOT)] = true;
+
+	matrix[uint(Type::SARUSHOT)][uint(Type::WALL)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::PLAYER)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::ENEMY)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::BOMB)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::DESTRUCTABLE_WALL)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::FIREPOWER)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::BOMBPOWER)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::INVINCIBLEPOWER)] = false;
+	matrix[uint(Type::SARUSHOT)][uint(Type::BANANA)] = true;
+	matrix[uint(Type::SARUSHOT)][uint(Type::SARUSHOT)] = false;
+
+	matrix[uint(Type::BANANA)][uint(Type::EXPLOSION)] = false;
+	matrix[uint(Type::BANANA)][uint(Type::SARUSHOT)] = true;
 }
 
 // Destructor
