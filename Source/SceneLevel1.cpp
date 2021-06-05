@@ -339,7 +339,7 @@ bool SceneLevel1::PreUpdate()
 		{
 			App->audio->PlaySound(whistlingSFX, 0);
 			App->scene->ChangeCurrentScene(SCENE_STAGE, 90);
-			App->scene->isLevelCompleted[0] = true;
+			App->scene->playerSettings->isLevelCompleted[0] = true;
 			isChangingScene = true;
 		}
 		else if (!isExtraPointsActive)

@@ -69,7 +69,7 @@ bool SceneSelectStage::Start()
 	bigMoneyPointer = 0;
 	for (int i = 0; i < 3; i++)
 	{
-		if (App->scene->isLevelCompleted[i])
+		if (App->scene->playerSettings->isLevelCompleted[i])
 		{
 			bigMoneyPointer++;
 		}
@@ -109,7 +109,7 @@ void SceneSelectStage::ModifyStagePointer(int mod)
 		}
 
 		// go to the next accecible level
-		if (stageSelectPointer != 0 && !App->scene->isLevelCompleted[stageSelectPointer - 1])
+		if (stageSelectPointer != 0 && !App->scene->playerSettings->isLevelCompleted[stageSelectPointer - 1])
 		{
 			ModifyStagePointer(mod);
 		}
@@ -186,7 +186,7 @@ bool SceneSelectStage::PostUpdate()
 	// Coins
 	for (int i = 0; i < 3; i++)
 	{
-		if(!App->scene->isLevelCompleted[i])
+		if(!App->scene->playerSettings->isLevelCompleted[i])
 		{
 			App->render->AddTextureRenderQueue(texStoneCoin, posStoneCoins[i], &stoneCoinAnim.GetCurrentFrame(), 2, 1);
 		}

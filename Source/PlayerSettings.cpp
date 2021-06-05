@@ -29,6 +29,10 @@ void PlayerSettings::Reset()
     {
         powerUpLouies[i] = false;
     }
+    for (int i = 0; i < 3; i++)
+    {
+        isLevelCompleted[i] = false;
+    }
 }
 
 PlayerSettings::PlayerSettings()
