@@ -7,8 +7,6 @@ using namespace std;
 
 // Debug variable
 //iPoint debugOffset = { 0,0 };
-
-
 NumText stageText;
 
 SceneSelectStage::SceneSelectStage()
