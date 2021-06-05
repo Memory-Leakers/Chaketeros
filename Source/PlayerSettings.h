@@ -35,7 +35,7 @@ public:
 
 	 int maxBombs = 1;
 
-	 bool powerUpVest, powerUpKick;
+	 bool powerUpKick;
 
 	 bool powerUpLouies[5];
 };

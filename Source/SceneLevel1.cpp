@@ -256,9 +256,9 @@ bool SceneLevel1::Start()
 
 	// Spawn enemies
 	enemy[3] = new PokaPoka(120, 32, &bomberman->position, tileMap);
-	enemy[1] = new Mover({ 168,64 }, texEnemies, &bomberman->pivotPoint, tileMap);
+	enemy[1] = new Mover({ 168,64 }, texEnemies, &bomberman->pivotPoint, &bomberman->invensibleTime, tileMap);
 	enemy[2] = new PokaPoka(120, 192, &bomberman->position, tileMap);
-	enemy[0] = new Mover({ 72,160 }, texEnemies, &bomberman->pivotPoint, tileMap);
+	enemy[0] = new Mover({ 72,160 }, texEnemies, &bomberman->pivotPoint, &bomberman->invensibleTime, tileMap);
 
 	// Init enemies
 	for (int i = 0; i < MAX_ENEMY; ++i)

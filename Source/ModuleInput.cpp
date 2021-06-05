@@ -102,14 +102,18 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 
 	// Stop rumble from all gamepads and deactivate SDL functionallity
+	
 	for (uint i = 0; i < MAX_PADS; ++i)
 	{
-		if (pads[i].haptic != nullptr)
+		if(pads[i].enabled)
 		{
-			SDL_HapticStopAll(pads[i].haptic);
-			SDL_HapticClose(pads[i].haptic);
-		}
-		if (pads[i].controller != nullptr) SDL_GameControllerClose(pads[i].controller);
+			if (pads[i].haptic != nullptr)
+			{
+				SDL_HapticStopAll(pads[i].haptic);
+				SDL_HapticClose(pads[i].haptic);
+			}
+			if (pads[i].controller != nullptr) SDL_GameControllerClose(pads[i].controller);
+		}	
 	}
 
 	SDL_QuitSubSystem(SDL_INIT_HAPTIC);
@@ -120,7 +124,6 @@ bool ModuleInput::CleanUp()
 }
 
 /*GAMEPAD RELATED*/
-
 void ModuleInput::HandleDeviceConnection(int index)
 {
 	if (SDL_IsGameController(index))
@@ -176,7 +179,6 @@ void ModuleInput::UpdateGamepadsInput()
 			}
 			else if (pad.a == 1 && pad.pA == 0) { pad.pA = 1; }
 			else { pad.pA = 0; }
-
 
 			pad.b = SDL_GameControllerGetButton(pad.controller, SDL_CONTROLLER_BUTTON_B) == 1;
 			pad.x = SDL_GameControllerGetButton(pad.controller, SDL_CONTROLLER_BUTTON_X) == 1;

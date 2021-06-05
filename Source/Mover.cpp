@@ -2,8 +2,10 @@
 
 SDL_Rect* rectMover;
 
-Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* tileMap)
+Mover::Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, float* playerInvensible, Tile* tileMap)
 {
+	this->playerInvensible = playerInvensible;
+
 	// Player pivot
 	this->playerPos = playerPos; 
 
@@ -132,7 +134,10 @@ UpdateResult Mover::Update()
 
 void Mover::FixedUpdate()
 {
-	if (AStarMoveDirIndex != -1)
+
+#pragma region MoveMode
+
+	if (AStarMoveDirIndex != -1 && (*playerInvensible) <= 0)
 	{
 		position += moveDir[AStarMoveDirIndex];
 		currentDir = AStarMoveDirIndex;
@@ -142,6 +147,10 @@ void Mover::FixedUpdate()
 		position += moveDir[randomMoveDirIndex];
 		currentDir = randomMoveDirIndex;
 	}
+
+#pragma endregion
+
+#pragma region MoveAnim
 
 	isFlip = false;
 
@@ -173,6 +182,9 @@ void Mover::FixedUpdate()
 		}		
 		break;
 	}
+
+#pragma endregion
+
 }
 
 UpdateResult Mover::PostUpdate() 

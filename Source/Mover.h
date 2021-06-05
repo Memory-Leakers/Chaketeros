@@ -48,6 +48,8 @@ private:
 
 	int speed = 1; //Movement onlys
 
+	float* playerInvensible = 0;
+
 	// A* variable
 	int moveDirContrary[4]{ 1,0,3,2 }; // push back direccion A star
 	int AStarMoveDirIndex = 0; // get A star result
@@ -67,7 +69,7 @@ private:
 public:
 
 	// Constructor
-	Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, Tile* levelMap);
+	Mover(iPoint spawnPos, SDL_Texture* tex, iPoint* playerPos, float* playerInvensible, Tile* levelMap);
 
 	// Destructor
 	~Mover();

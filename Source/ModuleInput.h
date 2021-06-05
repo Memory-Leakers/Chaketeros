@@ -25,14 +25,14 @@ struct GamePad
 	bool pStart, pDown, pUp, pLeft, pRight, pA;
 	bool x, y, a, b, l1, r1, l3, r3;
 	bool up, down, left, right;
-	float l2, r2;
-	float left_x, left_y, right_x, right_y, left_dz, right_dz;
+	float l2 = 0, r2 = 0;
+	float left_x = 0, left_y = 0, right_x = 0, right_y = 0, left_dz = 0, right_dz = 0;
 
 	// Controller data
 	bool enabled = false;
 	int index;
-	_SDL_GameController* controller;
-	_SDL_Haptic* haptic;
+	_SDL_GameController* controller = nullptr;
+	_SDL_Haptic* haptic = nullptr;
 
 	// Rumble controller
 	int rumble_countdown;

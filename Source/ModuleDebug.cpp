@@ -1,5 +1,6 @@
 #include "ModuleDebug.h"
 
+#include "ModuleInput.h"
 #include "Application.h"
 #include "Player.h"
 #include "Tile.h"
@@ -19,7 +20,6 @@ ModuleDebug::~ModuleDebug()
 
 UpdateResult ModuleDebug::Update()
 {
-
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
 	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
@@ -43,6 +43,7 @@ UpdateResult ModuleDebug::PostUpdate()
 void ModuleDebug::InitDebug(Obstacle** obstacles)
 {
 	this->obstacles = obstacles;
+
 	pauseTimeOffset = 0;
 }
 

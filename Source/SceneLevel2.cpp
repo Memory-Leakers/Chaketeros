@@ -188,7 +188,6 @@ void SceneLevel2::InitAssets()
 	CreateScene();
 }
 
-
 void SceneLevel2::DebugKeys()
 {
 	// Player god mod
@@ -238,7 +237,6 @@ void SceneLevel2::DebugKeys()
 	}
 }
 
-
 bool SceneLevel2::Start()
 {
 	level2TileMap = new Tile();
@@ -268,12 +266,12 @@ bool SceneLevel2::Start()
 	coreMechaNum = 3;
 
 	//Spawn Enemies
-	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[5] = new Mover(level2TileMap->getWorldPos({ 26,10 }), texEnemies, &bomberman->pivotPoint, &bomberman->invensibleTime, level2TileMap);
 	enemy[4] = new Mouse(level2TileMap->getWorldPos({ 6,4 }), texEnemies, level2TileMap);
 	enemy[3] = new Snail(level2TileMap->getWorldPos({ 13,6 }), texEnemies, level2TileMap);
 	enemy[2] = new PokaPoka(424, 32, &bomberman->position, level2TileMap);
-	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,7 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
-	enemy[0] = new Mover(level2TileMap->getWorldPos({ 3,7 }), texEnemies, &bomberman->pivotPoint, level2TileMap);
+	enemy[1] = new Mover(level2TileMap->getWorldPos({ 15,7 }), texEnemies, &bomberman->pivotPoint, &bomberman->invensibleTime, level2TileMap);
+	enemy[0] = new Mover(level2TileMap->getWorldPos({ 3,7 }), texEnemies, &bomberman->pivotPoint, &bomberman->invensibleTime, level2TileMap);
 
 	// Init enemies
 	for (int i = 0; i < LEVEL2_MAXENEMIES; ++i)
