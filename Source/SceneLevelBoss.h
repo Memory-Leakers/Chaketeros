@@ -39,6 +39,7 @@ private:
 
 	bool isTimeOut;
 
+	void DebugKeys();
 
 public:
 	Tile* tileMap = nullptr;

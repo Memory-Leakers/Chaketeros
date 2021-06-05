@@ -181,6 +181,12 @@ void ModuleParticles::AddParticle(const Particle& particle, iPoint pos, Type Typ
 			{
 				p->col = App->collisions->AddCollider({ p->position.x, p->position.y, 16,16, }, Type, this);
 			}
+			// Adding the particle's 
+			if (Type == Type::SARUSHOT)
+			{
+				p->col = App->collisions->AddCollider({ p->position.x, p->position.y, 12,5, }, Type, this);
+			}
+
 
 			particles[i] = p;
 			break;

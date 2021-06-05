@@ -7,6 +7,8 @@
 
 class Module;
 
+
+//MAX MUST BE AT THE END OF THE LIST
 enum class Type
 {
 	NONE = -1,
@@ -20,8 +22,9 @@ enum class Type
 	BOMBPOWER,
 	INVINCIBLEPOWER,
 	COIN,
-	MAX,
-	SARUSHOT
+	SARUSHOT,
+	BANANA,
+	MAX
 };
 
 struct Collider

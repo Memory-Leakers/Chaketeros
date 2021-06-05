@@ -290,13 +290,11 @@ void Saru::movement(int direction) {
 void Saru::shot() {
 	if (bananacherPos == nullptr) { return; }
 
-	int theNum = 46;
+	int theNum = 1;
 	int random = rand() % 500;
 
 
 	if (theNum == random) {
-		theShot.position.x = position.x;
-		theShot.position.y = position.y;
 		int auxX = (bananacherPos->x - position.x) / 20;
 		int auxY = (bananacherPos->y - position.y) / 20;
 
@@ -306,7 +304,7 @@ void Saru::shot() {
 		if (auxY < -3) auxY = -3;
 		else if (auxY > 3) auxY = 3;
 
-		cout << auxX << " | " << auxY << endl;
+		//cout << auxX << " | " << auxY << endl;
 		theShot.setSpeed({ auxX , auxY });
 		App->particle->AddParticle(theShot, position, Type::SARUSHOT, true, 0, 66.1f);
 		

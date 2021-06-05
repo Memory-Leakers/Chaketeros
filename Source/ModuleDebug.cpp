@@ -44,7 +44,7 @@ UpdateResult ModuleDebug::Update()
 
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
-	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
+	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN)
 	{
 		PauseOnOff();
 	}
@@ -126,7 +126,7 @@ UpdateResult ModuleDebug::PostUpdate()
 			App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
 
 			App->render->AddRectRenderQueue({ spawnPoint.x, spawnPoint.y, 16 , 16 }, renderColor);
-		}		
+		}
 	}
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -146,9 +146,10 @@ void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile)
 
 void ModuleDebug::ConstructMode()
 {
+	GamePad& pad = App->input->pads[0];
 	if(createObject)
 	{
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 		{
 			spawnPoint.x -= 16;
 			if (spawnPoint.x < currentTile->limitMin[App->scene->currentLevel].x)
@@ -156,7 +157,7 @@ void ModuleDebug::ConstructMode()
 				spawnPoint.x = currentTile->limitMin[App->scene->currentLevel].x;
 			}
 		}
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
 		{
 			spawnPoint.x += 16;
 			if (spawnPoint.x > currentTile->limitMax[App->scene->currentLevel].x)
@@ -164,7 +165,7 @@ void ModuleDebug::ConstructMode()
 				spawnPoint.x = currentTile->limitMax[App->scene->currentLevel].x;
 			}
 		}
-		if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || pad.up == KEY_DOWN)
 		{
 			spawnPoint.y -= 16;
 			if (spawnPoint.y < currentTile->limitMin[App->scene->currentLevel].y)
@@ -172,7 +173,7 @@ void ModuleDebug::ConstructMode()
 				spawnPoint.y = currentTile->limitMin[App->scene->currentLevel].y;
 			}
 		}
-		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || pad.down == KEY_DOWN)
 		{
 			spawnPoint.y += 16;
 			if (spawnPoint.y > currentTile->limitMax[App->scene->currentLevel].y)
@@ -181,11 +182,11 @@ void ModuleDebug::ConstructMode()
 			}
 		}
 
-		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN || pad.b == KEY_DOWN)
 		{
 			createObject = false;
 		}
-		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 		{
 			iPoint temp = currentTile->getTilePos(spawnPoint);
 			temp.y--;
@@ -198,27 +199,27 @@ void ModuleDebug::ConstructMode()
 			}
 			else
 			{
-				
+
 			}
 		}
 	}
 	else
 	{
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 		{
 			if (arrowPosPointer <= 0) arrowPosPointer = 6;
 
 			else arrowPosPointer--;
 		}
 
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
 		{
 			if (arrowPosPointer >= 6) arrowPosPointer = 0;
 
-			else arrowPosPointer++;		
+			else arrowPosPointer++;
 		}
 
-		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 		{
 			createObject = true;
 			spawnPoint = currentTile->getWorldPos({ 1, 2 });
@@ -230,7 +231,7 @@ void ModuleDebug::ConstructMode()
 			cout << "x: " << spawnPoint.x << endl;
 			cout << "y: " << spawnPoint.y << endl;
 		}
-	}	
+	}
 }
 
 void ModuleDebug::CalPauseTimeOffset()

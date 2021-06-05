@@ -78,6 +78,9 @@ bool SceneLevelBoss::Start()
 	bananacher->Start();
 	saru->Start();
 
+	// Init debug
+	App->debug->InitDebug(obstacles, tileMap);
+
 	return false;
 }
 
@@ -203,6 +206,9 @@ bool SceneLevelBoss::Update()
 		}
 	}
 
+
+	DebugKeys();
+
 	return false;
 }
 
@@ -255,7 +261,7 @@ bool SceneLevelBoss::PostUpdate()
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
-	if (bananacher->col == c1)
+	if (bananacher->col == c1 || bananacher->bigCol == c1)
 	{
 		bananacher->OnCollision(c2);
 	}
@@ -331,4 +337,54 @@ bool SceneLevelBoss::CleanUp(bool finalCleanUp)
 	}
 
 	return false;
+}
+
+void SceneLevelBoss::DebugKeys()
+{
+	// Player god mod
+	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
+	{
+		App->debug->PlayerGodMod(bombermanBoss);
+	}
+
+	// Go to GAME OVER with F3
+	if (App->input->keys[SDL_SCANCODE_F3] == KEY_DOWN)
+	{
+		App->debug->GameOver();
+	}
+
+	// Win
+	/*
+	if (App->input->keys[SDL_SCANCODE_F4] == KEY_DOWN)
+	{
+		if (!levelComplete)
+		{
+			App->debug->Win(bombermanBoss, winPosition);
+		}
+	}
+	*/
+	// Show the powerUps position
+	if (App->input->keys[SDL_SCANCODE_F5] == KEY_DOWN)
+	{
+		App->debug->PowerUpPosition();
+	}
+
+	// Detect player position in console (use with Q)
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		App->debug->PlayerPosInConsole(bombermanBoss);
+	}
+
+	// Refresh debug tileMap with Q (use with f10)
+	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
+	{
+		App->debug->DrawMapInConsole(tileMap, 15, 13);
+		App->debug->PrintDebugInformation();
+	}
+
+	// Get up flame power
+	if (App->input->keys[SDL_SCANCODE_Z] == KEY_DOWN)
+	{
+		App->debug->AddUpFlame();
+	}
 }
