@@ -111,4 +111,7 @@ Ctrl + 9 - Go to Password
 
 ![taskList1](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks1.png);  ![taskList2](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/adriatasks2.png)
 
+# Last Release
+
+Check out the latest release of the project [here](https://github.com/AdriaSeSa/Chaketeros/releases/tag/0.5) 
 
