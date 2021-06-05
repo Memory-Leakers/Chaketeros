@@ -106,6 +106,10 @@ public:
 	}
 	};
 
+	iPoint limitMin[3] = { {24,32},{24,32},{24,32} };
+	iPoint limitMax[3] = { {216,192},{},{216,192} };
+
+public:
 	Tile();
 
 	iPoint getWorldPos(iPoint pos);

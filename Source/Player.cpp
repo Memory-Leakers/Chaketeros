@@ -80,7 +80,7 @@ bool Player::Start()
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	playerInvensible.texInvensible = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
-#pragma region Init particle
+	#pragma region Init particle
 
 	playerDestroyed = new Particle(500.0f, 0.2f, texture);
 
@@ -101,6 +101,10 @@ bool Player::Start()
 	lastTilePos = getCurrentTilePos();
 
 #pragma endregion
+
+	// Refresh player Pos in console
+	lastTilePos = getCurrentTilePos();
+	tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
 
 	return ret;
 }
@@ -283,24 +287,7 @@ UpdateResult Player::Update()
 	// Drop a bomb
 	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->maxBombs > 0)
 	{
-		iPoint temp = getCurrentTilePos();
-		temp.y--;
-		int currentGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
-
-
-		// If player not situate in glass capsule stairs
-		if (currentGrid != 13 && currentGrid != 12)
-		{
-			for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
-			{
-				if (obstacles[i] == nullptr)
-				{
-					obstacles[i] = new Bomb(this, texBomb, tileMap);
-					App->scene->playerSettings->maxBombs--;
-					break;
-				}
-			}
-		}
+		DropBomb();
 	}
 
 	// Move
@@ -341,20 +328,20 @@ UpdateResult Player::Update()
 	//	godMode = !godMode;
 	//}
 
-	//if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
-	//{
-	//	posMode = !posMode;
+	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
+	{
+		posMode = !posMode;
 
-	//	if(posMode)
-	//	{
-	//		lastTilePos = getCurrentTilePos();
-	//		tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
-	//	}
-	//	else
-	//	{
-	//		tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
-	//	}
-	//}
+		if(posMode)
+		{
+			lastTilePos = getCurrentTilePos();
+			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
+		}
+		else
+		{
+			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
+		}
+	}
 
 	#pragma endregion
 
@@ -554,6 +541,27 @@ void Player::WillCollision(Collider* col)
 				{
 					canMoveDir[UP] = false;
 				}
+			}
+		}
+	}
+}
+
+void Player::DropBomb()
+{
+	iPoint temp = getCurrentTilePos();
+	temp.y--;
+	int currentGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
+
+	// If player not situate in glass capsule stairs
+	if (currentGrid != 13 && currentGrid != 12)
+	{
+		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
+		{
+			if (obstacles[i] == nullptr)
+			{
+				obstacles[i] = new Bomb(this, texBomb, tileMap);
+				App->scene->playerSettings->maxBombs--;
+				break;
 			}
 		}
 	}

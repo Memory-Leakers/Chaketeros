@@ -43,7 +43,7 @@ bool ModuleRender::Init()
 	}
 
 	// init layers size
-	layers.resize(3);
+	layers.resize(4);
 
 	return ret;
 }
@@ -116,6 +116,11 @@ UpdateResult ModuleRender::PostUpdate()
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 		SDL_SetRenderDrawColor(renderer, renderRect.color.r, renderRect.color.g, renderRect.color.b, renderRect.color.a);
 		SDL_RenderFillRect(renderer, &renderRect.rect);
+	}
+
+	for each (auto renderObj in layers[3])
+	{
+		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
 	}
 
 	// Update the screen

@@ -283,7 +283,7 @@ bool SceneLevel2::Start()
 	}
 
 
-	App->debug->InitDebug(sceneObstacles);
+	App->debug->InitDebug(sceneObstacles, level2TileMap);
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
