@@ -328,11 +328,13 @@ UpdateResult Player::Update()
 	//	godMode = !godMode;
 	//}
 
+	#pragma region Obsolete DO NOT USE !!!!!
+	/*
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
 		posMode = !posMode;
 
-		if(posMode)
+		if (posMode)
 		{
 			lastTilePos = getCurrentTilePos();
 			tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
@@ -342,6 +344,8 @@ UpdateResult Player::Update()
 			tileMap->LevelsTileMaps[App->scene->currentLevel][tilePos.y - 1][tilePos.x] = 0;
 		}
 	}
+	*/
+	#pragma endregion
 
 	#pragma endregion
 

@@ -20,10 +20,6 @@ ModuleDebug::~ModuleDebug()
 
 bool ModuleDebug::Start()
 {
-	texArrow = App->textures->Load("Assets/Images/Sprites/My_Sprites/Arrow.png");
-	texPause = App->textures->Load("Assets/Images/Sprites/My_Sprites/Pause.png");
-	texPowerUp = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
-
 	return true;
 }
 
@@ -104,7 +100,7 @@ UpdateResult ModuleDebug::PostUpdate()
 {
 	if(App->isPaused)
 	{
-		if(!createObject)
+		if (!createObject)
 		{
 			App->render->AddTextureRenderQueue(texPause, { 0 ,0 }, nullptr, 2, 100);
 
@@ -140,6 +136,10 @@ void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile)
 	this->obstacles = obstacles;
 
 	currentTile = tile;
+
+	texArrow = App->textures->Load("Assets/Images/Sprites/My_Sprites/Arrow.png");
+	texPause = App->textures->Load("Assets/Images/Sprites/My_Sprites/Pause.png");
+	texPowerUp = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
 	pauseTimeOffset = 0;
 }

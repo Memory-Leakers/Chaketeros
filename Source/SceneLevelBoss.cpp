@@ -25,9 +25,13 @@ void SceneLevelBoss::CreateScene()
 
 	// Create new player
 	bombermanBoss = new Player(tileMap, obstacles);
+
 	bananacher = new Bananacher({ 120, 64 }, tileMap);
+
 	bombermanBoss->Start();
+
 	bombermanBoss->setPosition(120, 192); //232 352
+
 	saru = new Saru({ 152, 64 }, &bombermanBoss->position, &bananacher->position, tileMap);
 	for (int i = 0; i < 13; ++i) //Check TileMap y axis
 	{
