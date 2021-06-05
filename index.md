@@ -31,9 +31,9 @@ F4 - Instant Win
 
 F5 - Show PowerUp position
 
-F6 - Show Mover Enemy Movement
+F6 - Show Mover Enemy movement path
 
-F7 - On/Off Camera Movement
+F7 - On/Off Camera movement
 ```
 
 # Chaketeros
