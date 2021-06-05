@@ -61,8 +61,6 @@ UpdateResult Application::Update()
 {
 	UpdateResult ret = UpdateResult::UPDATE_CONTINUE;
 
-	//TODO: (Opcional) Añadir sprite de Juego Pausado
-
 	globalTime.Update();
 
 	if (globalTime.getDeltaTime() >= 1.0f / FPS)
