@@ -28,6 +28,8 @@ public:
 
 	virtual void WillCollision(Collider* c1, Collider* c2);
 
+	virtual void Spawn(iPoint spawnPos, int objectID);
+
 	int getID()
 	{
 		return ID;

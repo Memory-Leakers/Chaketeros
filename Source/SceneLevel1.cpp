@@ -82,6 +82,30 @@ void SceneLevel1::InitAssets()
 	#pragma endregion
 }
 
+void SceneLevel1::Spawn(iPoint spawnPos, int objectID)
+{
+	objectID++;
+	switch (objectID)
+	{
+		case 1:
+		case 2:
+		case 3:
+			for (int i = 0; i < MAX_POWERUPS; ++i)
+			{
+				if (powerUps[i] == nullptr)
+				{
+					powerUps[i] = new PowerUp(spawnPos, texPowerUps, texPowerUpDestroyed, objectID);
+					return;
+				}
+			}
+			break;
+
+	default:
+		break;
+	}
+	
+}
+
 void SceneLevel1::CreateScene()
 {
 	#pragma region Generate Obstacles
@@ -624,7 +648,7 @@ bool SceneLevel1::PostUpdate()
 	#pragma region DrawUI and Foreground
 
 	// Draw FrontGround
-	App->render->AddTextureRenderQueue(texFG, { 0,16 }, nullptr, 1, 100);
+	App->render->AddTextureRenderQueue(texFG, { 0,16 }, nullptr, 1, 1000);
 
 	// Draw UI
 	App->render->AddTextureRenderQueue(texUI, { 0,0 }, &recUIbar, 2, 0);

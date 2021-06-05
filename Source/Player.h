@@ -133,7 +133,7 @@ public:
 
 	bool godMode = false;
 
-	bool posMode = true;
+	bool posMode = false;
 
 public:
 	// Constructor

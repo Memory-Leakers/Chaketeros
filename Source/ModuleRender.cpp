@@ -63,7 +63,6 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
-
 	if (App->FullScreenDesktop)
 	{
 		// Fullscreen
@@ -116,10 +115,10 @@ UpdateResult ModuleRender::PostUpdate()
 		SDL_RenderFillRect(renderer, &renderRect.rect);
 	}
 
-	for each (auto renderObj in layers[3])
-	{
-		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
-	}
+	//for each (auto renderObj in layers[3])
+	//{
+	//	SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
+	//}
 
 	// Update the screen
 	SDL_RenderPresent(renderer);

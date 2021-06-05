@@ -72,6 +72,7 @@ public:
 
 	bool CleanUp() override;
 
+public:
 	Scene* currentScene = nullptr;
 
 	Scene* scenes[SCENES_NUM] = { nullptr };
@@ -99,9 +100,12 @@ private:
 
 	int newScene;
 
-	SDL_Scancode debugKeys[9] = { SDL_SCANCODE_1, SDL_SCANCODE_2 , SDL_SCANCODE_3 , SDL_SCANCODE_4 ,
-								SDL_SCANCODE_5 , SDL_SCANCODE_6 , SDL_SCANCODE_7 ,SDL_SCANCODE_8,SDL_SCANCODE_9 };
+	SDL_Scancode debugKeys[9] = 
+	{	SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3 ,
+		SDL_SCANCODE_4, SDL_SCANCODE_5, SDL_SCANCODE_6 ,
+		SDL_SCANCODE_7, SDL_SCANCODE_8, SDL_SCANCODE_9 };
 
+private:
 
 	void DebugChangeScene();	
 };
