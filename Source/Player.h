@@ -29,15 +29,24 @@ enum Dir
 	RIGHT
 };
 
+struct PlayerInvensible
+{
+	// InvensibleUI texture
+	SDL_Texture* texInvensible = nullptr;
+
+	SDL_Rect recInvensible = { 20,2,16,16 };
+
+	float invensibleCount = 0;
+
+	bool DrawInvensible = false;
+};
+
 class Player {
 
 private:
-
 	uint extraCoinsStepSFX, deathSFX, gameOverSFX;
 
 	SDL_Rect bounds;
-
-	float invensibleCount = 0;
 
 	bool isFlip = false;
 
@@ -77,8 +86,11 @@ private:
 
 	// Player texture
 	SDL_Texture* texture = nullptr;
+
 	// Bomb texture
 	SDL_Texture* texBomb = nullptr;
+
+	PlayerInvensible playerInvensible;
 
 private:
 
