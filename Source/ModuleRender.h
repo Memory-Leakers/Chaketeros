@@ -36,9 +36,6 @@ private:
 
 	float defaultSpeed = 3;
 
-	double startCountTime;
-	bool debugCamera = false;
-
 public:
 
 	//Constructor

@@ -20,6 +20,8 @@ private:
 public:
 	float pauseTimeOffset = 0;
 
+	bool debugCamera = false;
+
 public:
 	ModuleDebug();
 

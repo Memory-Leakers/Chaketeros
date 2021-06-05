@@ -109,168 +109,171 @@ UpdateResult Player::Update()
 	int speedY = 0;
 	GamePad& pad = App->input->pads[0];
 	
+	if (!App->debug->debugCamera) 
+	{
 	#pragma region Movements keys
 
-	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
-	{
-		isFlip = false;
-		currentAnimation = &upAnim;
-		currentAnimation->hasIdle = false;
-		if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
-		{
-			//position.y -= speed;
-			speedY = -speed;
-		}
-		// movemenet fix
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
-		{
-			iPoint tempTilePos = getCurrentTilePos();
-
-			int tileX = getCurrentTileWorldPos().x;
-
-			tempTilePos.y--; // offset
-
-			int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
-
-			//if target grid don't have obstacle
-			if (playerAbove == 4 || playerAbove == 0 || playerAbove == 12 || playerAbove == 13)
+			if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
 			{
-				// optimize movemente
-				if (pivotPoint.x > (tileX + 8))
+				isFlip = false;
+				currentAnimation = &upAnim;
+				currentAnimation->hasIdle = false;
+				if (position.y > mapLimits[App->scene->currentLevel][0].y && canMoveDir[UP]) // Limiitar movimiento en la mapa//
 				{
-					position.x -= speed;
+					//position.y -= speed;
+					speedY = -speed;
 				}
-				else if (pivotPoint.x < (tileX + 8))
+				// movemenet fix
+				else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
 				{
-					position.x += speed;
+					iPoint tempTilePos = getCurrentTilePos();
+
+					int tileX = getCurrentTileWorldPos().x;
+
+					tempTilePos.y--; // offset
+
+					int playerAbove = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y - 1][tempTilePos.x];
+
+					//if target grid don't have obstacle
+					if (playerAbove == 4 || playerAbove == 0 || playerAbove == 12 || playerAbove == 13)
+					{
+						// optimize movemente
+						if (pivotPoint.x > (tileX + 8))
+						{
+							position.x -= speed;
+						}
+						else if (pivotPoint.x < (tileX + 8))
+						{
+							position.x += speed;
+						}
+					}
 				}
+
+				SpecialSound();
 			}
-		}
 
-		SpecialSound();
-	}
-
-	if ((App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT || pad.left_y > 0.0f) && (App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT || pad.left_y < 0.0f))
-	{
-		isFlip = false;
-		currentAnimation = &downAnim;
-		currentAnimation->hasIdle = false;
-		if (position.y < mapLimits[App->scene->currentLevel][1].y && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
-		{
-			//position.y += speed;
-			speedY = speed;
-		}
-		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
-		{
-			iPoint tempTilePos = getCurrentTilePos();
-
-			tempTilePos.y--; // offset
-
-			int tileX = getCurrentTileWorldPos().x;
-
-			int playerBelow = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y + 1][tempTilePos.x];
-
-			//if target grid don't have obstacle
-			if (playerBelow == 4 || playerBelow == 0)
+			if ((App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT || pad.left_y > 0.0f) && (App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT || pad.left_y < 0.0f))
 			{
-				// optimize movement
-				if (pivotPoint.x > (tileX + 8))
+				isFlip = false;
+				currentAnimation = &downAnim;
+				currentAnimation->hasIdle = false;
+				if (position.y < mapLimits[App->scene->currentLevel][1].y && canMoveDir[DOWN]) // Limiitar movimiento en la mapa
 				{
-					position.x -= speed;
+					//position.y += speed;
+					speedY = speed;
 				}
-				else if (pivotPoint.x < (tileX + 8))
+				// movement fix
+				else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
 				{
-					position.x += speed;
+					iPoint tempTilePos = getCurrentTilePos();
+
+					tempTilePos.y--; // offset
+
+					int tileX = getCurrentTileWorldPos().x;
+
+					int playerBelow = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y + 1][tempTilePos.x];
+
+					//if target grid don't have obstacle
+					if (playerBelow == 4 || playerBelow == 0)
+					{
+						// optimize movement
+						if (pivotPoint.x > (tileX + 8))
+						{
+							position.x -= speed;
+						}
+						else if (pivotPoint.x < (tileX + 8))
+						{
+							position.x += speed;
+						}
+					}
 				}
+
+				SpecialSound();
 			}
-		}
 
-		SpecialSound();
-	}
-
-	if ((App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT || pad.left_x > 0.0f) && (App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT || pad.left_x < 0.0f))
-	{
-		isFlip = true;
-		currentAnimation = &rightAnim;
-		currentAnimation->hasIdle = false;
-		if (canMoveDir[RIGHT])
-		{
-			if (position.x < mapLimits[App->scene->currentLevel][1].x) // Limiitar movimiento en la mapa
+			if ((App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT || pad.left_x > 0.0f) && (App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT || pad.left_x < 0.0f))
 			{
-				speedX = speed;
+				isFlip = true;
+				currentAnimation = &rightAnim;
+				currentAnimation->hasIdle = false;
+				if (canMoveDir[RIGHT])
+				{
+					if (position.x < mapLimits[App->scene->currentLevel][1].x) // Limiitar movimiento en la mapa
+					{
+						speedX = speed;
+					}
+				}
+				// movement fix
+				else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
+				{
+					iPoint tempTilePos = getCurrentTilePos();
+
+					int tileY = getCurrentTileWorldPos().y;
+
+					tempTilePos.y--; // offset
+
+					int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
+
+					//if target grid don't have obstacle
+					if (playerRight == 4 || playerRight == 0 || playerRight == 12)
+					{
+						// optimize movement
+						if (pivotPoint.y > (tileY + 8))
+						{
+							position.y -= speed;
+						}
+						else if (pivotPoint.y < (tileY + 8))
+						{
+							position.y += speed;
+						}
+					}
+				}
+
+				SpecialSound();
 			}
-		}
-		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
-		{
-			iPoint tempTilePos = getCurrentTilePos();
 
-			int tileY = getCurrentTileWorldPos().y;
-
-			tempTilePos.y--; // offset
-
-			int playerRight = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x + 1];
-
-			//if target grid don't have obstacle
-			if(playerRight == 4 || playerRight == 0 || playerRight == 12)
+			if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT || pad.left_x < 0.0f)
 			{
-				// optimize movement
-				if (pivotPoint.y > (tileY + 8))
+				isFlip = false;
+				currentAnimation = &leftAnim;
+				currentAnimation->hasIdle = false;
+
+				if (position.x > mapLimits[App->scene->currentLevel][0].x && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
 				{
-					position.y -= speed;
+					//position.x -= speed;
+					speedX = -speed;
 				}
-				else if(pivotPoint.y < (tileY + 8))
+				// movement fix
+				else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
 				{
-					position.y += speed;
+					iPoint tempTilePos = getCurrentTilePos();
+
+					int tileY = getCurrentTileWorldPos().y;
+
+					tempTilePos.y--; // offset
+
+					int playerLeft = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
+
+					//if target grid don't have obstacle
+					if (playerLeft == 4 || playerLeft == 0 || playerLeft == 12)
+					{
+						// optimize movement
+						if (pivotPoint.y > (tileY + 8))
+						{
+							position.y -= speed;
+						}
+						else if (pivotPoint.y < (tileY + 8))
+						{
+							position.y += speed;
+						}
+					}
 				}
+
+				SpecialSound();
 			}
-		}
-
-		SpecialSound();
-	}
-
-	if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT || pad.left_x < 0.0f)
-	{
-		isFlip = false;
-		currentAnimation = &leftAnim;
-		currentAnimation->hasIdle = false;
-
-		if (position.x > mapLimits[App->scene->currentLevel][0].x && canMoveDir[LEFT]) // Limiitar movimiento en la mapa
-		{
-			//position.x -= speed;
-			speedX = -speed;
-		}
-		// movement fix
-		else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
-		{
-			iPoint tempTilePos = getCurrentTilePos();		
-
-			int tileY = getCurrentTileWorldPos().y;
-
-			tempTilePos.y--; // offset
-
-			int playerLeft = tileMap->LevelsTileMaps[App->scene->currentLevel][tempTilePos.y][tempTilePos.x - 1];
-
-			//if target grid don't have obstacle
-			if (playerLeft == 4 || playerLeft == 0 || playerLeft == 12)
-			{
-				// optimize movement
-				if (pivotPoint.y > (tileY + 8))
-				{
-					position.y -= speed;
-				}
-				else if(pivotPoint.y < (tileY + 8))
-				{
-					position.y += speed;
-				}
-			}
-		}
-
-		SpecialSound();
-	}
 
 	#pragma endregion
+	}
 
 	// Drop a bomb
 	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->maxBombs > 0)

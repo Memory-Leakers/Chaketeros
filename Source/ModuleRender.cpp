@@ -76,33 +76,7 @@ UpdateResult ModuleRender::Update()
 		defaultSpeed = 3;
 	}
 
-	#pragma region Debug key
-
-	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
-	{
-		debugCamera = !debugCamera;
-		startCountTime = SDL_GetPerformanceCounter();
-		if (!debugCamera) 
-		{
-			camera.y = 0;
-			camera.x = 0;
-		}
-	}
-
-	if (debugCamera) 
-	{
-		// Handle positive vertical movement
-		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
-
-		// Handle negative vertical movement
-		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y += cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) camera.x += cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
-	}
-
-	#pragma endregion
+	
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -254,11 +228,22 @@ void ModuleRender::SortRenderObjects(vector<RenderObject>& obj)
 
 void ModuleRender::CameraMove(iPoint pos)
 {
-	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
+	if (!App->debug->debugCamera)
 	{
-		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
+		if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
+		{
+			camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
 
-		camera.y = pos.y;
+			camera.y = pos.y;
+		}
+		else if (pos.x <= SCREEN_WIDTH / 2)
+		{
+			camera.x = 0;
+		}
+		else if (pos.x >= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))
+		{
+			camera.x = 256;
+		}
 	}
 }
 
