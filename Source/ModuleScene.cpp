@@ -166,7 +166,6 @@ void ModuleScene::DrawPoints(int score, iPoint position)
 	drawPoints.DrawScore(score, position);
 }
 
-
 bool ModuleScene::CleanUp()
 {
 	for (int i = 0; i < SCENES_NUM; i++)

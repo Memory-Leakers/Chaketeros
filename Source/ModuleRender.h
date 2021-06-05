@@ -67,7 +67,7 @@ public:
 
 	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer = 0.0f, bool isFlipH = false, float rotation = 0, float scale = SCREEN_SIZE, float speed = 3.0f);// Speed = 1.0f = Fullscreen camera
 
-	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 3.0f); // Speed = 1.0f = Fullscreen camera
+	void AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed = 3.0f, float scale = SCREEN_SIZE); // Speed = 1.0f = Fullscreen camera
 
 	void SortRenderObjects(vector<RenderObject>& obj);
 
