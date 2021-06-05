@@ -13,7 +13,7 @@ In the game, the player is placed on different stages where he must destroy two 
 
 # Controls
 ```markdown
-Game Controls
+### Game Controls
 
 Arrow Keys for movement
 
