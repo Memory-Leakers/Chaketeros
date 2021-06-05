@@ -76,8 +76,6 @@ UpdateResult ModuleRender::Update()
 		defaultSpeed = 3;
 	}
 
-	
-
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -196,17 +194,23 @@ void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_R
 	layers[layer].push_back(renderObject);
 }
 
-void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed)
+void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, float speed, float scale)
 {
 	RenderRect rec;
+
+	//Fullscreen
+	if (App->FullScreenDesktop)
+	{
+		scale /= 3;
+	}
 
 	speed = defaultSpeed;
 
 	rec.color = color;
-	rec.rect.x = (int)(-camera.x * speed) + rect.x * SCREEN_SIZE;
-	rec.rect.y = (int)(-camera.y * speed) + rect.y * SCREEN_SIZE;
-	rec.rect.w = rect.w * SCREEN_SIZE;
-	rec.rect.h = rect.h * SCREEN_SIZE;
+	rec.rect.x = (int)(-camera.x * speed) + rect.x * scale;
+	rec.rect.y = (int)(-camera.y * speed) + rect.y * scale;
+	rec.rect.w = rect.w * scale;
+	rec.rect.h = rect.h * scale;
 
 	rects.push_back(rec);
 }
