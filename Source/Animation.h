@@ -28,6 +28,11 @@ public:
 		return current_frame;
 	}
 
+	int getCurrentFrameI()
+	{
+		return (int) current_frame;
+	}
+
 	void PushBack(const SDL_Rect& rect)
 	{
 		frames[last_frame++] = rect;

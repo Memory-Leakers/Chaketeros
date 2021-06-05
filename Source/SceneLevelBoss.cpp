@@ -257,14 +257,14 @@ bool SceneLevelBoss::PostUpdate()
 
 void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 {
-	if (bananacher->col == c1 || bananacher->bigCol == c1)
+	if (bananacher != nullptr && (bananacher->col == c1 || bananacher->bigCol == c1))
 	{
 		bananacher->OnCollision(c2);
 	}
-	else if (saru->col == c1) {
+	else if (saru != nullptr && saru->col == c1) {
 		saru->OnCollision(c2);
 	}
-	else if(bombermanBoss->col == c1)
+	else if(bombermanBoss != nullptr && bombermanBoss->col == c1)
 	{
 		bombermanBoss->OnCollision(c2);
 	}

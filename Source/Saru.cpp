@@ -59,6 +59,12 @@ bool Saru::Start() {
 	//Animation IDLE
 	idleAnim.PushBack({ 3,3,24,19 });
 	idleAnim.PushBack({ 30, 3,24,19 });
+	idleAnim.PushBack({ 57, 3,24,19 });
+	idleAnim.PushBack({ 84, 3,24,19 });
+	idleAnim.PushBack({ 3, 25,24,19 });
+	idleAnim.PushBack({ 30, 25,24,19 });
+	idleAnim.PushBack({ 57, 25,24,19 });
+	idleAnim.PushBack({ 84, 25,24,19 });
 	idleAnim.speed = saruAnimSpeed;
 	idleAnim.loop = true;
 	idleAnim.hasIdle = false;
@@ -282,7 +288,6 @@ void Saru::movement(int direction) {
 			break;
 		default:
 			currentAnimation = &idleAnim;
-			currentAnimation->hasIdle = true;
 			isFlip = false;
 	}
 }
