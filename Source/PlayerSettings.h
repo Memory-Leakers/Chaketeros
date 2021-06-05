@@ -38,5 +38,7 @@ public:
 	 bool powerUpKick;
 
 	 bool powerUpLouies[5];
+
+	 bool isLevelCompleted[3];
 };
 #endif

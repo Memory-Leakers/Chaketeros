@@ -226,11 +226,11 @@ void ScenePassword::Comprovation() {
 	for (int i = 0; i < 4; i++) {
 		if (nums[i] == password[i]) {
 			isPasswordCorrect1 = true;
-			App->scene->isLevelCompleted[0] = true;
+			App->scene->playerSettings->isLevelCompleted[0] = true;
 		}
 		else {
 			isPasswordCorrect1 = false;
-			App->scene->isLevelCompleted[0] = false;
+			App->scene->playerSettings->isLevelCompleted[0] = false;
 			break;
 		}
 	}
@@ -239,12 +239,12 @@ void ScenePassword::Comprovation() {
 	for (int i = 0; i < 4; i++) {
 		if (nums[i] == password2[i]) {
 			isPasswordCorrect2 = true;
-			App->scene->isLevelCompleted[0] = true;
-			App->scene->isLevelCompleted[1] = true;
+			App->scene->playerSettings->isLevelCompleted[0] = true;
+			App->scene->playerSettings->isLevelCompleted[1] = true;
 		}
 		else {
 			isPasswordCorrect2 = false;
-			App->scene->isLevelCompleted[1] = false;
+			App->scene->playerSettings->isLevelCompleted[1] = false;
 			break;
 		}
 	}

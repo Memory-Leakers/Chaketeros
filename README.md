@@ -17,6 +17,10 @@ D - Putting Bomb
 
 SpaceBar - Pause Game
 
+BackSpace - Go Back
+
+### Debug Controls
+
 F - Toggle Fullscreen
 
 F1 - God Mode
@@ -32,6 +36,27 @@ F5 - Show PowerUp position
 F6 - Show Mover Enemy Movement
 
 F7 - On/Off Camera Movement
+
+### Scene Change Controls
+
+Ctrl + 1 - Go to Intro
+
+Ctrl + 2 - Go to Main Menu
+
+Ctrl + 3 - Go to Area Select
+
+Ctrl + 4 - Go to Stage Select
+
+Ctrl + 5 - Go to Level 1
+
+Ctrl + 6 - Go to Level 2
+
+Ctrl + 7 - Go to Boss 
+
+Ctrl + 8 - Go to Game Over
+
+Ctrl + 9 - Go to Password
+
 
 ## Developers:
 * Xidashuaige 
