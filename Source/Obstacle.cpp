@@ -98,17 +98,17 @@ void Obstacle::ColUpdate()
 
 void Obstacle::Update()
 {
-	//cout << "Update Obs" << endl;
+
 }
 
 void Obstacle::PostUpdate()
 {
-	//cout << "PostUpdate Obs" << endl;
+	
 }
 
 void Obstacle::OnCollision(Collider* col)
 {
-	//cout << "Col" << endl;
+
 }
 
 void Obstacle::Die()

@@ -24,7 +24,6 @@ UpdateResult ModuleDebug::Update()
 	if (App->input->keys[SDL_SCANCODE_F] == KEY_DOWN)
 	{
 		App->FullScreenDesktop = !App->FullScreenDesktop;
-		cout << "Pressed F" << endl;
 
 		if (App->FullScreenDesktop)
 		{

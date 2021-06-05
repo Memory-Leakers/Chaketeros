@@ -189,6 +189,5 @@ bool SceneMainTitle::CleanUp(bool finalCleanUp)
 		currentArrowPos = nullptr;
 	}
 
-	cout << "CleanUp Main Title" << endl;
 	return true;
 }

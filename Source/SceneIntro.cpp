@@ -44,7 +44,6 @@ bool SceneIntro::Update()
 
 	if ((App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN) && fadeInOut->currentStep == FadeInOut::FadeSteps::FADE_NONE)
 	{
-		cout << "Pressed Enter" << endl;
 		if (currentImage == 3)
 		{
 			isChangingScene = true;

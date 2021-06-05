@@ -432,35 +432,6 @@ bool SceneLevel1::Update()
 	// Special Keys (Debugging)
 	DebugKeys();
 
-	#pragma region UI offset debug
-
-	/*if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
-	{
-		debugOffset.y--;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	else if(App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
-	{
-		debugOffset.y++;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
-	{
-		debugOffset.x--;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	else if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
-	{
-		debugOffset.x++;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}*/
-
-#pragma endregion
-
 	#pragma region Bomberman Update
 
 	if (bomberman != nullptr)

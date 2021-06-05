@@ -157,35 +157,6 @@ bool SceneSelectStage::Update()
 		ModifyStagePointer(-1);
 	}
 
-	#pragma region Debug Code
-	/*
-	if(App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
-	{
-		debugOffset.y--;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
-	{
-		debugOffset.y++;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
-	{
-		debugOffset.x--;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
-	{
-		debugOffset.x++;
-		system("cls");
-		cout << "X: " << debugOffset.x << "\tY: " << debugOffset.y << endl;
-	}
-	*/
-	#pragma endregion
-
 	return true;
 }
 

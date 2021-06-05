@@ -91,6 +91,7 @@ bool ScenePassword::Update() {
 	}
 #pragma region Input Arrow Position Logic
 
+
 	//Check Input to change Arrow Position
 	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || App->input->keys[SDL_SCANCODE_D] == KEY_DOWN || pad.right == KEY_DOWN)
 	{
@@ -164,7 +165,6 @@ bool ScenePassword::Update() {
 	//Select an option based on the arrow position
 	if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 	{
-		cout << "kek" << endl;
 		Comprovation();
 		if (isPasswordCorrect1) {
 

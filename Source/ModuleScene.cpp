@@ -65,6 +65,11 @@ UpdateResult ModuleScene::Update()
 {
 	drawPoints.Update();
 
+	if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN)
+	{
+		App->scene->ChangeCurrentScene(currentScene->lastID, 60);
+	}
+
 	#pragma region Update and FadeInOut
 
 	if (currentScene == nullptr || App->isPaused)

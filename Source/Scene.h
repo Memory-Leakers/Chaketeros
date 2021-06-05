@@ -35,7 +35,7 @@ public:
 
 	virtual bool CleanUp(bool finalCleanUp = true);
 
-	int lastID;
+	int lastID = 0;
 
 
 };

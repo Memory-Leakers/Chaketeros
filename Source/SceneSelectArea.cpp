@@ -182,7 +182,6 @@ bool SceneSelectArea::PostUpdate()
 
 bool SceneSelectArea::CleanUp(bool finalCleanUp)
 {
-	cout << "CleanUp Select Area" << endl;
 	if (!finalCleanUp)
 	{
 		App->textures->CleanUpScene();
