@@ -74,6 +74,9 @@ bool SceneLevelBoss::Start()
 	bananacher->Start();
 	saru->Start();
 
+	// Init debug
+	App->debug->InitDebug(obstacles, tileMap);
+
 	return false;
 }
 
