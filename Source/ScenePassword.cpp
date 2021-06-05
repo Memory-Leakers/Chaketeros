@@ -19,13 +19,10 @@ ScenePassword::ScenePassword() {
 	BombermanAndSpaceship.speed = 0.03f;
 	BombermanAndSpaceship.hasIdle = false;
 	BombermanAndSpaceship.loop = true;
-
-
 };
 
-ScenePassword::~ScenePassword() {
-
-
+ScenePassword::~ScenePassword() 
+{
 };
 
 bool ScenePassword::Start() {
@@ -170,8 +167,6 @@ bool ScenePassword::Update() {
 
 			App->audio->PlaySound(selectSFX, 0);
 			App->scene->ChangeCurrentScene(SCENE_AREA, 80);
-			
-
 		}
 		if (isPasswordCorrect2) {
 			

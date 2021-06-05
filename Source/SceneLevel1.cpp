@@ -272,7 +272,7 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	// Init debug
-	App->debug->InitDebug(sceneObstacles);
+	App->debug->InitDebug(sceneObstacles, tileMap);
 	//gameDebug = new Debug(sceneObstacles);
 
 	sceneUI.Start();

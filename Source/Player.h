@@ -94,6 +94,8 @@ private:
 
 private:
 
+	void DropBomb();
+
 	void SpecialSound();
 
 	void InvensibleCheck();
@@ -131,7 +133,7 @@ public:
 
 	bool godMode = false;
 
-	bool posMode = false;
+	bool posMode = true;
 
 public:
 	// Constructor

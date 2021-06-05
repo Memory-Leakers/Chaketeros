@@ -9,6 +9,8 @@
 #include <iostream>
 using namespace std;
 
+iPoint debugPoint = {0, 0};
+
 ModuleDebug::ModuleDebug()
 {
 	pauseIgnore = true;
@@ -16,6 +18,15 @@ ModuleDebug::ModuleDebug()
 
 ModuleDebug::~ModuleDebug()
 {
+}
+
+bool ModuleDebug::Start()
+{
+	texArrow = App->textures->Load("Assets/Images/Sprites/My_Sprites/Arrow.png");
+	texPause = App->textures->Load("Assets/Images/Sprites/My_Sprites/Pause.png");
+	texPowerUp = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+
+	return true;
 }
 
 UpdateResult ModuleDebug::Update()
@@ -35,18 +46,23 @@ UpdateResult ModuleDebug::Update()
 			SDL_SetWindowFullscreen(App->window->window, 0);
 			App->ScreenSize = 3;
 		}
-
 	}
 
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
 	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
 	{
-		App->isPaused = !App->isPaused;
-		CalPauseTimeOffset();
+		// Just can be pause in gameScene
+		int sceneID = App->scene->currentScene->getID();
+		if (sceneID == 4 || sceneID == 5 || sceneID == 6)
+		{
+			App->isPaused = !App->isPaused;
+			createObject = false;
+			CalPauseTimeOffset();
+		}		
 	}
 
-#pragma region Camera movement
+	#pragma region Camera movement
 
 	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
 	{
@@ -73,6 +89,48 @@ UpdateResult ModuleDebug::Update()
 
 #pragma endregion
 
+	#pragma region ContructMode
+
+	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+	{
+		debugPoint.x-=16;
+		if (debugPoint.x < currentTile->limitMin[App->scene->currentLevel].x)
+		{
+			debugPoint.x = currentTile->limitMin[App->scene->currentLevel].x;
+		}
+	}
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+	{
+		debugPoint.x+= 16;
+		if (debugPoint.x > currentTile->limitMax[App->scene->currentLevel].x)
+		{
+			debugPoint.x = currentTile->limitMax[App->scene->currentLevel].x;
+		}
+	}
+	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN)
+	{
+		debugPoint.y-= 16;
+		if (debugPoint.y < currentTile->limitMin[App->scene->currentLevel].y)
+		{
+			debugPoint.y = currentTile->limitMin[App->scene->currentLevel].y;
+		}
+	}
+	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN)
+	{
+		debugPoint.y+= 16;
+		if (debugPoint.y > currentTile->limitMax[App->scene->currentLevel].y)
+		{
+			debugPoint.y = currentTile->limitMax[App->scene->currentLevel].y;
+		}
+	}
+
+	#pragma endregion
+
+	if (App->isPaused)
+	{
+		ConstructMode();
+	}
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
@@ -80,21 +138,84 @@ UpdateResult ModuleDebug::PostUpdate()
 {
 	if(App->isPaused)
 	{
-		ConstructMode();
+		if(!createObject)
+		{
+			App->render->AddTextureRenderQueue(texPause, { 0 ,0 }, nullptr, 2, 100);
+
+			App->render->AddTextureRenderQueue(texArrow, arrowPos[arrowPosPointer], nullptr, 2, 101);
+		}
+		else
+		{
+			SDL_Color renderColor;
+
+			iPoint temp = currentTile->getTilePos(debugPoint);
+			temp.y--;
+			int currentGrid = currentTile->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
+
+			if (currentGrid == 0 || currentGrid == 4)
+			{
+				renderColor = { 0, 255, 0, 200 };
+			}
+			else
+			{
+				renderColor = { 255, 0, 0, 200 };
+			}
+
+			App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
+
+			App->render->AddRectRenderQueue({ debugPoint.x, debugPoint.y, 16 , 16 }, renderColor);
+		}		
 	}
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void ModuleDebug::InitDebug(Obstacle** obstacles)
+void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile)
 {
 	this->obstacles = obstacles;
+
+	currentTile = tile;
 
 	pauseTimeOffset = 0;
 }
 
 void ModuleDebug::ConstructMode()
 {
-	App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0,0,255,50});
+	if(createObject)
+	{
+		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN)
+		{
+			createObject = false;
+		}
+	}
+	else
+	{
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN)
+		{
+			if (arrowPosPointer <= 0) arrowPosPointer = 6;
+
+			else arrowPosPointer--;
+		}
+
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN)
+		{
+			if (arrowPosPointer >= 6) arrowPosPointer = 0;
+
+			else arrowPosPointer++;		
+		}
+
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN)
+		{
+			createObject = true;
+			debugPoint = currentTile->getWorldPos({ 1, 2 });
+		}
+
+		// temp debug
+		if (App->input->keys[SDL_SCANCODE_H] == KEY_DOWN)
+		{
+			cout << "x: " << debugPoint.x << endl;
+			cout << "y: " << debugPoint.y << endl;
+		}
+	}	
 }
 
 void ModuleDebug::CalPauseTimeOffset()
