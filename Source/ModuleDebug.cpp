@@ -9,8 +9,6 @@
 #include <iostream>
 using namespace std;
 
-iPoint debugPoint = {0, 0};
-
 ModuleDebug::ModuleDebug()
 {
 	pauseIgnore = true;
@@ -50,16 +48,9 @@ UpdateResult ModuleDebug::Update()
 
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
-	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
+	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN)
 	{
-		// Just can be pause in gameScene
-		int sceneID = App->scene->currentScene->getID();
-		if (sceneID == 4 || sceneID == 5 || sceneID == 6)
-		{
-			App->isPaused = !App->isPaused;
-			createObject = false;
-			CalPauseTimeOffset();
-		}		
+		PauseOnOff();
 	}
 
 	#pragma region Camera movement
@@ -72,6 +63,11 @@ UpdateResult ModuleDebug::Update()
 			App->render->camera.y = 0;
 			App->render->camera.x = 0;
 		}
+	}
+
+	if (App->input->keys[SDL_SCANCODE_F2] == KEY_DOWN)
+	{
+		App->debug->debugColBox = !App->debug->debugColBox;
 	}
 
 	if (debugCamera)
@@ -87,49 +83,19 @@ UpdateResult ModuleDebug::Update()
 		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) App->render->camera.x -= App->render->cameraSpeed;
 	}
 
-#pragma endregion
-
-	#pragma region ContructMode
-
-	if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
-	{
-		debugPoint.x-=16;
-		if (debugPoint.x < currentTile->limitMin[App->scene->currentLevel].x)
-		{
-			debugPoint.x = currentTile->limitMin[App->scene->currentLevel].x;
-		}
-	}
-	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
-	{
-		debugPoint.x+= 16;
-		if (debugPoint.x > currentTile->limitMax[App->scene->currentLevel].x)
-		{
-			debugPoint.x = currentTile->limitMax[App->scene->currentLevel].x;
-		}
-	}
-	if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || pad.up == KEY_DOWN)
-	{
-		debugPoint.y-= 16;
-		if (debugPoint.y < currentTile->limitMin[App->scene->currentLevel].y)
-		{
-			debugPoint.y = currentTile->limitMin[App->scene->currentLevel].y;
-		}
-	}
-	if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || pad.down == KEY_DOWN)
-	{
-		debugPoint.y+= 16;
-		if (debugPoint.y > currentTile->limitMax[App->scene->currentLevel].y)
-		{
-			debugPoint.y = currentTile->limitMax[App->scene->currentLevel].y;
-		}
-	}
-
 	#pragma endregion
 
 	if (App->isPaused)
 	{
 		ConstructMode();
 	}
+
+	#pragma region Escape Button
+	if (App->input->keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN) {
+		return UpdateResult::UPDATE_STOP;
+
+	}
+	#pragma endregion
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -148,7 +114,7 @@ UpdateResult ModuleDebug::PostUpdate()
 		{
 			SDL_Color renderColor;
 
-			iPoint temp = currentTile->getTilePos(debugPoint);
+			iPoint temp = currentTile->getTilePos(spawnPoint);
 			temp.y--;
 			int currentGrid = currentTile->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
 
@@ -163,8 +129,8 @@ UpdateResult ModuleDebug::PostUpdate()
 
 			App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
 
-			App->render->AddRectRenderQueue({ debugPoint.x, debugPoint.y, 16 , 16 }, renderColor);
-		}		
+			App->render->AddRectRenderQueue({ spawnPoint.x, spawnPoint.y, 16 , 16 }, renderColor);
+		}
 	}
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -183,9 +149,58 @@ void ModuleDebug::ConstructMode()
 	GamePad& pad = App->input->pads[0];
 	if(createObject)
 	{
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
+		{
+			spawnPoint.x -= 16;
+			if (spawnPoint.x < currentTile->limitMin[App->scene->currentLevel].x)
+			{
+				spawnPoint.x = currentTile->limitMin[App->scene->currentLevel].x;
+			}
+		}
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
+		{
+			spawnPoint.x += 16;
+			if (spawnPoint.x > currentTile->limitMax[App->scene->currentLevel].x)
+			{
+				spawnPoint.x = currentTile->limitMax[App->scene->currentLevel].x;
+			}
+		}
+		if (App->input->keys[SDL_SCANCODE_UP] == KEY_DOWN || pad.up == KEY_DOWN)
+		{
+			spawnPoint.y -= 16;
+			if (spawnPoint.y < currentTile->limitMin[App->scene->currentLevel].y)
+			{
+				spawnPoint.y = currentTile->limitMin[App->scene->currentLevel].y;
+			}
+		}
+		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_DOWN || pad.down == KEY_DOWN)
+		{
+			spawnPoint.y += 16;
+			if (spawnPoint.y > currentTile->limitMax[App->scene->currentLevel].y)
+			{
+				spawnPoint.y = currentTile->limitMax[App->scene->currentLevel].y;
+			}
+		}
+
 		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN || pad.b == KEY_DOWN)
 		{
 			createObject = false;
+		}
+		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
+		{
+			iPoint temp = currentTile->getTilePos(spawnPoint);
+			temp.y--;
+			int currentGrid = currentTile->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
+
+			if (currentGrid == 0 || currentGrid == 4)
+			{
+				App->scene->currentScene->Spawn(spawnPoint, arrowPosPointer);
+				PauseOnOff();
+			}
+			else
+			{
+
+			}
 		}
 	}
 	else
@@ -201,22 +216,22 @@ void ModuleDebug::ConstructMode()
 		{
 			if (arrowPosPointer >= 6) arrowPosPointer = 0;
 
-			else arrowPosPointer++;		
+			else arrowPosPointer++;
 		}
 
 		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 		{
 			createObject = true;
-			debugPoint = currentTile->getWorldPos({ 1, 2 });
+			spawnPoint = currentTile->getWorldPos({ 1, 2 });
 		}
 
 		// temp debug
 		if (App->input->keys[SDL_SCANCODE_H] == KEY_DOWN)
 		{
-			cout << "x: " << debugPoint.x << endl;
-			cout << "y: " << debugPoint.y << endl;
+			cout << "x: " << spawnPoint.x << endl;
+			cout << "y: " << spawnPoint.y << endl;
 		}
-	}	
+	}
 }
 
 void ModuleDebug::CalPauseTimeOffset()
@@ -307,6 +322,19 @@ void ModuleDebug::Win(Player* player, iPoint winPos, int cameraX)
 	}
 	player->position = winPos;
 	App->render->CameraMove({ cameraX,0 });
+}
+
+void ModuleDebug::PauseOnOff()
+{
+	debugColBox = false;
+	// Just can be pause in gameScene
+	int sceneID = App->scene->currentScene->getID();
+	if (sceneID == 4 || sceneID == 5 || sceneID == 6)
+	{
+		App->isPaused = !App->isPaused;
+		createObject = false;
+		CalPauseTimeOffset();
+	}
 }
 
 void ModuleDebug::GameOver()

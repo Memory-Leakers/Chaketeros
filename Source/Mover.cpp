@@ -137,7 +137,7 @@ void Mover::FixedUpdate()
 
 #pragma region MoveMode
 
-	if (AStarMoveDirIndex != -1 && (*playerInvensible) <= 0)
+	if (AStarMoveDirIndex != -1 )
 	{
 		position += moveDir[AStarMoveDirIndex];
 		currentDir = AStarMoveDirIndex;
@@ -380,8 +380,8 @@ int Mover::AStar()
 			pass = false;
 
 			int thisGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][dir[i].y][dir[i].x];
-			// si el grid que vamos a ir no es 0 o 4
-			if(thisGrid != 0 && thisGrid != 4 && thisGrid != 12)
+			// si el grid que vamos a ir no es 0 (grid libre), 4 (grid resercado), 12(puente), -1(player)
+			if(thisGrid != 0 && thisGrid != 4 && thisGrid != 12 && thisGrid != -1)
 			{
 				// ignoramos este grid
 				pass = true;

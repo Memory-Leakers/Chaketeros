@@ -35,10 +35,14 @@ private:
 
 	Tile* currentTile = nullptr;
 
+	iPoint spawnPoint = { 0, 0 };
+
 public:
 	float pauseTimeOffset = 0;
 
 	bool debugCamera = false;
+
+	bool debugColBox = false;
 
 public:
 	ModuleDebug();
@@ -70,6 +74,8 @@ public:
 	void PrintDebugInformation();
 
 	void Win(Player* player, iPoint winPos, int cameraX = 0);
+
+	void PauseOnOff();
 
 	void GameOver();
 

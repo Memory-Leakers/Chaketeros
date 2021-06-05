@@ -103,8 +103,8 @@ bool Player::Start()
 #pragma endregion
 
 	// Refresh player Pos in console
-	lastTilePos = getCurrentTilePos();
-	tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;
+	/*lastTilePos = getCurrentTilePos();
+	tileMap->LevelsTileMaps[App->scene->currentLevel][lastTilePos.y - 1][lastTilePos.x] = -1;*/
 
 	return ret;
 }

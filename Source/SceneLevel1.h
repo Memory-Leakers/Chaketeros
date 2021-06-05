@@ -28,7 +28,7 @@ struct SDL_Rect;
 
 #define SCENE_OBSTACLES_NUM 256
 #define MAX_EMPTY_SPACES 104
-#define MAX_POWERUPS 5
+#define MAX_POWERUPS 6
 #define MAX_STONE 30
 #define MAX_ENEMY 4
 
@@ -153,6 +153,8 @@ public:
 	void WillCollision(Collider* c1, Collider* c2) override;
 
 	bool CleanUp(bool finalCleanUp = true) override;
+
+	void Spawn(iPoint spawnPos, int objectID) override;
 
 	void CreateScene();
 

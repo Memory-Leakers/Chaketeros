@@ -40,3 +40,8 @@ bool Scene::CleanUp(bool finalCleanUp)
 {
 	return true;
 }
+
+void Scene::Spawn(iPoint spawnPos, int objectID)
+{	
+}
+

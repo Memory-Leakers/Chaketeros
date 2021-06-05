@@ -151,6 +151,7 @@ bool SceneMainTitle::Update()
 			mainMenuTimer.Reset();
 		}
 	}
+
 	return true;
 }
 
