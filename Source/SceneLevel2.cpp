@@ -618,6 +618,31 @@ bool SceneLevel2::PostUpdate()
 	level2SceneUI.DrawChar(0, { 25,8 });
 	level2SceneUI.DrawChar(1, { 123,8 });
 
+	if (coreMechaNum > 0)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 56, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	if (coreMechaNum > 1)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 64, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+	if (coreMechaNum > 2)
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 72, 8 }, &recCoreMehcaUI[0], 2, 1);
+	}
+	else
+	{
+		App->render->AddTextureRenderQueue(texMiscUI, { 72, 8 }, &recCoreMehcaUI[1], 2, 1);
+	}
+
 #pragma endregion
 
 #pragma endregion

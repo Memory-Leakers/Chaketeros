@@ -107,12 +107,12 @@ UpdateResult Mouse::Update() {
 		mouseTimer.Reset();
 	}
 
+	currentAnimation->Update();
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 UpdateResult Mouse::PostUpdate() {
-
-	currentAnimation->Update();
 
 	rectMouse = &currentAnimation->GetCurrentFrame();
 

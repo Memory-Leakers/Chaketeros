@@ -20,6 +20,25 @@ ModuleDebug::~ModuleDebug()
 
 UpdateResult ModuleDebug::Update()
 {
+	// Toggle Fullscreen
+	if (App->input->keys[SDL_SCANCODE_F] == KEY_DOWN)
+	{
+		App->FullScreenDesktop = !App->FullScreenDesktop;
+		cout << "Pressed F" << endl;
+
+		if (App->FullScreenDesktop)
+		{
+			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			App->ScreenSize = 1;
+		}
+		else
+		{
+			SDL_SetWindowFullscreen(App->window->window, 0);
+			App->ScreenSize = 3;
+		}
+
+	}
+
 	GamePad& pad = App->input->pads[0];
 	//Pause logic
 	if (App->input->keys[SDL_SCANCODE_SPACE] == KEY_DOWN || pad.start == KEY_DOWN) 
@@ -27,6 +46,33 @@ UpdateResult ModuleDebug::Update()
 		App->isPaused = !App->isPaused;
 		CalPauseTimeOffset();
 	}
+
+#pragma region Camera movement
+
+	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
+	{
+		debugCamera = !debugCamera;
+		if (!debugCamera)
+		{
+			App->render->camera.y = 0;
+			App->render->camera.x = 0;
+		}
+	}
+
+	if (debugCamera)
+	{
+		// Handle positive vertical movement
+		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) App->render->camera.y -= App->render->cameraSpeed;
+
+		// Handle negative vertical movement
+		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) App->render->camera.y += App->render->cameraSpeed;
+
+		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) App->render->camera.x += App->render->cameraSpeed;
+
+		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) App->render->camera.x -= App->render->cameraSpeed;
+	}
+
+#pragma endregion
 
 	return UpdateResult::UPDATE_CONTINUE;
 }

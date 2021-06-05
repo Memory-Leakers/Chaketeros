@@ -113,12 +113,12 @@ UpdateResult Snail::Update() {
 		snailTimer.Reset();
 	}
 
+	currentAnimation->Update();
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 UpdateResult Snail::PostUpdate() {
-
-	currentAnimation->Update();
 
 	rectSnail = &currentAnimation->GetCurrentFrame();
 

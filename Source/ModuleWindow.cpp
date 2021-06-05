@@ -34,11 +34,8 @@ bool ModuleWindow::Init()
 		if (WIN_FULLSCREEN == true) flags |= SDL_WINDOW_FULLSCREEN;
 		if (WIN_BORDERLESS == true)	flags |= SDL_WINDOW_BORDERLESS;
 		if (WIN_RESIZABLE == true) flags |= SDL_WINDOW_RESIZABLE;
-		if (WIN_FULLSCREEN_DESKTOP == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		if (App->FullScreenDesktop == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-		// L2: DONE 3: Pick the width and height and experiment with different window flags.
-		// Create the window and check for errors
-		// Expose the SDL_window as a public variable to access it through the different application modules
 		window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE, flags);
 
 		if (window == nullptr)

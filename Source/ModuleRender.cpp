@@ -42,9 +42,6 @@ bool ModuleRender::Init()
 		ret = false;
 	}
 
-	// Fullscreen
-	/*SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);*/
-
 	// init layers size
 	layers.resize(3);
 
@@ -54,6 +51,7 @@ bool ModuleRender::Init()
 // Called every draw update
 UpdateResult ModuleRender::PreUpdate()
 {
+
 	// Set the color used for drawing operations
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	
@@ -65,33 +63,20 @@ UpdateResult ModuleRender::PreUpdate()
 
 UpdateResult ModuleRender::Update()
 {
-	#pragma region Debug key
 
-	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
+	if (App->FullScreenDesktop)
 	{
-		debugCamera = !debugCamera;
-		startCountTime = SDL_GetPerformanceCounter();
-		if (!debugCamera) 
-		{
-			camera.y = 0;
-			camera.x = 0;
-		}
+		// Fullscreen
+		SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+		defaultSpeed = 1;
+	}
+	else
+	{
+		SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH * 3, SCREEN_HEIGHT * 3);
+		defaultSpeed = 3;
 	}
 
-	if (debugCamera) 
-	{
-		// Handle positive vertical movement
-		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) camera.y -= cameraSpeed;
-
-		// Handle negative vertical movement
-		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) camera.y += cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) camera.x += cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) camera.x -= cameraSpeed;
-	}
-
-	#pragma endregion
+	
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -161,10 +146,15 @@ bool ModuleRender::CleanUp()
 void ModuleRender::AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect* section, int layer, float orderInlayer, bool isFlipH, float rotation, float scale, float speed)
 {
 	RenderObject renderObject;
+
+	speed = defaultSpeed;
+
 	//Fullscreen
-	/*if (scale != SCREEN_SIZE) {
+	if (App->FullScreenDesktop) 
+	{
 		scale /= 3;
-	}*/
+	}
+
 	renderObject.texture = texture;
 	renderObject.rotation = rotation;
 	renderObject.section = section;
@@ -205,6 +195,8 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, SDL_Color color, flo
 {
 	RenderRect rec;
 
+	speed = defaultSpeed;
+
 	rec.color = color;
 	rec.rect.x = (int)(-camera.x * speed) + rect.x * SCREEN_SIZE;
 	rec.rect.y = (int)(-camera.y * speed) + rect.y * SCREEN_SIZE;
@@ -236,11 +228,22 @@ void ModuleRender::SortRenderObjects(vector<RenderObject>& obj)
 
 void ModuleRender::CameraMove(iPoint pos)
 {
-	if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
+	if (!App->debug->debugCamera)
 	{
-		camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
+		if (pos.x >= SCREEN_WIDTH / 2 && pos.x <= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))//	If the target is on the area where camera can follow (not off limits)
+		{
+			camera.x = pos.x - (SCREEN_WIDTH / 2);	//	Camera position = target position
 
-		camera.y = pos.y;
+			camera.y = pos.y;
+		}
+		else if (pos.x <= SCREEN_WIDTH / 2)
+		{
+			camera.x = 0;
+		}
+		else if (pos.x >= LEVEL2_MAP_WIDTH - (SCREEN_WIDTH / 2))
+		{
+			camera.x = 256;
+		}
 	}
 }
 
