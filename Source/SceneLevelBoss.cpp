@@ -91,6 +91,25 @@ bool SceneLevelBoss::PreUpdate()
 		}
 	}
 
+	#pragma region Bomberman dies Condition
+
+		if (bombermanBoss != nullptr && bombermanBoss->pendingToDelete)
+		{
+			delete bombermanBoss;
+			bombermanBoss = nullptr;
+			if (App->scene->playerSettings->playerLifes > 0)
+			{
+				App->scene->playerSettings->playerLifes--;
+				App->scene->ChangeCurrentScene(SCENE_LEVELBOSS, 90);
+			}
+			else
+			{
+				App->scene->ChangeCurrentScene(SCENE_GAMEOVER, 90);
+			}
+		}
+
+	#pragma endregion
+
 	return false;
 }
 
@@ -249,6 +268,7 @@ void SceneLevelBoss::OnCollision(Collider* c1, Collider* c2)
 
 void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
 {
+	if (bombermanBoss == nullptr) return;
 	if(bombermanBoss->col == c1)
 	{
 		bombermanBoss->WillCollision(c2);

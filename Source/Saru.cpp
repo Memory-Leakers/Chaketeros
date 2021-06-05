@@ -135,10 +135,11 @@ UpdateResult Saru::Update() {
 
 	updateTimer.Update();
 
-	if (updateTimer.getDeltaTime() >= 0.05f) {
+	if (updateTimer.getDeltaTime() >= 0.05f && life != 1) {
 		ProtectCountdown();
 
 		logic();
+
 		shot();
 
 		updateTimer.Reset();
@@ -151,31 +152,34 @@ UpdateResult Saru::Update() {
 
 UpdateResult Saru::PostUpdate() {
 	iPoint tempPos;
-	
-	if (life != 1) {
-		currentAnimation->Update();
-		rectSaru = &currentAnimation->GetCurrentFrame();
-		tempPos = position;
-		tempPos.y -= 1; //Texture position fix
-		tempPos.x -= 2; //Texture position fix
+	if (injureAnim && life != 1) {
+		SDL_Rect tempRect = { 0,0,1,1 };
+
+		App->render->AddTextureRenderQueue(texture, position, &tempRect, 1, position.y, false, 180);
 	}
 	else {
-		currentAnimation->Update();
-		if (countDeath == 2 || countDeath == 4) {
+		if (life != 1) {
+			currentAnimation->Update();
 			rectSaru = &currentAnimation->GetCurrentFrame();
+			tempPos = position;
+			tempPos.y -= 1; //Texture position fix
+			tempPos.x -= 2; //Texture position fix
 		}
-		
-		tempPos = position;
-		tempPos.y -= tempY;
-		tempPos.x -= tempX;
+		else {
+			currentAnimation->Update();
+			if (countDeath == 2 || countDeath == 4) {
+				rectSaru = &currentAnimation->GetCurrentFrame();
+			}
+
+			tempPos = position;
+			tempPos.y -= tempY;
+			tempPos.x -= tempX;
+		}
+
+		//Render flip
+		if (isFlip) App->render->AddTextureRenderQueue(texture, tempPos, rectSaru, 1, position.y, false, 180);
+		else App->render->AddTextureRenderQueue(texture, tempPos, rectSaru, 1, position.y);
 	}
-	
-
-
-	//Render flip
-	if (isFlip) App->render->AddTextureRenderQueue(texture, tempPos, rectSaru, 1, position.y, false, 180);
-	else App->render->AddTextureRenderQueue(texture, tempPos, rectSaru, 1, position.y);
-
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -187,48 +191,44 @@ void Saru::logic() {
 
 	if(!onMovement) {
 		//Each one of this if checks if player is inside vRange and if on the opossite side there is a wall
-		if((playerPosY <= vRange && playerPosY >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.y <= 32 && 
-			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
-			tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4)) {
-			//direction = rand() % 2+2;
-			direction = 2;
-		}
-		else if ((playerPosY * -1 <= vRange && playerPosY * -1 >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.x <= 24 &&
+
+		
+		
+		 if ((playerPosY <= vRange && playerPosY >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) &&
 			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
-			tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
-			direction = 1;
-			//movementTot = moveTotDefault*3;
-			movementTot = moveTotDefault;
+				tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
+			direction = UP;
 		}
-		else if ((playerPosY * -1 <= vRange && playerPosY * -1 >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.x >= 216 &&
-			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
-			tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
-			direction = 1;
-			//movementTot = moveTotDefault*3;
+		else if ((playerPosX <= vRange && playerPosX >= 0) && (playerPosY <= 40 && playerPosY * -1 <= 20) &&
+			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 0 ||
+				tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 4)) {
+			direction = LEFT;
 		}
 		else if ((playerPosX * -1 <= vRange && playerPosX * -1 >= 0) && (playerPosY <= 20 && playerPosY * -1 <= 20) &&
 			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
 			tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4)) {
-			direction = 2;//Goes RIGHT
-			movementTot = moveTotDefault;
-		}
-		else if ((playerPosX <= vRange && playerPosX >= 0) && (playerPosY <= 20 && playerPosY * -1 <= 20) &&
-				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 0 ||
-				tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x - 1] == 4)) {
-			direction = 3;//Goes LEFT
-			movementTot = moveTotDefault;
-		}
-		else if ((playerPosY <= vRange && playerPosY >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) &&
-				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
-				tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
-			direction = 1;//Goes UP
-			movementTot = moveTotDefault;
+			direction = RIGHT;
 		}
 		else if ((playerPosY * -1 <= vRange && playerPosY* -1 >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) &&
 				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 0 ||
 				tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y + 1][nPoint.x] == 4)) {
-			direction = 0;//Goes DOWN
-			movementTot = moveTotDefault*5;
+			direction = DOWN;
+		}
+		else if ((playerPosY <= vRange && playerPosY >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.y <= 32 &&
+				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y][nPoint.x + 1] == 4)) {
+				direction = RIGHT;
+		}
+		else if ((playerPosY * -1 <= vRange && playerPosY * -1 >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.x <= 24 &&
+				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
+				direction = UP;
+				
+		}
+		else if ((playerPosY * -1 <= vRange && playerPosY * -1 >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) && position.x >= 216 &&
+				(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
+					tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 4)) {
+			direction = UP;
 		}
 		else {
 			direction = 4;
@@ -243,7 +243,7 @@ void Saru::logic() {
 		direction = 4;
 	}
 
-	//cout << "PosX->" << position.x <<" || PosY->" << playerPosY<< " | Direction -> " << direction << endl;
+	//cout << "PosX->" << playerPosX << " || PosY->" << playerPosY << " | Direction -> " << direction << endl;
 	movement(direction);
 }
 
@@ -252,28 +252,28 @@ void Saru::movement(int direction) {
 	nPoint.y -= 1;
 
 	switch (direction) {
-		case 0://DOWN
+		case DOWN://DOWN
 			currentAnimation = &downAnim;
 			currentAnimation->hasIdle = false;
 			isFlip = false;
 			position.y += speed;
 			onMovement = true;
 			break;
-		case 1://UP
+		case UP://UP
 			currentAnimation = &upAnim;
 			currentAnimation->hasIdle = false;
 			isFlip = false;
 			position.y -= speed;
 			onMovement = true;
 			break;
-		case 2://RIGHT
+		case RIGHT://RIGHT
 			currentAnimation = &rightAnim;
 			currentAnimation->hasIdle = false;
 			isFlip = false;
 			position.x += speed;
 			onMovement = true;
 			break;
-		case 3://LEFT
+		case LEFT://LEFT
 			currentAnimation = &leftAnim;
 			currentAnimation->hasIdle = false;
 			isFlip = true;
@@ -291,7 +291,7 @@ void Saru::shot() {
 	if (bananacherPos == nullptr) { return; }
 
 	int theNum = 46;
-	int random = rand() % 120;
+	int random = rand() % 500;
 
 
 	if (theNum == random) {
@@ -300,6 +300,7 @@ void Saru::shot() {
 		int auxX = (bananacherPos->x - position.x) / 20;
 		int auxY = (bananacherPos->y - position.y) / 20;
 
+		
 		if (auxX < -3) auxX = -3;
 		else if (auxX > 3 ) auxX = 3;
 		if (auxY < -3) auxY = -3;
@@ -364,7 +365,7 @@ void Saru::deathAnimSequence() {
 							}
 							break;
 						case 3:
-							rectSaru = &currentAnimation->getFrame(4);
+							rectSaru = &currentAnimation->getFrame(3);
 							if (temporalTimer.getDeltaTime() >= 0.35) {
 								tempCount = 0;
 								temporalTimer.Reset();
@@ -534,7 +535,7 @@ void Saru::Die() {
 
 void Saru::ProtectCountdown() {
 	if (protect) {
-		//injureAnim = !injureAnim;
+		injureAnim = !injureAnim;
 		protectCount++;
 
 		if (protectCount >= 40) {

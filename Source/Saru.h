@@ -52,6 +52,8 @@ class Saru : public ModuleEnemy {
 
 		uint DeadSFX;
 
+		bool injureAnim = false;
+
 
 		Timer shotTimer;
 		Timer updateTimer;
