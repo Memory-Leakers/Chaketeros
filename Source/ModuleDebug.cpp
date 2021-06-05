@@ -90,6 +90,13 @@ UpdateResult ModuleDebug::Update()
 		ConstructMode();
 	}
 
+	#pragma region Escape Button
+	if (App->input->keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN) {
+		return UpdateResult::UPDATE_STOP;
+
+	}
+	#pragma endregion
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 

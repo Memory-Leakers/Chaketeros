@@ -116,7 +116,6 @@ UpdateResult ModuleScene::Update()
 	}
 	#pragma endregion
 
-
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
