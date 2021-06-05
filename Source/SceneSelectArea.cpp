@@ -169,13 +169,8 @@ bool SceneSelectArea::PostUpdate()
 	else {
 		App->render->AddTextureRenderQueue(texSelectArea, { 0,0 }, &UIStageLevel2Rect, 2, 2);
 	}
-	if (App->scene->isLevelCompleted[0] == false)
-	{
-		App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
-	}
-	if (App->scene->isLevelCompleted[0] == true) {
-		App->render->AddTextureRenderQueue(texLevels, { 127,72 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
-	}
+	
+	App->render->AddTextureRenderQueue(texLevels, { 136, 58 }, &texLevel1CheeseAnim.GetCurrentFrame(), 2, 3);
 	App->render->AddTextureRenderQueue(texLevels, { 141, 108 }, &texLevel2CheeseAnim.GetCurrentFrame(), 2, 4);
 	App->render->AddTextureRenderQueue(texLevels, { 103, 134 }, &texLevel3CheeseAnim.GetCurrentFrame(), 2, 7);
 	App->render->AddTextureRenderQueue(texLevels, { 73, 107 }, &texLevel4CheeseAnim.GetCurrentFrame(), 2, 6);

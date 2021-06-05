@@ -102,11 +102,13 @@ bool Player::Start()
 
 UpdateResult Player::Update()
 {
+	// Invensible Logic
+	InvensibleCheck();
+
 	int speedX = 0;
 	int speedY = 0;
 	GamePad& pad = App->input->pads[0];
 	
-	#pragma region Movements keys
 	#pragma region Movements keys
 
 	if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
@@ -468,14 +470,18 @@ void Player::OnCollision(Collider* col)
 		{
 		case Type::EXPLOSION:
 		case Type::ENEMY:
-			if (InGrid(col)) Die(); break;
+			if (invensibleTime <= 0 && InGrid(col)) Die(); break;
+
 		case Type::FIREPOWER:
 			App->scene->playerSettings->powerUpFlame++; break;
+
 		case Type::BOMBPOWER:
 			App->scene->playerSettings->maxBombs++; break;
+
 		case Type::INVINCIBLEPOWER:
+			invensibleTime = 15;
+			invensibleCount = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 			break;
-			//App->scene->playerSettings->powerUpFlame++; break;
 		}
 	}
 }
@@ -544,6 +550,26 @@ void Player::SpecialSound()
 
 		}
 		playerTimer.Reset();
+	}
+}
+
+void Player::InvensibleCheck()
+{
+	if (invensibleTime >= 0)
+	{
+		float tempTime = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
+
+		if (((tempTime - invensibleCount) * 0.001f) >= 0.1f)
+		{
+			invensibleCount = tempTime;
+
+			invensibleTime -= 0.1f;
+
+			if (invensibleTime <= 0)
+			{
+				cout << "invensible time out" << endl;
+			}
+		}
 	}
 }
 

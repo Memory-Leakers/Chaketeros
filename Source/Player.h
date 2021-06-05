@@ -37,6 +37,8 @@ private:
 
 	SDL_Rect bounds;
 
+	float invensibleCount = 0;
+
 	bool isFlip = false;
 
 	void dropBomb() {};
@@ -82,6 +84,8 @@ private:
 
 	void SpecialSound();
 
+	void InvensibleCheck();
+
 	void Die();
 
 public:
@@ -101,6 +105,8 @@ public:
 	Collider* col = nullptr;
 
 	Tile* tileMap = nullptr;
+
+	float invensibleTime = 0;
 
 	// The speed in which we move the player (pixels per frame)
 	int speed = 1; //Movement only
