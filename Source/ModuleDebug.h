@@ -28,6 +28,7 @@ private:
 	SDL_Texture* texPowerUp = nullptr;
 
 	SDL_Rect recPowers[4] = { { 2,2,16,16 }, { 20,20,16,16 }, { 20,2,16,16 }, { 2,20,16,16 } };
+	SDL_Rect returnButton = { 171, 36, 21, 9 }, enterButton = {175,47,14,16};
 
 	iPoint arrowPos[7] = { {64,95},{97,95},{129,95},{65,139},{97,139},{128,139},{166,139} };
 
@@ -35,6 +36,9 @@ private:
 	iPoint cameraTempPos;
 
 	int arrowPosPointer = 0;
+
+	uint createErrorSFX;
+	uint selectOptionSFX;
 
 	Tile* currentTile = nullptr;
 
