@@ -1,6 +1,7 @@
 #include "Saru.h"
 
-Saru::Saru(iPoint spawnPos, iPoint* playerPos, iPoint* bananacherPos, Tile* tileMap) {
+Saru::Saru(iPoint spawnPos, iPoint* playerPos, iPoint* bananacherPos, Tile* tileMap) 
+{
 	this->playerPos = playerPos;
 	this->bananacherPos = bananacherPos;
 	bounds.w = 16;
@@ -22,7 +23,8 @@ Saru::~Saru() {
 	
 }
 
-bool Saru::Start() {
+bool Saru::Start()
+{
 	LOG("-LOADING ENEMY SARU-");
 	bool ret = true;
 
@@ -126,10 +128,11 @@ bool Saru::Start() {
 	return ret;
 }
 
-UpdateResult Saru::PreUpdate() {
+UpdateResult Saru::PreUpdate()
+{
 	iPoint tilePos = tileMap->getTilePos(position);
-	iPoint centerTile = tileMap->getWorldPos(tilePos);
 
+	iPoint centerTile = tileMap->getWorldPos(tilePos);
 
 	return UpdateResult::UPDATE_CONTINUE;
 }
@@ -141,7 +144,8 @@ UpdateResult Saru::Update() {
 
 	updateTimer.Update();
 
-	if (updateTimer.getDeltaTime() >= 0.05f && life != 1) {
+	if (updateTimer.getDeltaTime() >= 0.05f && life != 1) 
+	{
 		ProtectCountdown();
 
 		logic();
@@ -161,15 +165,17 @@ UpdateResult Saru::Update() {
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-UpdateResult Saru::PostUpdate() {
-
+UpdateResult Saru::PostUpdate() 
+{
 	iPoint tempPos;
+
 	if (injureAnim && life != 1)
 	{
 		SDL_Rect tempRect = { 0,0,1,1 };
 		App->render->AddTextureRenderQueue(texture, position, &tempRect, 1, position.y, false, 180);
 	}
-	else {
+	else
+	{
 		if (life != 1) 
 		{
 			rectSaru = &currentAnimation->GetCurrentFrame();
@@ -179,7 +185,8 @@ UpdateResult Saru::PostUpdate() {
 		}
 		else 
 		{
-			if (countDeath == 2 || countDeath == 4) {
+			if (countDeath == 2 || countDeath == 4)
+			{
 				rectSaru = &currentAnimation->GetCurrentFrame();
 			}
 
@@ -196,15 +203,14 @@ UpdateResult Saru::PostUpdate() {
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void Saru::logic() {
+void Saru::logic() 
+{
 	if (life == 1) return;
 	int playerPosX = playerPos->x - position.x;//Player distance on X from Saru position
 	int playerPosY = playerPos->y - position.y;//Player distance on Y from Saru position
 
 	if(!onMovement) {
 		//Each one of this if checks if player is inside vRange and if on the opossite side there is a wall
-
-		
 		
 		 if ((playerPosY <= vRange && playerPosY >= 0) && (playerPosX * -1 <= vRange && playerPosX <= vRange) &&
 			(tileMap->LevelsTileMaps[App->scene->currentLevel][nPoint.y - 1][nPoint.x] == 0 ||
@@ -259,7 +265,8 @@ void Saru::logic() {
 	movement(direction);
 }
 
-void Saru::movement(int direction) {
+void Saru::movement(int direction)
+{
 	nPoint = tileMap->getTilePos(position);
 	nPoint.y -= 1;
 
@@ -298,7 +305,8 @@ void Saru::movement(int direction) {
 	}
 }
 
-void Saru::shot() {
+void Saru::shot() 
+{
 	if (bananacherPos == nullptr) { return; }
 
 	int theNum = 1;
@@ -530,7 +538,8 @@ void Saru::deathAnimSequence() {
 		}
 }
 
-void Saru::Die() {
+void Saru::Die() 
+{
 	if (pendingToDelete) return;
 
 	isDead = true;
@@ -542,12 +551,15 @@ void Saru::Die() {
 	pendingToDelete = true;
 }
 
-void Saru::ProtectCountdown() {
-	if (protect) {
+void Saru::ProtectCountdown() 
+{
+	if (protect) 
+	{
 		injureAnim = !injureAnim;
 		protectCount++;
 
-		if (protectCount >= 40) {
+		if (protectCount >= 40) 
+		{
 			protect = false;
 			protectCount = 0;
 			cout << "Protect Finish" << endl;
