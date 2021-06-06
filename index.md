@@ -18,8 +18,10 @@ In the game, the player is placed on different stages where he must destroy two 
 </figure>
 
 # Controls
+
 ```markdown
-### Game Controls
+
+## Game Controls
 
 Arrow Keys for movement
 
@@ -29,7 +31,7 @@ SpaceBar - Pause Game
 
 BackSpace - Go Back
 
-### Debug Controls
+## Debug Controls
 
 F - Toggle Fullscreen
 
@@ -47,7 +49,7 @@ F6 - Show Mover Enemy Movement
 
 F7 - On/Off Camera Movement
 
-### Scene Change Controls
+## Scene Change Controls
 
 Ctrl + 1 - Go to Intro
 
