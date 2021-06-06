@@ -75,22 +75,26 @@ Ctrl + 9 - Go to Password
 
 **Zhida Chen**
 
+![Chen](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/Chen.png)
 *Enemy AI, Getting Sprites, Player, Particles*
 * Github: [Xidashuaige](https://github.com/Xidashuaige)
 
 **Robert Recordà**
 
+![Robert](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/Robert.png)
 *Enemy Class, Boss, UI sprites, Enemy PokaPoka*
 * Github: [MrIllas](https://github.com/MrIllas)
 
 **Pol Rius**
 
+![Pol](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/Pol.png)
 *Art, Audio implementation, Animation, Enemy Mouse*
 
 * Github: [Loproxi](https://github.com/Loproxi)
 
 **Adrià Sellarés**
 
+![Adria](https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/gh-pages/Adria.png)
 *Getting Audios, UI implementation, Scene Management, Level Creation*
 
 * Github: [AdriaSeSa](https://github.com/AdriaSeSa)
