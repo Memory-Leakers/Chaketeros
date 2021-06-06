@@ -305,7 +305,7 @@ bool SceneLevel1::Start()
 	sceneUI.Start();
 
 	// Create music
-	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	App->audio->PlayMusic("Assets/Audio/Music/Area1JummingJungle.ogg", 1.5f);
 
 	Mix_VolumeMusic(10);
 

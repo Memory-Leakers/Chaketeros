@@ -285,7 +285,7 @@ bool SceneLevel2::Start()
 
 	App->debug->InitDebug(sceneObstacles, level2TileMap, bomberman);
 
-	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
+	App->audio->PlayMusic("Assets/Audio/Music/Area1JummingJungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);
 
 	return false;
