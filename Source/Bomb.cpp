@@ -134,7 +134,7 @@ void Bomb::Die()
 
 	pendingToDelete = true;
 
-	App->scene->playerSettings->maxBombs++;
+	App->scene->playerSettings->RemainBomb(true);
 
 	getCollider()->pendingToDelete = true;
 
@@ -157,7 +157,7 @@ void Bomb::Die()
 		for (int j = 1; j <= explotionRange; j++)
 		{
 			int temp = lv1Tile->LevelsTileMaps[App->scene->currentLevel][tileY + (dirSpawn[i].y) * j][tileX + (dirSpawn[i].x) * j];
-			if (temp == 0|| temp == 4 || temp == -1)
+			if (temp == 0 || temp == 4 || temp == -1 || temp == 11)
 			{
 				explotionNum[i]++;
 			}
@@ -198,13 +198,13 @@ void Bomb::Die()
 				// Explosopn End
 				if (i == explotionRange - 1)
 				{
-					++i;
+					//++i; BUGGGGG
 					if (j == 2)
 					{
 						flipHor = false;
 					}
 					App->particle->AddParticle(explosionEnd, getPosition() + dir[j], Type::EXPLOSION, flipHor, rotation[j]);
-					--i;
+					//--i; BUGGGG y no se porque!!!!!!!!!!!!!!!!!!!!
 				}
 				else
 				{
@@ -220,5 +220,5 @@ void Bomb::Die()
 
 void Bomb::CleanUp()
 {
-	App->scene->playerSettings->maxBombs++;
+	App->scene->playerSettings->RemainBomb(true);
 }

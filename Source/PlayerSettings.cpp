@@ -20,9 +20,15 @@ void PlayerSettings::Release()
 void PlayerSettings::Reset()
 {
     playerLifes = 3;
+
     playerScore = 0;
-    maxBombs = 1;
+
+    maxBomb = 1;
+
+    remainBomb = maxBomb;
+
     powerUpFlame = 0;
+
     powerUpKick = false;
 
     for (int i = 0; i < 4; i++)
@@ -32,6 +38,22 @@ void PlayerSettings::Reset()
     for (int i = 0; i < 3; i++)
     {
         isLevelCompleted[i] = false;
+    }
+}
+
+void PlayerSettings::RemainBomb(bool remain)
+{
+    if (remain)
+    {
+        if (++remainBomb > maxBomb) 
+        {
+            remainBomb = maxBomb;
+        }
+    }
+    
+    else if (--remainBomb < 0)
+    {
+        remainBomb = 0;
     }
 }
 

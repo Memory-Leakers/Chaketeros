@@ -131,9 +131,11 @@ UpdateResult ModuleDebug::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile)
+void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile, Player* player)
 {
 	this->obstacles = obstacles;
+
+	this->player = player;
 
 	currentTile = tile;
 
@@ -222,7 +224,8 @@ void ModuleDebug::ConstructMode()
 		if (App->input->keys[SDL_SCANCODE_RETURN] == KEY_DOWN || pad.a == KEY_DOWN)
 		{
 			createObject = true;
-			spawnPoint = currentTile->getWorldPos({ 1, 2 });
+			spawnPoint = player->getCurrentTileWorldPos();
+			//spawnPoint = currentTile->getWorldPos({ 1, 2 });
 		}
 
 		// temp debug
@@ -256,12 +259,12 @@ void ModuleDebug::PowerUpPosition()
 	debugPowerUpPosition = !debugPowerUpPosition;
 }
 
-void ModuleDebug::PlayerGodMod(Player* player)
+void ModuleDebug::PlayerGodMod()
 {
 	player->godMode = !player->godMode;
 }
 
-void ModuleDebug::PlayerPosInConsole(Player* player)
+void ModuleDebug::PlayerPosInConsole()
 {
 	player->posMode = !player->posMode;
 
@@ -311,7 +314,7 @@ void ModuleDebug::PrintDebugInformation()
 	cout << "Z: bomb flame powerUp" << endl;
 }
 
-void ModuleDebug::Win(Player* player, iPoint winPos, int cameraX)
+void ModuleDebug::Win(iPoint winPos, int cameraX)
 {
 	for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 	{
@@ -329,10 +332,13 @@ void ModuleDebug::PauseOnOff()
 	debugColBox = false;
 	// Just can be pause in gameScene
 	int sceneID = App->scene->currentScene->getID();
+
 	if (sceneID == 4 || sceneID == 5 || sceneID == 6)
 	{
 		App->isPaused = !App->isPaused;
+
 		createObject = false;
+
 		CalPauseTimeOffset();
 	}
 }

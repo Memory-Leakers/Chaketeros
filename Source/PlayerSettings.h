@@ -8,6 +8,7 @@ private:
 	static PlayerSettings* playerSettings;
 
 	PlayerSettings();
+
 	~PlayerSettings();
 
 	enum Kangaroos
@@ -22,8 +23,12 @@ private:
 public:
 
 	static PlayerSettings* Instance();
+
 	static void Release();
+
 	void Reset();
+
+	void RemainBomb(bool remain);
 
 public:
 
@@ -33,7 +38,9 @@ public:
 
 	 int powerUpFlame;
 
-	 int maxBombs = 1;
+	 int maxBomb = 1;
+
+	 int remainBomb = maxBomb;
 
 	 bool powerUpKick;
 

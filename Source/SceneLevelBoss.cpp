@@ -82,7 +82,7 @@ bool SceneLevelBoss::Start()
 	saru->Start();
 
 	// Init debug
-	App->debug->InitDebug(obstacles, tileMap);
+	App->debug->InitDebug(obstacles, tileMap, bombermanBoss);
 
 	return false;
 }
@@ -451,7 +451,7 @@ void SceneLevelBoss::DebugKeys()
 	// Player god mod
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
-		App->debug->PlayerGodMod(bombermanBoss);
+		App->debug->PlayerGodMod();
 	}
 
 	// Go to GAME OVER with F3
@@ -476,11 +476,14 @@ void SceneLevelBoss::DebugKeys()
 		App->debug->PowerUpPosition();
 	}
 
+	// Obsolete
 	// Detect player position in console (use with Q)
+	/*
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
-		App->debug->PlayerPosInConsole(bombermanBoss);
+		App->debug->PlayerPosInConsole();
 	}
+	*/
 
 	// Refresh debug tileMap with Q (use with f10)
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)

@@ -193,7 +193,7 @@ void SceneLevel2::DebugKeys()
 	// Player god mod
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
-		App->debug->PlayerGodMod(bomberman);
+		App->debug->PlayerGodMod();
 	}
 
 	// Go to GAME OVER with F3
@@ -207,7 +207,7 @@ void SceneLevel2::DebugKeys()
 	{
 		if (!levelComplete)
 		{
-			App->debug->Win(bomberman, winPosition, 384);
+			App->debug->Win(winPosition, 384);
 		}
 	}
 
@@ -217,11 +217,14 @@ void SceneLevel2::DebugKeys()
 		App->debug->PowerUpPosition();
 	}
 
+	// Obsolete
 	// Detect player position in console (use with Q)
+	/*
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
-		App->debug->PlayerPosInConsole(bomberman);
+		App->debug->PlayerPosInConsole();
 	}
+	*/
 
 	// Refresh debug tileMap with Q (use with f10)
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
@@ -283,7 +286,7 @@ bool SceneLevel2::Start()
 	}
 
 
-	App->debug->InitDebug(sceneObstacles, level2TileMap);
+	App->debug->InitDebug(sceneObstacles, level2TileMap, bomberman);
 
 	App->audio->PlayMusic("Assets/Audio/Music/Area1_Jumming_Jungle.ogg", 1.5f);
 	Mix_VolumeMusic(10);

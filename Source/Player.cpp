@@ -79,6 +79,7 @@ bool Player::Start()
 	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
 	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
 	playerInvensible.texInvensible = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+	App->scene->playerSettings->remainBomb = App->scene->playerSettings->maxBomb;
 
 	#pragma region Init particle
 
@@ -120,7 +121,7 @@ UpdateResult Player::Update()
 	
 	if (!App->debug->debugCamera) 
 	{
-	#pragma region Movements keys
+		#pragma region Movements keys
 
 			if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
 			{
@@ -285,7 +286,7 @@ UpdateResult Player::Update()
 	}
 
 	// Drop a bomb
-	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->maxBombs > 0)
+	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->remainBomb > 0)
 	{
 		DropBomb();
 	}
@@ -488,7 +489,8 @@ void Player::OnCollision(Collider* col)
 			App->scene->playerSettings->powerUpFlame++; break;
 
 		case Type::BOMBPOWER:
-			App->scene->playerSettings->maxBombs++; break;
+			App->scene->playerSettings->maxBomb++;
+			App->scene->playerSettings->RemainBomb(true); break;
 
 		case Type::INVINCIBLEPOWER:
 			invensibleTime = 10;
@@ -556,15 +558,15 @@ void Player::DropBomb()
 	temp.y--;
 	int currentGrid = tileMap->LevelsTileMaps[App->scene->currentLevel][temp.y][temp.x];
 
-	// If player not situate in glass capsule stairs
-	if (currentGrid != 13 && currentGrid != 12)
+	// If player not situate in glass capsule stairs or bomb
+	if (currentGrid != 13 && currentGrid != 12 && currentGrid != 11)
 	{
 		for (int i = 0; i < SCENE_OBSTACLES_NUM; ++i)
 		{
 			if (obstacles[i] == nullptr)
 			{
 				obstacles[i] = new Bomb(this, texBomb, tileMap);
-				App->scene->playerSettings->maxBombs--;
+				App->scene->playerSettings->RemainBomb(false);
 				break;
 			}
 		}

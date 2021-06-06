@@ -37,6 +37,8 @@ private:
 
 	iPoint spawnPoint = { 0, 0 };
 
+	Player* player;
+
 public:
 	float pauseTimeOffset = 0;
 
@@ -55,7 +57,7 @@ public:
 
 	UpdateResult PostUpdate() override;
 
-	void InitDebug(Obstacle** obstacles, Tile* tile);
+	void InitDebug(Obstacle** obstacles, Tile* tile, Player* player);
 
 	void ConstructMode();
 
@@ -65,15 +67,15 @@ public:
 
 	void PowerUpPosition();
 
-	void PlayerGodMod(Player* player);
+	void PlayerGodMod();
 
-	void PlayerPosInConsole(Player* player);
+	void PlayerPosInConsole();
 
 	void DrawMapInConsole(Tile* tile, int gridX, int gridY);
 
 	void PrintDebugInformation();
 
-	void Win(Player* player, iPoint winPos, int cameraX = 0);
+	void Win(iPoint winPos, int cameraX = 0);
 
 	void PauseOnOff();
 

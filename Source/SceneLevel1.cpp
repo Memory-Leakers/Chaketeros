@@ -191,7 +191,7 @@ void SceneLevel1::DebugKeys()
 	// Player god mod
 	if (App->input->keys[SDL_SCANCODE_F1] == KEY_DOWN)
 	{
-		App->debug->PlayerGodMod(bomberman);
+		App->debug->PlayerGodMod();
 	}
 
 	// Go to GAME OVER with F3
@@ -205,7 +205,7 @@ void SceneLevel1::DebugKeys()
 	{
 		if (!levelComplete)
 		{
-			App->debug->Win(bomberman, winPosition);
+			App->debug->Win(winPosition);
 		}
 	}
 
@@ -214,12 +214,15 @@ void SceneLevel1::DebugKeys()
 	{
 		App->debug->PowerUpPosition();
 	}
-
+	
+	// Obsolete
 	// Detect player position in console (use with Q)
+	/*
 	if (App->input->keys[SDL_SCANCODE_F10] == KEY_DOWN)
 	{
-		App->debug->PlayerPosInConsole(bomberman);
+		App->debug->PlayerPosInConsole();
 	}
+	*/
 
 	// Refresh debug tileMap with Q (use with f10)
 	if (App->input->keys[SDL_SCANCODE_Q] == KEY_DOWN)
@@ -296,7 +299,7 @@ bool SceneLevel1::Start()
 	CreateScene();
 
 	// Init debug
-	App->debug->InitDebug(sceneObstacles, tileMap);
+	App->debug->InitDebug(sceneObstacles, tileMap, bomberman);
 	//gameDebug = new Debug(sceneObstacles);
 
 	sceneUI.Start();
