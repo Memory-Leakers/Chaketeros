@@ -115,16 +115,16 @@ UpdateResult ModuleRender::PostUpdate()
 		SDL_RenderFillRect(renderer, &renderRect.rect);
 	}
 
-	//for each (auto renderObj in layers[3])
-	//{
-	//	SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
-	//}
+	for each (auto renderObj in layers[3])
+	{
+		SDL_RenderCopy(renderer, renderObj.texture, renderObj.section, &renderObj.renderRect);
+	}
 
 	// Update the screen
 	SDL_RenderPresent(renderer);
 
 	// Clear layers
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		layers[i].clear();
 	}

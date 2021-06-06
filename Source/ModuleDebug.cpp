@@ -135,6 +135,10 @@ UpdateResult ModuleDebug::PostUpdate()
 				renderColor = { 255, 0, 0, 200 };
 			}
 
+			// Return button
+			App->render->AddTextureRenderQueue(texPause, { 168 ,50 }, &returnButton, 3, 100);
+			App->render->AddTextureRenderQueue(texPause, { 172 ,61 }, &enterButton, 3, 100);
+
 			// Black bg
 			App->render->AddRectRenderQueue({ App->render->camera.x, App->render->camera.y, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
 
