@@ -450,7 +450,7 @@ bool SceneLevel2::Update()
 
 			if (currentSecond > 15)
 			{
-				totalSeconds = 15;
+				currentSecond = 15;
 
 				timer.Reset();
 
