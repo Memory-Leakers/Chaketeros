@@ -33,11 +33,13 @@ UpdateResult ModuleDebug::Update()
 		if (App->FullScreenDesktop)
 		{
 			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			SDL_ShowCursor(SDL_DISABLE);
 			App->ScreenSize = 1;
 		}
 		else
 		{
 			SDL_SetWindowFullscreen(App->window->window, 0);
+			SDL_ShowCursor(SDL_ENABLE);
 			App->ScreenSize = 3;
 		}
 	}

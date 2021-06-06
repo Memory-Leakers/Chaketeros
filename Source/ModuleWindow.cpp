@@ -36,7 +36,13 @@ bool ModuleWindow::Init()
 		if (WIN_RESIZABLE == true) flags |= SDL_WINDOW_RESIZABLE;
 		if (App->FullScreenDesktop == true) flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-		window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE, flags);
+		window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE, 0);
+
+		SDL_SetWindowFullscreen(window, flags);
+
+		SDL_SetWindowTitle(window, "Mega Bomberman");
+
+		SDL_ShowCursor(SDL_DISABLE);
 
 		if (window == nullptr)
 		{
