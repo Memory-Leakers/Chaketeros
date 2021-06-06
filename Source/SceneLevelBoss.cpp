@@ -71,8 +71,12 @@ bool SceneLevelBoss::Start()
 	bossText.Start();
 
 	timer.Reset();
-
 	isTimeOut = false;
+	minutes = 4;
+
+	currentSecond = 59;
+
+	totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 
 	InitAssets();
 
@@ -157,38 +161,41 @@ bool SceneLevelBoss::Update()
 
 	timer.Update();
 
-#pragma region Timer Logic
-
-	if (minutes == 0 && currentSecond == 0)	//	Time is Out
-	{
-		isTimeOut = true;
-	}
-
+#pragma region Timer Logic 
 
 	if (!isTimeOut)
 	{
-		currentSecond = totalSeconds - (int)timer.getDeltaTime();
+		int tempTime = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
 
-		if (currentSecond == 0)
+		if (tempTime - totalSeconds >= 1)
 		{
-			if (minutes != 0)
-			{
-				minutes--;
-				timer.Reset();
-			}
-			else {
-				isTimeOut = true;
-			}
+			currentSecond--;
+			totalSeconds = tempTime;
 		}
+	}
 
-		if (currentSecond < 10)
+	if (currentSecond == 0)
+	{
+		if (minutes != 0)
 		{
-			secondsXOffset = 40;
+			minutes--;
+			timer.Reset();
+			totalSeconds = ((int)timer.getDeltaTime() - App->debug->pauseTimeOffset);
+			currentSecond = 59;
 		}
 		else
 		{
-			secondsXOffset = 32;
+			isTimeOut = true;
 		}
+	}
+
+	if (currentSecond < 10)
+	{
+		secondsXOffset = 40;
+	}
+	else
+	{
+		secondsXOffset = 32;
 	}
 
 #pragma endregion
