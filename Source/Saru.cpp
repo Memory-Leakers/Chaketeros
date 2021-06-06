@@ -153,26 +153,32 @@ UpdateResult Saru::Update() {
 
 	deathAnimSequence();
 
+	if (!injureAnim || life == 1)
+	{
+		currentAnimation->Update();
+	}
+
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
 UpdateResult Saru::PostUpdate() {
-	iPoint tempPos;
-	if (injureAnim && life != 1) {
-		SDL_Rect tempRect = { 0,0,1,1 };
 
+	iPoint tempPos;
+	if (injureAnim && life != 1)
+	{
+		SDL_Rect tempRect = { 0,0,1,1 };
 		App->render->AddTextureRenderQueue(texture, position, &tempRect, 1, position.y, false, 180);
 	}
 	else {
-		if (life != 1) {
-			currentAnimation->Update();
+		if (life != 1) 
+		{
 			rectSaru = &currentAnimation->GetCurrentFrame();
 			tempPos = position;
 			tempPos.y -= 1; //Texture position fix
 			tempPos.x -= 2; //Texture position fix
 		}
-		else {
-			currentAnimation->Update();
+		else 
+		{
 			if (countDeath == 2 || countDeath == 4) {
 				rectSaru = &currentAnimation->GetCurrentFrame();
 			}
