@@ -229,14 +229,14 @@ void ModuleDebug::ConstructMode()
 	{
 		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_DOWN || pad.left == KEY_DOWN)
 		{
-			if (arrowPosPointer <= 0) arrowPosPointer = 6;
+			if (arrowPosPointer <= 0) arrowPosPointer = 2;
 
 			else arrowPosPointer--;
 		}
 
 		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_DOWN || pad.right == KEY_DOWN)
 		{
-			if (arrowPosPointer >= 6) arrowPosPointer = 0;
+			if (arrowPosPointer >= 2) arrowPosPointer = 0;
 
 			else arrowPosPointer++;
 		}
