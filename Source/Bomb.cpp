@@ -7,7 +7,7 @@ Bomb::Bomb()
 {
 }
 
-Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
+Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile, uint explosionSFX)
 :Obstacle({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, true, App->collisions->AddCollider({ player->getCurrentTileWorldPos().x, player->getCurrentTileWorldPos().y, 16, 16 }, Type::BOMB, App->scene), tex)
 {
 	name = "Bomb";
@@ -73,13 +73,8 @@ Bomb::Bomb(Player* player, SDL_Texture* tex, Tile* tile)
 	// Init TimeCount
 	startCountTime = SDL_GetTicks() - (App->debug->pauseTimeOffset * 1000);
 
-	//TODO: Poner en forma de struct en la escena	//	o pasar como argumento por el constructor
-	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
-
-	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
-
-	// SFX Put bomb
-	App->audio->PlaySound(putBombSFX, 0);
+	// Init sounds
+	this->explosionSFX = explosionSFX;
 }
 
 Bomb::~Bomb()
@@ -122,7 +117,7 @@ void Bomb::PostUpdate()
 
 void Bomb::OnCollision(Collider* col)
 {
-	if (col->type == Type::EXPLOSION)
+	if (col->type == Type::EXPLOSION && !pendingToDelete)
 	{
 		Die();
 	}

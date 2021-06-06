@@ -55,10 +55,17 @@ Player::Player(Tile* tileMap, Obstacle** obs)
 
 	#pragma endregion
 
-	//Load Sound
+	// Load Sound
 	extraCoinsStepSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Extra_Points_Sounds/G_ExtraPointsStep.wav");
+
 	deathSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_DeathSound.wav");
+
 	gameOverSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_GameOverSound.wav");
+
+	// Load bomb sound
+	explosionSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_ExplosionSound.wav");
+
+	putBombSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Basic_Sounds/G_PutBombSound.wav");
 }
 
 Player::~Player()
@@ -74,11 +81,17 @@ bool Player::Start()
 {
 	bool ret = true;
 
+	// Load textures
+	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
+
+	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
+
+	playerInvensible.texInvensible = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+
+	// Create collision
 	col = App->collisions->AddCollider(bounds, Type::PLAYER, App->scene);
 
-	texture = App->textures->Load("Assets/Images/Sprites/Player_Sprites/BombermanSheet.png");
-	texBomb = App->textures->Load("Assets/Images/Sprites/Player_Sprites/Bomb.png");
-	playerInvensible.texInvensible = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
+	// Reset bomb num
 	App->scene->playerSettings->remainBomb = App->scene->playerSettings->maxBomb;
 
 	#pragma region Init particle
@@ -581,8 +594,14 @@ void Player::DropBomb()
 		{
 			if (obstacles[i] == nullptr)
 			{
-				obstacles[i] = new Bomb(this, texBomb, tileMap);
+				obstacles[i] = new Bomb(this, texBomb, tileMap, explosionSFX);
+
+				// SFX Put bomb
+				App->audio->PlaySound(putBombSFX, 0);
+
+				// Bomb num--
 				App->scene->playerSettings->RemainBomb(false);
+
 				break;
 			}
 		}

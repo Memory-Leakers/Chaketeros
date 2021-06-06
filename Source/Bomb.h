@@ -21,7 +21,7 @@ private:
 
 	int attack = 1;
 
-	uint explosionSFX, putBombSFX;
+	uint explosionSFX;
 
 	// curernt Anim
 	Animation* currentAnim = nullptr;
@@ -44,7 +44,7 @@ private:
 public:
 	Bomb();
 
-	Bomb(Player* p, SDL_Texture* tex, Tile* tile);
+	Bomb(Player* p, SDL_Texture* tex, Tile* tile, uint explosionSFX);
 
 	~Bomb();
 

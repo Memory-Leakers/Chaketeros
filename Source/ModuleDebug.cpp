@@ -367,6 +367,7 @@ void ModuleDebug::Win(iPoint winPos, int cameraX)
 void ModuleDebug::PauseOnOff()
 {
 	#pragma region Quit Other debug
+
 	debugColBox = false;
 
 	if(debugCamera)

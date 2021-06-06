@@ -46,6 +46,8 @@ class Player {
 private:
 	uint extraCoinsStepSFX, deathSFX, gameOverSFX;
 
+	uint explosionSFX, putBombSFX;
+
 	SDL_Rect bounds;
 
 	bool isFlip = false;
