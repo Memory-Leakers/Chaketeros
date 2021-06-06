@@ -31,6 +31,9 @@ private:
 
 	iPoint arrowPos[7] = { {64,95},{97,95},{129,95},{65,139},{97,139},{128,139},{166,139} };
 
+	// For camera debug
+	iPoint cameraTempPos;
+
 	int arrowPosPointer = 0;
 
 	Tile* currentTile = nullptr;

@@ -82,7 +82,7 @@ void SceneLevel1::InitAssets()
 	#pragma endregion
 }
 
-void SceneLevel1::Spawn(iPoint spawnPos, int objectID)
+bool SceneLevel1::Spawn(iPoint spawnPos, int objectID)
 {
 	objectID++;
 	switch (objectID)
@@ -95,7 +95,7 @@ void SceneLevel1::Spawn(iPoint spawnPos, int objectID)
 				if (powerUps[i] == nullptr)
 				{
 					powerUps[i] = new PowerUp(spawnPos, texPowerUps, texPowerUpDestroyed, objectID);
-					return;
+					return true;
 				}
 			}
 			break;
@@ -103,7 +103,7 @@ void SceneLevel1::Spawn(iPoint spawnPos, int objectID)
 	default:
 		break;
 	}
-	
+	return false;
 }
 
 void SceneLevel1::CreateScene()

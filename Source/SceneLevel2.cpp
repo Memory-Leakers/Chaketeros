@@ -23,13 +23,11 @@
 
 #include "ModuleEnemy.h"
 
-
 vector<iPoint> level2EmptySpaces;
 
 NumText level2SceneUI;
 
 //TODO: Add PowerUps
-
 SceneLevel2::SceneLevel2()
 {
 	ID = 5;
@@ -81,7 +79,6 @@ void SceneLevel2::CreateScene()
 
 	CreateYellowFlowers();
 }
-
 
 void SceneLevel2::CreateYellowFlowers()
 {
@@ -660,6 +657,31 @@ bool SceneLevel2::PostUpdate()
 		}
 	}
 
+	return false;
+}
+
+bool SceneLevel2::Spawn(iPoint spawnPos, int objectID)
+{
+	objectID++;
+	switch (objectID)
+	{
+	case 1:
+	case 2:
+	case 3:
+		// Spawn powerups
+		for (int i = 0; i < MAX_POWERUPS; ++i)
+		{
+			if (powerUps[i] == nullptr)
+			{
+				powerUps[i] = new PowerUp(spawnPos, texPowerUps, texPowerUpDestroyed, objectID);
+				return true;
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
 	return false;
 }
 

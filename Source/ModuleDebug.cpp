@@ -51,46 +51,58 @@ UpdateResult ModuleDebug::Update()
 
 	#pragma region Camera movement
 
-	if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
+	if(!App->isPaused)
 	{
-		debugCamera = !debugCamera;
-		if (!debugCamera)
+		if (App->input->keys[SDL_SCANCODE_F7] == KEY_DOWN)
 		{
-			App->render->camera.y = 0;
-			App->render->camera.x = 0;
+			debugCamera = !debugCamera;
+			if (debugCamera)
+			{
+				cameraTempPos.x = App->render->camera.x;
+				cameraTempPos.y = App->render->camera.y;
+			}
+			if (!debugCamera)
+			{
+				App->render->camera.y = cameraTempPos.x;
+				App->render->camera.x = cameraTempPos.y;
+			}
+		}
+
+		if (debugCamera)
+		{
+			// Handle positive vertical movement
+			if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) App->render->camera.y -= App->render->cameraSpeed;
+
+			// Handle negative vertical movement
+			if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) App->render->camera.y += App->render->cameraSpeed;
+
+			if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) App->render->camera.x += App->render->cameraSpeed;
+
+			if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) App->render->camera.x -= App->render->cameraSpeed;
 		}
 	}
 
+	#pragma endregion
+
+	// Collision box
 	if (App->input->keys[SDL_SCANCODE_F2] == KEY_DOWN)
 	{
 		App->debug->debugColBox = !App->debug->debugColBox;
 	}
-
-	if (debugCamera)
-	{
-		// Handle positive vertical movement
-		if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT) App->render->camera.y -= App->render->cameraSpeed;
-
-		// Handle negative vertical movement
-		if (App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT) App->render->camera.y += App->render->cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT) App->render->camera.x += App->render->cameraSpeed;
-
-		if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT) App->render->camera.x -= App->render->cameraSpeed;
-	}
-
-	#pragma endregion
 
 	if (App->isPaused)
 	{
 		ConstructMode();
 	}
 
-	#pragma region Escape Button
-	if (App->input->keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN) {
-		return UpdateResult::UPDATE_STOP;
 
+	#pragma region Escape Button
+
+	if (App->input->keys[SDL_SCANCODE_ESCAPE] == KEY_DOWN)
+	{
+		return UpdateResult::UPDATE_STOP;
 	}
+
 	#pragma endregion
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -123,8 +135,10 @@ UpdateResult ModuleDebug::PostUpdate()
 				renderColor = { 255, 0, 0, 200 };
 			}
 
-			App->render->AddRectRenderQueue({ 0,0, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
+			// Black bg
+			App->render->AddRectRenderQueue({ App->render->camera.x, App->render->camera.y, SCREEN_WIDTH ,SCREEN_HEIGHT }, { 0, 0, 0, 191 });
 
+			// Select pointer
 			App->render->AddRectRenderQueue({ spawnPoint.x, spawnPoint.y, 16 , 16 }, renderColor);
 		}
 	}
@@ -196,12 +210,18 @@ void ModuleDebug::ConstructMode()
 
 			if (currentGrid == 0 || currentGrid == 4)
 			{
-				App->scene->currentScene->Spawn(spawnPoint, arrowPosPointer);
-				PauseOnOff();
+				if(App->scene->currentScene->Spawn(spawnPoint, arrowPosPointer))
+				{
+					PauseOnOff();
+				}
+				else
+				{
+					cout << "Create Error" << endl;
+				}
 			}
 			else
 			{
-
+				cout << "Create Error" << endl;
 			}
 		}
 	}
@@ -329,7 +349,13 @@ void ModuleDebug::Win(iPoint winPos, int cameraX)
 
 void ModuleDebug::PauseOnOff()
 {
+	#pragma region Quit Other debug
 	debugColBox = false;
+	debugCamera = false;
+	App->render->camera.y = cameraTempPos.x;
+	App->render->camera.x = cameraTempPos.y;
+#pragma endregion
+
 	// Just can be pause in gameScene
 	int sceneID = App->scene->currentScene->getID();
 

@@ -124,6 +124,8 @@ public:
 
 	void WillCollision(Collider* c1, Collider* c2) override;
 
+	bool Spawn(iPoint spawnPos, int objectID) override;
+
 	bool CleanUp(bool finalCleanUp = true) override;
 
 	void DebugKeys();

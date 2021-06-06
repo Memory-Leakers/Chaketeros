@@ -399,12 +399,12 @@ UpdateResult Player::PostUpdate()
 			playerInvensible.DrawInvensible = !playerInvensible.DrawInvensible;
 			if(playerInvensible.DrawInvensible)
 			{
-				App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 500);
+				App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 50);
 			}			
 		}
 		else
 		{
-			App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 500);
+			App->render->AddTextureRenderQueue(playerInvensible.texInvensible, { 95, 4 }, &playerInvensible.recInvensible, 2, 50);
 		}	
 	}
 

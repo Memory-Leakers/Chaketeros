@@ -78,7 +78,7 @@ public:
 
 	bool CleanUp(bool finalCleanUp = true) override;
 
-	void Spawn(iPoint spawnPos, int objectID) override;
+	bool Spawn(iPoint spawnPos, int objectID) override;
 
 	void CreateScene();
 

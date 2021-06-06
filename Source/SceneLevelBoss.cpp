@@ -359,7 +359,7 @@ void SceneLevelBoss::WillCollision(Collider* c1, Collider* c2)
 	}
 }
 
-void SceneLevelBoss::Spawn(iPoint spawnPos, int objectID)
+bool SceneLevelBoss::Spawn(iPoint spawnPos, int objectID)
 {
 	objectID++;
 	switch (objectID)
@@ -372,7 +372,7 @@ void SceneLevelBoss::Spawn(iPoint spawnPos, int objectID)
 			if (powerUps[i] == nullptr)
 			{
 				powerUps[i] = new PowerUp(spawnPos, texPowerUps, texPowerUpDestroyed, objectID);
-				return;
+				return true;
 			}
 		}
 		break;
@@ -381,6 +381,7 @@ void SceneLevelBoss::Spawn(iPoint spawnPos, int objectID)
 		break;
 	}
 
+	return false;
 }
 
 bool SceneLevelBoss::CleanUp(bool finalCleanUp)
