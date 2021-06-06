@@ -129,5 +129,5 @@ Ctrl + 9 - Go to Password
 
 # Last Release
 
-Check out the latest release of the project [here](https://github.com/AdriaSeSa/Chaketeros/releases/tag/0.5) 
+Check out the latest release of the project [here](https://github.com/AdriaSeSa/Chaketeros/releases/tag/1.0) 
 
