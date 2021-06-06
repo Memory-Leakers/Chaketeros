@@ -11,6 +11,10 @@ Mega Bomberman is an Action and Maze game developed by Westone. It was originall
 
 In the game, the player is placed on different stages where he must destroy two or more pillars to advance. To do so, you have to use bombs to overcome several enemies and obstacles, and get to your objective. But watch out! The bombs can hurt you, as well as the enemies. There are multiple power-ups as well that you can use to change the game rules, but you mut be lucky to get them. After three or more stages, you get to fight the area Boss, a different and more strong enemy that will test your skills at their peak.
 
+# Game Trailer
+
+<iframe width="740" height="590" src="https://youtu.be/8lOwTnr1mOs" frameborder="0" allowfullscreen></iframe>
+
 # Controls
 ```markdown
 ### Game Controls
