@@ -79,8 +79,8 @@ public:
 
 	Timer globalTime;
 
-	int ScreenSize = 3;
-	bool FullScreenDesktop = false;
+	int ScreenSize = 1;
+	bool FullScreenDesktop = true;
 
 	bool isPaused;
 };
