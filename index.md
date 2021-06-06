@@ -13,7 +13,9 @@ In the game, the player is placed on different stages where he must destroy two 
 
 # Game Trailer
 
-[![Gameplay]({https://raw.githubusercontent.com/AdriaSeSa/Chaketeros/main/Game/MegaBomberman/Assets/Images/WikiImages/GameTitle.jpg})]({https://youtu.be/8lOwTnr1mOs} "GamePlay")
+<figure class="video_container">
+  <iframe src="https://www.youtube.com/embed/8lOwTnr1mOs" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
 
 # Controls
 ```markdown
