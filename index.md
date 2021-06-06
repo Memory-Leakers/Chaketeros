@@ -14,7 +14,7 @@ In the game, the player is placed on different stages where he must destroy two 
 # Game Trailer
 
 <figure class="video_container">
-  <iframe src="https://www.youtube.com/embed/8lOwTnr1mOs" frameborder="0" allowfullscreen="true"> </iframe>
+  <iframe src="https://www.youtube.com/embed/nX-EKJf2oL0" frameborder="0" allowfullscreen="true"> </iframe>
 </figure>
 
 # Controls
