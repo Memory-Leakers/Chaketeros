@@ -197,6 +197,14 @@ void ModuleDebug::ConstructMode()
 			}
 		}
 
+		// Si esta en nivel 2, la camara se mueve con el cuadrado
+		if (App->scene->currentScene->getID() == 5)
+		{
+			iPoint tempPos = { spawnPoint.x, 0 };
+
+			App->render->CameraMove(tempPos);
+		}
+		
 		if (App->input->keys[SDL_SCANCODE_BACKSPACE] == KEY_DOWN || pad.b == KEY_DOWN)
 		{
 			createObject = false;
@@ -350,10 +358,15 @@ void ModuleDebug::PauseOnOff()
 {
 	#pragma region Quit Other debug
 	debugColBox = false;
-	debugCamera = false;
-	App->render->camera.y = cameraTempPos.x;
-	App->render->camera.x = cameraTempPos.y;
-#pragma endregion
+
+	if(debugCamera)
+	{
+		debugCamera = false;
+		App->render->camera.y = cameraTempPos.y;
+		App->render->camera.x = cameraTempPos.x;
+	}
+	
+	#pragma endregion
 
 	// Just can be pause in gameScene
 	int sceneID = App->scene->currentScene->getID();

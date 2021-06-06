@@ -119,11 +119,12 @@ UpdateResult Player::Update()
 	int speedY = 0;
 	GamePad& pad = App->input->pads[0];
 	
+	// Player can't move in camera debug mode
 	if (!App->debug->debugCamera) 
 	{
 		#pragma region Movements keys
 
-			if (App->input->keys[SDL_SCANCODE_W] == KEY_REPEAT || pad.left_y < 0.0f)
+			if (App->input->keys[SDL_SCANCODE_UP] == KEY_REPEAT || pad.left_y < 0.0f)
 			{
 				isFlip = false;
 				currentAnimation = &upAnim;
@@ -134,7 +135,7 @@ UpdateResult Player::Update()
 					speedY = -speed;
 				}
 				// movemenet fix
-				else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
+				else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_IDLE && App->input->keys[SDL_SCANCODE_RIGHT] == KEY_IDLE && pad.left_x == 0.0f)
 				{
 					iPoint tempTilePos = getCurrentTilePos();
 
@@ -162,7 +163,7 @@ UpdateResult Player::Update()
 				SpecialSound();
 			}
 
-			if ((App->input->keys[SDL_SCANCODE_S] == KEY_REPEAT || pad.left_y > 0.0f) && (App->input->keys[SDL_SCANCODE_W] != KEY_REPEAT || pad.left_y < 0.0f))
+			if ((App->input->keys[SDL_SCANCODE_DOWN] == KEY_REPEAT || pad.left_y > 0.0f) && (App->input->keys[SDL_SCANCODE_UP] != KEY_REPEAT || pad.left_y < 0.0f))
 			{
 				isFlip = false;
 				currentAnimation = &downAnim;
@@ -173,7 +174,7 @@ UpdateResult Player::Update()
 					speedY = speed;
 				}
 				// movement fix
-				else if (App->input->keys[SDL_SCANCODE_A] == KEY_IDLE && App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && pad.left_x == 0.0f)
+				else if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_IDLE && App->input->keys[SDL_SCANCODE_RIGHT] == KEY_IDLE && pad.left_x == 0.0f)
 				{
 					iPoint tempTilePos = getCurrentTilePos();
 
@@ -201,7 +202,7 @@ UpdateResult Player::Update()
 				SpecialSound();
 			}
 
-			if ((App->input->keys[SDL_SCANCODE_D] == KEY_REPEAT || pad.left_x > 0.0f) && (App->input->keys[SDL_SCANCODE_A] != KEY_REPEAT || pad.left_x < 0.0f))
+			if ((App->input->keys[SDL_SCANCODE_RIGHT] == KEY_REPEAT || pad.left_x > 0.0f) && (App->input->keys[SDL_SCANCODE_LEFT] != KEY_REPEAT || pad.left_x < 0.0f))
 			{
 				isFlip = true;
 				currentAnimation = &rightAnim;
@@ -214,7 +215,7 @@ UpdateResult Player::Update()
 					}
 				}
 				// movement fix
-				else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
+				else if (App->input->keys[SDL_SCANCODE_UP] == KEY_IDLE && App->input->keys[SDL_SCANCODE_DOWN] == KEY_IDLE && pad.left_y == 0.0f)
 				{
 					iPoint tempTilePos = getCurrentTilePos();
 
@@ -242,7 +243,7 @@ UpdateResult Player::Update()
 				SpecialSound();
 			}
 
-			if (App->input->keys[SDL_SCANCODE_A] == KEY_REPEAT || pad.left_x < 0.0f)
+			if (App->input->keys[SDL_SCANCODE_LEFT] == KEY_REPEAT || pad.left_x < 0.0f)
 			{
 				isFlip = false;
 				currentAnimation = &leftAnim;
@@ -254,7 +255,7 @@ UpdateResult Player::Update()
 					speedX = -speed;
 				}
 				// movement fix
-				else if (App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_y == 0.0f)
+				else if (App->input->keys[SDL_SCANCODE_UP] == KEY_IDLE && App->input->keys[SDL_SCANCODE_DOWN] == KEY_IDLE && pad.left_y == 0.0f)
 				{
 					iPoint tempTilePos = getCurrentTilePos();
 
@@ -282,17 +283,24 @@ UpdateResult Player::Update()
 				SpecialSound();
 			}
 
-	#pragma endregion
-	}
-
-	// Drop a bomb
-	if ((App->input->keys[SDL_SCANCODE_J] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->remainBomb > 0)
-	{
-		DropBomb();
+		#pragma endregion
 	}
 
 	// Move
 	position += {speedX, speedY};
+
+	// Player idle or walk state
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_IDLE && App->input->keys[SDL_SCANCODE_LEFT] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_UP] == KEY_IDLE && App->input->keys[SDL_SCANCODE_DOWN] == KEY_IDLE && pad.left_x == 0.0f && pad.left_y == 0.0f)
+	{
+		currentAnimation->hasIdle = true;
+	}
+
+	// Reset Movemenet
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
 
 	//	Move Camera on Player
 	if (App->scene->currentLevel == 1)
@@ -300,13 +308,6 @@ UpdateResult Player::Update()
 		iPoint tempPos = { position.x, 0 };
 
 		App->render->CameraMove(tempPos);
-	}
-
-	// Player idle or walk state
-	if (App->input->keys[SDL_SCANCODE_D] == KEY_IDLE && App->input->keys[SDL_SCANCODE_A] == KEY_IDLE &&
-		App->input->keys[SDL_SCANCODE_W] == KEY_IDLE && App->input->keys[SDL_SCANCODE_S] == KEY_IDLE && pad.left_x == 0.0f && pad.left_y == 0.0f)
-	{
-		currentAnimation->hasIdle = true;
 	}
 
 	// Update coliision
@@ -350,10 +351,10 @@ UpdateResult Player::Update()
 
 	#pragma endregion
 
-	// Reset Movemenet
-	for (int i = 0; i < 4; i++)
+	// Drop a bomb
+	if ((App->input->keys[SDL_SCANCODE_D] == KEY_DOWN || pad.a == true) && App->scene->playerSettings->remainBomb > 0)
 	{
-		canMoveDir[i] = true;
+		DropBomb();
 	}
 
 	return UpdateResult::UPDATE_CONTINUE;
@@ -411,7 +412,7 @@ UpdateResult Player::PostUpdate()
 	return UpdateResult::UPDATE_CONTINUE;
 }
 
-//TODO
+//TODO Incomplete
 iPoint Player::Move(int dir)
 {
 	GamePad& pad = App->input->pads[0];
@@ -432,7 +433,6 @@ iPoint Player::Move(int dir)
 	isFlip = tempFlip[dir];
 	currentAnimation = tempAnim[dir];
 	currentAnimation->hasIdle = false;
-
 
 	//Left	A	|| pad.left_x < 0.0f
 	//Right	D	|| pad.left_x > 0.0f
@@ -471,6 +471,22 @@ iPoint Player::Move(int dir)
 	}
 
 	SpecialSound();
+
+	// Move
+	position += {tempSpeed.x, tempSpeed.y};
+
+	// Player idle or walk state
+	if (App->input->keys[SDL_SCANCODE_RIGHT] == KEY_IDLE && App->input->keys[SDL_SCANCODE_LEFT] == KEY_IDLE &&
+		App->input->keys[SDL_SCANCODE_UP] == KEY_IDLE && App->input->keys[SDL_SCANCODE_DOWN] == KEY_IDLE && pad.left_x == 0.0f && pad.left_y == 0.0f)
+	{
+		currentAnimation->hasIdle = true;
+	}
+
+	// Reset Movemenet
+	for (int i = 0; i < 4; i++)
+	{
+		canMoveDir[i] = true;
+	}
 
 	return tempSpeed;
 }
