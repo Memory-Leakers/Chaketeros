@@ -36,6 +36,9 @@ private:
 
 	int arrowPosPointer = 0;
 
+	uint createErrorSFX;
+	uint selectOptionSFX;
+
 	Tile* currentTile = nullptr;
 
 	iPoint spawnPoint = { 0, 0 };

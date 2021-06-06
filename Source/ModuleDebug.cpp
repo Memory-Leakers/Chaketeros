@@ -157,6 +157,9 @@ void ModuleDebug::InitDebug(Obstacle** obstacles, Tile* tile, Player* player)
 	texPause = App->textures->Load("Assets/Images/Sprites/My_Sprites/Pause.png");
 	texPowerUp = App->textures->Load("Assets/Images/Sprites/PowerUps_Sprites/Powerups.png");
 
+	createErrorSFX = App->audio->LoadSound("Assets/Audio/SFX/In_Game_Sounds/Miscellaneous_Sounds/G_CollisionWithBombInSound.wav");
+	selectOptionSFX = App->audio->LoadSound("Assets/Audio/SFX/General_Sounds/MM_SelectSound.wav");
+
 	pauseTimeOffset = 0;
 }
 
@@ -213,15 +216,18 @@ void ModuleDebug::ConstructMode()
 				if(App->scene->currentScene->Spawn(spawnPoint, arrowPosPointer))
 				{
 					PauseOnOff();
+					App->audio->PlaySoundA(selectOptionSFX, 0);
 				}
 				else
 				{
 					cout << "Create Error" << endl;
+					App->audio->PlaySoundA(createErrorSFX, 0);
 				}
 			}
 			else
 			{
 				cout << "Create Error" << endl;
+				App->audio->PlaySoundA(createErrorSFX, 0);
 			}
 		}
 	}
